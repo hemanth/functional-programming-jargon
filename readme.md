@@ -5,6 +5,26 @@
 __Let's try and define these with examples, this is a WIP please feel free to send PR ;)__
 
 
+## Arity 
+
+---
+
+## Purity 
+
+---
+
+## Side effects 
+
+---
+
+## Idempotency 
+
+---
+
+## Referential Transparency
+
+---
+
 ## Monoid
 
 - - -
