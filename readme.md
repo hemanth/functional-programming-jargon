@@ -5,19 +5,29 @@
 __Let's try and define these with examples, this is a WIP please feel free to send PR ;)__
 
 
-## Arity 
+## Arity
+
+> The number of arguments a function takes.
+
+```js
+const sum = (a, b) => a + b;
+
+const arity = sum.length;
+console.log(arity);
+// => 2
+// The arity of sum is 2
+```
+
+
+## Purity
 
 ---
 
-## Purity 
+## Side effects
 
 ---
 
-## Side effects 
-
----
-
-## Idempotency 
+## Idempotency
 
 ---
 
