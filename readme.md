@@ -17,7 +17,19 @@ console.log(arity);
 // => 2
 // The arity of sum is 2
 ```
+---
 
+## Applicative Functor
+
+---
+
+## Partial Application
+
+---
+
+## Currying 
+
+---
 
 ## Purity
 
@@ -46,3 +58,8 @@ console.log(arity);
 ## Functor
 
 - - -
+
+## Morphism
+
+---
+
