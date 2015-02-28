@@ -31,6 +31,18 @@ greet("HOF")(); // Hello HOF!
 ```
 
 ## Partial Application
+> The process of getting a function with lesser arity compared to the original
+function by fixing the number of arguments is known as partial application.
+
+```js
+let sum = (a, b) => a + b;
+
+// partially applying `a` to `40`
+let partial = add.bind(null, 40);
+
+// Invoking it with `b`
+partial(40); //=> 42
+```
 
 ---
 
