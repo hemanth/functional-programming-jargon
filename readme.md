@@ -19,6 +19,17 @@ console.log(arity);
 ```
 ---
 
+## Higher Order Functions (HOF)
+> A function for which both the input and the output are functions.
+
+```js
+let greet = (name) => () => `Hello ${name}!`;
+```
+
+```js
+greet("HOF")(); // Hello HOF!
+```
+
 ## Partial Application
 
 ---
@@ -57,7 +68,7 @@ referential transparent.
 
 ## Monoid
 
-- - -
+---
 
 ## Monad
 
