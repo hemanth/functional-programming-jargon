@@ -27,7 +27,7 @@ console.log(arity);
 
 ---
 
-## Currying 
+## Currying
 
 ---
 
@@ -56,10 +56,10 @@ console.log(arity);
 - - -
 
 ## Functor
+> Structure that can be mapped over.
 
 - - -
 
 ## Morphism
 
 ---
-
