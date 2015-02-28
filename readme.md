@@ -45,6 +45,18 @@ console.log(arity);
 
 ## Referential Transparency
 
+> An expression that can be replaced with its value without changing the
+behaviour of the program is said to be referential transparent.
+
+Say we have function greet:
+
+```js
+let greet = () => "Hello World!";
+```
+
+Any invocation of `greet()` can be replaced with `Hello World!` hence greet is
+referential transparent.
+
 ---
 
 ## Monoid
@@ -57,6 +69,14 @@ console.log(arity);
 
 ## Functor
 > Structure that can be mapped over.
+
+Simplest functor in javascript is an `Array`
+
+```js
+[2,3,4].map( function(n) {
+  return n + 2;
+}); // [4,6,8]
+```
 
 - - -
 
