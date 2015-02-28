@@ -19,10 +19,6 @@ console.log(arity);
 ```
 ---
 
-## Applicative Functor
-
----
-
 ## Partial Application
 
 ---
@@ -65,7 +61,7 @@ referential transparent.
 
 ## Monad
 
-- - -
+---
 
 ## Functor
 > Structure that can be mapped over.
@@ -78,7 +74,12 @@ Simplest functor in javascript is an `Array`
 }); // [4,6,8]
 ```
 
-- - -
+---
+
+## Applicative Functor
+
+---
+
 
 ## Morphism
 
