@@ -62,6 +62,30 @@ partial(40); //=> 42
 
 ---
 
+## Contracts
+
+---
+
+## Guarded Functions
+
+---
+
+## Categories
+
+---
+
+## Functor
+> Structure that can be mapped over.
+
+Simplest functor in javascript is an `Array`
+
+```js
+[2,3,4].map( function(n) {
+  return n + 2;
+}); // [4,6,8]
+```
+---
+
 ## Referential Transparency
 
 > An expression that can be replaced with its value without changing the
@@ -83,19 +107,6 @@ referential transparent.
 ---
 
 ## Monad
-
----
-
-## Functor
-> Structure that can be mapped over.
-
-Simplest functor in javascript is an `Array`
-
-```js
-[2,3,4].map( function(n) {
-  return n + 2;
-}); // [4,6,8]
-```
 
 ---
 
