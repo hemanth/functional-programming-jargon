@@ -38,15 +38,28 @@ function by fixing the number of arguments is known as partial application.
 let sum = (a, b) => a + b;
 
 // partially applying `a` to `40`
-let partial = add.bind(null, 40);
+let partial = sum.bind(null, 40);
 
 // Invoking it with `b`
-partial(40); //=> 42
+partial(2); //=> 42
 ```
 
 ---
 
 ## Currying
+> The process of converting a function with multiple arity into the same function with less arity.
+
+```js
+let sum = (a,b) => a+b;
+
+let curriedSum = function(a) {
+    return function(b) {
+        return a + b;
+    };
+};
+
+curriedSum(40)(2) // 42.
+```
 
 ---
 
