@@ -123,6 +123,9 @@ referential transparent.
 
 ---
 
+##Comonad
+---
+
 ## Applicative Functor
 
 ---
@@ -131,3 +134,16 @@ referential transparent.
 ## Morphism
 
 ---
+
+## Setoid
+
+---
+
+## Semigroup
+
+---
+
+## Chain
+---
+
+
