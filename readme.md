@@ -72,6 +72,12 @@ curriedSum(40)(2) // 42.
 ---
 
 ## Idempotency
+> A function is said to be idempotent if it has no side-effects on multiple
+executions with the the same input parameters.
+
+`f(f(x)) = f(x)`
+
+`Math.abs(Math.abs(10))` 
 
 ---
 
@@ -145,5 +151,3 @@ referential transparent.
 
 ## Chain
 ---
-
-
