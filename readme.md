@@ -64,7 +64,16 @@ curriedSum(40)(2) // 42.
 ---
 
 ## Purity
+> A function is said to be pure if the return value is only determined by its
+input values, without any side effects.
 
+```js
+let greet = "yo";
+
+greet.toUpperCase(); // YO;
+
+greet // yo;
+```
 ---
 
 ## Side effects
@@ -77,7 +86,7 @@ executions with the the same input parameters.
 
 `f(f(x)) = f(x)`
 
-`Math.abs(Math.abs(10))` 
+`Math.abs(Math.abs(10))`
 
 ---
 
