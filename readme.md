@@ -108,9 +108,7 @@ executions with the the same input parameters.
 Simplest functor in javascript is an `Array`
 
 ```js
-[2,3,4].map( function(n) {
-  return n + 2;
-}); // [4,6,8]
+[2,3,4].map( n => n * 2 ); // [4,6,8]
 ```
 ---
 
