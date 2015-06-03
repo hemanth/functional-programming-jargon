@@ -52,11 +52,7 @@ partial(2); //=> 42
 ```js
 let sum = (a,b) => a+b;
 
-let curriedSum = function(a) {
-    return function(b) {
-        return a + b;
-    };
-};
+let curriedSum = (a) => (b) => a + b;
 
 curriedSum(40)(2) // 42.
 ```
