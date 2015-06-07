@@ -73,7 +73,11 @@ greet // yo;
 ---
 
 ## Side effects
+> A function or expression is said to have a side effect if apart from returning a value, it modifies some state or has an observable interaction with external functions.
 
+```js
+console.log("IO is a side effect!");
+```
 ---
 
 ## Idempotency
