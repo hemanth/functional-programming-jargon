@@ -128,6 +128,10 @@ referential transparent.
 
 ---
 
+##  Equational Reasoning
+
+---
+
 ## Lazy evalution
 > aka call-by-need is an evaluation machanism which delays the evaluation of an expression until its value is needed.
 
