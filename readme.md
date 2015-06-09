@@ -90,6 +90,13 @@ executions with the the same input parameters.
 
 ---
 
+## Point Free
+> A function whose definition does not include information regarding its arguments.
+
+`let abs = Math.abs`
+
+---
+
 ## Contracts
 
 ---
