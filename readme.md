@@ -47,7 +47,7 @@ partial(2); //=> 42
 ---
 
 ## Currying
-> The process of converting a function with multiple arity into the same function with less arity.
+> The process of converting a function with multiple arity into the same function with an arity of one. Not to be confused with partial application, which can produce a function with an arity greater than one.
 
 ```js
 let sum = (a,b) => a+b;
