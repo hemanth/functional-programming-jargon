@@ -170,6 +170,16 @@ randIter.next(); // Each exectuion gives a random value, expression is evluated 
 
 ## Monad
 
+> A Monad is a pattern to describe computations as a series of steps.
+
+A monad is a "unit" function that wraps a value and produces the same value by way of a "bind" function and are sometimes referred to as "programmable semicolons" due to the fact that they represent chainable computations.
+
+The simplest monad is the Identity monad. It simply wraps a value.
+
+```js
+let Identity = v => ({ bind: transform => transform(v) })
+```
+
 ---
 
 ## Comonad
