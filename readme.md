@@ -2,7 +2,7 @@
 
 > The whole idea of this repos is to try and define jargons from combinatorics and category theory jargons that are used in functional programming in a easier fashion.
 
-__Let's try and define these with examples, this is a WIP please feel free to send PR ;)__
+*Let's try and define these with examples, this is a WIP—please feel free to send PR ;)*
 
 
 ## Arity
@@ -20,6 +20,7 @@ console.log(arity);
 ---
 
 ## Higher Order Functions (HOF)
+
 > A function for which both the input and the output are functions.
 
 ```js
@@ -31,6 +32,7 @@ greet("HOF")(); // Hello HOF!
 ```
 
 ## Partial Application
+
 > The process of getting a function with lesser arity compared to the original
 function by fixing the number of arguments is known as partial application.
 
@@ -47,6 +49,7 @@ partial(2); //=> 42
 ---
 
 ## Currying
+
 > The process of converting a function with multiple arity into the same function with an arity of one. Not to be confused with partial application, which can produce a function with an arity greater than one.
 
 ```js
@@ -60,6 +63,7 @@ curriedSum(40)(2) // 42.
 ---
 
 ## Purity
+
 > A function is said to be pure if the return value is only determined by its
 input values, without any side effects.
 
@@ -73,6 +77,7 @@ greet // yo;
 ---
 
 ## Side effects
+
 > A function or expression is said to have a side effect if apart from returning a value, it modifies some state or has an observable interaction with external functions.
 
 ```js
@@ -81,6 +86,7 @@ console.log("IO is a side effect!");
 ---
 
 ## Idempotency
+
 > A function is said to be idempotent if it has no side-effects on multiple
 executions with the the same input parameters.
 
@@ -91,6 +97,7 @@ executions with the the same input parameters.
 ---
 
 ## Point Free
+
 > A function whose definition does not include information regarding its arguments.
 
 `let abs = Math.abs`
@@ -110,6 +117,7 @@ executions with the the same input parameters.
 ---
 
 ## Functor
+
 > Structure that can be mapped over.
 
 Simplest functor in javascript is an `Array`
@@ -122,7 +130,7 @@ Simplest functor in javascript is an `Array`
 ## Referential Transparency
 
 > An expression that can be replaced with its value without changing the
-behaviour of the program is said to be referential transparent.
+behavior of the program is said to be referential transparent.
 
 Say we have function greet:
 
@@ -140,7 +148,8 @@ referential transparent.
 ---
 
 ## Lazy evalution
-> aka call-by-need is an evaluation machanism which delays the evaluation of an expression until its value is needed.
+
+> aka call-by-need is an evaluation mechanism which delays the evaluation of an expression until its value is needed.
 
 ```js
 let rand = function*() {
@@ -163,7 +172,8 @@ randIter.next(); // Each exectuion gives a random value, expression is evluated 
 
 ---
 
-##Comonad
+## Comonad
+
 ---
 
 ## Applicative Functor
@@ -184,4 +194,5 @@ randIter.next(); // Each exectuion gives a random value, expression is evluated 
 ---
 
 ## Chain
+
 ---
