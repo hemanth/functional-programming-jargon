@@ -166,6 +166,40 @@ randIter.next(); // Each exectuion gives a random value, expression is evluated 
 
 ## Monoid
 
+> A monoid is some data type and a two parameter function that "combines" two values of the type, where an identity value that does not affect the result of the function also exists.
+
+The simplest monoid is numbers and addition:
+
+```js
+1 + 1; // 2
+```
+
+The data type is number and the function is `+`, the addition of two numbers.
+
+```js
+1 + 0; // 1
+```
+
+The identity value is `0` - adding `0` to any number will not change it.
+
+For something to be a monoid, it's also required that the order of operations will not affect the result:
+
+```js
+1 + (2 + 3) == (1 + 2) + 3; // true
+```
+
+Array concatenation can also be said to be a monoid:
+
+```js
+[1, 2].concat([3, 4]); // [1, 2, 3, 4]
+```
+
+The identity value is empty array `[]`
+
+```js
+[1, 2].concat([]); // [1, 2]
+```
+
 ---
 
 ## Monad
