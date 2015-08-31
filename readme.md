@@ -100,7 +100,9 @@ executions with the the same input parameters.
 
 > A function whose definition does not include information regarding its arguments.
 
-`let abs = Math.abs`
+```js
+let abs = Math.abs
+```
 
 ---
 
@@ -158,8 +160,8 @@ let rand = function*() {
     }
 }
 ```
-```
-let randIter = random();
+```js
+let randIter = rand();
 randIter.next(); // Each exectuion gives a random value, expression is evluated on need.
 ```
 ---
