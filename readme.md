@@ -242,3 +242,15 @@ let Identity = v => ({ bind: transform => transform(v) })
 ## Chain
 
 ---
+
+## Foldable
+
+---
+
+## Traversable
+
+---
+
+## Comonad
+
+---
