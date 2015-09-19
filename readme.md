@@ -21,7 +21,7 @@ console.log(arity);
 
 ## Higher Order Functions (HOF)
 
-> A function for which both the input and the output are functions.
+> A function that receives a function as argument and call or return the passed function.
 
 ```js
 let greet = (name) => () => `Hello ${name}!`;
