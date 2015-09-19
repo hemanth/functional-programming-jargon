@@ -19,16 +19,28 @@ console.log(arity);
 ```
 ---
 
-## Higher Order Functions (HOF)
+## Higher-Order Functions (HOF)
 
-> A function for which both the input and the output are functions.
+> A function which takes a function as an argument and/or returns a function.
 
 ```js
-let greet = (name) => () => `Hello ${name}!`;
+const filter = (pred, xs) => {
+  const result = [];
+  for (var idx = 0; idx < xs.length; idx += 1) {
+    if (pred(xs[idx])) {
+      result.push(xs[idx]);
+    }
+  }
+  return result;
+};
 ```
 
 ```js
-greet("HOF")(); // Hello HOF!
+const is = type => x => Object(x) instanceof type;
+```
+
+```js
+filter(is(Number), [0, '1', 2, null]); //=> [0, 2]
 ```
 
 ## Partial Application
