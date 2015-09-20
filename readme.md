@@ -1,6 +1,6 @@
-# Functional Programming Jargons
+# Functional Programming Jargon
 
-> The whole idea of this repos is to try and define jargons from combinatorics and category theory jargons that are used in functional programming in a easier fashion.
+> The whole idea of this repos is to try and define jargon from combinatorics and category theory jargons that are used in functional programming in a easier fashion.
 
 *Let's try and define these with examples, this is a WIP—please feel free to send PR ;)*
 
