@@ -99,13 +99,18 @@ console.log("IO is a side effect!");
 
 ## Idempotency
 
-> A function is said to be idempotent if it has no side-effects on multiple
-executions with the the same input parameters.
+> A function is said to be idempotent if there are no additional effects of calling it a second time with the same parameters.
 
-`f(f(x)) = f(x)`
+That is, `f(f(x)) = f(x)`.
 
-`Math.abs(Math.abs(10))`
 
+```js
+sort([5, 2, 8, 3]); //=> [2, 3, 5, 8]
+sort([2, 3, 5, 8]); //=> [2, 3, 5, 8]
+
+// so
+sort(sort([5, 2, 8, 3])) ≍ sort([5, 2, 8, 3])
+```
 ---
 
 ## Point Free
