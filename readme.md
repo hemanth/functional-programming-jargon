@@ -86,6 +86,17 @@ greet.toUpperCase(); // YO;
 
 greet // yo;
 ```
+
+As opposed to:
+
+```js
+let numbers = [1, 2, 3];
+
+numbers.splice(0); // [1, 2, 3]
+
+numbers // []
+```
+
 ---
 
 ## Side effects
