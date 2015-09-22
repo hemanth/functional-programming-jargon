@@ -119,14 +119,27 @@ executions with the the same input parameters.
 
 ---
 
-## Point Free
+## Points-Free
 
 > A function whose definition does not include information regarding its arguments.
 
 ```js
-let abs = Math.abs
+// Given
+let combine = curry((fn, initialVal, list) => list.reduce(fn, initialVal));
+let add = (a, b) => a + b;
+
+// Then
+
+// Not points-free
+let total1 = (numbers) => combine(add, 0, numbers);
+
+// Points-free
+let total2 = combine(add, 0);
 ```
 
+`total1` lists and uses the parameter `numbers`, so it is not points-free.  `total2` is written just by combining functions and values, making no mention of its arguments.  It _is_ points-free.
+
+It is easy to recognize points-free function definitions; they are the ones that contain no '`function`' keywords and no fat arrows.
 ---
 
 ## Contracts
