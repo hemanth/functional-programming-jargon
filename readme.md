@@ -7,7 +7,7 @@
 
 ## Arity
 
-> The number of arguments a function takes.
+> The number of arguments a function takes. From words like unary, binary, ternary, etc. This word has the distinction of being composed of two suffixes, "-ary" and "-ity." Addition, for example, takes two arguments, and so it is defined as a binary function or a function with an arity of two. Such a function may sometimes be called "dyadic" by people who prefer Greek roots to Latin. Likewise, a function that takes a variable number of arguments is called "variadic," whereas a binary function must be given two and only two arguments, currying and partial application notwithstanding (see below).
 
 ```js
 const sum = (a, b) => a + b;
@@ -185,9 +185,9 @@ referential transparent.
 
 ---
 
-## Lazy evalution
+## Lazy evaluation
 
-> aka call-by-need is an evaluation mechanism which delays the evaluation of an expression until its value is needed.
+> Lazy evaluation is a call-by-need evaluation mechanism that delays the evaluation of an expression until its value is needed. In functional languages, this allows for structures like infinite lists, which would not normally be available in an imperative language where the sequencing of commands is significant.
 
 ```js
 let rand = function*() {
@@ -242,9 +242,7 @@ The identity value is empty array `[]`
 
 ## Monad
 
-> A Monad is a pattern to describe computations as a series of steps.
-
-A monad is a "unit" function that wraps a value and produces the same value by way of a "bind" function and are sometimes referred to as "programmable semicolons" due to the fact that they represent chainable computations.
+> A monad is an abstraction that provides an interface for executing a common sequence of commands on a particular kind of value, often one you want to avoid acting on directly. One of the most common monads is the "maybe" or optional value monad, which wraps a value that could be either nothing or something. By using a monad instead of the raw value, you can protect your code from exposure to null values. Likewise, a "state" monad can be used in a parser to algorithmically consume an input string using a repeatable sequence of steps that preserves the current state of the input from operation to operation. Also, since a monad is, by definition, a special kind of functor that also returns a monad, they can be chained together to describe any sequence of operations. In functional languages with lazy evaluation, monads are used where sequence of evaluation is important, such as in I/O. Due to this sequencing utility, they are sometimes referred to as "programmable semicolons."
 
 The simplest monad is the Identity monad. It simply wraps a value.
 
