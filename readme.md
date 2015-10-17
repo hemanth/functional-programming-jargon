@@ -137,9 +137,10 @@ let total1 = (numbers) => combine(add, 0, numbers);
 let total2 = combine(add, 0);
 ```
 
-`total1` lists and uses the parameter `numbers`, so it is not points-free.  `total2` is written just by combining functions and values, making no mention of its arguments.  It _is_ points-free.
+`total1` lists and uses the parameter `numbers`, so it is not points-free.  `total2` is written just by combining functions and values, making no mention of its arguments.  It __is__ points-free.
 
 It is easy to recognize points-free function definitions; they are the ones that contain no '`function`' keywords and no fat arrows.
+
 ---
 
 ## Contracts
