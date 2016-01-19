@@ -175,6 +175,8 @@ lift(n => n * 2)([2,3,4]); // [4,6,8]
 lift((a, b)  => a * b)([1, 2], [3]); // [3, 6]
 ```
 
+---
+
 ## Referential Transparency
 
 > An expression that can be replaced with its value without changing the
