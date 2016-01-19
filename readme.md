@@ -168,14 +168,12 @@ Simplest functor in javascript is an `Array`
 
 ## Lift
 
-> A function which puts a function into a container and applies that function to its next argument(s). Map is a lift over a one-argument function, but the same principal can be used to combine multiple functors.
+> Lift takes a function and runs it on values in a container type. Map is a lift over a one-argument function, but the same principal can be used to combine multiple containers of the same type.
 
 ```js
 lift(n => n * 2)([2,3,4]); // [4,6,8]
 lift((a, b)  => a * b)([1, 2], [3]); // [3, 6]
 ```
-
----
 
 ## Referential Transparency
 
@@ -256,7 +254,7 @@ The identity value is empty array `[]`
 
 ## Monad
 
-> A monad is a type that provides two functions, [chain](#chain) and [ap](#applicative-functor). Monads provide an interface for executing a common sequence of commands on a particular kind of value, often one you want to avoid acting on directly. One of the most common monads is the "maybe" or optional value monad, which wraps a value that could be either nothing or something. By using a monad instead of the raw value, you can protect your code from exposure to null values. Likewise, a "state" monad can be used in a parser to algorithmically consume an input string using a repeatable sequence of steps that preserves the current state of the input from operation to operation. Also, since a monad is, by definition, a special kind of functor that also returns a monad, they can be chained together to describe any sequence of operations. In functional languages with lazy evaluation, monads are used where sequence of evaluation is important, such as in I/O. Due to this sequencing utility, they are sometimes referred to as "programmable semicolons."
+> A monad is a container type that provides two functions, [chain](#chain) and [ap](#applicative-functor). Monads provide an interface for executing a common sequence of commands on a particular kind of value, often one you want to avoid acting on directly. One of the most common monads is the "maybe" or optional value monad, which wraps a value that could be either nothing or something. By using a monad instead of the raw value, you can protect your code from exposure to null values. Likewise, a "state" monad can be used in a parser to algorithmically consume an input string using a repeatable sequence of steps that preserves the current state of the input from operation to operation. Also, since a monad is, by definition, a special kind of functor that also returns a monad, they can be chained together to describe any sequence of operations. In functional languages with lazy evaluation, monads are used where sequence of evaluation is important, such as in I/O. Due to this sequencing utility, they are sometimes referred to as "programmable semicolons."
 
 The simplest monad is the Identity monad. It simply wraps a value.
 
