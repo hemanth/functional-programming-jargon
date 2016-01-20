@@ -119,22 +119,22 @@ executions with the the same input parameters.
 
 ---
 
-## Points-Free
+## Point-Free Style
 
-> A function whose definition does not include information regarding its arguments.
+> Writing functions where the definition does not explicitly define arguments. This style usually requires [currying](#currying) or other [Higher-Order functions](#higher-order-functions-hof). A.K.A Tacit programming.
 
 ```js
 // Given
-let combine = curry((fn, initialVal, list) => list.reduce(fn, initialVal));
+let map = fn => list => list.map(fn);
 let add = (a, b) => a + b;
 
 // Then
 
-// Not points-free
-let total1 = (numbers) => combine(add, 0, numbers);
+// Not points-free - `numbers` is an explicit parameter
+let incrementAll = (numbers) => map(add(1))(numbers);
 
-// Points-free
-let total2 = combine(add, 0);
+// Points-free - The array is an implicit parameter
+let incrementAll2 = map(add(1));
 ```
 
 `total1` lists and uses the parameter `numbers`, so it is not points-free.  `total2` is written just by combining functions and values, making no mention of its arguments.  It __is__ points-free.
@@ -155,9 +155,16 @@ It is easy to recognize points-free function definitions; they are the ones that
 
 ---
 
+## Container Type
+> A data structure that can have any other type, function, or data structure in it.
+
+Array in JavaScript is a container type.
+
+---
+
 ## Functor
 
-> Structure that can be mapped over.
+> A container type that can be mapped over and returns the same kind of container.
 
 Simplest functor in javascript is an `Array`
 
@@ -168,17 +175,25 @@ Simplest functor in javascript is an `Array`
 
 ## Lift
 
-> Lift takes a function and runs it on values in a container type. Map is a lift over a one-argument function, but the same principal can be used to combine multiple containers of the same type.
+> Lift takes a function with n arguments and returns one that can be run on n containers of the same type.
+
+Map is the same as a lift over a one-argument function:
 
 ```js
 lift(n => n * 2)([2,3,4]); // [4,6,8]
+```
+Unlike map lift can be used to combine values from multiple arrays:
+```
 lift((a, b)  => a * b)([1, 2], [3]); // [3, 6]
 ```
+Lift can apply to any [Applicative Functor](#applicative-functor).
+
+---
 
 ## Referential Transparency
 
 > An expression that can be replaced with its value without changing the
-behavior of the program is said to be referential transparent.
+behavior of the program is said to be referentially transparent.
 
 Say we have function greet:
 
@@ -187,7 +202,7 @@ let greet = () => "Hello World!";
 ```
 
 Any invocation of `greet()` can be replaced with `Hello World!` hence greet is
-referential transparent.
+referentially transparent.
 
 ---
 
@@ -259,7 +274,7 @@ The identity value is empty array `[]`
 The simplest monad is the Identity monad. It simply wraps a value.
 
 ```js
-let Identity = v => ({ bind: transform => transform(v) })
+let Identity = v => ({ chain: transform => transform(v) })
 ```
 
 ---
@@ -288,8 +303,13 @@ let Identity = v => ({ bind: transform => transform(v) })
 
 ---
 
-
 ## Morphism
+
+---
+
+## Isomorphic
+
+> <del>When the same code runs on the client and the server</del> **[Wrong](https://www.youtube.com/watch?v=5gDn28kghdQ)**
 
 ---
 
@@ -298,10 +318,6 @@ let Identity = v => ({ bind: transform => transform(v) })
 ---
 
 ## Semigroup
-
----
-
-## Chain
 
 ---
 
