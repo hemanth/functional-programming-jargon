@@ -309,7 +309,7 @@ let Identity = v => ({ chain: transform => transform(v) })
 
 ## Isomorphic
 
-> <del>When the same code runs on the client and the server</del> **[Wrong](https://www.youtube.com/watch?v=5gDn28kghdQ)**
+> When the same code is shared between the client and the server.
 
 ---
 
