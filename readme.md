@@ -309,7 +309,17 @@ let Identity = v => ({ chain: transform => transform(v) })
 
 ## Isomorphic
 
-> When the same code is shared between the client and the server.
+> Two objects are Isomorphic is they satisfy the condition: `compose(to, from) == Identity` and `compose(from, to) == Identity`
+
+```js
+const toChars = [].join;
+
+const fromChars = ''.split;
+
+fromChars.call(toChars.call([1,2,3])) // [ '1,2,3' ]
+
+toChars.call(fromChars.call([1,2,3])) // '1,2,3'
+```
 
 ---
 
