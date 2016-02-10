@@ -62,14 +62,14 @@ partial(2); //=> 42
 
 ## Currying
 
-> The process of converting a function with multiple arity into the same function with an arity of one. Not to be confused with partial application, which can produce a function with an arity greater than one.
+> The process of converting a function of multiple parameters into one, which, when called with fewer parameters, returns a new function that awaits the remaining parameters.  It's important to note that this returned function, if there are still more than one parameter unspecified, is also curried.  Strictly speaking, it is only currying when the returned function accepts just one parameter, but many implementations allow for multiple parameters at each level.  This is not to be confused with partial application, in which the returned function still requires all remaining parameters to be supplied.
 
 ```js
-let sum = (a,b) => a+b;
+let sum = (a, b, c) =>  a + b;
 
-let curriedSum = (a) => (b) => a + b;
+let curriedSum = a => b => c => a + b + c;
 
-curriedSum(40)(2) // 42.
+curriedSum(15)(25)(2) //=> 42.
 ```
 
 ---
