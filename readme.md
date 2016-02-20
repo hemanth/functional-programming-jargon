@@ -133,13 +133,13 @@ let add = (a, b) => a + b;
 // Not points-free - `numbers` is an explicit parameter
 let incrementAll = (numbers) => map(add(1))(numbers);
 
-// Points-free - The array is an implicit parameter
+// Points-free - The list is an implicit parameter
 let incrementAll2 = map(add(1));
 ```
 
-`total1` lists and uses the parameter `numbers`, so it is not points-free.  `total2` is written just by combining functions and values, making no mention of its arguments.  It __is__ points-free.
+`incrementAll` identifies and uses the parameter `numbers`, so it is not points-free.  `incrementAll2` is written just by combining functions and values, making no mention of its arguments.  It __is__ points-free.
 
-It is easy to recognize points-free function definitions; they are the ones that contain no '`function`' keywords and no fat arrows.
+Points-free function definitions look just like normal assignments without `function` or `=>`.
 
 ---
 
