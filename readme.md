@@ -269,12 +269,27 @@ The identity value is empty array `[]`
 
 ## Monad
 
-> A monad is a container type that provides two functions, [chain](#chain) and [ap](#applicative-functor). Monads provide an interface for executing a common sequence of commands on a particular kind of value, often one you want to avoid acting on directly. One of the most common monads is the "maybe" or optional value monad, which wraps a value that could be either nothing or something. By using a monad instead of the raw value, you can protect your code from exposure to null values. Likewise, a "state" monad can be used in a parser to algorithmically consume an input string using a repeatable sequence of steps that preserves the current state of the input from operation to operation. Also, since a monad is, by definition, a special kind of functor that also returns a monad, they can be chained together to describe any sequence of operations. In functional languages with lazy evaluation, monads are used where sequence of evaluation is important, such as in I/O. Due to this sequencing utility, they are sometimes referred to as "programmable semicolons."
+> A monad is a container type that provides two functions, [chain](#chain) and `of`. Monads provide an interface for executing a common sequence of commands on a particular kind of value, often one you want to avoid acting on directly. One of the most common monads is the "maybe" or optional value monad, which wraps a value that could be either nothing or something. By using a monad instead of the raw value, you can protect your code from exposure to null values. Likewise, a "state" monad can be used in a parser to algorithmically consume an input string using a repeatable sequence of steps that preserves the current state of the input from operation to operation. Also, since a monad is, by definition, a special kind of functor that also returns a monad, they can be chained together to describe any sequence of operations. In functional languages with lazy evaluation, monads are used where sequence of evaluation is important, such as in I/O. Due to this sequencing utility, they are sometimes referred to as "programmable semicolons."
 
 The simplest monad is the Identity monad. It simply wraps a value.
 
 ```js
-let Identity = v => ({ chain: transform => transform(v) })
+let Identity = v => ({
+    val: v,
+    chain: transform => transform(this.val),
+    of: v => this.val
+})
+
+// Function that increments value and then wraps with Identity.
+let increment = v => Identity(v + 1)
+
+// Use chain to apply function to wrapped values
+let incrementIdentity = id => id.chain(increment)
+
+incrementIdentity(Identity(1)) // Identity(2)
+
+//Contrast to using a map, where increment would cause nested Identities
+id.map(increment) // Identity(Identity(2))
 ```
 
 ---
@@ -309,16 +324,16 @@ let Identity = v => ({ chain: transform => transform(v) })
 
 ## Isomorphic
 
-> Two objects are Isomorphic is they satisfy the condition: `compose(to, from) == Identity` and `compose(from, to) == Identity`
+> Two objects are Isomorphic is they satisfy the condition: `compose(to, from) == identity` and `compose(from, to) == identity`
 
 ```js
-const toChars = [].join;
+const pairToCoords = (arr) => ({x: arr[0], y: arr[1]})
 
-const fromChars = ''.split;
+const coordsToPair = (coords) => [coords.x, coords.y]
 
-fromChars.call(toChars.call([1,2,3])) // [ '1,2,3' ]
+coordsToPair(pairToCoords([1, 2])) // [1, 2]
 
-toChars.call(fromChars.call([1,2,3])) // '1,2,3'
+pairToCoords(coordsToPair({x: 1, y: 2})) // {x: 1, y: 2}
 ```
 
 ---
