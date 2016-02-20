@@ -357,3 +357,29 @@ pairToCoords(coordsToPair({x: 1, y: 2})) // {x: 1, y: 2}
 ## Comonad
 
 ---
+## Type Signatures
+
+> Often functions will include comments that indicate the types of their arguments and return types.
+
+There's quite a bit variance across the community but they often follow the following patterns:
+```js
+// functionName :: firstArgType -> secondArgType -> returnType
+
+// add :: Number -> Number -> Number
+let add = x => y => x + y
+
+// increment :: Number -> Number
+let increment = x => x + 1
+```
+
+If a function accepts another function as an argument it is wrapped in parenthesis.
+
+```js
+// call :: (a -> b) -> a -> b
+let call = f => x => f(x)
+```
+The letters `a`, `b`, `c`, `d` are used to signify that the argument can be of any type. For this map it takes a function that transforms a value of some type `a` into another type `b`, an array of values of type `a`, and returns an array of values of type `b`.
+```js
+// map :: (a -> b) -> [a] -> [b]
+let map = f => list =>  list.map(f)
+```
