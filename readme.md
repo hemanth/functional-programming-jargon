@@ -65,7 +65,7 @@ partial(2); //=> 42
 > The process of converting a function with multiple arity into the same function with an arity of one. Not to be confused with partial application, which can produce a function with an arity greater than one.
 
 ```js
-let sum = (a,b) => a+b;
+let sum = (a, b) => a + b;
 
 let curriedSum = (a) => (b) => a + b;
 
@@ -133,13 +133,13 @@ let add = (a, b) => a + b;
 // Not points-free - `numbers` is an explicit parameter
 let incrementAll = (numbers) => map(add(1))(numbers);
 
-// Points-free - The array is an implicit parameter
+// Points-free - The list is an implicit parameter
 let incrementAll2 = map(add(1));
 ```
 
-`total1` lists and uses the parameter `numbers`, so it is not points-free.  `total2` is written just by combining functions and values, making no mention of its arguments.  It __is__ points-free.
+`incrementAll` identifies and uses the parameter `numbers`, so it is not points-free.  `incrementAll2` is written just by combining functions and values, making no mention of its arguments.  It __is__ points-free.
 
-It is easy to recognize points-free function definitions; they are the ones that contain no '`function`' keywords and no fat arrows.
+Points-free function definitions look just like normal assignments without `function` or `=>`.
 
 ---
 
@@ -269,12 +269,27 @@ The identity value is empty array `[]`
 
 ## Monad
 
-> A monad is a container type that provides two functions, [chain](#chain) and [ap](#applicative-functor). Monads provide an interface for executing a common sequence of commands on a particular kind of value, often one you want to avoid acting on directly. One of the most common monads is the "maybe" or optional value monad, which wraps a value that could be either nothing or something. By using a monad instead of the raw value, you can protect your code from exposure to null values. Likewise, a "state" monad can be used in a parser to algorithmically consume an input string using a repeatable sequence of steps that preserves the current state of the input from operation to operation. Also, since a monad is, by definition, a special kind of functor that also returns a monad, they can be chained together to describe any sequence of operations. In functional languages with lazy evaluation, monads are used where sequence of evaluation is important, such as in I/O. Due to this sequencing utility, they are sometimes referred to as "programmable semicolons."
+> A monad is a container type that provides two functions, [chain](#chain) and `of`. Monads provide an interface for executing a common sequence of commands on a particular kind of value, often one you want to avoid acting on directly. One of the most common monads is the "maybe" or optional value monad, which wraps a value that could be either nothing or something. By using a monad instead of the raw value, you can protect your code from exposure to null values. Likewise, a "state" monad can be used in a parser to algorithmically consume an input string using a repeatable sequence of steps that preserves the current state of the input from operation to operation. Also, since a monad is, by definition, a special kind of functor that also returns a monad, they can be chained together to describe any sequence of operations. In functional languages with lazy evaluation, monads are used where sequence of evaluation is important, such as in I/O. Due to this sequencing utility, they are sometimes referred to as "programmable semicolons."
 
 The simplest monad is the Identity monad. It simply wraps a value.
 
 ```js
-let Identity = v => ({ chain: transform => transform(v) })
+let Identity = v => ({
+    val: v,
+    chain: transform => transform(this.val),
+    of: v => this.val
+})
+
+// Function that increments value and then wraps with Identity.
+let increment = v => Identity(v + 1)
+
+// Use chain to apply function to wrapped values
+let incrementIdentity = id => id.chain(increment)
+
+incrementIdentity(Identity(1)) // Identity(2)
+
+//Contrast to using a map, where increment would cause nested Identities
+id.map(increment) // Identity(Identity(2))
 ```
 
 ---
@@ -291,6 +306,25 @@ let Identity = v => ({ chain: transform => transform(v) })
 
 ## Comonad
 
+> A container type that has `extract` and `extend` functions.
+
+```js
+let CoIdentity = v => ({
+    val: v,
+    extract: this.v,
+    extend: f => f(this)
+})
+```
+
+Extract takes a value out of a container. Essentially it's the opposite of `of`.
+```js
+CoIdentity(1).extract() // 1
+```
+
+Extend runs a function on the comonad. The function should return the same type as the Comonad.
+```js
+CoIdentity(1).extend(co => co.extract() + 1) // CoIdentity(2)
+```
 ---
 
 ## Applicative Functor
@@ -309,36 +343,92 @@ let Identity = v => ({ chain: transform => transform(v) })
 
 ## Isomorphic
 
-> Two objects are Isomorphic is they satisfy the condition: `compose(to, from) == Identity` and `compose(from, to) == Identity`
+> Two objects are Isomorphic is they satisfy the condition: `compose(to, from) == identity` and `compose(from, to) == identity`
 
 ```js
-const toChars = [].join;
+const pairToCoords = (arr) => ({x: arr[0], y: arr[1]})
 
-const fromChars = ''.split;
+const coordsToPair = (coords) => [coords.x, coords.y]
 
-fromChars.call(toChars.call([1,2,3])) // [ '1,2,3' ]
+coordsToPair(pairToCoords([1, 2])) // [1, 2]
 
-toChars.call(fromChars.call([1,2,3])) // '1,2,3'
+pairToCoords(coordsToPair({x: 1, y: 2})) // {x: 1, y: 2}
 ```
 
 ---
 
 ## Setoid
 
+> An object that has an `equals` function which can be used to compare other objects of the same type.
+
+Make array a setoid.
+```js
+Array.prototype.equals = arr => {
+    var len = this.length
+    if (len != arr.length) {
+        return false
+    }
+    for (var i = 0; i < len; i++) {
+        if (this[i] !== arr[i]) {
+            return false
+        }
+    }
+    return true
+}
+
+[1, 2].equals([1, 2]) // true
+[1, 2].equals([0]) // false
+```
+
 ---
 
 ## Semigroup
 
+An object that has a `concat` function that combines it with another object of the same type.
+
+```js
+[1].concat([2]) // [1, 2]
+```
+
 ---
 
 ## Foldable
+
+> An object that has a reduce function that can transform that object into some other type.
+
+```js
+let sum = list => list.reduce((acc, val) => acc + val, 0);
+sum([1, 2, 3]) // 6
+```
 
 ---
 
 ## Traversable
 
 ---
+## Type Signatures
 
-## Comonad
+> Often functions will include comments that indicate the types of their arguments and return types.
 
----
+There's quite a bit variance across the community but they often follow the following patterns:
+```js
+// functionName :: firstArgType -> secondArgType -> returnType
+
+// add :: Number -> Number -> Number
+let add = x => y => x + y
+
+// increment :: Number -> Number
+let increment = x => x + 1
+```
+
+If a function accepts another function as an argument it is wrapped in parenthesis.
+
+```js
+// call :: (a -> b) -> a -> b
+let call = f => x => f(x)
+```
+The letters `a`, `b`, `c`, `d` are used to signify that the argument can be of any type. For this map it takes a function that transforms a value of some type `a` into another type `b`, an array of values of type `a`, and returns an array of values of type `b`.
+```js
+// map :: (a -> b) -> [a] -> [b]
+let map = f => list =>  list.map(f)
+```
