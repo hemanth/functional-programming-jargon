@@ -65,7 +65,7 @@ partial(2); //=> 42
 > The process of converting a function with multiple arity into the same function with an arity of one. Not to be confused with partial application, which can produce a function with an arity greater than one.
 
 ```js
-let sum = (a,b) => a+b;
+let sum = (a, b) => a + b;
 
 let curriedSum = (a) => (b) => a + b;
 
@@ -321,9 +321,9 @@ Extract takes a value out of a container. Essentially it's the opposite of `of`.
 CoIdentity(1).extract() // 1
 ```
 
-Extend runs a function on the comonad. The function should return the same type as the value in the Comonad. It's the opposite of `chain`.
+Extend runs a function on the comonad. The function should return the same type as the Comonad.
 ```js
-CoIdentity(1).extend(co => co.extract() + 1) // 2
+CoIdentity(1).extend(co => co.extract() + 1) // CoIdentity(2)
 ```
 ---
 
@@ -383,6 +383,12 @@ Array.prototype.equals = arr => {
 ---
 
 ## Semigroup
+
+An object that has a `concat` function that combines it with another object of the same type.
+
+```js
+[1].concat([2]) // [1, 2]
+```
 
 ---
 
