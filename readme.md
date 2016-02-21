@@ -306,6 +306,25 @@ id.map(increment) // Identity(Identity(2))
 
 ## Comonad
 
+> A container type that has `extract` and `extend` functions.
+
+```js
+let CoIdentity = v => ({
+    val: v,
+    extract: this.v,
+    extend: f => f(this)
+})
+```
+
+Extract takes a value out of a container. Essentially it's the opposite of `of`.
+```js
+CoIdentity(1).extract() // 1
+```
+
+Extend runs a function on the comonad. The function should return the same type as the value in the Comonad. It's the opposite of `chain`.
+```js
+CoIdentity(1).extend(co => co.extract() + 1) // 2
+```
 ---
 
 ## Applicative Functor
@@ -340,6 +359,27 @@ pairToCoords(coordsToPair({x: 1, y: 2})) // {x: 1, y: 2}
 
 ## Setoid
 
+> An object that has an `equals` function which can be used to compare other objects of the same type.
+
+Make array a setoid.
+```js
+Array.prototype.equals = arr => {
+    var len = this.length
+    if (len != arr.length) {
+        return false
+    }
+    for (var i = 0; i < len; i++) {
+        if (this[i] !== arr[i]) {
+            return false
+        }
+    }
+    return true
+}
+
+[1, 2].equals([1, 2]) // true
+[1, 2].equals([0]) // false
+```
+
 ---
 
 ## Semigroup
@@ -348,13 +388,16 @@ pairToCoords(coordsToPair({x: 1, y: 2})) // {x: 1, y: 2}
 
 ## Foldable
 
+> An object that has a reduce function that can transform that object into some other type.
+
+```js
+let sum = list => list.reduce((acc, val) => acc + val, 0);
+sum([1, 2, 3]) // 6
+```
+
 ---
 
 ## Traversable
-
----
-
-## Comonad
 
 ---
 ## Type Signatures
