@@ -312,7 +312,7 @@ id.map(increment) // Identity(Identity(2))
 let CoIdentity = v => ({
     val: v,
     extract: this.v,
-    extend: f => f(this)
+    extend: f => CoIdentity(f(this))
 })
 ```
 
