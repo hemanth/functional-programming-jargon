@@ -155,16 +155,9 @@ Points-free function definitions look just like normal assignments without `func
 
 ---
 
-## Container Type
-> A data structure that can have any other type, function, or data structure in it.
-
-Array in JavaScript is a container type.
-
----
-
 ## Functor
 
-> A container type that can be mapped over and returns the same kind of container.
+> An object with a `map` function. `Map` runs a function on values in an object and returns a new object.
 
 Simplest functor in javascript is an `Array`
 
@@ -173,9 +166,21 @@ Simplest functor in javascript is an `Array`
 ```
 ---
 
+## Pointed Functor
+> A functor with an `of` method. `Of` puts _any_ single value into a functor.
+
+Array Implementation: 
+```js
+  Array.prototype.of = (v) => [v];
+  
+  [].of(1) // [1]
+```
+
+---
+
 ## Lift
 
-> Lift takes a function with n arguments and returns one that can be run on n containers of the same type.
+> Lift is like `map` except it can be applied to multiple functors.
 
 Map is the same as a lift over a one-argument function:
 
@@ -186,7 +191,6 @@ Unlike map lift can be used to combine values from multiple arrays:
 ```
 lift((a, b)  => a * b)([1, 2], [3]); // [3, 6]
 ```
-Lift can apply to any [Applicative Functor](#applicative-functor).
 
 ---
 
@@ -269,44 +273,19 @@ The identity value is empty array `[]`
 
 ## Monad
 
-> A monad is a container type that provides two functions, [chain](#chain) and `of`. Monads provide an interface for executing a common sequence of commands on a particular kind of value, often one you want to avoid acting on directly. One of the most common monads is the "maybe" or optional value monad, which wraps a value that could be either nothing or something. By using a monad instead of the raw value, you can protect your code from exposure to null values. Likewise, a "state" monad can be used in a parser to algorithmically consume an input string using a repeatable sequence of steps that preserves the current state of the input from operation to operation. Also, since a monad is, by definition, a special kind of functor that also returns a monad, they can be chained together to describe any sequence of operations. In functional languages with lazy evaluation, monads are used where sequence of evaluation is important, such as in I/O. Due to this sequencing utility, they are sometimes referred to as "programmable semicolons."
-
-The simplest monad is the Identity monad. It simply wraps a value.
+> A monad is an object with [`of`](#pointed-functor) and `chain` functions. `Chain` is like [map](#functor) except it unnests the resulting nested object.
 
 ```js
-let Identity = v => ({
-    val: v,
-    chain: transform => transform(this.val),
-    of: v => this.val
-})
+['cat,dog','fish,bird'].chain(a => a.split(',')) // ['cat','dog','fish','bird']
 
-// Function that increments value and then wraps with Identity.
-let increment = v => Identity(v + 1)
-
-// Use chain to apply function to wrapped values
-let incrementIdentity = id => id.chain(increment)
-
-incrementIdentity(Identity(1)) // Identity(2)
-
-//Contrast to using a map, where increment would cause nested Identities
-id.map(increment) // Identity(Identity(2))
+//Contrast to map
+['cat,dog','fish,bird'].map(a => a.split(',')) // [['cat','dog'], ['fish','bird']]
 ```
-
----
-
-## Chain
-
-> A chain is a container type that implements a chain function. The chain function takes another function to run on the contained value and returns a value in the same container. The passed function must also return a value in the same container. This is also known as bind, or flatmap in other languages.
-
-```js
-['cat,dog','fish,bird'].chain((a) => a.split(',')) // ['cat','dog','fish','bird']
-```
-
 ---
 
 ## Comonad
 
-> A container type that has `extract` and `extend` functions.
+> An object that has `extract` and `extend` functions.
 
 ```js
 let CoIdentity = v => ({
@@ -316,7 +295,7 @@ let CoIdentity = v => ({
 })
 ```
 
-Extract takes a value out of a container. Essentially it's the opposite of `of`.
+Extract takes a value out of a functor.
 ```js
 CoIdentity(1).extract() // 1
 ```
@@ -329,7 +308,7 @@ CoIdentity(1).extend(co => co.extract() + 1) // CoIdentity(2)
 
 ## Applicative Functor
 
-> An applicative functor is a container type that can have functions put in it. A function often called `ap` is available on the type which applies a function in the container to a value in another container of the same type.
+> An applicative functor is an object with an `ap` function. `Ap` applies a function in the object to a value in another object of the same type.
 
 ```js
 [(a)=> a + 1].ap([1]) // [2]
@@ -339,14 +318,18 @@ CoIdentity(1).extend(co => co.extract() + 1) // CoIdentity(2)
 
 ## Morphism
 
+> A transformation function.
+
 ---
 
-## Isomorphic
+## Isomorphism
 
-> Two objects are Isomorphic is they satisfy the condition: `compose(to, from) == identity` and `compose(from, to) == identity`
+> A pair of transformations between 2 types of objects that is structural in nature and no data is lost. 
 
+For example, 2D coordinates could be stored as an array `[2,3]` or object `{x: 2, y: 3}`.
 ```js
-const pairToCoords = (arr) => ({x: arr[0], y: arr[1]})
+// Providing functions to convert in both directions makes them isomorphic.
+const pairToCoords = (pair) => ({x: pair[0], y: pair[1]})
 
 const coordsToPair = (coords) => [coords.x, coords.y]
 
