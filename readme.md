@@ -153,6 +153,8 @@ Points-free function definitions look just like normal assignments without `func
 
 ## Categories
 
+> Objects with associated functions that adhere certain rules. E.g. [monoid](#monoid)
+
 ---
 
 ## Functor
