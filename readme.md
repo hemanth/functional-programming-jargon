@@ -283,6 +283,9 @@ The identity value is empty array `[]`
 //Contrast to map
 ['cat,dog','fish,bird'].map(a => a.split(',')) // [['cat','dog'], ['fish','bird']]
 ```
+
+You may also see `of` and `chain` referred to as `return` and `bind` in languages which provide Monad-like constructs as part of their standard library (e.g. Haskell, F#), [the Monad Wikipedia entry](https://en.wikipedia.org/wiki/Monad_%28functional_programming%29) and other literature. Also, remember that JavaScript already has constructs called `return` and `bind`, but the functions mentioned in this context are specifically related to Monads.
+
 ---
 
 ## Comonad
