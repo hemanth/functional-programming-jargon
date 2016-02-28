@@ -239,7 +239,7 @@ randIter.next(); // Each exectuion gives a random value, expression is evluated 
 
 > A monoid is some data type and a two parameter function that "combines" two values of the type, where an identity value that does not affect the result of the function also exists.
 
-The simplest monoid is numbers and addition:
+One very simple monoid is numbers and addition:
 
 ```js
 1 + 1; // 2
@@ -253,7 +253,7 @@ The data type is number and the function is `+`, the addition of two numbers.
 
 The identity value is `0` - adding `0` to any number will not change it.
 
-For something to be a monoid, it's also required that the order of operations will not affect the result:
+For something to be a monoid, it's also required that the grouping of operations will not affect the result:
 
 ```js
 1 + (2 + 3) == (1 + 2) + 3; // true
