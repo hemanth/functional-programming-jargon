@@ -283,6 +283,9 @@ The identity value is empty array `[]`
 //Contrast to map
 ['cat,dog','fish,bird'].map(a => a.split(',')) // [['cat','dog'], ['fish','bird']]
 ```
+
+You may also see `of` and `chain` referred to as `return` and `bind` (not be confused with the JS keyword/function...) in languages which provide Monad-like constructs as part of their standard library (e.g. Haskell, F#), on [Wikipedia](https://en.wikipedia.org/wiki/Monad_%28functional_programming%29) and in other literature. It's also important to note that `return` and `bind` are not part of the [Fantasy Land spec](https://github.com/fantasyland/fantasy-land) and are mentioned here only for the sake of people interested in learning more about Monads.
+
 ---
 
 ## Comonad
