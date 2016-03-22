@@ -159,12 +159,38 @@ Points-free function definitions look just like normal assignments without `func
 
 ## Functor
 
-> An object with a `map` function. `Map` runs a function on values in an object and returns a new object.
+> An object with a `map` function that adhere to certains rules. `Map` runs a function on values in an object and returns a new object.
 
 Simplest functor in javascript is an `Array`
 
 ```js
 [2,3,4].map( n => n * 2 ); // [4,6,8]
+```
+
+Let `func` be an object implementing a `map` function, and `f`, `g` be arbitrary functions, then `func` is said to be a functor if the map function adheres to the following rules:
+
+```js
+func.map(x => x) == func
+```
+
+and
+
+```js
+func.map(x => f(g(x))) == func.map(g).map(f)
+```
+
+We can now see that `Array` is a functor because it adheres to the functor rules!
+```js
+[1, 2, 3].map(x => x); // = [1, 2, 3]
+```
+
+and
+```js
+let f = x => x + 1;
+let g = x => x * 2;
+
+[1, 2, 3].map(x => f(g(x))); // = [3, 5, 7]
+[1, 2, 3].map(g).map(f);     // = [3, 5, 7]
 ```
 ---
 
