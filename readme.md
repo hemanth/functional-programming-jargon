@@ -75,14 +75,14 @@ curriedSum(40)(2) // 42.
 
 ## Composition
 
-> A function which combines two values of a given type (usually also some kind of functions) to a third value of the same type.
+> A function which combines two values of a given type (usually also some kind of functions) into a third value of the same type.
 
-The most straightforward type of composition, is called "normal function composition".
-It allows you to combines functions which accept and return a single value.
+The most straightforward type of composition is called "normal function composition".
+It allows you to combines functions that accept and return a single value.
 
 ```js
 const compose = (f, g) => a => f(g(a)) // Definition
-const floorAndToString = compose((val)=> val.toString(), Math.floor)(222.44) //Usage
+const floorAndToString = compose((val)=> val.toString(), Math.floor) //Usage
 floorAndToString(121.212121) // "121"
 
 ```
@@ -92,7 +92,7 @@ floorAndToString(121.212121) // "121"
 ## Purity
 
 > A function is said to be pure if the return value is only determined by its
-input values, without any side effects and mutations.
+input values, without any side effects.
 
 ```js
 let greet = "yo";
@@ -181,7 +181,7 @@ Points-free function definitions look just like normal assignments without `func
 Object.freeze({name: 'John', age: 30}) // The `freeze` function enforces immutability.
 (a) => a
 ```
-Note that the value-containing structures defined below such as [Functor](#functor), [Monad](#monad) etc. are themselves values. This means, among other things, that they can be nested within each other.
+Note that value-containing structures such as [Functor](#functor), [Monad](#monad) etc. are themselves values. This means, among other things, that they can be nested within each other.
 
 ---
 
