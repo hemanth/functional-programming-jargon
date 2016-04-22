@@ -71,6 +71,21 @@ let curriedSum = (a) => (b) => a + b;
 
 curriedSum(40)(2) // 42.
 ```
+---
+
+## Composition
+
+> A function which combines two values of a given type (usually also some kind of functions) into a third value of the same type.
+
+The most straightforward type of composition is called "normal function composition".
+It allows you to combines functions that accept and return a single value.
+
+```js
+const compose = (f, g) => a => f(g(a)) // Definition
+const floorAndToString = compose((val)=> val.toString(), Math.floor) //Usage
+floorAndToString(121.212121) // "121"
+
+```
 
 ---
 
@@ -154,6 +169,37 @@ Points-free function definitions look just like normal assignments without `func
 ## Categories
 
 > Objects with associated functions that adhere certain rules. E.g. [monoid](#monoid)
+
+---
+
+## Value 
+
+> Any complex or primitive value that is used in the computation, including functions. Values in functional programming are assumed to be immutable.
+
+```js
+5
+Object.freeze({name: 'John', age: 30}) // The `freeze` function enforces immutability.
+(a) => a
+```
+Note that value-containing structures such as [Functor](#functor), [Monad](#monad) etc. are themselves values. This means, among other things, that they can be nested within each other.
+
+---
+
+## Constant 
+
+> An immutable reference to a value. Not to be confused with `Variable` - a reference to a value which can at any point be updated to point to a different value.
+```js
+const five = 5
+const john = {name: 'John', age: 30}
+```
+Constants are referentially transparent. That is, they can be replaced with the values that they represent without affecting the result.
+In other words with the above two constants the expression:
+
+```js
+john.age + five === ({name: 'John', age: 30}).age + (5)
+
+```
+Should always return `true`.
 
 ---
 
@@ -296,6 +342,8 @@ The identity value is empty array `[]`
 ```js
 [1, 2].concat([]); // [1, 2]
 ```
+Functions also form a monoid with the normal functional compositon as an operation and the function which returns its input `(a) => a` 
+
 
 ---
 
