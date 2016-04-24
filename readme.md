@@ -162,7 +162,17 @@ Points-free function definitions look just like normal assignments without `func
 
 ---
 
-## Guarded Functions
+## Guards
+> Guards are boolean expressions that prevent evaluation of code unless the guard evaluates to true.
+
+```js
+max' :: (a) => a -> a -> a
+max' a b
+    | a > b     = a
+    | otherwise = b
+```
+
+If the first guard fails then the check falls through to the second guard.`otherwise` is a catchall guard, akin to `else` in C languages.
 
 ---
 
@@ -172,7 +182,7 @@ Points-free function definitions look just like normal assignments without `func
 
 ---
 
-## Value 
+## Value
 
 > Any complex or primitive value that is used in the computation, including functions. Values in functional programming are assumed to be immutable.
 
@@ -185,7 +195,7 @@ Note that value-containing structures such as [Functor](#functor), [Monad](#mona
 
 ---
 
-## Constant 
+## Constant
 
 > An immutable reference to a value. Not to be confused with `Variable` - a reference to a value which can at any point be updated to point to a different value.
 ```js
@@ -243,10 +253,10 @@ let g = x => x * 2;
 ## Pointed Functor
 > A functor with an `of` method. `Of` puts _any_ single value into a functor.
 
-Array Implementation: 
+Array Implementation:
 ```js
   Array.prototype.of = (v) => [v];
-  
+
   [].of(1) // [1]
 ```
 
@@ -342,7 +352,7 @@ The identity value is empty array `[]`
 ```js
 [1, 2].concat([]); // [1, 2]
 ```
-Functions also form a monoid with the normal functional compositon as an operation and the function which returns its input `(a) => a` 
+Functions also form a monoid with the normal functional compositon as an operation and the function which returns its input `(a) => a`
 
 
 ---
@@ -403,7 +413,7 @@ CoIdentity(1).extend(co => co.extract() + 1) // CoIdentity(2)
 
 ## Isomorphism
 
-> A pair of transformations between 2 types of objects that is structural in nature and no data is lost. 
+> A pair of transformations between 2 types of objects that is structural in nature and no data is lost.
 
 For example, 2D coordinates could be stored as an array `[2,3]` or object `{x: 2, y: 3}`.
 ```js
