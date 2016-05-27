@@ -303,7 +303,7 @@ let rand = function*() {
 ```
 ```js
 let randIter = rand();
-randIter.next(); // Each exectuion gives a random value, expression is evluated on need.
+randIter.next(); // Each exectuion gives a random value, expression is evaluated on need.
 ```
 ---
 
