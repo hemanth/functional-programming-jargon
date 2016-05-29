@@ -141,7 +141,7 @@ executions with the the same input parameters.
 ```js
 // Given
 let map = fn => list => list.map(fn);
-let add = (a, b) => a + b;
+let add = a => b => a + b;
 
 // Then
 
