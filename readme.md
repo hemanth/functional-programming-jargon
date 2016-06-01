@@ -494,3 +494,6 @@ The letters `a`, `b`, `c`, `d` are used to signify that the argument can be of a
 // map :: (a -> b) -> [a] -> [b]
 let map = f => list =>  list.map(f)
 ```
+---
+
+__P.S:__ Without the wonderful [contributions](https://github.com/hemanth/functional-programming-jargon/graphs/contributors) this repo would be meaningless! 
