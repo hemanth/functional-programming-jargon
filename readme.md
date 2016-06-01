@@ -4,6 +4,42 @@
 
 *Let's try and define these with examples, this is a WIP—please feel free to send PR ;)*
 
+<!-- RM(noparent,notop) -->
+
+* [Arity](#arity)
+* [Higher-Order Functions (HOF)](#higher-order-functions-hof)
+* [Partial Application](#partial-application)
+* [Currying](#currying)
+* [Composition](#composition)
+* [Purity](#purity)
+* [Side effects](#side-effects)
+* [Idempotency](#idempotency)
+* [Point-Free Style](#point-free-style)
+* [Contracts](#contracts)
+* [Guarded Functions](#guarded-functions)
+* [Categories](#categories)
+* [Value](#value)
+* [Constant](#constant)
+* [Functor](#functor)
+* [Pointed Functor](#pointed-functor)
+* [Lift](#lift)
+* [Referential Transparency](#referential-transparency)
+* [Equational Reasoning](#equational-reasoning)
+* [Lazy evaluation](#lazy-evaluation)
+* [Monoid](#monoid)
+* [Monad](#monad)
+* [Comonad](#comonad)
+* [Applicative Functor](#applicative-functor)
+* [Morphism](#morphism)
+* [Isomorphism](#isomorphism)
+* [Setoid](#setoid)
+* [Semigroup](#semigroup)
+* [Foldable](#foldable)
+* [Traversable](#traversable)
+* [Type Signatures](#type-signatures)
+
+
+<!-- /RM -->
 
 ## Arity
 
@@ -523,4 +559,4 @@ let map = f => list => list.map(f)
 ```
 ---
 
-__P.S:__ Without the wonderful [contributions](https://github.com/hemanth/functional-programming-jargon/graphs/contributors) this repo would be meaningless! 
+__P.S:__ Without the wonderful [contributions](https://github.com/hemanth/functional-programming-jargon/graphs/contributors) this repo would be meaningless!
