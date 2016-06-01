@@ -78,7 +78,7 @@ curriedSum(40)(2) // 42.
 > A function which combines two values of a given type (usually also some kind of functions) into a third value of the same type.
 
 The most straightforward type of composition is called "normal function composition".
-It allows you to combines functions that accept and return a single value.
+It allows you to combine functions that accept and return a single value.
 
 ```js
 const compose = (f, g) => a => f(g(a)) // Definition
