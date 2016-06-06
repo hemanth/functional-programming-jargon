@@ -1,9 +1,10 @@
 # Functional Programming Jargon
 
-> The whole idea of this repos is to try and define jargon from combinatorics and category theory jargon that are used in functional programming in a easier fashion.
+The goal of this document is to define jargon from functional programming in plain english with examples.
 
-*Let's try and define these with examples, this is a WIP—please feel free to send PR ;)*
+*This is a WIP—please feel free to send a PR ;)*
 
+> Where applicable, this document uses terms defined in the [Fantasy Land spec](https://github.com/fantasyland/fantasy-land)
 
 ## Arity
 
@@ -77,7 +78,7 @@ curriedSum(40)(2) // 42.
 
 > A function which combines two values of a given type (usually also some kind of functions) into a third value of the same type.
 
-The most straightforward type of composition is called "normal function composition".
+The most well-known type of composition is normal function composition.
 It allows you to combines functions that accept and return a single value.
 
 ```js
@@ -91,8 +92,8 @@ floorAndToString(121.212121) // "121"
 
 ## Purity
 
-> A function is said to be pure if the return value is only determined by its
-input values, without any side effects.
+> A function is pure if the return value is only determined by its
+input values, and does not produce side effects.
 
 ```js
 let greet = "yo";
@@ -123,14 +124,15 @@ console.log("IO is a side effect!");
 ```
 ---
 
-## Idempotency
+## Idempotent
 
-> A function is said to be idempotent if it has no side-effects on multiple
-executions with the the same input parameters.
+> A function is idempotent if reapplying it to its result does not produce a different result.
 
 `f(f(x)) = f(x)`
 
 `Math.abs(Math.abs(10))`
+
+`sort(sort(sort([2,1])))`
 
 ---
 
@@ -172,27 +174,28 @@ Points-free function definitions look just like normal assignments without `func
 
 ---
 
-## Value 
+## Value
 
-> Any complex or primitive value that is used in the computation, including functions. Values in functional programming are assumed to be immutable.
+> Anything that can be assigned to a variable.
 
 ```js
 5
 Object.freeze({name: 'John', age: 30}) // The `freeze` function enforces immutability.
 (a) => a
+[1]
+undefined
 ```
-Note that value-containing structures such as [Functor](#functor), [Monad](#monad) etc. are themselves values. This means, among other things, that they can be nested within each other.
-
 ---
 
-## Constant 
+## Constant
 
-> An immutable reference to a value. Not to be confused with `Variable` - a reference to a value which can at any point be updated to point to a different value.
+> An immutable reference to a value. Unlike variables in most languages, constants cannot be reassigned to a new value once defined.
+
 ```js
 const five = 5
 const john = {name: 'John', age: 30}
 ```
-Constants are referentially transparent. That is, they can be replaced with the values that they represent without affecting the result.
+Constants are [referentially transparent](#referential-transparency). That is, they can be replaced with the values that they represent without affecting the result.
 In other words with the above two constants the expression:
 
 ```js
@@ -205,9 +208,9 @@ Should always return `true`.
 
 ## Functor
 
-> An object with a `map` function that adhere to certains rules. `Map` runs a function on values in an object and returns a new object.
+> An object with a `map` function that adheres to certain rules. `Map` runs a function on values in an object and returns a new object.
 
-Simplest functor in javascript is an `Array`
+A common functor in javascript is `Array`
 
 ```js
 [2,3,4].map( n => n * 2 ); // [4,6,8]
@@ -216,16 +219,18 @@ Simplest functor in javascript is an `Array`
 Let `func` be an object implementing a `map` function, and `f`, `g` be arbitrary functions, then `func` is said to be a functor if the map function adheres to the following rules:
 
 ```js
+// identity
 func.map(x => x) == func
 ```
 
 and
 
 ```js
+// composition
 func.map(x => f(g(x))) == func.map(g).map(f)
 ```
 
-We can now see that `Array` is a functor because it adheres to the functor rules!
+We can now see that `Array` is a functor because it adheres to the functor rules.
 ```js
 [1, 2, 3].map(x => x); // = [1, 2, 3]
 ```
@@ -241,12 +246,12 @@ let g = x => x * 2;
 ---
 
 ## Pointed Functor
-> A functor with an `of` method. `Of` puts _any_ single value into a functor.
+> A functor with an `of` function that puts _any_ single value into that functor.
 
-Array Implementation: 
+Array Implementation:
 ```js
   Array.prototype.of = (v) => [v];
-  
+
   [].of(1) // [1]
 ```
 
@@ -342,7 +347,14 @@ The identity value is empty array `[]`
 ```js
 [1, 2].concat([]); // [1, 2]
 ```
-Functions also form a monoid with the normal functional compositon as an operation and the function which returns its input `(a) => a` 
+If identity and compose functions are provided, functions themselves form a monoid:
+
+```js
+var identity = a => a;
+var compose = (f, g) => x => f(g(x));
+
+compose(foo, identity) ≍ compose(identity, foo) ≍ foo
+```
 
 
 ---
@@ -358,7 +370,8 @@ Functions also form a monoid with the normal functional compositon as an operati
 ['cat,dog','fish,bird'].map(a => a.split(',')) // [['cat','dog'], ['fish','bird']]
 ```
 
-You may also see `of` and `chain` referred to as `return` and `bind` (not be confused with the JS keyword/function...) in languages which provide Monad-like constructs as part of their standard library (e.g. Haskell, F#), on [Wikipedia](https://en.wikipedia.org/wiki/Monad_%28functional_programming%29) and in other literature. It's also important to note that `return` and `bind` are not part of the [Fantasy Land spec](https://github.com/fantasyland/fantasy-land) and are mentioned here only for the sake of people interested in learning more about Monads.
+`of` is also known as `return` in other functional languages.
+`chain` is also known as `flatmap` and `bind` in other languages.
 
 ---
 
@@ -403,7 +416,7 @@ CoIdentity(1).extend(co => co.extract() + 1) // CoIdentity(2)
 
 ## Isomorphism
 
-> A pair of transformations between 2 types of objects that is structural in nature and no data is lost. 
+> A pair of transformations between 2 types of objects that is structural in nature and no data is lost.
 
 For example, 2D coordinates could be stored as an array `[2,3]` or object `{x: 2, y: 3}`.
 ```js
