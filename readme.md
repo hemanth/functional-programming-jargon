@@ -2,7 +2,7 @@
 
 The goal of this document is to define jargon from functional programming in plain english with examples.
 
-*This is a WIP—please feel free to send a PR ;)*
+*This is a WIP; please feel free to send a PR ;)*
 
 > Where applicable, this document uses terms defined in the [Fantasy Land spec](https://github.com/fantasyland/fantasy-land)
 
@@ -115,7 +115,7 @@ curriedSum(40)(2) // 42.
 
 ## Function Composition
 
-> The act of putting two two functions together to form a third function so that the output of one function is the input of the other.
+> The act of putting two two functions together to form a third function where the the output of one function is the input of the other.
 
 ```js
 const compose = (f, g) => a => f(g(a)) // Definition
@@ -232,7 +232,7 @@ undefined
 
 ## Constant
 
-> An immutable reference to a value. Unlike variables in most languages, constants cannot be reassigned to a new value once defined.
+> An variable that cannot be reassigned once defined.
 
 ```js
 const five = 5
@@ -241,13 +241,11 @@ const john = {name: 'John', age: 30}
 
 Constants are [referentially transparent](#referential-transparency). That is, they can be replaced with the values that they represent without affecting the result.
 
-In other words with the above two constants the expression:
+With the above two constants the following expression will always return `true`.
 
 ```js
 john.age + five === ({name: 'John', age: 30}).age + (5)
 ```
-
-Should always return `true`.
 
 ---
 
@@ -261,18 +259,18 @@ A common functor in javascript is `Array`
 [2, 3, 4].map(n => n * 2); // [4, 6, 8]
 ```
 
-Let `func` be an object implementing a `map` function, and `f`, `g` be arbitrary functions, then `func` is said to be a functor if the map function adheres to the following rules:
+If `func` is an object implementing a `map` function, and `f`, `g` be arbitrary functions, then `func` is said to be a functor if the map function adheres to the following rules:
 
 ```js
 // identity
-func.map(x => x) == func
+func.map(x => x) === func
 ```
 
 and
 
 ```js
 // composition
-func.map(x => f(g(x))) == func.map(g).map(f)
+func.map(x => f(g(x))) === func.map(g).map(f)
 ```
 
 We can now see that `Array` is a functor because it adheres to the functor rules.
@@ -386,7 +384,7 @@ The identity value is `0` - adding `0` to any number will not change it.
 For something to be a monoid, it's also required that the grouping of operations will not affect the result:
 
 ```js
-1 + (2 + 3) == (1 + 2) + 3; // true
+1 + (2 + 3) === (1 + 2) + 3; // true
 ```
 
 Array concatenation can also be said to be a monoid:
@@ -502,7 +500,7 @@ Array.prototype.equals = arr => {
         return false
     }
     for (var i = 0; i < len; i++) {
-        if (this[i] !== arr[i]) {
+        if (this[i] !=== arr[i]) {
             return false
         }
     }
