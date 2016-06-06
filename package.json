@@ -1,0 +1,23 @@
+{
+  "name": "functional-programming-jargons",
+  "version": "1.0.0",
+  "description": "Jargon from the functional programming world in simple terms!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "toc": "roadmarks"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hemanth/functional-programming-jargon.git"
+  },
+  "author": "hemanth",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hemanth/functional-programming-jargon/issues"
+  },
+  "homepage": "https://github.com/hemanth/functional-programming-jargon#readme",
+  "devDependencies": {
+    "roadmarks": "^1.6.3"
+  }
+}
