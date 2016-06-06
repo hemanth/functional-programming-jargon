@@ -101,14 +101,21 @@ partial(2); // 42
 
 ## Currying
 
-> The process of converting a function with multiple arity into the same function with an arity of one. Not to be confused with partial application, which can produce a function with an arity greater than one.
+> The process of converting a function that takes multiple arguments into a function that takes them one at a time.
+
+Each time the function is called it only accepts one argument and returns a function that takes one argument until all arguments are passed.
 
 ```js
-let sum = (a, b) => a + b;
+const sum = (a, b) => a + b;
 
-let curriedSum = (a) => (b) => a + b;
+const curriedSum = (a) => (b) => a + b;
 
 curriedSum(40)(2) // 42.
+
+const add2 = curriedSum(2); // (b) => 2 + b
+
+add2(10) // 12
+
 ```
 
 ---
@@ -131,21 +138,22 @@ floorAndToString(121.212121) // "121"
 input values, and does not produce side effects.
 
 ```js
-let greet = "yo";
+let greet = (name) => "Hi, " + name ;
 
-greet.toUpperCase(); // "YO"
+greet("Brianne") // "Hi, Brianne"
 
-greet // "yo"
 ```
 
 As opposed to:
 
 ```js
-let numbers = [1, 2, 3];
 
-numbers.splice(0); // [1, 2, 3]
+let greeting;
 
-numbers // []
+let greet = () => greeting = "Hi, " + window.name;
+
+greet(); // "Hi, Brianne"
+
 ```
 
 ---
@@ -180,7 +188,7 @@ sort(sort(sort([2,1])))
 
 ## Point-Free Style
 
-> Writing functions where the definition does not explicitly define arguments. This style usually requires [currying](#currying) or other [Higher-Order functions](#higher-order-functions-hof). A.K.A Tacit programming.
+> Writing functions where the definition does not explicitly identify the arguments used. This style usually requires [currying](#currying) or other [Higher-Order functions](#higher-order-functions-hof). A.K.A Tacit programming.
 
 ```js
 // Given
@@ -189,10 +197,10 @@ let add = a => b => a + b;
 
 // Then
 
-// Not points-free - `numbers` is an explicit parameter
+// Not points-free - `numbers` is an explicit argument
 let incrementAll = (numbers) => map(add(1))(numbers);
 
-// Points-free - The list is an implicit parameter
+// Points-free - The list is an implicit argument
 let incrementAll2 = map(add(1));
 ```
 
