@@ -1,8 +1,10 @@
 # Functional Programming Jargon
 
-> The whole idea of this repo is to try and define jargon from combinatorics and category theory jargon that are used in functional programming in a easier fashion.
+The goal of this document is to define jargon from functional programming in plain english with examples.
 
-*Let's try and define these with examples, this is a WIP—please feel free to send PR ;)*
+*This is a WIP; please feel free to send a PR ;)*
+
+> Where applicable, this document uses terms defined in the [Fantasy Land spec](https://github.com/fantasyland/fantasy-land)
 
 <!-- RM(noparent,notop) -->
 
@@ -10,10 +12,10 @@
 * [Higher-Order Functions (HOF)](#higher-order-functions-hof)
 * [Partial Application](#partial-application)
 * [Currying](#currying)
-* [Composition](#composition)
+* [Function Composition](#function-composition)
 * [Purity](#purity)
 * [Side effects](#side-effects)
-* [Idempotency](#idempotency)
+* [Idempotent](#idempotent)
 * [Point-Free Style](#point-free-style)
 * [Contracts](#contracts)
 * [Guarded Functions](#guarded-functions)
@@ -99,24 +101,28 @@ partial(2); // 42
 
 ## Currying
 
-> The process of converting a function with multiple arity into the same function with an arity of one. Not to be confused with partial application, which can produce a function with an arity greater than one.
+> The process of converting a function that takes multiple arguments into a function that takes them one at a time.
+
+Each time the function is called it only accepts one argument and returns a function that takes one argument until all arguments are passed.
 
 ```js
-let sum = (a, b) => a + b;
+const sum = (a, b) => a + b;
 
-let curriedSum = (a) => (b) => a + b;
+const curriedSum = (a) => (b) => a + b;
 
 curriedSum(40)(2) // 42.
+
+const add2 = curriedSum(2); // (b) => 2 + b
+
+add2(10) // 12
+
 ```
 
 ---
 
-## Composition
+## Function Composition
 
-> A function which combines two values of a given type (usually also some kind of functions) into a third value of the same type.
-
-The most straightforward type of composition is called "normal function composition".
-It allows you to combine functions that accept and return a single value.
+> The act of putting two two functions together to form a third function where the the output of one function is the input of the other.
 
 ```js
 const compose = (f, g) => a => f(g(a)) // Definition
@@ -128,25 +134,26 @@ floorAndToString(121.212121) // "121"
 
 ## Purity
 
-> A function is said to be pure if the return value is only determined by its
-input values, without any side effects.
+> A function is pure if the return value is only determined by its
+input values, and does not produce side effects.
 
 ```js
-let greet = "yo";
+let greet = (name) => "Hi, " + name ;
 
-greet.toUpperCase(); // "YO"
+greet("Brianne") // "Hi, Brianne"
 
-greet // "yo"
 ```
 
 As opposed to:
 
 ```js
-let numbers = [1, 2, 3];
 
-numbers.splice(0); // [1, 2, 3]
+let greeting;
 
-numbers // []
+let greet = () => greeting = "Hi, " + window.name;
+
+greet(); // "Hi, Brianne"
+
 ```
 
 ---
@@ -161,10 +168,9 @@ console.log("IO is a side effect!");
 
 ---
 
-## Idempotency
+## Idempotent
 
-> A function is said to be idempotent if it has no side-effects on multiple
-executions with the same input parameters.
+> A function is idempotent if reapplying it to its result does not produce a different result.
 
 ```js
 f(f(x)) = f(x)
@@ -174,11 +180,15 @@ f(f(x)) = f(x)
 Math.abs(Math.abs(10))
 ```
 
+```js
+sort(sort(sort([2,1])))
+```
+
 ---
 
 ## Point-Free Style
 
-> Writing functions where the definition does not explicitly define arguments. This style usually requires [currying](#currying) or other [Higher-Order functions](#higher-order-functions-hof). A.K.A Tacit programming.
+> Writing functions where the definition does not explicitly identify the arguments used. This style usually requires [currying](#currying) or other [Higher-Order functions](#higher-order-functions-hof). A.K.A Tacit programming.
 
 ```js
 // Given
@@ -187,10 +197,10 @@ let add = a => b => a + b;
 
 // Then
 
-// Not points-free - `numbers` is an explicit parameter
+// Not points-free - `numbers` is an explicit argument
 let incrementAll = (numbers) => map(add(1))(numbers);
 
-// Points-free - The list is an implicit parameter
+// Points-free - The list is an implicit argument
 let incrementAll2 = map(add(1));
 ```
 
@@ -216,62 +226,62 @@ Points-free function definitions look just like normal assignments without `func
 
 ## Value
 
-> Any complex or primitive value that is used in the computation, including functions. Values in functional programming are assumed to be immutable.
+> Anything that can be assigned to a variable.
 
 ```js
 5
 Object.freeze({name: 'John', age: 30}) // The `freeze` function enforces immutability.
 (a) => a
+[1]
+undefined
 ```
-
-Note that value-containing structures such as [Functor](#functor), [Monad](#monad) etc. are themselves values. This means, among other things, that they can be nested within each other.
 
 ---
 
 ## Constant
 
-> An immutable reference to a value. Not to be confused with `Variable` - a reference to a value which can at any point be updated to point to a different value.
+> An variable that cannot be reassigned once defined.
 
 ```js
 const five = 5
 const john = {name: 'John', age: 30}
 ```
 
-Constants are referentially transparent. That is, they can be replaced with the values that they represent without affecting the result.
+Constants are [referentially transparent](#referential-transparency). That is, they can be replaced with the values that they represent without affecting the result.
 
-In other words with the above two constants the expression:
+With the above two constants the following expression will always return `true`.
 
 ```js
 john.age + five === ({name: 'John', age: 30}).age + (5)
 ```
 
-Should always return `true`.
-
 ---
 
 ## Functor
 
-> An object with a `map` function that adheres to certains rules. `map` runs a function on values in an object and returns a new object.
+> An object with a `map` function that adheres to certain rules. `Map` runs a function on values in an object and returns a new object.
 
-Simplest functor in javascript is an `Array`:
+A common functor in javascript is `Array`
 
 ```js
 [2, 3, 4].map(n => n * 2); // [4, 6, 8]
 ```
 
-Let `func` be an object implementing a `map` function, and `f`, `g` be arbitrary functions, then `func` is said to be a functor if the map function adheres to the following rules:
+If `func` is an object implementing a `map` function, and `f`, `g` be arbitrary functions, then `func` is said to be a functor if the map function adheres to the following rules:
 
 ```js
-func.map(x => x) == func
+// identity
+func.map(x => x) === func
 ```
 
 and
 
 ```js
-func.map(x => f(g(x))) == func.map(g).map(f)
+// composition
+func.map(x => f(g(x))) === func.map(g).map(f)
 ```
 
-We can now see that `Array` is a functor because it adheres to the functor rules!
+We can now see that `Array` is a functor because it adheres to the functor rules.
 
 ```js
 [1, 2, 3].map(x => x); // = [1, 2, 3]
@@ -290,9 +300,9 @@ let g = x => x * 2;
 ---
 
 ## Pointed Functor
-> A functor with an `of` method. `of` puts _any_ single value into a functor.
+> A functor with an `of` function that puts _any_ single value into that functor.
 
-Array implementation:
+Array Implementation:
 
 ```js
 Array.prototype.of = (v) => [v];
@@ -382,7 +392,7 @@ The identity value is `0` - adding `0` to any number will not change it.
 For something to be a monoid, it's also required that the grouping of operations will not affect the result:
 
 ```js
-1 + (2 + 3) == (1 + 2) + 3; // true
+1 + (2 + 3) === (1 + 2) + 3; // true
 ```
 
 Array concatenation can also be said to be a monoid:
@@ -397,7 +407,14 @@ The identity value is empty array `[]`
 [1, 2].concat([]); // [1, 2]
 ```
 
-Functions also form a monoid with the normal functional composition as an operation and the function which returns its input `(a) => a`
+If identity and compose functions are provided, functions themselves form a monoid:
+
+```js
+var identity = a => a;
+var compose = (f, g) => x => f(g(x));
+
+compose(foo, identity) ≍ compose(identity, foo) ≍ foo
+```
 
 ---
 
@@ -412,7 +429,8 @@ Functions also form a monoid with the normal functional composition as an operat
 ['cat,dog', 'fish,bird'].map(a => a.split(',')) // [['cat', 'dog'], ['fish', 'bird']]
 ```
 
-You may also see `of` and `chain` referred to as `return` and `bind` (not to be confused with the JS keyword/function...) in languages which provide monad-like constructs as part of their standard library (e.g. Haskell, F#), on [Wikipedia](https://en.wikipedia.org/wiki/Monad_%28functional_programming%29) and in other literature. It's also important to note that `return` and `bind` are not part of the [Fantasy Land spec](https://github.com/fantasyland/fantasy-land) and are mentioned here only for the sake of people interested in learning more about monads.
+`of` is also known as `return` in other functional languages.
+`chain` is also known as `flatmap` and `bind` in other languages.
 
 ---
 
@@ -490,7 +508,7 @@ Array.prototype.equals = arr => {
         return false
     }
     for (var i = 0; i < len; i++) {
-        if (this[i] !== arr[i]) {
+        if (this[i] !=== arr[i]) {
             return false
         }
     }
