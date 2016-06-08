@@ -441,8 +441,8 @@ compose(foo, identity) ≍ compose(identity, foo) ≍ foo
 ```js
 let CoIdentity = v => ({
     val: v,
-    extract: this.v,
-    extend: f => CoIdentity(f(this))
+    extract: function () { return this.val },
+    extend: function (f) { return CoIdentity(f(this)) }
 })
 ```
 
