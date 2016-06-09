@@ -73,7 +73,7 @@ const filter = (pred, xs) => {
 ```
 
 ```js
-const is = type => x => Object(x) instanceof type;
+const is = (type) => (x) => Object(x) instanceof type;
 ```
 
 ```js
@@ -119,7 +119,7 @@ add2(10) // 12
 The act of putting two two functions together to form a third function where the the output of one function is the input of the other.
 
 ```js
-const compose = (f, g) => a => f(g(a)) // Definition
+const compose = (f, g) => (a) => f(g(a)) // Definition
 const floorAndToString = compose((val) => val.toString(), Math.floor) // Usage
 floorAndToString(121.212121) // "121"
 ```
@@ -178,8 +178,8 @@ Writing functions where the definition does not explicitly identify the argument
 
 ```js
 // Given
-let map = fn => list => list.map(fn);
-let add = a => b => a + b;
+let map = (fn) => (list) => list.map(fn);
+let add = (a) => (b) => a + b;
 
 // Then
 
@@ -244,36 +244,36 @@ An object with a `map` function that adheres to certain rules. `Map` runs a func
 A common functor in javascript is `Array`
 
 ```js
-[2, 3, 4].map(n => n * 2); // [4, 6, 8]
+[2, 3, 4].map((n) => n * 2); // [4, 6, 8]
 ```
 
 If `func` is an object implementing a `map` function, and `f`, `g` be arbitrary functions, then `func` is said to be a functor if the map function adheres to the following rules:
 
 ```js
 // identity
-func.map(x => x) === func
+func.map((x) => x) === func
 ```
 
 and
 
 ```js
 // composition
-func.map(x => f(g(x))) === func.map(g).map(f)
+func.map((x) => f(g(x))) === func.map(g).map(f)
 ```
 
 We can now see that `Array` is a functor because it adheres to the functor rules.
 
 ```js
-[1, 2, 3].map(x => x); // = [1, 2, 3]
+[1, 2, 3].map((x) => x); // = [1, 2, 3]
 ```
 
 and
 
 ```js
-let f = x => x + 1;
-let g = x => x * 2;
+let f = (x) => x + 1;
+let g = (x) => x * 2;
 
-[1, 2, 3].map(x => f(g(x))); // = [3, 5, 7]
+[1, 2, 3].map((x) => f(g(x))); // = [3, 5, 7]
 [1, 2, 3].map(g).map(f);     // = [3, 5, 7]
 ```
 
@@ -295,7 +295,7 @@ Lift is like `map` except it can be applied to multiple functors.
 Map is the same as a lift over a one-argument function:
 
 ```js
-lift(n => n * 2)([2, 3, 4]); // [4, 6, 8]
+lift((n) => n * 2)([2, 3, 4]); // [4, 6, 8]
 ```
 
 Unlike map lift can be used to combine values from multiple arrays:
@@ -378,8 +378,8 @@ The identity value is empty array `[]`
 If identity and compose functions are provided, functions themselves form a monoid:
 
 ```js
-var identity = a => a;
-var compose = (f, g) => x => f(g(x));
+var identity = (a) => a;
+var compose = (f, g) => (x) => f(g(x));
 
 compose(foo, identity) ≍ compose(identity, foo) ≍ foo
 ```
@@ -389,10 +389,10 @@ compose(foo, identity) ≍ compose(identity, foo) ≍ foo
 A monad is an object with [`of`](#pointed-functor) and `chain` functions. `chain` is like [`map`](#functor) except it un-nests the resulting nested object.
 
 ```js
-['cat,dog', 'fish,bird'].chain(a => a.split(',')) // ['cat', 'dog', 'fish', 'bird']
+['cat,dog', 'fish,bird'].chain((a) => a.split(',')) // ['cat', 'dog', 'fish', 'bird']
 
 //Contrast to map
-['cat,dog', 'fish,bird'].map(a => a.split(',')) // [['cat', 'dog'], ['fish', 'bird']]
+['cat,dog', 'fish,bird'].map((a) => a.split(',')) // [['cat', 'dog'], ['fish', 'bird']]
 ```
 
 `of` is also known as `return` in other functional languages.
@@ -403,10 +403,10 @@ A monad is an object with [`of`](#pointed-functor) and `chain` functions. `chain
 An object that has `extract` and `extend` functions.
 
 ```js
-let CoIdentity = v => ({
+let CoIdentity = (v) => ({
     val: v,
     extract: this.v,
-    extend: f => CoIdentity(f(this))
+    extend: (f) => CoIdentity(f(this))
 })
 ```
 
@@ -419,7 +419,7 @@ CoIdentity(1).extract() // 1
 Extend runs a function on the comonad. The function should return the same type as the comonad.
 
 ```js
-CoIdentity(1).extend(co => co.extract() + 1) // CoIdentity(2)
+CoIdentity(1).extend((co) => co.extract() + 1) // CoIdentity(2)
 ```
 
 ## Applicative Functor
@@ -460,7 +460,7 @@ An object that has an `equals` function which can be used to compare other objec
 Make array a setoid:
 
 ```js
-Array.prototype.equals = arr => {
+Array.prototype.equals = (arr) => {
     var len = this.length
     if (len != arr.length) {
         return false
@@ -490,7 +490,7 @@ An object that has a `concat` function that combines it with another object of t
 An object that has a `reduce` function that can transform that object into some other type.
 
 ```js
-let sum = list => list.reduce((acc, val) => acc + val, 0);
+let sum = (list) => list.reduce((acc, val) => acc + val, 0);
 sum([1, 2, 3]) // 6
 ```
 
@@ -508,24 +508,24 @@ There's quite a bit of variance across the community but they often follow the f
 // functionName :: firstArgType -> secondArgType -> returnType
 
 // add :: Number -> Number -> Number
-let add = x => y => x + y
+let add = (x) => (y) => x + y
 
 // increment :: Number -> Number
-let increment = x => x + 1
+let increment = (x) => x + 1
 ```
 
 If a function accepts another function as an argument it is wrapped in parenthesis.
 
 ```js
 // call :: (a -> b) -> a -> b
-let call = f => x => f(x)
+let call = (f) => (x) => f(x)
 ```
 
 The letters `a`, `b`, `c`, `d` are used to signify that the argument can be of any type. For this `map` it takes a function that transforms a value of some type `a` into another type `b`, an array of values of type `a`, and returns an array of values of type `b`.
 
 ```js
 // map :: (a -> b) -> [a] -> [b]
-let map = f => list => list.map(f)
+let map = (f) => (list) => list.map(f)
 ```
 
 ---
