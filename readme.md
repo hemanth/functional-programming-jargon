@@ -56,8 +56,6 @@ console.log(arity); // 2
 // The arity of sum is 2
 ```
 
----
-
 ## Higher-Order Functions (HOF)
 
 A function which takes a function as an argument and/or returns a function.
@@ -97,8 +95,6 @@ let partial = sum.bind(null, 40);
 partial(2); // 42
 ```
 
----
-
 ## Currying
 
 The process of converting a function that takes multiple arguments into a function that takes them one at a time.
@@ -118,8 +114,6 @@ add2(10) // 12
 
 ```
 
----
-
 ## Function Composition
 
 The act of putting two two functions together to form a third function where the the output of one function is the input of the other.
@@ -129,8 +123,6 @@ const compose = (f, g) => a => f(g(a)) // Definition
 const floorAndToString = compose((val) => val.toString(), Math.floor) // Usage
 floorAndToString(121.212121) // "121"
 ```
-
----
 
 ## Purity
 
@@ -156,8 +148,6 @@ greet(); // "Hi, Brianne"
 
 ```
 
----
-
 ## Side effects
 
 A function or expression is said to have a side effect if apart from returning a value, it modifies some state or has an observable interaction with external functions.
@@ -165,8 +155,6 @@ A function or expression is said to have a side effect if apart from returning a
 ```js
 console.log("IO is a side effect!");
 ```
-
----
 
 ## Idempotent
 
@@ -183,8 +171,6 @@ Math.abs(Math.abs(10))
 ```js
 sort(sort(sort([2,1])))
 ```
-
----
 
 ## Point-Free Style
 
@@ -208,21 +194,19 @@ let incrementAll2 = map(add(1));
 
 Points-free function definitions look just like normal assignments without `function` or `=>`.
 
----
+
 
 ## Contracts
 
----
+TODO
 
 ## Guarded Functions
 
----
+TODO
 
 ## Categories
 
 Objects with associated functions that adhere to certain rules. E.g. [Monoid](#monoid)
-
----
 
 ## Value
 
@@ -235,8 +219,6 @@ Object.freeze({name: 'John', age: 30}) // The `freeze` function enforces immutab
 [1]
 undefined
 ```
-
----
 
 ## Constant
 
@@ -254,8 +236,6 @@ With the above two constants the following expression will always return `true`.
 ```js
 john.age + five === ({name: 'John', age: 30}).age + (5)
 ```
-
----
 
 ## Functor
 
@@ -297,8 +277,6 @@ let g = x => x * 2;
 [1, 2, 3].map(g).map(f);     // = [3, 5, 7]
 ```
 
----
-
 ## Pointed Functor
 A functor with an `of` function that puts _any_ single value into that functor.
 
@@ -309,8 +287,6 @@ Array.prototype.of = (v) => [v];
 
 [].of(1) // [1]
 ```
-
----
 
 ## Lift
 
@@ -328,8 +304,6 @@ Unlike map lift can be used to combine values from multiple arrays:
 lift((a, b) => a * b)([1, 2], [3]); // [3, 6]
 ```
 
----
-
 ## Referential Transparency
 
 An expression that can be replaced with its value without changing the
@@ -344,13 +318,9 @@ let greet = () => "Hello World!";
 Any invocation of `greet()` can be replaced with `Hello World!` hence greet is
 referentially transparent.
 
----
-
 ##  Equational Reasoning
 
 When an application is composed of expressions and devoid of side effects, truths about the system can be derived from the parts.
-
----
 
 ## Lazy evaluation
 
@@ -368,8 +338,6 @@ let rand = function*() {
 let randIter = rand();
 randIter.next(); // Each execution gives a random value, expression is evaluated on need.
 ```
-
----
 
 ## Monoid
 
@@ -416,8 +384,6 @@ var compose = (f, g) => x => f(g(x));
 compose(foo, identity) ≍ compose(identity, foo) ≍ foo
 ```
 
----
-
 ## Monad
 
 A monad is an object with [`of`](#pointed-functor) and `chain` functions. `chain` is like [`map`](#functor) except it un-nests the resulting nested object.
@@ -431,8 +397,6 @@ A monad is an object with [`of`](#pointed-functor) and `chain` functions. `chain
 
 `of` is also known as `return` in other functional languages.
 `chain` is also known as `flatmap` and `bind` in other languages.
-
----
 
 ## Comonad
 
@@ -458,8 +422,6 @@ Extend runs a function on the comonad. The function should return the same type 
 CoIdentity(1).extend(co => co.extract() + 1) // CoIdentity(2)
 ```
 
----
-
 ## Applicative Functor
 
 An applicative functor is an object with an `ap` function. `ap` applies a function in the object to a value in another object of the same type.
@@ -468,13 +430,9 @@ An applicative functor is an object with an `ap` function. `ap` applies a functi
 [(a) => a + 1].ap([1]) // [2]
 ```
 
----
-
 ## Morphism
 
 A transformation function.
-
----
 
 ## Isomorphism
 
@@ -493,7 +451,7 @@ coordsToPair(pairToCoords([1, 2])) // [1, 2]
 pairToCoords(coordsToPair({x: 1, y: 2})) // {x: 1, y: 2}
 ```
 
----
+
 
 ## Setoid
 
@@ -519,8 +477,6 @@ Array.prototype.equals = arr => {
 [1, 2].equals([0]) // false
 ```
 
----
-
 ## Semigroup
 
 An object that has a `concat` function that combines it with another object of the same type.
@@ -528,8 +484,6 @@ An object that has a `concat` function that combines it with another object of t
 ```js
 [1].concat([2]) // [1, 2]
 ```
-
----
 
 ## Foldable
 
@@ -540,11 +494,9 @@ let sum = list => list.reduce((acc, val) => acc + val, 0);
 sum([1, 2, 3]) // 6
 ```
 
----
-
 ## Traversable
 
----
+TODO
 
 ## Type Signatures
 
@@ -575,6 +527,7 @@ The letters `a`, `b`, `c`, `d` are used to signify that the argument can be of a
 // map :: (a -> b) -> [a] -> [b]
 let map = f => list => list.map(f)
 ```
+
 ---
 
 __P.S:__ Without the wonderful [contributions](https://github.com/hemanth/functional-programming-jargon/graphs/contributors) this repo would be meaningless!
