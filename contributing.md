@@ -10,8 +10,8 @@ That said, we'd like to maintain some consistency across the document.
 1. Target programmers that have no functional programming experience.
 1. We value understandability more than accuracy. e.g. It's okay to describe a functor as a container.
 1. Don't overuse jargon even if defined elsewhere in the document.
-1. Link to terms defined else where in the document when you use them.
-1. No big walls of text
+1. Link to terms defined in the document when you use them in a definition.
+1. Avoid big walls of text
 
 ## Code conventions
 Be consistent with other examples
