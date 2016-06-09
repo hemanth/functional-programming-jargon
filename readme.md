@@ -4,7 +4,7 @@ The goal of this document is to define jargon from functional programming in pla
 
 *This is a WIP; please feel free to send a PR ;)*
 
-> Where applicable, this document uses terms defined in the [Fantasy Land spec](https://github.com/fantasyland/fantasy-land)
+Where applicable, this document uses terms defined in the [Fantasy Land spec](https://github.com/fantasyland/fantasy-land)
 
 <!-- RM(noparent,notop) -->
 
@@ -45,7 +45,7 @@ The goal of this document is to define jargon from functional programming in pla
 
 ## Arity
 
-> The number of arguments a function takes. From words like unary, binary, ternary, etc. This word has the distinction of being composed of two suffixes, "-ary" and "-ity." Addition, for example, takes two arguments, and so it is defined as a binary function or a function with an arity of two. Such a function may sometimes be called "dyadic" by people who prefer Greek roots to Latin. Likewise, a function that takes a variable number of arguments is called "variadic," whereas a binary function must be given two and only two arguments, currying and partial application notwithstanding (see below).
+The number of arguments a function takes. From words like unary, binary, ternary, etc. This word has the distinction of being composed of two suffixes, "-ary" and "-ity." Addition, for example, takes two arguments, and so it is defined as a binary function or a function with an arity of two. Such a function may sometimes be called "dyadic" by people who prefer Greek roots to Latin. Likewise, a function that takes a variable number of arguments is called "variadic," whereas a binary function must be given two and only two arguments, currying and partial application notwithstanding (see below).
 
 ```js
 const sum = (a, b) => a + b;
@@ -60,7 +60,7 @@ console.log(arity); // 2
 
 ## Higher-Order Functions (HOF)
 
-> A function which takes a function as an argument and/or returns a function.
+A function which takes a function as an argument and/or returns a function.
 
 ```js
 const filter = (pred, xs) => {
@@ -84,7 +84,7 @@ filter(is(Number), [0, '1', 2, null]); // [0, 2]
 
 ## Partial Application
 
-> The process of getting a function with lesser arity compared to the original
+The process of getting a function with lesser arity compared to the original
 function by fixing the number of arguments is known as partial application.
 
 ```js
@@ -101,7 +101,7 @@ partial(2); // 42
 
 ## Currying
 
-> The process of converting a function that takes multiple arguments into a function that takes them one at a time.
+The process of converting a function that takes multiple arguments into a function that takes them one at a time.
 
 Each time the function is called it only accepts one argument and returns a function that takes one argument until all arguments are passed.
 
@@ -122,7 +122,7 @@ add2(10) // 12
 
 ## Function Composition
 
-> The act of putting two two functions together to form a third function where the the output of one function is the input of the other.
+The act of putting two two functions together to form a third function where the the output of one function is the input of the other.
 
 ```js
 const compose = (f, g) => a => f(g(a)) // Definition
@@ -134,7 +134,7 @@ floorAndToString(121.212121) // "121"
 
 ## Purity
 
-> A function is pure if the return value is only determined by its
+A function is pure if the return value is only determined by its
 input values, and does not produce side effects.
 
 ```js
@@ -160,7 +160,7 @@ greet(); // "Hi, Brianne"
 
 ## Side effects
 
-> A function or expression is said to have a side effect if apart from returning a value, it modifies some state or has an observable interaction with external functions.
+A function or expression is said to have a side effect if apart from returning a value, it modifies some state or has an observable interaction with external functions.
 
 ```js
 console.log("IO is a side effect!");
@@ -170,7 +170,7 @@ console.log("IO is a side effect!");
 
 ## Idempotent
 
-> A function is idempotent if reapplying it to its result does not produce a different result.
+A function is idempotent if reapplying it to its result does not produce a different result.
 
 ```js
 f(f(x)) = f(x)
@@ -188,7 +188,7 @@ sort(sort(sort([2,1])))
 
 ## Point-Free Style
 
-> Writing functions where the definition does not explicitly identify the arguments used. This style usually requires [currying](#currying) or other [Higher-Order functions](#higher-order-functions-hof). A.K.A Tacit programming.
+Writing functions where the definition does not explicitly identify the arguments used. This style usually requires [currying](#currying) or other [Higher-Order functions](#higher-order-functions-hof). A.K.A Tacit programming.
 
 ```js
 // Given
@@ -220,13 +220,13 @@ Points-free function definitions look just like normal assignments without `func
 
 ## Categories
 
-> Objects with associated functions that adhere to certain rules. E.g. [Monoid](#monoid)
+Objects with associated functions that adhere to certain rules. E.g. [Monoid](#monoid)
 
 ---
 
 ## Value
 
-> Anything that can be assigned to a variable.
+Anything that can be assigned to a variable.
 
 ```js
 5
@@ -240,7 +240,7 @@ undefined
 
 ## Constant
 
-> An variable that cannot be reassigned once defined.
+An variable that cannot be reassigned once defined.
 
 ```js
 const five = 5
@@ -259,7 +259,7 @@ john.age + five === ({name: 'John', age: 30}).age + (5)
 
 ## Functor
 
-> An object with a `map` function that adheres to certain rules. `Map` runs a function on values in an object and returns a new object.
+An object with a `map` function that adheres to certain rules. `Map` runs a function on values in an object and returns a new object.
 
 A common functor in javascript is `Array`
 
@@ -300,7 +300,7 @@ let g = x => x * 2;
 ---
 
 ## Pointed Functor
-> A functor with an `of` function that puts _any_ single value into that functor.
+A functor with an `of` function that puts _any_ single value into that functor.
 
 Array Implementation:
 
@@ -314,7 +314,7 @@ Array.prototype.of = (v) => [v];
 
 ## Lift
 
-> Lift is like `map` except it can be applied to multiple functors.
+Lift is like `map` except it can be applied to multiple functors.
 
 Map is the same as a lift over a one-argument function:
 
@@ -332,7 +332,7 @@ lift((a, b) => a * b)([1, 2], [3]); // [3, 6]
 
 ## Referential Transparency
 
-> An expression that can be replaced with its value without changing the
+An expression that can be replaced with its value without changing the
 behavior of the program is said to be referentially transparent.
 
 Say we have function greet:
@@ -348,13 +348,13 @@ referentially transparent.
 
 ##  Equational Reasoning
 
-> When an application is composed of expressions and devoid of side effects, truths about the system can be derived from the parts.
+When an application is composed of expressions and devoid of side effects, truths about the system can be derived from the parts.
 
 ---
 
 ## Lazy evaluation
 
-> Lazy evaluation is a call-by-need evaluation mechanism that delays the evaluation of an expression until its value is needed. In functional languages, this allows for structures like infinite lists, which would not normally be available in an imperative language where the sequencing of commands is significant.
+Lazy evaluation is a call-by-need evaluation mechanism that delays the evaluation of an expression until its value is needed. In functional languages, this allows for structures like infinite lists, which would not normally be available in an imperative language where the sequencing of commands is significant.
 
 ```js
 let rand = function*() {
@@ -373,7 +373,7 @@ randIter.next(); // Each execution gives a random value, expression is evaluated
 
 ## Monoid
 
-> A monoid is some data type and a two parameter function that "combines" two values of the type, where an identity value that does not affect the result of the function also exists.
+A monoid is some data type and a two parameter function that "combines" two values of the type, where an identity value that does not affect the result of the function also exists.
 
 One very simple monoid is numbers and addition:
 
@@ -420,7 +420,7 @@ compose(foo, identity) ≍ compose(identity, foo) ≍ foo
 
 ## Monad
 
-> A monad is an object with [`of`](#pointed-functor) and `chain` functions. `chain` is like [`map`](#functor) except it un-nests the resulting nested object.
+A monad is an object with [`of`](#pointed-functor) and `chain` functions. `chain` is like [`map`](#functor) except it un-nests the resulting nested object.
 
 ```js
 ['cat,dog', 'fish,bird'].chain(a => a.split(',')) // ['cat', 'dog', 'fish', 'bird']
@@ -436,7 +436,7 @@ compose(foo, identity) ≍ compose(identity, foo) ≍ foo
 
 ## Comonad
 
-> An object that has `extract` and `extend` functions.
+An object that has `extract` and `extend` functions.
 
 ```js
 let CoIdentity = v => ({
@@ -462,7 +462,7 @@ CoIdentity(1).extend(co => co.extract() + 1) // CoIdentity(2)
 
 ## Applicative Functor
 
-> An applicative functor is an object with an `ap` function. `ap` applies a function in the object to a value in another object of the same type.
+An applicative functor is an object with an `ap` function. `ap` applies a function in the object to a value in another object of the same type.
 
 ```js
 [(a) => a + 1].ap([1]) // [2]
@@ -472,13 +472,13 @@ CoIdentity(1).extend(co => co.extract() + 1) // CoIdentity(2)
 
 ## Morphism
 
-> A transformation function.
+A transformation function.
 
 ---
 
 ## Isomorphism
 
-> A pair of transformations between 2 types of objects that is structural in nature and no data is lost.
+A pair of transformations between 2 types of objects that is structural in nature and no data is lost.
 
 For example, 2D coordinates could be stored as an array `[2,3]` or object `{x: 2, y: 3}`.
 
@@ -497,7 +497,7 @@ pairToCoords(coordsToPair({x: 1, y: 2})) // {x: 1, y: 2}
 
 ## Setoid
 
-> An object that has an `equals` function which can be used to compare other objects of the same type.
+An object that has an `equals` function which can be used to compare other objects of the same type.
 
 Make array a setoid:
 
@@ -523,7 +523,7 @@ Array.prototype.equals = arr => {
 
 ## Semigroup
 
-> An object that has a `concat` function that combines it with another object of the same type.
+An object that has a `concat` function that combines it with another object of the same type.
 
 ```js
 [1].concat([2]) // [1, 2]
@@ -533,7 +533,7 @@ Array.prototype.equals = arr => {
 
 ## Foldable
 
-> An object that has a `reduce` function that can transform that object into some other type.
+An object that has a `reduce` function that can transform that object into some other type.
 
 ```js
 let sum = list => list.reduce((acc, val) => acc + val, 0);
@@ -548,7 +548,7 @@ sum([1, 2, 3]) // 6
 
 ## Type Signatures
 
-> Often functions will include comments that indicate the types of their arguments and return types.
+Often functions will include comments that indicate the types of their arguments and return types.
 
 There's quite a bit of variance across the community but they often follow the following patterns:
 
