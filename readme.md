@@ -125,7 +125,7 @@ add2(10) // 12
 
 ## Function Composition
 
-> The act of putting two two functions together to form a third function where the the output of one function is the input of the other.
+> The act of putting two functions together to form a third function where the the output of one function is the input of the other.
 
 ```js
 const compose = (f, g) => a => f(g(a)) // Definition
