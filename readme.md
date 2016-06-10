@@ -240,7 +240,7 @@ undefined
 
 ## Constant
 
-> An variable that cannot be reassigned once defined.
+> A variable that cannot be reassigned once defined.
 
 ```js
 const five = 5
