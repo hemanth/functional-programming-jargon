@@ -39,6 +39,9 @@ The goal of this document is to define jargon from functional programming in pla
 * [Foldable](#foldable)
 * [Traversable](#traversable)
 * [Type Signatures](#type-signatures)
+* [Union type](#union-type)
+* [Product type](#product-type)
+* [Option](#option)
 
 
 <!-- /RM -->
@@ -575,6 +578,88 @@ The letters `a`, `b`, `c`, `d` are used to signify that the argument can be of a
 // map :: (a -> b) -> [a] -> [b]
 let map = f => list => list.map(f)
 ```
+
+## Union type
+A union type is the combination of two types together into another one.
+
+JS doesn't have static types but let's say we invent a type `NumOrString` which is a sum of `String` and `Number`.
+
+The `+` operator in JS works on strings and numbers so we can use this new type to describe its inputs and outputs:
+
+```js
+// add :: (NumOrString, NumOrString) -> NumOrString
+const add = (a, b) => a + b;
+
+add(1, 2); // Returns number 3
+add('Foo', 2); // Returns string "Foo2"
+add('Foo', 'Bar'); // Returns string "FooBar"
+```
+
+Union types are also known as algebraic types, tagged unions, or sum types.
+
+There's a [couple](https://github.com/paldepind/union-type) [libraries](https://github.com/puffnfresh/daggy) in JS which help with defining and using union types.
+
+## Product type
+
+A **product** type combines types together in a way you're probably more familiar with:
+
+```js
+// point :: (Number, Number) -> {x: Number, y: Number}
+const point = (x, y) => ({x: x, y: y});
+```
+It's called a product because the total possible values of the data structure is the product of the different values.
+
+See also [Set theory](https://en.wikipedia.org/wiki/Set_theory).
+
+## Option
+Option is a [union type](#union-type) with two cases often called `Some` and `None`.
+
+Option is useful for composing functions that might not return a value.
+
+```js
+// Naive definition
+
+const Some = (v) => ({
+    val: v,
+    map(f) {
+        return Some(f(this.val));
+    },
+    chain(f) {
+        return f(this.val);
+    }
+});
+
+const None = () => ({
+    map(f){
+        return this;
+    },
+    chain(f){
+        return this;
+    }
+});
+
+// maybeProp :: (String, {a}) -> Option a
+const maybeProp = (key, obj) => typeof obj[key] === 'undefined' ? None() : Some(obj[key]);
+```
+Use `chain` to sequence functions that return `Option`s
+```js
+
+// getItem :: Cart -> Option CartItem
+const getItem = (cart) => maybeProp('item', cart);
+
+// getPrice :: Item -> Option Number
+const getPrice = (item) => maybeProp('price', item);
+
+// getNestedPrice :: cart -> Option a
+const getNestedPrice = (cart) => getItem(obj).chain(getPrice);
+
+getNestedPrice({}); // None()
+getNestedPrice({item: {foo: 1}}); // None()
+getNestedPrice({item: {price: 9.99}}); // Some(9.99)
+```
+
+`Option` is also known as `Maybe`. `Some` is sometimes called `Just`. `None` is sometimes called `Nothing`.
+
 ---
 
 __P.S:__ Without the wonderful [contributions](https://github.com/hemanth/functional-programming-jargon/graphs/contributors) this repo would be meaningless!
