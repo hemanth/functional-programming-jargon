@@ -439,10 +439,10 @@ compose(foo, identity) ≍ compose(identity, foo) ≍ foo
 > An object that has `extract` and `extend` functions.
 
 ```js
-let CoIdentity = v => ({
+const CoIdentity = v => ({
     val: v,
-    extract: function () { return this.val },
-    extend: function (f) { return CoIdentity(f(this)) }
+    extract() { return this.val },
+    extend(f) { return CoIdentity(f(this)) }
 })
 ```
 
