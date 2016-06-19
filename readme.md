@@ -66,7 +66,7 @@ A function which takes a function as an argument and/or returns a function.
 ```js
 const filter = (pred, xs) => {
     const result = [];
-    for (var idx = 0; idx < xs.length; idx++) {
+    for (let idx = 0; idx < xs.length; idx++) {
         if (pred(xs[idx])) {
             result.push(xs[idx]);
         }
