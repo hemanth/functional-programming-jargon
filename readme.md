@@ -18,7 +18,7 @@ Where applicable, this document uses terms defined in the [Fantasy Land spec](ht
 * [Idempotent](#idempotent)
 * [Point-Free Style](#point-free-style)
 * [Contracts](#contracts)
-* [Guarded Functions](#guarded-functions)
+* [Guards](#guards)
 * [Categories](#categories)
 * [Value](#value)
 * [Constant](#constant)
@@ -203,9 +203,23 @@ Points-free function definitions look just like normal assignments without `func
 
 TODO
 
-## Guarded Functions
+## Guards
+Guards are boolean expressions that prevent evaluation of code unless the guard evaluates to true.
+It can be simulated thanks to the conditional ternary Operator.
 
-TODO
+```js
+const max = (a, b) => 
+    (a > b) ? a
+    : /* otherwise */ b; 
+
+// Chain guards
+const sign = (n) => 
+    (n < 0) ? -1
+    : (n == 0) ? 0
+    : /* otherwise */ 1; 
+```
+ 
+If the first guard fails then the check falls through to the second guard.`otherwise` is a catchall guard, akin to `else` in C languages.
 
 ## Categories
 
