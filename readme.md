@@ -17,6 +17,7 @@ Where applicable, this document uses terms defined in the [Fantasy Land spec](ht
 * [Side effects](#side-effects)
 * [Idempotent](#idempotent)
 * [Point-Free Style](#point-free-style)
+* [Predicate](#predicate)
 * [Contracts](#contracts)
 * [Guarded Functions](#guarded-functions)
 * [Categories](#categories)
@@ -197,7 +198,14 @@ let incrementAll2 = map(add(1));
 
 Points-free function definitions look just like normal assignments without `function` or `=>`.
 
+## Predicate
+A predicate is a function that returns true or false for a given value. A common use of a predicate is as the callback for array filter.
 
+```js
+const predicate = (a) => a > 2;
+
+[1, 2, 3, 4].filter(predicate); // [3, 4]
+```
 
 ## Contracts
 
