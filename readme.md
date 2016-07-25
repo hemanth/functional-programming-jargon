@@ -154,7 +154,11 @@ greet(); // "Hi, Brianne"
 
 ## Side effects
 
-A function or expression is said to have a side effect if apart from returning a value, it modifies some state or has an observable interaction with external functions.
+A function or expression is said to have a side effect if apart from returning a value, it interacts with (reads from or writes to) external mutable state.
+
+```js
+var differentEveryTime = new Date();
+```
 
 ```js
 console.log("IO is a side effect!");
