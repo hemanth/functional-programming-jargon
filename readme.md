@@ -254,41 +254,35 @@ john.age + five === ({name: 'John', age: 30}).age + (5)
 
 ## Functor
 
-An object with a `map` function that adheres to certain rules. `Map` runs a function on values in an object and returns a new object.
-
-A common functor in javascript is `Array`
+An object that implements a `map` function which, while running over each value in the object to produce a new object, adheres to two rules:
 
 ```js
-[2, 3, 4].map((n) => n * 2); // [4, 6, 8]
-```
-
-If `func` is an object implementing a `map` function, and `f`, `g` be arbitrary functions, then `func` is said to be a functor if the map function adheres to the following rules:
-
-```js
-// identity
-func.map((x) => x) === func
+// preserves identity
+object.map(x => x) === object
 ```
 
 and
 
 ```js
-// composition
-func.map((x) => f(g(x))) === func.map(g).map(f)
+// composable
+object.map(x => f(g(x))) === object.map(g).map(f)
 ```
 
-We can now see that `Array` is a functor because it adheres to the functor rules.
+(`f`, `g` be arbitrary functions)
+
+A common functor in JavaScript is `Array` since it abides to the two functor rules:
 
 ```js
-[1, 2, 3].map((x) => x); // = [1, 2, 3]
+[1, 2, 3].map(x => x); // = [1, 2, 3]
 ```
 
 and
 
 ```js
-let f = (x) => x + 1;
-let g = (x) => x * 2;
+const f = x => x + 1;
+const g = x => x * 2;
 
-[1, 2, 3].map((x) => f(g(x))); // = [3, 5, 7]
+[1, 2, 3].map(x => f(g(x))); // = [3, 5, 7]
 [1, 2, 3].map(g).map(f);     // = [3, 5, 7]
 ```
 
