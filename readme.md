@@ -529,7 +529,7 @@ let add = (x) => (y) => x + y
 let increment = (x) => x + 1
 ```
 
-If a function accepts another function as an argument it is wrapped in parenthesis.
+If a function accepts another function as an argument it is wrapped in parentheses.
 
 ```js
 // call :: (a -> b) -> a -> b
