@@ -398,7 +398,7 @@ compose(foo, identity) ≍ compose(identity, foo) ≍ foo
 A monad is useful to represent a computation with some side-effects. The main operator of a monad is `then`, which sequences two computations. The promises are a kind of monad in JavaScript:
 
 ```js
-(someApiCall('hi')).then(result =>
+(someApiCall('hi')).then((result) =>
 someOtherApiCall(result.foo));
 ```
 
