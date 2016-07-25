@@ -395,17 +395,14 @@ compose(foo, identity) ≍ compose(identity, foo) ≍ foo
 
 ## Monad
 
-A monad is an object with [`of`](#pointed-functor) and `chain` functions. `chain` is like [`map`](#functor) except it un-nests the resulting nested object.
+A monad is useful to represent a computation with some side-effects. The main operator of a monad is `then`, which sequences two computations. The promises are a kind of monad in JavaScript:
 
 ```js
-['cat,dog', 'fish,bird'].chain((a) => a.split(',')) // ['cat', 'dog', 'fish', 'bird']
-
-//Contrast to map
-['cat,dog', 'fish,bird'].map((a) => a.split(',')) // [['cat', 'dog'], ['fish', 'bird']]
+(someApiCall('hi')).then(result =>
+someOtherApiCall(result.foo));
 ```
 
-`of` is also known as `return` in other functional languages.
-`chain` is also known as `flatmap` and `bind` in other languages.
+In this example, we must finish the first API call before doing the second one. In othe languages, the `then` operator is also known as the `bind` operator.
 
 ## Comonad
 
