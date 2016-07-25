@@ -402,7 +402,7 @@ A monad is useful to represent a computation with some side-effects. The main op
 someOtherApiCall(result.foo));
 ```
 
-In this example, we must finish the first API call before doing the second one. In othe languages, the `then` operator is also known as the `bind` operator.
+In this example, we must finish the first API call before doing the second one. In other languages, the `then` operator is also known as the `bind` operator.
 
 ## Comonad
 
