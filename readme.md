@@ -471,11 +471,11 @@ Make array a setoid:
 ```js
 Array.prototype.equals = (arr) => {
     var len = this.length
-    if (len != arr.length) {
+    if (len !== arr.length) {
         return false
     }
     for (var i = 0; i < len; i++) {
-        if (this[i] !=== arr[i]) {
+        if (this[i] !== arr[i]) {
             return false
         }
     }
