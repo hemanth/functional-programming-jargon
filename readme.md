@@ -411,17 +411,7 @@ compose(foo, identity) ≍ compose(identity, foo) ≍ foo
 
 ## Monad
 
-A monad is an object with [`of`](#pointed-functor) and `chain` functions. `chain` is like [`map`](#functor) except it un-nests the resulting nested object.
-
-```js
-['cat,dog', 'fish,bird'].chain((a) => a.split(',')) // ['cat', 'dog', 'fish', 'bird']
-
-//Contrast to map
-['cat,dog', 'fish,bird'].map((a) => a.split(',')) // [['cat', 'dog'], ['fish', 'bird']]
-```
-
-`of` is also known as `return` in other functional languages.
-`chain` is also known as `flatmap` and `bind` in other languages.
+A monad is just a monoid in the category of endofunctors, what's the problem?
 
 ## Comonad
 
