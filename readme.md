@@ -315,20 +315,28 @@ Array.prototype.of = (v) => [v];
 
 ## Lift
 
-Lift is like `map` except it can be applied to multiple functors.
+Lifting is when you take a value and put it into an object like a [functor](#pointed-functor). If you lift a function into an [Applicative Functor](#applicative-functor) then you can make it work on values that are also in that functor.
 
-Map is the same as a lift over a one-argument function:
-
-```js
-lift((n) => n * 2)([2, 3, 4]); // [4, 6, 8]
-```
-
-Unlike map lift can be used to combine values from multiple arrays:
+Some implementations have a function called `lift`, or `liftA2` to make it easier to run functions on functors.
 
 ```js
-lift((a, b) => a * b)([1, 2], [3]); // [3, 6]
-lift((a, b) => a * b)([1, 2], [3, 4]); // [3, 6, 4, 8]
+const mult = (a, b) => a * b;
+
+const liftedMult = lift(mult); // this function now works on functors like array
+
+liftedMult([1, 2], [3]); // [3, 6]
+lift((a, b) => a + b)([1, 2], [3, 4]); // [4, 5, 5, 6]
 ```
+
+Lifting a one-argument function and applying it does the same thing as `map`.
+
+```js
+const increment = (x) => x + 1;
+
+lift(increment)([2]); // [3]
+[2].map(increment); // [3]
+```
+
 
 ## Referential Transparency
 
@@ -454,6 +462,24 @@ An applicative functor is an object with an `ap` function. `ap` applies a functi
 
 ```js
 [(a) => a + 1].ap([1]) // [2]
+```
+
+This is useful if you have multiple applicative functors and you want to apply a function that takes multiple arguments to them.
+
+```js
+const arg1 = [1, 2];
+const arg2 = [3, 4];
+
+// function needs to be curried for this to work
+const add = (x) => (y) => x + y;
+
+const partiallyAppliedAdds = [add].ap(arg1); // [(y) => 1 + y, (y) => 2 + y]
+```
+
+This gives you an array of functions that you can call `ap` on to get the result:
+
+```js
+partiallyAppliedAdds.ap(arg2); // [3, 4, 5, 6]
 ```
 
 ## Morphism
