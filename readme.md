@@ -327,6 +327,7 @@ Unlike map lift can be used to combine values from multiple arrays:
 
 ```js
 lift((a, b) => a * b)([1, 2], [3]); // [3, 6]
+lift((a, b) => a * b)([1, 2], [3, 4]); // [3, 6, 4, 8]
 ```
 
 ## Referential Transparency
