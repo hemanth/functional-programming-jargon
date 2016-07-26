@@ -86,18 +86,34 @@ filter(is(Number), [0, '1', 2, null]); // [0, 2]
 
 ## Partial Application
 
-The process of getting a function with lesser arity compared to the original
-function by fixing the number of arguments is known as partial application.
+Partially applying a function means creating a new function by pre-filling some of the arguments to the original function.
+
 
 ```js
-let sum = (a, b) => a + b;
+// Helper to create partially applied functions
+// Takes a function and some arguments
+let partial = (f, ...args) =>
+    // returns a function that takes the rest of the arguments
+    (...moreArgs) =>
+        // and calls the original function with all of them
+        f(...[...args, ...moreArgs]);
 
-// partially applying `a` to `40`
-let partial = sum.bind(null, 40);
+// Something to apply
+let add3 = (a, b, c) => a + b + c;
 
-// Invoking it with `b`
-partial(2); // 42
+// Partially applying `2` and `3` to `add3` gives you a one-argument function
+const fivePlus = partial(add3, 2, 3); // (c) => 2 + 3 + c
+
+fivePlus(4); // 9
 ```
+
+You can also use `Function.prototype.bind` to partially apply a function in JS:
+
+```js
+const add1More = add3.bind(null, 2, 3); // (c) => 2 + 3 + c
+```
+
+Partial application helps create simpler functions from more complex ones by baking in data when you have it. [Curried](#currying) functions are automatically partially applied.
 
 ## Currying
 
