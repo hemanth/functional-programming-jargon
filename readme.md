@@ -2,7 +2,7 @@
 
 The goal of this document is to define jargon from functional programming in plain english with examples.
 
-*This is a WIP; please feel free to send a PR ;)*
+*This is a [WIP](https://github.com/hemanth/functional-programming-jargon/issues/20); please feel free to send a PR ;)*
 
 Where applicable, this document uses terms defined in the [Fantasy Land spec](https://github.com/fantasyland/fantasy-land)
 
