@@ -526,7 +526,7 @@ TODO
 
 ## Type Signatures
 
-Often functions will include comments that indicate the types of their arguments and return types.
+Often functions in JavaScript will include comments that indicate the types of their arguments and return values.
 
 There's quite a bit of variance across the community but they often follow the following patterns:
 
@@ -547,12 +547,17 @@ If a function accepts another function as an argument it is wrapped in parenthes
 let call = (f) => (x) => f(x)
 ```
 
-The letters `a`, `b`, `c`, `d` are used to signify that the argument can be of any type. For this `map` it takes a function that transforms a value of some type `a` into another type `b`, an array of values of type `a`, and returns an array of values of type `b`.
+The letters `a`, `b`, `c`, `d` are used to signify that the argument can be of any type. The following version of `map` takes a function that transforms a value of some type `a` into another type `b`, an array of values of type `a`, and returns an array of values of type `b`.
 
 ```js
 // map :: (a -> b) -> [a] -> [b]
 let map = (f) => (list) => list.map(f)
 ```
+
+### Further reading
+* [Ramda's type signatures](https://github.com/ramda/ramda/wiki/Type-Signatures)
+* [Mostly Adaquate Guide](https://drboolean.gitbooks.io/mostly-adequate-guide/content/ch7.html#whats-your-type)
+* [What is Hindley-Milner?](http://stackoverflow.com/a/399392/22425) on Stack Overflow
 
 ## Union type
 A union type is the combination of two types together into another one.
@@ -637,4 +642,4 @@ getNestedPrice({item: {price: 9.99}}); // Some(9.99)
 
 ---
 
-__P.S:__ Without the wonderful [contributions](https://github.com/hemanth/functional-programming-jargon/graphs/contributors) this repo would be meaningless!
+__P.S:__ This repo is successful due to the wonderful [contributions](https://github.com/hemanth/functional-programming-jargon/graphs/contributors)!
