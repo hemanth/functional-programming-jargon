@@ -303,14 +303,12 @@ const g = x => x * 2;
 ```
 
 ## Pointed Functor
-A functor with an `of` function that puts _any_ single value into that functor.
+An object with an `of` function that puts _any_ single value into it.
 
-Array Implementation:
+ES2015 adds `Array.of` making arrays a pointed functor.
 
 ```js
-Array.prototype.of = (v) => [v];
-
-[].of(1) // [1]
+Array.of(1) // [1]
 ```
 
 ## Lift
@@ -367,29 +365,29 @@ randIter.next(); // Each execution gives a random value, expression is evaluated
 
 ## Monoid
 
-A monoid is some data type and a two parameter function that "combines" two values of the type, where an identity value that does not affect the result of the function also exists.
+An object with a function that "combines" that object with another of the same type.
 
-One very simple monoid is numbers and addition:
+One simple monoid is the addition of numbers:
 
 ```js
 1 + 1; // 2
 ```
+In this case number is the object and `+` is the function.
 
-The data type is number and the function is `+`, the addition of two numbers.
+An "identity" value must also exist that when combined with a value doesn't change it.
 
+The identity value for addition is `0`.
 ```js
 1 + 0; // 1
 ```
 
-The identity value is `0` - adding `0` to any number will not change it.
-
-For something to be a monoid, it's also required that the grouping of operations will not affect the result:
+It's also required that the grouping of operations will not affect the result (associativity):
 
 ```js
 1 + (2 + 3) === (1 + 2) + 3; // true
 ```
 
-Array concatenation can also be said to be a monoid:
+Array concatenation also forms a monoid:
 
 ```js
 [1, 2].concat([3, 4]); // [1, 2, 3, 4]
