@@ -356,6 +356,32 @@ referentially transparent.
 
 When an application is composed of expressions and devoid of side effects, truths about the system can be derived from the parts.
 
+## Lambda
+
+An anonymous function that can be treated like a value.
+
+```js
+function(a){
+    return a + 1;
+};
+
+(a) => a + 1;
+```
+Lambdas are often passed as arguments to Higher-Order functions.
+
+```js
+[1, 2].map((a) => a + 1); // [2, 3]
+```
+
+You can assign a lambda to a variable.
+
+```js
+const add1 = (a) => a + 1;
+```
+
+## Lambda Calculus
+A branch of mathematics that uses functions to create a [universal model of computation](https://en.wikipedia.org/wiki/Lambda_calculus).
+
 ## Lazy evaluation
 
 Lazy evaluation is a call-by-need evaluation mechanism that delays the evaluation of an expression until its value is needed. In functional languages, this allows for structures like infinite lists, which would not normally be available in an imperative language where the sequencing of commands is significant.
