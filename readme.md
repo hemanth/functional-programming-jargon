@@ -92,14 +92,14 @@ Partially applying a function means creating a new function by pre-filling some 
 ```js
 // Helper to create partially applied functions
 // Takes a function and some arguments
-let partial = (f, ...args) =>
+const partial = (f, ...args) =>
     // returns a function that takes the rest of the arguments
     (...moreArgs) =>
         // and calls the original function with all of them
         f(...[...args, ...moreArgs]);
 
 // Something to apply
-let add3 = (a, b, c) => a + b + c;
+const add3 = (a, b, c) => a + b + c;
 
 // Partially applying `2` and `3` to `add3` gives you a one-argument function
 const fivePlus = partial(add3, 2, 3); // (c) => 2 + 3 + c
@@ -150,7 +150,7 @@ A function is pure if the return value is only determined by its
 input values, and does not produce side effects.
 
 ```js
-let greet = (name) => "Hi, " + name ;
+const greet = (name) => "Hi, " + name ;
 
 greet("Brianne") // "Hi, Brianne"
 
@@ -160,9 +160,9 @@ As opposed to:
 
 ```js
 
-let greeting;
+const greeting;
 
-let greet = () => greeting = "Hi, " + window.name;
+const greet = () => greeting = "Hi, " + window.name;
 
 greet(); // "Hi, Brianne"
 
@@ -173,7 +173,7 @@ greet(); // "Hi, Brianne"
 A function or expression is said to have a side effect if apart from returning a value, it interacts with (reads from or writes to) external mutable state.
 
 ```js
-var differentEveryTime = new Date();
+const differentEveryTime = new Date();
 ```
 
 ```js
@@ -202,16 +202,16 @@ Writing functions where the definition does not explicitly identify the argument
 
 ```js
 // Given
-let map = (fn) => (list) => list.map(fn);
-let add = (a) => (b) => a + b;
+const map = (fn) => (list) => list.map(fn);
+const add = (a) => (b) => a + b;
 
 // Then
 
 // Not points-free - `numbers` is an explicit argument
-let incrementAll = (numbers) => map(add(1))(numbers);
+const incrementAll = (numbers) => map(add(1))(numbers);
 
 // Points-free - The list is an implicit argument
-let incrementAll2 = map(add(1));
+const incrementAll2 = map(add(1));
 ```
 
 `incrementAll` identifies and uses the parameter `numbers`, so it is not points-free.  `incrementAll2` is written just by combining functions and values, making no mention of its arguments.  It __is__ points-free.
@@ -346,7 +346,7 @@ behavior of the program is said to be referentially transparent.
 Say we have function greet:
 
 ```js
-let greet = () => "Hello World!";
+const greet = () => "Hello World!";
 ```
 
 Any invocation of `greet()` can be replaced with `Hello World!` hence greet is
@@ -361,7 +361,7 @@ When an application is composed of expressions and devoid of side effects, truth
 Lazy evaluation is a call-by-need evaluation mechanism that delays the evaluation of an expression until its value is needed. In functional languages, this allows for structures like infinite lists, which would not normally be available in an imperative language where the sequencing of commands is significant.
 
 ```js
-let rand = function*() {
+const rand = function*() {
     while (1 < 2) {
         yield Math.random();
     }
@@ -369,7 +369,7 @@ let rand = function*() {
 ```
 
 ```js
-let randIter = rand();
+const randIter = rand();
 randIter.next(); // Each execution gives a random value, expression is evaluated on need.
 ```
 
@@ -412,8 +412,8 @@ The identity value is empty array `[]`
 If identity and compose functions are provided, functions themselves form a monoid:
 
 ```js
-var identity = (a) => a;
-var compose = (f, g) => (x) => f(g(x));
+const identity = (a) => a;
+const compose = (f, g) => (x) => f(g(x));
 
 compose(foo, identity) ≍ compose(identity, foo) ≍ foo
 ```
@@ -513,11 +513,11 @@ Make array a setoid:
 
 ```js
 Array.prototype.equals = (arr) => {
-    var len = this.length
+    const len = this.length
     if (len !== arr.length) {
         return false
     }
-    for (var i = 0; i < len; i++) {
+    for (let i = 0; i < len; i++) {
         if (this[i] !== arr[i]) {
             return false
         }
@@ -542,7 +542,7 @@ An object that has a `concat` function that combines it with another object of t
 An object that has a `reduce` function that can transform that object into some other type.
 
 ```js
-let sum = (list) => list.reduce((acc, val) => acc + val, 0);
+const sum = (list) => list.reduce((acc, val) => acc + val, 0);
 sum([1, 2, 3]) // 6
 ```
 
@@ -560,24 +560,24 @@ There's quite a bit of variance across the community but they often follow the f
 // functionName :: firstArgType -> secondArgType -> returnType
 
 // add :: Number -> Number -> Number
-let add = (x) => (y) => x + y
+const add = (x) => (y) => x + y
 
 // increment :: Number -> Number
-let increment = (x) => x + 1
+const increment = (x) => x + 1
 ```
 
 If a function accepts another function as an argument it is wrapped in parentheses.
 
 ```js
 // call :: (a -> b) -> a -> b
-let call = (f) => (x) => f(x)
+const call = (f) => (x) => f(x)
 ```
 
 The letters `a`, `b`, `c`, `d` are used to signify that the argument can be of any type. For this `map` it takes a function that transforms a value of some type `a` into another type `b`, an array of values of type `a`, and returns an array of values of type `b`.
 
 ```js
 // map :: (a -> b) -> [a] -> [b]
-let map = (f) => (list) => list.map(f)
+const map = (f) => (list) => list.map(f)
 ```
 
 ## Union type
