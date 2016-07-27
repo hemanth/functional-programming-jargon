@@ -1,6 +1,8 @@
 # Functional Programming Jargon
 
-The goal of this document is to define jargon from functional programming in plain english with examples.
+Functional programming (FP) provides a lot of advantages and its popularity has been increasing as a result.  However each programming paradigm comes with its own unique jargon and FP is no exception.  By providing a glossary we hope to make learning FP easier.
+
+JavaScript is popular language that is well suited to FP; especially with revision ES2015.  Therefore we have chosen to use JavaScript (ES2015) for our examples, and in some cases definitions.  This should make this glossary as accessible and as possible and introduce features from the new revision.
 
 *This is a [WIP](https://github.com/hemanth/functional-programming-jargon/issues/20); please feel free to send a PR ;)*
 
