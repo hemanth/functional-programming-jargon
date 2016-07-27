@@ -8,6 +8,17 @@ JavaScript is popular language that is well suited to FP, especially with the ES
 
 Where applicable, this document uses terms defined in the [Fantasy Land spec](https://github.com/fantasyland/fantasy-land)
 
+## Functional programming libraries and projects for JavaScript
+
+Practical examples of popular and production-ready FP libraries, FP-inspired projects, and other learning resources:
+
+* [ramda](https://github.com/ramda/ramda)
+* [lodash](https://github.com/lodash/lodash)
+* [underscore.js](https://github.com/jashkenas/underscore)
+* [lazy.js](https://github.com/dtao/lazy.js)
+* [maryamyriameliamurphies.js](https://github.com/sjsyrek/maryamyriameliamurphies.js)
+* [Haskell in ES6](https://github.com/casualjavascript/haskell-in-es6)
+
 <!-- RM(noparent,notop) -->
 
 ## Contents
