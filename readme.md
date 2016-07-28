@@ -64,6 +64,45 @@ Practical examples of popular and production-ready FP libraries, FP-inspired pro
 
 ## Algebraic Data types
 
+Data types are algebraic if you can describe their construction in terms of the basic mathematical operations of _sum_ and _product_.
+
+A _sum type_ is like an enumeration in other languages: a type that represents one out of a series of two or more possible values. Boolean types, for example, are sum types, because a boolean value is either true _or_ false. A sum type representing days of the week could construct values representing Monday _or_ Tuesday _or_ Wednesday, etc. That _or_ operation is the sum in sum type. Adding up all the possible values together results in the number of possible values a given sum type can represent:
+
+```js
+true || false
+Sunday || Monday || Tuesday || Wednesday || Thursday || Friday || Saturday
+```
+
+We can also refer to the _cardinality_ of types. The cardinality of a boolean type is two. The cardinality of a days of the week type is seven. Incidentally, we can also consider the boolean values themselves (true and false) to be types with a cardinality of one—they only represent themselves, after all.
+
+A _product type_ is a type that represents the product of the cardinality of its component types. If, for whatever reason, you had a type that combined a boolean type with a days of the week type, the result would be a product type that could represent 14 possible values, that is the seven days of the week times the two boolean values. These possible values form the entire set of values this particular product type can hold. Tuples, which can hold a series of different values, are an example of a common product type. Where we can think of a sum type as analogous to an _or_ operation, the product type is like an _and_ operation:
+
+```js
+Sunday && true
+Sunday && false
+Monday && true
+Monday && false
+Tuesday && true
+Tuesday && false
+// etc.
+```
+
+As you can see, since algebraic data types follow the mathematical rules for sums and products, any type system that implements them also gets the rest of algebra (such as the distributive property) for free. In fact, you can treat types rather like values "one level up" and type constructors like functions one level up. A parameterized type, after all, is simply a function that operates on types instead of values.
+
+Actually, it's even more interesting, because the type of a _function_ itself fits nicely into these rules. We've already seen sum and product types. If you can do math with sums and products (and you probably can), then you can work with these types. The same is true for the function type. Its type is exponential. That is, a function that takes a value of type `a` and returns another value of type `b` can represent `b^a` possible functions. A function from a boolean to a boolean, therefore, can only result in a function (which is just another kind of value) in a set of 2^2, or four possible function values, which we can easily work out:
+
+```js
+// boolToBool represents a generic function that takes a boolean value and returns a boolean value
+boolToBool(true) === true;
+boolToBool(true) === false;
+boolToBool(false) === true;
+boolToBool(true) === false;
+```
+
+Algebraic data types (not to be confused with abstract data types) are essential to functional programming, partly because of [referential transparency](#referential-transparency) (there are only values, no references, in strict FP), and partly because the distinction between functions and values is less meaningful: operations on one can just as easily be performed on the other. It's the algebra that lets you perform these operations with the confidence that you are being supported not just by a compiler or a language syntax but by the fundamental laws of mathematics.
+
+[Back to top](#contents)
+
 ## Applicative Functor
 
 An applicative is a monoidal [functor](#functor). That is, applicative structures represent [monoids](#monoid) for which function application itself is an identity. In (somewhat) plainer language, applicative functors allow for the chaining of computations within a fixed structure, such that each computation has the _same_ structure, thus making them subject to convenient rules of algebraic composition. Practical uses include parsers, the collection of error conditions, or any computational sequence that does not require the full power of monads (in other words, does not require side effects). This may sound complicated, but it really just requires abstract thinking about what functions actually are (another kind of value) and a few specific examples:
