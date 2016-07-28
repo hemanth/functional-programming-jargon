@@ -4,11 +4,20 @@ Functional programming (FP) provides a lot of advantages and its popularity has 
 
 JavaScript is popular language that is well suited to FP; especially with revision ES2015.  Therefore we have chosen to use JavaScript (ES2015) for our examples, and in some cases definitions.  This should make this glossary as accessible and as possible and introduce features from the new revision.
 
+
 *This is a [WIP](https://github.com/hemanth/functional-programming-jargon/issues/20); please feel free to send a PR ;)*
 
 Where applicable, this document uses terms defined in the [Fantasy Land spec](https://github.com/fantasyland/fantasy-land)
 
+### Languages
+* [Portuguese](https://github.com/alexmoreno/jargoes-programacao-funcional)
+
+
+
+
+
 <!-- RM(noparent,notop) -->
+### Contents
 
 * [Arity](#arity)
 * [Higher-Order Functions (HOF)](#higher-order-functions-hof)
