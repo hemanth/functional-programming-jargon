@@ -128,7 +128,7 @@ If your implementation of `ap` is correct, then these laws should follow, though
 
 See also: [_Monoid_](#monoid), [_Functor_](#functor)
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ## Arity
 
@@ -143,13 +143,13 @@ console.log(arity); // 2
 // The arity of sum is 2
 ```
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ## Categories
 
 Objects with associated functions that adhere to certain rules. E.g. [Monoid](#monoid)
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ## Comonad
 
@@ -175,7 +175,7 @@ Extend runs a function on the comonad. The function should return the same type 
 CoIdentity(1).extend((co) => co.extract() + 1) // CoIdentity(2)
 ```
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ## Constant
 
@@ -194,13 +194,13 @@ With the above two constants the following expression will always return `true`.
 john.age + five === ({name: 'John', age: 30}).age + (5)
 ```
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ## Contracts
 
 TODO
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ## Currying
 
@@ -221,13 +221,13 @@ add2(10) // 12
 
 ```
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ## Equational Reasoning
 
 When an application is composed of expressions and devoid of side effects, truths about the system can be derived from the parts.
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ## Foldable
 
@@ -238,7 +238,7 @@ const sum = (list) => list.reduce((acc, val) => acc + val, 0);
 sum([1, 2, 3]) // 6
 ```
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ## Function Composition
 
@@ -250,7 +250,7 @@ const floorAndToString = compose((val) => val.toString(), Math.floor) // Usage
 floorAndToString(121.212121) // "121"
 ```
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ## Functor
 
@@ -286,13 +286,13 @@ const g = x => x * 2;
 [1, 2, 3].map(g).map(f);     // = [3, 5, 7]
 ```
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ## Guarded Functions
 
 TODO
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ## Higher-Order Functions (HOF)
 
@@ -318,7 +318,7 @@ const is = (type) => (x) => Object(x) instanceof type;
 filter(is(Number), [0, '1', 2, null]); // [0, 2]
 ```
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ## Idempotent
 
@@ -336,7 +336,7 @@ Math.abs(Math.abs(10))
 sort(sort(sort([2,1])))
 ```
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ## Isomorphism
 
@@ -355,7 +355,7 @@ coordsToPair(pairToCoords([1, 2])) // [1, 2]
 pairToCoords(coordsToPair({x: 1, y: 2})) // {x: 1, y: 2}
 ```
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ## Lazy evaluation
 
@@ -374,7 +374,7 @@ const randIter = rand();
 randIter.next(); // Each execution gives a random value, expression is evaluated on need.
 ```
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ## Lift
 
@@ -400,7 +400,7 @@ lift(increment)([2]); // [3]
 [2].map(increment); // [3]
 ```
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ## Monad
 
@@ -416,7 +416,7 @@ A monad is an object with [`of`](#pointed-functor) and `chain` functions. `chain
 `of` is also known as `return` in other functional languages.
 `chain` is also known as `flatmap` and `bind` in other languages.
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ## Monoid
 
@@ -463,13 +463,13 @@ const compose = (f, g) => (x) => f(g(x));
 compose(foo, identity) ≍ compose(identity, foo) ≍ foo
 ```
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ## Morphism
 
 A transformation function.
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ## Option
 
@@ -519,7 +519,7 @@ getNestedPrice({item: {foo: 1}}); // None()
 getNestedPrice({item: {price: 9.99}}); // Some(9.99)
 ```
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ## Partial Application
 
@@ -551,7 +551,7 @@ const add1More = add3.bind(null, 2, 3); // (c) => 2 + 3 + c
 
 Partial application helps create simpler functions from more complex ones by baking in data when you have it. [Curried](#currying) functions are automatically partially applied.
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ## Point-Free Style
 
@@ -575,7 +575,7 @@ const incrementAll2 = map(add(1));
 
 Points-free function definitions look just like normal assignments without `function` or `=>`.
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ## Pointed Functor
 
@@ -587,7 +587,7 @@ ES2015 adds `Array.of` making arrays a pointed functor.
 Array.of(1) // [1]
 ```
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ## Predicate
 
@@ -599,7 +599,7 @@ const predicate = (a) => a > 2;
 [1, 2, 3, 4].filter(predicate); // [3, 4]
 ```
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ## Product type
 
@@ -615,7 +615,7 @@ See also [Set theory](https://en.wikipedia.org/wiki/Set_theory).
 
 `Option` is also known as `Maybe`. `Some` is sometimes called `Just`. `None` is sometimes called `Nothing`.
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ## Purity
 
@@ -641,7 +641,7 @@ greet(); // "Hi, Brianne"
 
 ```
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ## Referential Transparency
 
@@ -657,7 +657,7 @@ const greet = () => "Hello World!";
 Any invocation of `greet()` can be replaced with `Hello World!` hence greet is
 referentially transparent.
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ## Semigroup
 
@@ -667,7 +667,7 @@ An object that has a `concat` function that combines it with another object of t
 [1].concat([2]) // [1, 2]
 ```
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ## Setoid
 
@@ -693,7 +693,7 @@ Array.prototype.equals = (arr) => {
 [1, 2].equals([0]) // false
 ```
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ## Side effects
 
@@ -707,13 +707,13 @@ const differentEveryTime = new Date();
 console.log("IO is a side effect!");
 ```
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ## Traversable
 
 TODO
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ## Type Signatures
 
@@ -750,7 +750,7 @@ const map = (f) => (list) => list.map(f)
 * [Mostly Adaquate Guide](https://drboolean.gitbooks.io/mostly-adequate-guide/content/ch7.html#whats-your-type)
 * [What is Hindley-Milner?](http://stackoverflow.com/a/399392/22425) on Stack Overflow
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ## Union type
 
@@ -773,7 +773,7 @@ Union types are also known as algebraic types, tagged unions, or sum types.
 
 There's a [couple](https://github.com/paldepind/union-type) [libraries](https://github.com/puffnfresh/daggy) in JS which help with defining and using union types.
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ## Value
 
@@ -787,7 +787,7 @@ Object.freeze({name: 'John', age: 30}) // The `freeze` function enforces immutab
 undefined
 ```
 
-[Back to top](#Contents)
+[Back to top](#contents)
 
 ---
 
