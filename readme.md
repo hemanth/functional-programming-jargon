@@ -63,7 +63,7 @@ Practical examples of popular and production-ready FP libraries, FP-inspired pro
 
 ## Applicative Functor
 
-An applicative is a monoidal [functor](#functor). That is, applicative structures represent [monoids](#monoid) for which function application itself is an identity. This sounds complicated, but it really just requires abstract thinking and a few specific examples:
+An applicative is a monoidal [functor](#functor). That is, applicative structures represent [monoids](#monoid) for which function application itself is an identity. In (somewhat) plainer language, applicative functors allow for the chaining of computations within a fixed structure, such that each computation has the _same_ structure, thus making them subject to convenient rules of algebraic composition. Practical uses include parsers, the collection of error conditions, or any computational sequence that does not require the full power of monads (in other words, does not require side effects). This may sound complicated, but it really just requires abstract thinking about what functions actually are (another kind of value) and a few specific examples:
 
 ```js
 1 + 0 === 0 + 1                                                   // monoid of integers for addition
@@ -124,7 +124,7 @@ Technically, applicative functors must satisfy four laws:
 * homomorphism `[f].ap([x]) === [f(x)]`: applying one applicative functor to another is the same as applying the function to the value directly and then lifting the result into the applicative context
 * interchange `[xs].ap([y]) === [y].ap[xs]`: proves that applicative operations are commutative, not easy to demonstrate in JavaScript
 
-If your implementation of `ap` is correct, then these laws should follow, though JavaScript specifically does not lend itself to these sorts of algebraic operations.
+If your implementation of `ap` is correct, then these laws should follow, though JavaScript specifically does not lend itself to performing these sorts of algebraic operations easily or legibly.
 
 See also: [_Monoid_](#monoid), [_Functor_](#functor)
 
