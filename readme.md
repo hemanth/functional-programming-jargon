@@ -23,6 +23,7 @@ Practical examples of popular and production-ready FP libraries, FP-inspired pro
 
 ## Contents
 
+* [Algebraic Data Types](#algebraic-data-types)
 * [Applicative Functor](#applicative-functor)
 * [Arity](#arity)
 * [Categories](#categories)
@@ -60,6 +61,8 @@ Practical examples of popular and production-ready FP libraries, FP-inspired pro
 * [Value](#value)
 
 <!-- /RM -->
+
+## Algebraic Data types
 
 ## Applicative Functor
 
@@ -125,6 +128,9 @@ Technically, applicative functors must satisfy four laws:
 * interchange `[xs].ap([y]) === [y].ap[xs]`: proves that applicative operations are commutative, not easy to demonstrate in JavaScript
 
 If your implementation of `ap` is correct, then these laws should follow, though JavaScript specifically does not lend itself to performing these sorts of algebraic operations easily or legibly.
+
+### Further reading
+* [Functional Pearl: Applicative programming with effects](http://www.staff.city.ac.uk/~ross/papers/Applicative.pdf)
 
 See also: [_Monoid_](#monoid), [_Functor_](#functor)
 
