@@ -63,29 +63,70 @@ Practical examples of popular and production-ready FP libraries, FP-inspired pro
 
 ## Applicative Functor
 
-An applicative functor is an object with an `ap` function. `ap` applies a function in the object to a value in another object of the same type.
+An applicative is a monoidal [functor](#functor). That is, applicative structures represent [monoids](#monoid) for which function application itself is an identity. This sounds complicated, but it really just requires abstract thinking and a few specific examples:
 
 ```js
-[(a) => a + 1].ap([1]) // [2]
+1 + 0 === 0 + 1                                                   // monoid of integers for addition
+1 * 2 === 2 * 1                                                   // monoid of integers for multiplication
+[1,2,3].concat([]).every((x, i) => x === [].concat([1,2,3])[i])   // monoid of arrays
+const add = (x, y) => x + y;
+const f = add.bind(null, 1);
+[f,f,f].concat([]).every((x, i) => x === [].concat([f,f,f])[i])   // monoid of function application
 ```
 
-This is useful if you have multiple applicative functors and you want to apply a function that takes multiple arguments to them.
+Integers are monoids, because any integer added to `0` (the "empty" value for addition) evaluates to the same integer. If you think of integers as a set that conforms to certain laws, this easy-looking example just means that for the set of things that qualify as integers, the addition operation forms a monoid. You can append `0` to any integer using addition and get back the original `0`, which satisfies the identity law. Likewise, integers also form a monoid with respect to multiplication. In this instance, however, the "empty" element you can append to any other element and get the same element back is `1` instead of `0`.
+
+For lists, the "empty" element is simply an empty list. Note that JavaScript arrays are not [referentially transparent](#referential-transparency)—that is, they carry around extra state and are technically references, not values—but for this example they will suffice.
+
+For functional application itself, we generalize the operation to perform such that the "empty" value becomes the generic _idea_ of function application. Where we "appended" a value to `0` to get `1`, we actually performed the operation of addition. Where we "appended" an array to an empty array to get back the original array, we actually performed the operation of concatenation. For applicative functors, then, we simply perform a the operation of functional application _in general_ to whichever "empty" value is specified by the applicative structure.
+
+For example, the empty value of an array is `[]`, but this is syntactic sugar for the function `new Array()`. Of course, we can't just "append" any operation to our empty array any more than we can add coffee to `0` or multiply bananas by philosophy. We must first make the operation the same kind of thing as the array. `0` and `1` are already the same kind of thing. `[]` and `[1,2,3]` are the same kind of thing. And if we put the operation inside the array, `[f,f,f]` above, then it too is now the same kind of thing—it's just an array of (in this case, [partially applied](#partial-application)) functions instead of an array of "normal" values.
+
+We must now add an `ap` method to `Array` in order to make the applicative magic actually work. Integers come with addition and multiplication "built-in". Obviously, our generic operation is not built-in. The `ap` method we define will tell `Array` how to perform applicative function mapping within its context:
 
 ```js
-const arg1 = [1, 2];
-const arg2 = [3, 4];
-
-// function needs to be curried for this to work
-const add = (x) => (y) => x + y;
-
-const partiallyAppliedAdds = [add].ap(arg1); // [(y) => 1 + y, (y) => 2 + y]
+Array.prototype.ap = function(xs) {
+  const ys = [];
+  return this.forEach(f => xs.forEach(x => ys.push(f(x)))), ys;
+}
 ```
 
-This gives you an array of functions that you can call `ap` on to get the result:
+Now, when we use this special `ap` function, which every applicative functor must define, any "operations with context" we place within that applicative array will be executed for each element of any other array we pass to `ap` as an argument:
 
 ```js
-partiallyAppliedAdds.ap(arg2); // [3, 4, 5, 6]
+const f = (x, y) => x + y;                 // binary function     
+const xs = [1,2,3];                        // an array of values, also an applicative functor now
+const fs = xs.map(x => f.bind(null, 1));   // make an array of partially applied functions
+const g = x => y => x + y;                 // or curry your function for added FP elegance
+const gs = xs.map(x => g(1));
+fs.ap(xs);                                 // => [2,3,4,2,3,4,2,3,4]
+gs.ap(xs);                                 // => [2,3,4,2,3,4,2,3,4]
 ```
+
+What we're essentially doing here is mapping the `f` function over a list of values, which is the functor operation. The result is a list of functions, each one with one of those values partially applied. We must use partial application here, because otherwise JavaScript would evaluate the function expression and return `null`. We then perform the applicative operation, which, in the case of `Array`, is to "append" each function of the array `fs` to each value in the array `xs`, and since we have defined "append" in this case as function application itself (as opposed to addition or concatenation), each value is applied, in turn, to each function, and the result is a new array containing the values that result from each function application.
+
+If you think of functions as values in their own right, this ought to make perfect sense. In fact, you could even apply a list of functions to another list of functions and chain operations together, which is especially powerful if you [curry](#currying) your functions:
+
+```js
+const id = x => x;                 // the identity function
+const ids = [id,id,id];
+fs.ap(ids.ap(xs));                 // => [2,3,4,2,3,4,2,3,4,2,3,4,2,3,4,2,3,4,2,3,4,2,3,4,2,3,4]
+gs.ap(ids.ap(xs));                 // => [2,3,4,2,3,4,2,3,4,2,3,4,2,3,4,2,3,4,2,3,4,2,3,4,2,3,4]
+const ggg = [g,g,g];               // create a list of curried functions
+const gids = ggg.ap(ids.ap(xs));   // use the applicative functor to map over them, creating a list of partially applied, curried functions
+gids.ap(xs);                       // => [2,3,4,3,4,5,4,5,6,2,3,4,3,4,5,4,5,6,2,3,4,3,4,5,4,5,6,2,3,4,3,4,5,4,5,6,2,3,4,3,4,5,4,5,6,2,3,4,3,4,5,4,5,6,2,3,4,3,4,5,4,5,6,2,3,4,3,4,5,4,5,6,2,3,4,3,4,5,4,5,6]
+```
+
+Technically, applicative functors must satisfy four laws:
+
+* identity `[id].ap(xs) === [xs]`: an applicative applied with the identity function returns the original applicative
+* composition `f.g.h(x) === f(g(h(x)))`: requires a composition operator, but basically means that terms in a function expression are associative
+* homomorphism `[f].ap([x]) === [f(x)]`: applying one applicative functor to another is the same as applying the function to the value directly and then lifting the result into the applicative context
+* interchange `[xs].ap([y]) === [y].ap[xs]`: proves that applicative operations are commutative, not easy to demonstrate in JavaScript
+
+If your implementation of `ap` is correct, then these laws should follow, though JavaScript specifically does not lend itself to these sorts of algebraic operations.
+
+See also: [_Monoid_](#monoid), [_Functor_](#functor)
 
 [Back to top](#Contents)
 
