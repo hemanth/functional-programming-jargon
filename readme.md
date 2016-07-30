@@ -9,7 +9,7 @@ JavaScript is popular language that is well suited to FP; especially with revisi
 
 Where applicable, this document uses terms defined in the [Fantasy Land spec](https://github.com/fantasyland/fantasy-land)
 
-### Languages
+__Translations:__
 * [Portuguese](https://github.com/alexmoreno/jargoes-programacao-funcional)
 
 ### Contents
