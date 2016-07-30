@@ -12,12 +12,10 @@ Where applicable, this document uses terms defined in the [Fantasy Land spec](ht
 ### Languages
 * [Portuguese](https://github.com/alexmoreno/jargoes-programacao-funcional)
 
-
-
-
+### Contents
 
 <!-- RM(noparent,notop) -->
-### Contents
+
 
 * [Arity](#arity)
 * [Higher-Order Functions (HOF)](#higher-order-functions-hof)
