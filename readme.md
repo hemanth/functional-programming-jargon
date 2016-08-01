@@ -11,9 +11,7 @@ Where applicable, this document uses terms defined in the [Fantasy Land spec](ht
 __Translations:__
 * [Portuguese](https://github.com/alexmoreno/jargoes-programacao-funcional)
 
-## Functional programming libraries and projects for JavaScript
-
-Practical examples of popular and production-ready FP libraries, FP-inspired projects, and other learning resources:
+__Functional programming libraries and projects for JavaScript:__
 
 * [ramda](https://github.com/ramda/ramda)
 * [lodash](https://github.com/lodash/lodash)
