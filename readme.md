@@ -4,11 +4,18 @@ Functional programming (FP) provides a lot of advantages and its popularity has 
 
 Examples are presented in JavaScript (ES2015). [Why JavaScript?](https://github.com/hemanth/functional-programming-jargon/wiki/Why-JavaScript%3F)
 
+
 *This is a [WIP](https://github.com/hemanth/functional-programming-jargon/issues/20); please feel free to send a PR ;)*
 
 Where applicable, this document uses terms defined in the [Fantasy Land spec](https://github.com/fantasyland/fantasy-land)
 
+__Translations:__
+* [Portuguese](https://github.com/alexmoreno/jargoes-programacao-funcional)
+
+### Contents
+
 <!-- RM(noparent,notop) -->
+
 
 * [Arity](#arity)
 * [Higher-Order Functions (HOF)](#higher-order-functions-hof)
