@@ -1,9 +1,8 @@
 # Functional Programming Jargon
 
-Functional programming (FP) provides a lot of advantages and its popularity has been increasing as a result.  However each programming paradigm comes with its own unique jargon and FP is no exception.  By providing a glossary with lots of examples we hope to make learning FP easier.
+Functional programming (FP) provides many advantages, and its popularity has been increasing as a result. However, each programming paradigm comes with its own unique jargon and FP is no exception. By providing a glossary, we hope to make learning FP easier.
 
 Examples are presented in JavaScript (ES2015). [Why JavaScript?](https://github.com/hemanth/functional-programming-jargon/wiki/Why-JavaScript%3F)
-
 
 *This is a [WIP](https://github.com/hemanth/functional-programming-jargon/issues/20); please feel free to send a PR ;)*
 
@@ -11,6 +10,17 @@ Where applicable, this document uses terms defined in the [Fantasy Land spec](ht
 
 __Translations:__
 * [Portuguese](https://github.com/alexmoreno/jargoes-programacao-funcional)
+
+## Functional programming libraries and projects for JavaScript
+
+Practical examples of popular and production-ready FP libraries, FP-inspired projects, and other learning resources:
+
+* [ramda](https://github.com/ramda/ramda)
+* [lodash](https://github.com/lodash/lodash)
+* [underscore.js](https://github.com/jashkenas/underscore)
+* [lazy.js](https://github.com/dtao/lazy.js)
+* [maryamyriameliamurphies.js](https://github.com/sjsyrek/maryamyriameliamurphies.js)
+* [Haskell in ES6](https://github.com/casualjavascript/haskell-in-es6)
 
 ### Contents
 
