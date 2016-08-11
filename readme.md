@@ -113,7 +113,7 @@ const partial = (f, ...args) =>
     // returns a function that takes the rest of the arguments
     (...moreArgs) =>
         // and calls the original function with all of them
-        f(...[...args, ...moreArgs]);
+        f(...args, ...moreArgs);
 
 // Something to apply
 const add3 = (a, b, c) => a + b + c;
