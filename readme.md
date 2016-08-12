@@ -177,7 +177,7 @@ As opposed to:
 
 ```js
 
-const greeting;
+let greeting;
 
 const greet = () => greeting = "Hi, " + window.name;
 
