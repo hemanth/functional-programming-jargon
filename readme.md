@@ -19,6 +19,7 @@ __Functional programming libraries and projects for JavaScript:__
 * [lazy.js](https://github.com/dtao/lazy.js)
 * [maryamyriameliamurphies.js](https://github.com/sjsyrek/maryamyriameliamurphies.js)
 * [Haskell in ES6](https://github.com/casualjavascript/haskell-in-es6)
+* [Immutable.js](https://facebook.github.io/immutable-js/)
 
 ### Contents
 
@@ -273,8 +274,10 @@ undefined
 A variable that cannot be reassigned once defined.
 
 ```js
-const five = 5
-const john = {name: 'John', age: 30}
+const { fromJS } = require('immutable');
+
+const five = fromJS(5);
+const john = fromJS({name: 'John', age: 30})
 ```
 
 Constants are [referentially transparent](#referential-transparency). That is, they can be replaced with the values that they represent without affecting the result.
@@ -282,7 +285,7 @@ Constants are [referentially transparent](#referential-transparency). That is, t
 With the above two constants the following expression will always return `true`.
 
 ```js
-john.age + five === ({name: 'John', age: 30}).age + (5)
+john.get('age') + five === ({ name: 'John', age: 30 }).age + (5)
 ```
 
 ## Functor
