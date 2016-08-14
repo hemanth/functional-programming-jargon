@@ -8,27 +8,17 @@ Examples are presented in JavaScript (ES2015). [Why JavaScript?](https://github.
 
 Where applicable, this document uses terms defined in the [Fantasy Land spec](https://github.com/fantasyland/fantasy-land)
 
-__Translations:__
+__Translations__
 * [Portuguese](https://github.com/alexmoreno/jargoes-programacao-funcional)
 
-__Functional programming libraries and projects for JavaScript:__
-
-* [ramda](https://github.com/ramda/ramda)
-* [lodash](https://github.com/lodash/lodash)
-* [underscore.js](https://github.com/jashkenas/underscore)
-* [lazy.js](https://github.com/dtao/lazy.js)
-* [maryamyriameliamurphies.js](https://github.com/sjsyrek/maryamyriameliamurphies.js)
-* [Haskell in ES6](https://github.com/casualjavascript/haskell-in-es6)
-
-### Contents
-
+__Table of Contents__
 <!-- RM(noparent,notop) -->
-
 
 * [Arity](#arity)
 * [Higher-Order Functions (HOF)](#higher-order-functions-hof)
 * [Partial Application](#partial-application)
 * [Currying](#currying)
+* [Auto Currying](#auto-currying)
 * [Function Composition](#function-composition)
 * [Purity](#purity)
 * [Side effects](#side-effects)
@@ -45,13 +35,16 @@ __Functional programming libraries and projects for JavaScript:__
 * [Lift](#lift)
 * [Referential Transparency](#referential-transparency)
 * [Equational Reasoning](#equational-reasoning)
+* [Lambda](#lambda)
+* [Lambda Calculus](#lambda-calculus)
 * [Lazy evaluation](#lazy-evaluation)
 * [Monoid](#monoid)
 * [Monad](#monad)
 * [Comonad](#comonad)
 * [Applicative Functor](#applicative-functor)
 * [Morphism](#morphism)
-* [Isomorphism](#isomorphism)
+  * [Endomorphism](#endomorphism)
+  * [Isomorphism](#isomorphism)
 * [Setoid](#setoid)
 * [Semigroup](#semigroup)
 * [Foldable](#foldable)
@@ -60,6 +53,7 @@ __Functional programming libraries and projects for JavaScript:__
 * [Union type](#union-type)
 * [Product type](#product-type)
 * [Option](#option)
+* [Functional Programming Libraries in JavaScript](#functional-programming-libraries-in-javascript)
 
 
 <!-- /RM -->
@@ -150,6 +144,24 @@ const add2 = curriedSum(2); // (b) => 2 + b
 add2(10) // 12
 
 ```
+
+## Auto Currying
+Transforming a function that takes multiple arguments into one that if given less than its correct number of arguments returns a function that takes the rest. When the function gets the correct number of arguments it is then evaluated.
+
+Underscore, lodash, and ramda have a `curry` function that works this way.
+
+```js
+const add = (x, y) => x + y;
+
+const curriedAdd = _.curry(add);
+curreiedAdd(1, 2) // 3
+curreiedAdd(1) // (y) => 1 + y
+curreiedAdd(1)(2) // 3
+```
+
+__Further reading__
+* [Favoring Curry](http://fr.umio.us/favoring-curry/)
+* [Hey Underscore, You're Doing It Wrong!](https://www.youtube.com/watch?v=m3svKOdZijA)
 
 ## Function Composition
 
@@ -335,12 +347,14 @@ Lifting is when you take a value and put it into an object like a [functor](#poi
 Some implementations have a function called `lift`, or `liftA2` to make it easier to run functions on functors.
 
 ```js
-const mult = (a, b) => a * b;
+const liftA2 = (f) => (a, b) => a.map(f).ap(b);
 
-const liftedMult = lift(mult); // this function now works on functors like array
+const mult = a => b => a * b;
+
+const liftedMult = liftA2(mult); // this function now works on functors like array
 
 liftedMult([1, 2], [3]); // [3, 6]
-lift((a, b) => a + b)([1, 2], [3, 4]); // [4, 5, 5, 6]
+liftA2((a, b) => a + b)([1, 2], [3, 4]); // [4, 5, 5, 6]
 ```
 
 Lifting a one-argument function and applying it does the same thing as `map`.
@@ -464,9 +478,15 @@ compose(foo, identity) ≍ compose(identity, foo) ≍ foo
 A monad is an object with [`of`](#pointed-functor) and `chain` functions. `chain` is like [`map`](#functor) except it un-nests the resulting nested object.
 
 ```js
+// Implementation
+Array.prototype.chain = function(f){
+    return this.reduce((acc, it) => acc.concat(f(it)), []);
+};
+
+// Usage
 ['cat,dog', 'fish,bird'].chain((a) => a.split(',')) // ['cat', 'dog', 'fish', 'bird']
 
-//Contrast to map
+// Contrast to map
 ['cat,dog', 'fish,bird'].map((a) => a.split(',')) // [['cat', 'dog'], ['fish', 'bird']]
 ```
 
@@ -502,16 +522,23 @@ CoIdentity(1).extend((co) => co.extract() + 1) // CoIdentity(2)
 An applicative functor is an object with an `ap` function. `ap` applies a function in the object to a value in another object of the same type.
 
 ```js
+// Implementation
+Array.prototype.ap = function(xs){
+    return this.reduce((acc, f) => acc.concat(xs.map(f)), []);
+};
+
+// Example usage
 [(a) => a + 1].ap([1]) // [2]
 ```
 
-This is useful if you have multiple applicative functors and you want to apply a function that takes multiple arguments to them.
+This is useful if you have two objects and you want to apply a binary function to their contents.
 
 ```js
+// Arrays that you want to combine
 const arg1 = [1, 2];
 const arg2 = [3, 4];
 
-// function needs to be curried for this to work
+// combining function - must be curried for this to work
 const add = (x) => (y) => x + y;
 
 const partiallyAppliedAdds = [add].ap(arg1); // [(y) => 1 + y, (y) => 2 + y]
@@ -527,7 +554,19 @@ partiallyAppliedAdds.ap(arg2); // [3, 4, 5, 6]
 
 A transformation function.
 
-## Isomorphism
+### Endomorphism
+
+A function where the input type is the same as the output.
+
+```js
+// uppercase :: String -> String
+const uppercase = (str) => str.toUpperCase();
+
+// decrement :: Number -> Number
+const decrement = (x) => x - 1;
+```
+
+### Isomorphism
 
 A pair of transformations between 2 types of objects that is structural in nature and no data is lost.
 
@@ -621,7 +660,7 @@ The letters `a`, `b`, `c`, `d` are used to signify that the argument can be of a
 const map = (f) => (list) => list.map(f)
 ```
 
-### Further reading
+__Further reading__
 * [Ramda's type signatures](https://github.com/ramda/ramda/wiki/Type-Signatures)
 * [Mostly Adaquate Guide](https://drboolean.gitbooks.io/mostly-adequate-guide/content/ch7.html#whats-your-type)
 * [What is Hindley-Milner?](http://stackoverflow.com/a/399392/22425) on Stack Overflow
@@ -706,6 +745,16 @@ getNestedPrice({item: {price: 9.99}}); // Some(9.99)
 ```
 
 `Option` is also known as `Maybe`. `Some` is sometimes called `Just`. `None` is sometimes called `Nothing`.
+
+## Functional Programming Libraries in JavaScript
+
+* [Ramda](https://github.com/ramda/ramda)
+* [Folktale](http://folktalejs.org)
+* [lodash](https://github.com/lodash/lodash)
+* [Underscore.js](https://github.com/jashkenas/underscore)
+* [Lazy.js](https://github.com/dtao/lazy.js)
+* [maryamyriameliamurphies.js](https://github.com/sjsyrek/maryamyriameliamurphies.js)
+* [Haskell in ES6](https://github.com/casualjavascript/haskell-in-es6)
 
 ---
 
