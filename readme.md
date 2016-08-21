@@ -535,8 +535,8 @@ This is useful if you have two objects and you want to apply a binary function t
 
 ```js
 // Arrays that you want to combine
-const arg1 = [1, 2];
-const arg2 = [3, 4];
+const arg1 = [1, 3];
+const arg2 = [4, 5];
 
 // combining function - must be curried for this to work
 const add = (x) => (y) => x + y;
@@ -547,7 +547,7 @@ const partiallyAppliedAdds = [add].ap(arg1); // [(y) => 1 + y, (y) => 2 + y]
 This gives you an array of functions that you can call `ap` on to get the result:
 
 ```js
-partiallyAppliedAdds.ap(arg2); // [3, 4, 5, 6]
+partiallyAppliedAdds.ap(arg2); // [5, 6, 7, 8]
 ```
 
 ## Morphism
