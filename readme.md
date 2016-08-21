@@ -541,7 +541,7 @@ const arg2 = [4, 5];
 // combining function - must be curried for this to work
 const add = (x) => (y) => x + y;
 
-const partiallyAppliedAdds = [add].ap(arg1); // [(y) => 1 + y, (y) => 2 + y]
+const partiallyAppliedAdds = [add].ap(arg1); // [(y) => 1 + y, (y) => 3 + y]
 ```
 
 This gives you an array of functions that you can call `ap` on to get the result:
