@@ -154,9 +154,9 @@ Underscore, lodash, and ramda have a `curry` function that works this way.
 const add = (x, y) => x + y;
 
 const curriedAdd = _.curry(add);
-curreiedAdd(1, 2) // 3
-curreiedAdd(1) // (y) => 1 + y
-curreiedAdd(1)(2) // 3
+curriedAdd(1, 2) // 3
+curriedAdd(1) // (y) => 1 + y
+curriedAdd(1)(2) // 3
 ```
 
 __Further reading__
