@@ -76,11 +76,11 @@ console.log(arity); // 2
 A function which takes a function as an argument and/or returns a function.
 
 ```js
-const filter = (pred, xs) => {
+const filter = (predicate, array) => {
     const result = [];
-    for (let idx = 0; idx < xs.length; idx++) {
-        if (pred(xs[idx])) {
-            result.push(xs[idx]);
+    for (let idx = 0; idx < array.length; idx++) {
+        if (predicate(array[idx])) {
+            result.push(array[idx]);
         }
     }
     return result;
