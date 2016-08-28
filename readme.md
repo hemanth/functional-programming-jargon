@@ -76,11 +76,11 @@ console.log(arity); // 2
 A function which takes a function as an argument and/or returns a function.
 
 ```js
-const filter = (pred, xs) => {
+const filter = (predicate, array) => {
     const result = [];
-    for (let idx = 0; idx < xs.length; idx++) {
-        if (pred(xs[idx])) {
-            result.push(xs[idx]);
+    for (let idx = 0; idx < array.length; idx++) {
+        if (predicate(array[idx])) {
+            result.push(array[idx]);
         }
     }
     return result;
@@ -347,7 +347,7 @@ Lifting is when you take a value and put it into an object like a [functor](#poi
 Some implementations have a function called `lift`, or `liftA2` to make it easier to run functions on functors.
 
 ```js
-const liftA2 = (f) => (a, b) => a.map(f).ap(b);
+const liftA2 = (f) => (a, b) => a.map(f).map(b);
 
 const mult = a => b => a * b;
 
