@@ -666,24 +666,23 @@ __Further reading__
 * [What is Hindley-Milner?](http://stackoverflow.com/a/399392/22425) on Stack Overflow
 
 ## Union type
-A union type is the combination of two types together into another one.
 
-JS doesn't have static types but let's say we invent a type `NumOrString` which is a sum of `String` and `Number`.
+A **union** type is a union across a set of other types.
 
-The `+` operator in JS works on strings and numbers so we can use this new type to describe its inputs and outputs:
+We can think of each type as a set of possible values. (This is the set-theoretic model of types.) A union across two types is another set of values, where each element in the union is an element of one of the component sets.
+
+JavaScript doesn't have static types but let's say we invent a type `NumberOrString` which is a union of `Number` and `String`.
 
 ```js
-// add :: (NumOrString, NumOrString) -> NumOrString
-const add = (a, b) => a + b;
-
-add(1, 2); // Returns number 3
-add('Foo', 2); // Returns string "Foo2"
-add('Foo', 'Bar'); // Returns string "FooBar"
+var s = new String('abc')
+var n = new Number(123)
+var nos = new NumberOrString(123)
+var nos = new NumberOrString('abc')
 ```
 
-Union types are also known as algebraic types, tagged unions, or sum types.
+Union types are also known as sum types, tagged or discriminated unions, or variant types. Union types, along with product types, fall under the category of alegbraic data types. 
 
-There's a [couple](https://github.com/paldepind/union-type) [libraries](https://github.com/puffnfresh/daggy) in JS which help with defining and using union types.
+There are a [couple](https://github.com/paldepind/union-type) [libraries](https://github.com/puffnfresh/daggy) in JavaScript which help with defining and using union types.
 
 ## Product type
 
