@@ -2,6 +2,10 @@
 
 This project is a work in progress. Contributions are very welcome.
 
+## Hard rules
+* Run `npm test` to lint the code examples. Your changes must pass.
+* If you add a new definition or reorder them run `npm run toc` to regenerate the table of contents.
+
 That said, we'd like to maintain some consistency across the document.
 
 ## Style guide
@@ -14,12 +18,12 @@ That said, we'd like to maintain some consistency across the document.
 1. Avoid big walls of text
 
 ## Code conventions
-Be consistent with other examples
+[![JavaScript Style Guide](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
 
+* Be consistent with other examples
 * Prefer arrow functions
 * Parenthesis around function arguments
 * Put output values in comments
-* Use semi-colons
 * Keep it short and simple
 
 This styleguide is a WIP too! Send PRs :)
