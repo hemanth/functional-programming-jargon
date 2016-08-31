@@ -63,10 +63,10 @@ __Table of Contents__
 The number of arguments a function takes. From words like unary, binary, ternary, etc. This word has the distinction of being composed of two suffixes, "-ary" and "-ity." Addition, for example, takes two arguments, and so it is defined as a binary function or a function with an arity of two. Such a function may sometimes be called "dyadic" by people who prefer Greek roots to Latin. Likewise, a function that takes a variable number of arguments is called "variadic," whereas a binary function must be given two and only two arguments, currying and partial application notwithstanding (see below).
 
 ```js
-const sum = (a, b) => a + b;
+const sum = (a, b) => a + b
 
-const arity = sum.length;
-console.log(arity); // 2
+const arity = sum.length
+console.log(arity) // 2
 
 // The arity of sum is 2
 ```
@@ -77,22 +77,22 @@ A function which takes a function as an argument and/or returns a function.
 
 ```js
 const filter = (predicate, xs) => {
-    const result = [];
-    for (let idx = 0; idx < xs.length; idx++) {
-        if (predicate(xs[idx])) {
-            result.push(xs[idx]);
-        }
+  const result = []
+  for (let idx = 0; idx < xs.length; idx++) {
+    if (predicate(xs[idx])) {
+      result.push(xs[idx])
     }
-    return result;
-};
+  }
+  return result
+}
 ```
 
 ```js
-const is = (type) => (x) => Object(x) instanceof type;
+const is = (type) => (x) => Object(x) instanceof type
 ```
 
 ```js
-filter(is(Number), [0, '1', 2, null]); // [0, 2]
+filter(is(Number), [0, '1', 2, null]) // [0, 2]
 ```
 
 ## Partial Application
@@ -104,24 +104,24 @@ Partially applying a function means creating a new function by pre-filling some 
 // Helper to create partially applied functions
 // Takes a function and some arguments
 const partial = (f, ...args) =>
-    // returns a function that takes the rest of the arguments
-    (...moreArgs) =>
-        // and calls the original function with all of them
-        f(...args, ...moreArgs);
+  // returns a function that takes the rest of the arguments
+  (...moreArgs) =>
+    // and calls the original function with all of them
+    f(...args, ...moreArgs)
 
 // Something to apply
-const add3 = (a, b, c) => a + b + c;
+const add3 = (a, b, c) => a + b + c
 
 // Partially applying `2` and `3` to `add3` gives you a one-argument function
-const fivePlus = partial(add3, 2, 3); // (c) => 2 + 3 + c
+const fivePlus = partial(add3, 2, 3) // (c) => 2 + 3 + c
 
-fivePlus(4); // 9
+fivePlus(4) // 9
 ```
 
 You can also use `Function.prototype.bind` to partially apply a function in JS:
 
 ```js
-const add1More = add3.bind(null, 2, 3); // (c) => 2 + 3 + c
+const add1More = add3.bind(null, 2, 3) // (c) => 2 + 3 + c
 ```
 
 Partial application helps create simpler functions from more complex ones by baking in data when you have it. [Curried](#currying) functions are automatically partially applied.
@@ -133,13 +133,13 @@ The process of converting a function that takes multiple arguments into a functi
 Each time the function is called it only accepts one argument and returns a function that takes one argument until all arguments are passed.
 
 ```js
-const sum = (a, b) => a + b;
+const sum = (a, b) => a + b
 
-const curriedSum = (a) => (b) => a + b;
+const curriedSum = (a) => (b) => a + b
 
 curriedSum(40)(2) // 42.
 
-const add2 = curriedSum(2); // (b) => 2 + b
+const add2 = curriedSum(2) // (b) => 2 + b
 
 add2(10) // 12
 
@@ -151,9 +151,9 @@ Transforming a function that takes multiple arguments into one that if given les
 Underscore, lodash, and ramda have a `curry` function that works this way.
 
 ```js
-const add = (x, y) => x + y;
+const add = (x, y) => x + y
 
-const curriedAdd = _.curry(add);
+const curriedAdd = _.curry(add)
 curriedAdd(1, 2) // 3
 curriedAdd(1) // (y) => 1 + y
 curriedAdd(1)(2) // 3
@@ -170,7 +170,7 @@ The act of putting two functions together to form a third function where the out
 ```js
 const compose = (f, g) => (a) => f(g(a)) // Definition
 const floorAndToString = compose((val) => val.toString(), Math.floor) // Usage
-floorAndToString(121.212121) // "121"
+floorAndToString(121.212121) // '121'
 ```
 
 ## Purity
@@ -179,9 +179,9 @@ A function is pure if the return value is only determined by its
 input values, and does not produce side effects.
 
 ```js
-const greet = (name) => "Hi, " + name ;
+const greet = (name) => 'Hi, ' + name
 
-greet("Brianne") // "Hi, Brianne"
+greet('Brianne') // 'Hi, Brianne'
 
 ```
 
@@ -189,11 +189,13 @@ As opposed to:
 
 ```js
 
-let greeting;
+let greeting
 
-const greet = () => greeting = "Hi, " + window.name;
+const greet = () => {
+  greeting = 'Hi, ' + window.name
+}
 
-greet(); // "Hi, Brianne"
+greet() // "Hi, Brianne"
 
 ```
 
@@ -202,19 +204,19 @@ greet(); // "Hi, Brianne"
 A function or expression is said to have a side effect if apart from returning a value, it interacts with (reads from or writes to) external mutable state.
 
 ```js
-const differentEveryTime = new Date();
+const differentEveryTime = new Date()
 ```
 
 ```js
-console.log("IO is a side effect!");
+console.log('IO is a side effect!')
 ```
 
 ## Idempotent
 
 A function is idempotent if reapplying it to its result does not produce a different result.
 
-```js
-f(f(x)) = f(x)
+```
+f(f(x)) ≍ f(x)
 ```
 
 ```js
@@ -222,7 +224,7 @@ Math.abs(Math.abs(10))
 ```
 
 ```js
-sort(sort(sort([2,1])))
+sort(sort(sort([2, 1])))
 ```
 
 ## Point-Free Style
@@ -231,16 +233,16 @@ Writing functions where the definition does not explicitly identify the argument
 
 ```js
 // Given
-const map = (fn) => (list) => list.map(fn);
-const add = (a) => (b) => a + b;
+const map = (fn) => (list) => list.map(fn)
+const add = (a) => (b) => a + b
 
 // Then
 
 // Not points-free - `numbers` is an explicit argument
-const incrementAll = (numbers) => map(add(1))(numbers);
+const incrementAll = (numbers) => map(add(1))(numbers)
 
 // Points-free - The list is an implicit argument
-const incrementAll2 = map(add(1));
+const incrementAll2 = map(add(1))
 ```
 
 `incrementAll` identifies and uses the parameter `numbers`, so it is not points-free.  `incrementAll2` is written just by combining functions and values, making no mention of its arguments.  It __is__ points-free.
@@ -251,9 +253,9 @@ Points-free function definitions look just like normal assignments without `func
 A predicate is a function that returns true or false for a given value. A common use of a predicate is as the callback for array filter.
 
 ```js
-const predicate = (a) => a > 2;
+const predicate = (a) => a > 2
 
-[1, 2, 3, 4].filter(predicate); // [3, 4]
+;[1, 2, 3, 4].filter(predicate) // [3, 4]
 ```
 
 ## Contracts
@@ -275,8 +277,8 @@ Anything that can be assigned to a variable.
 ```js
 5
 Object.freeze({name: 'John', age: 30}) // The `freeze` function enforces immutability.
-(a) => a
-[1]
+;(a) => a
+;[1]
 undefined
 ```
 
@@ -318,17 +320,17 @@ object.map(x => f(g(x))) === object.map(g).map(f)
 A common functor in JavaScript is `Array` since it abides to the two functor rules:
 
 ```js
-[1, 2, 3].map(x => x); // = [1, 2, 3]
+[1, 2, 3].map(x => x) // = [1, 2, 3]
 ```
 
 and
 
 ```js
-const f = x => x + 1;
-const g = x => x * 2;
+const f = x => x + 1
+const g = x => x * 2
 
-[1, 2, 3].map(x => f(g(x))); // = [3, 5, 7]
-[1, 2, 3].map(g).map(f);     // = [3, 5, 7]
+;[1, 2, 3].map(x => f(g(x))) // = [3, 5, 7]
+;[1, 2, 3].map(g).map(f)     // = [3, 5, 7]
 ```
 
 ## Pointed Functor
@@ -347,23 +349,23 @@ Lifting is when you take a value and put it into an object like a [functor](#poi
 Some implementations have a function called `lift`, or `liftA2` to make it easier to run functions on functors.
 
 ```js
-const liftA2 = (f) => (a, b) => a.map(f).ap(b);
+const liftA2 = (f) => (a, b) => a.map(f).ap(b)
 
-const mult = a => b => a * b;
+const mult = a => b => a * b
 
-const liftedMult = liftA2(mult); // this function now works on functors like array
+const liftedMult = liftA2(mult) // this function now works on functors like array
 
-liftedMult([1, 2], [3]); // [3, 6]
-liftA2((a, b) => a + b)([1, 2], [3, 4]); // [4, 5, 5, 6]
+liftedMult([1, 2], [3]) // [3, 6]
+liftA2((a, b) => a + b)([1, 2], [3, 4]) // [4, 5, 5, 6]
 ```
 
 Lifting a one-argument function and applying it does the same thing as `map`.
 
 ```js
-const increment = (x) => x + 1;
+const increment = (x) => x + 1
 
-lift(increment)([2]); // [3]
-[2].map(increment); // [3]
+lift(increment)([2]) // [3]
+;[2].map(increment) // [3]
 ```
 
 
@@ -375,7 +377,7 @@ behavior of the program is said to be referentially transparent.
 Say we have function greet:
 
 ```js
-const greet = () => "Hello World!";
+const greet = () => 'Hello World!'
 ```
 
 Any invocation of `greet()` can be replaced with `Hello World!` hence greet is
@@ -390,22 +392,22 @@ When an application is composed of expressions and devoid of side effects, truth
 An anonymous function that can be treated like a value.
 
 ```js
-function(a){
-    return a + 1;
-};
+;(function (a) {
+  return a + 1
+})
 
-(a) => a + 1;
+;(a) => a + 1
 ```
 Lambdas are often passed as arguments to Higher-Order functions.
 
 ```js
-[1, 2].map((a) => a + 1); // [2, 3]
+[1, 2].map((a) => a + 1) // [2, 3]
 ```
 
 You can assign a lambda to a variable.
 
 ```js
-const add1 = (a) => a + 1;
+const add1 = (a) => a + 1
 ```
 
 ## Lambda Calculus
@@ -417,15 +419,15 @@ Lazy evaluation is a call-by-need evaluation mechanism that delays the evaluatio
 
 ```js
 const rand = function*() {
-    while (1 < 2) {
-        yield Math.random();
-    }
+  while (1 < 2) {
+    yield Math.random()
+  }
 }
 ```
 
 ```js
-const randIter = rand();
-randIter.next(); // Each execution gives a random value, expression is evaluated on need.
+const randIter = rand()
+randIter.next() // Each execution gives a random value, expression is evaluated on need.
 ```
 
 ## Monoid
@@ -435,7 +437,7 @@ An object with a function that "combines" that object with another of the same t
 One simple monoid is the addition of numbers:
 
 ```js
-1 + 1; // 2
+1 + 1 // 2
 ```
 In this case number is the object and `+` is the function.
 
@@ -443,33 +445,35 @@ An "identity" value must also exist that when combined with a value doesn't chan
 
 The identity value for addition is `0`.
 ```js
-1 + 0; // 1
+1 + 0 // 1
 ```
 
 It's also required that the grouping of operations will not affect the result (associativity):
 
 ```js
-1 + (2 + 3) === (1 + 2) + 3; // true
+1 + (2 + 3) === (1 + 2) + 3 // true
 ```
 
 Array concatenation also forms a monoid:
 
 ```js
-[1, 2].concat([3, 4]); // [1, 2, 3, 4]
+;[1, 2].concat([3, 4]) // [1, 2, 3, 4]
 ```
 
 The identity value is empty array `[]`
 
 ```js
-[1, 2].concat([]); // [1, 2]
+;[1, 2].concat([]) // [1, 2]
 ```
 
 If identity and compose functions are provided, functions themselves form a monoid:
 
 ```js
-const identity = (a) => a;
-const compose = (f, g) => (x) => f(g(x));
-
+const identity = (a) => a
+const compose = (f, g) => (x) => f(g(x))
+```
+`foo` is any function that takes one argument.
+```
 compose(foo, identity) ≍ compose(identity, foo) ≍ foo
 ```
 
@@ -479,15 +483,15 @@ A monad is an object with [`of`](#pointed-functor) and `chain` functions. `chain
 
 ```js
 // Implementation
-Array.prototype.chain = function(f){
-    return this.reduce((acc, it) => acc.concat(f(it)), []);
-};
+Array.prototype.chain = function (f) {
+  return this.reduce((acc, it) => acc.concat(f(it)), [])
+}
 
 // Usage
-['cat,dog', 'fish,bird'].chain((a) => a.split(',')) // ['cat', 'dog', 'fish', 'bird']
+;['cat,dog', 'fish,bird'].chain((a) => a.split(',')) // ['cat', 'dog', 'fish', 'bird']
 
 // Contrast to map
-['cat,dog', 'fish,bird'].map((a) => a.split(',')) // [['cat', 'dog'], ['fish', 'bird']]
+;['cat,dog', 'fish,bird'].map((a) => a.split(',')) // [['cat', 'dog'], ['fish', 'bird']]
 ```
 
 `of` is also known as `return` in other functional languages.
@@ -499,9 +503,13 @@ An object that has `extract` and `extend` functions.
 
 ```js
 const CoIdentity = (v) => ({
-    val: v,
-    extract() { return this.val },
-    extend(f) { return CoIdentity(f(this)) }
+  val: v,
+  extract () {
+    return this.val
+  },
+  extend (f) {
+    return CoIdentity(f(this))
+  }
 })
 ```
 
@@ -523,31 +531,31 @@ An applicative functor is an object with an `ap` function. `ap` applies a functi
 
 ```js
 // Implementation
-Array.prototype.ap = function(xs){
-    return this.reduce((acc, f) => acc.concat(xs.map(f)), []);
-};
+Array.prototype.ap = function (xs) {
+  return this.reduce((acc, f) => acc.concat(xs.map(f)), [])
+}
 
 // Example usage
-[(a) => a + 1].ap([1]) // [2]
+;[(a) => a + 1].ap([1]) // [2]
 ```
 
 This is useful if you have two objects and you want to apply a binary function to their contents.
 
 ```js
 // Arrays that you want to combine
-const arg1 = [1, 3];
-const arg2 = [4, 5];
+const arg1 = [1, 3]
+const arg2 = [4, 5]
 
 // combining function - must be curried for this to work
-const add = (x) => (y) => x + y;
+const add = (x) => (y) => x + y
 
-const partiallyAppliedAdds = [add].ap(arg1); // [(y) => 1 + y, (y) => 3 + y]
+const partiallyAppliedAdds = [add].ap(arg1) // [(y) => 1 + y, (y) => 3 + y]
 ```
 
 This gives you an array of functions that you can call `ap` on to get the result:
 
 ```js
-partiallyAppliedAdds.ap(arg2); // [5, 6, 7, 8]
+partiallyAppliedAdds.ap(arg2) // [5, 6, 7, 8]
 ```
 
 ## Morphism
@@ -560,10 +568,10 @@ A function where the input type is the same as the output.
 
 ```js
 // uppercase :: String -> String
-const uppercase = (str) => str.toUpperCase();
+const uppercase = (str) => str.toUpperCase()
 
 // decrement :: Number -> Number
-const decrement = (x) => x - 1;
+const decrement = (x) => x - 1
 ```
 
 ### Isomorphism
@@ -593,20 +601,20 @@ Make array a setoid:
 
 ```js
 Array.prototype.equals = (arr) => {
-    const len = this.length
-    if (len !== arr.length) {
-        return false
+  const len = this.length
+  if (len !== arr.length) {
+    return false
+  }
+  for (let i = 0; i < len; i++) {
+    if (this[i] !== arr[i]) {
+      return false
     }
-    for (let i = 0; i < len; i++) {
-        if (this[i] !== arr[i]) {
-            return false
-        }
-    }
-    return true
+  }
+  return true
 }
 
-[1, 2].equals([1, 2]) // true
-[1, 2].equals([0]) // false
+;[1, 2].equals([1, 2]) // true
+;[1, 2].equals([0]) // false
 ```
 
 ## Semigroup
@@ -614,7 +622,7 @@ Array.prototype.equals = (arr) => {
 An object that has a `concat` function that combines it with another object of the same type.
 
 ```js
-[1].concat([2]) // [1, 2]
+;[1].concat([2]) // [1, 2]
 ```
 
 ## Foldable
@@ -622,7 +630,7 @@ An object that has a `concat` function that combines it with another object of t
 An object that has a `reduce` function that can transform that object into some other type.
 
 ```js
-const sum = (list) => list.reduce((acc, val) => acc + val, 0);
+const sum = (list) => list.reduce((acc, val) => acc + val, 0)
 sum([1, 2, 3]) // 6
 ```
 
@@ -674,11 +682,11 @@ The `+` operator in JS works on strings and numbers so we can use this new type 
 
 ```js
 // add :: (NumOrString, NumOrString) -> NumOrString
-const add = (a, b) => a + b;
+const add = (a, b) => a + b
 
-add(1, 2); // Returns number 3
-add('Foo', 2); // Returns string "Foo2"
-add('Foo', 'Bar'); // Returns string "FooBar"
+add(1, 2) // Returns number 3
+add('Foo', 2) // Returns string "Foo2"
+add('Foo', 'Bar') // Returns string "FooBar"
 ```
 
 Union types are also known as algebraic types, tagged unions, or sum types.
@@ -691,7 +699,7 @@ A **product** type combines types together in a way you're probably more familia
 
 ```js
 // point :: (Number, Number) -> {x: Number, y: Number}
-const point = (x, y) => ({x: x, y: y});
+const point = (x, y) => ({x: x, y: y})
 ```
 It's called a product because the total possible values of the data structure is the product of the different values.
 
@@ -706,42 +714,42 @@ Option is useful for composing functions that might not return a value.
 // Naive definition
 
 const Some = (v) => ({
-    val: v,
-    map(f) {
-        return Some(f(this.val));
-    },
-    chain(f) {
-        return f(this.val);
-    }
-});
+  val: v,
+  map (f) {
+    return Some(f(this.val))
+  },
+  chain (f) {
+    return f(this.val)
+  }
+})
 
 const None = () => ({
-    map(f){
-        return this;
-    },
-    chain(f){
-        return this;
-    }
-});
+  map (f) {
+    return this
+  },
+  chain (f) {
+    return this
+  }
+})
 
 // maybeProp :: (String, {a}) -> Option a
-const maybeProp = (key, obj) => typeof obj[key] === 'undefined' ? None() : Some(obj[key]);
+const maybeProp = (key, obj) => typeof obj[key] === 'undefined' ? None() : Some(obj[key])
 ```
 Use `chain` to sequence functions that return `Option`s
 ```js
 
 // getItem :: Cart -> Option CartItem
-const getItem = (cart) => maybeProp('item', cart);
+const getItem = (cart) => maybeProp('item', cart)
 
 // getPrice :: Item -> Option Number
-const getPrice = (item) => maybeProp('price', item);
+const getPrice = (item) => maybeProp('price', item)
 
 // getNestedPrice :: cart -> Option a
-const getNestedPrice = (cart) => getItem(obj).chain(getPrice);
+const getNestedPrice = (cart) => getItem(obj).chain(getPrice)
 
-getNestedPrice({}); // None()
-getNestedPrice({item: {foo: 1}}); // None()
-getNestedPrice({item: {price: 9.99}}); // Some(9.99)
+getNestedPrice({}) // None()
+getNestedPrice({item: {foo: 1}}) // None()
+getNestedPrice({item: {price: 9.99}}) // Some(9.99)
 ```
 
 `Option` is also known as `Maybe`. `Some` is sometimes called `Just`. `None` is sometimes called `Nothing`.

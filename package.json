@@ -4,7 +4,7 @@
   "description": "Jargon from the functional programming world in simple terms!",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "eslint readme.md",
     "toc": "roadmarks"
   },
   "repository": {
@@ -18,6 +18,9 @@
   },
   "homepage": "https://github.com/hemanth/functional-programming-jargon#readme",
   "devDependencies": {
+    "eslint": "^3.4.0",
+    "eslint-config-standard": "^6.0.0",
+    "eslint-plugin-markdown": "^1.0.0-beta.2",
     "roadmarks": "^1.6.3"
   }
 }
