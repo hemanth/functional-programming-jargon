@@ -168,9 +168,9 @@ function getTicker () {
  tickTock(); //returns 1
  tickTock(); //returns 2
 ```
-The function getTimer() returns a function(internally called ticker), lets store it in a variabke called tickTock.
+The function getTicker() returns a function(internally called ticker), lets store it in a variabke called tickTock.
 
-Ideally, when the getTimer finishes execution, its scope, with local variable tick should also not be accessible. But, it returns 1, 2, 3.. on calling tickTock(). This simply means that, somewhere it keeps a track of the variable tick. 
+Ideally, when the function getTicker finishes execution, its scope, with local variable tick should not be accessible. But, it returns 1, 2, 3.. on calling tickTock(). This simply means that, somewhere it keeps a track of the variable tick. 
 
 Lexical scoping is the reason why it is able to find the value of tick - the private variable of the parent which has finished executing. This value is called a Closure. The stack along with the lexical scope of the function is stored and upon re-execution same stack is restored. 
 
