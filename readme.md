@@ -18,6 +18,7 @@ __Table of Contents__
 * [Higher-Order Functions (HOF)](#higher-order-functions-hof)
 * [Partial Application](#partial-application)
 * [Currying](#currying)
+* [Closure](#closure)
 * [Auto Currying](#auto-currying)
 * [Function Composition](#function-composition)
 * [Purity](#purity)
@@ -144,6 +145,35 @@ const add2 = curriedSum(2) // (b) => 2 + b
 add2(10) // 12
 
 ```
+##Closure
+
+A very simplistic definition - A closure is a way of accessing a variable outside its scope.
+Formally, a closure is a technique for implementing lexically scopped named binding. It is a way of storing a function with an environment. 
+
+A closure is a scope which captures local variables of a function for access even after the execution has moved out of the block in which it is defined.
+ie. they allow referencing a scope after the block in which the variables were declared has finished executing. 
+
+
+```js
+function getTicker () {
+  var tick = 0;
+  function ticker () {
+   tick = tick + 1;
+   return tick;
+   }
+  return ticker;
+ }
+ var tickTock = getTicker();
+ tickTock(); //returns 1
+ tickTock(); //returns 2
+```
+The function getTimer() returns a function(internally called ticker), lets call it tickTock.
+
+Ideally, when the getTimer finishes execution, its scope, with local variable tick should also not be accessible. But, it returns 1, 2, 3.. on calling tickTock(). This simply means that, somewhere it keeps a track of the variable tick. 
+
+Lexical scoping is the reason why it is able to find the value of tick, the private variable of the parent which has finished executing. This value is called a closure. The stack along with the lexical scope of the function is stored and upon re-execution same stack is restored. 
+
+
 
 ## Auto Currying
 Transforming a function that takes multiple arguments into one that if given less than its correct number of arguments returns a function that takes the rest. When the function gets the correct number of arguments it is then evaluated.
