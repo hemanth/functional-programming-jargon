@@ -148,7 +148,7 @@ add2(10) // 12
 
 ##Closure
 
-A very simplistic definition - A closure is a way of accessing a variable outside its scope.
+A closure is a way of accessing a variable outside its scope.
 Formally, a closure is a technique for implementing lexically scopped named binding. It is a way of storing a function with an environment. 
 
 A closure is a scope which captures local variables of a function for access even after the execution has moved out of the block in which it is defined.
@@ -156,23 +156,22 @@ ie. they allow referencing a scope after the block in which the variables were d
 
 
 ```js
-function getTicker () {
-  var tick = 0;
-  function ticker () {
-   tick = tick + 1;
-   return tick;
-   }
-  return ticker;
- }
- var tickTock = getTicker();
- tickTock(); //returns 1
- tickTock(); //returns 2
+var addTo = function(x) {
+  function add(y) {
+   return x + y; 
+  }
+  return add;
+}
+var addToFive = addTo(5);
+addToFive(3); //returns 8
 ```
-The function getTicker() returns a function(internally called ticker), lets store it in a variabke called tickTock.
+The function ```addTo()``` returns a function(internally called ```add()```), lets store it in a variable called ```addToFive``` with a curried call having parameter 5.
 
-Ideally, when the function getTicker finishes execution, its scope, with local variable tick should not be accessible. But, it returns 1, 2, 3.. on calling tickTock(). This simply means that, somewhere it keeps a track of the variable tick. 
+Ideally, when the function ```addoTo``` finishes execution, its scope, with local variables add, x, y should not be accessible. But, it returns 8 on calling ```addToFive()```. This means that the state of the function ```addTo``` is saved even after the block of code has finished executing, otherwise there is no way of knowing that ```addTo``` was called as ```addTo(5)``` and the value of x was set to 5. 
 
-Lexical scoping is the reason why it is able to find the value of tick - the private variable of the parent which has finished executing. This value is called a Closure. The stack along with the lexical scope of the function is stored and upon re-execution same stack is restored. 
+Lexical scoping is the reason why it is able to find the values of x and add - the private variables of the parent which has finished executing. This value is called a Closure.
+
+The stack along with the lexical scope of the function is stored in form of reference to the parent. This prevents the closure and the underlying variables from being garbage collected(since there is at least one live reference to it).
 
 ## Auto Currying
 Transforming a function that takes multiple arguments into one that if given less than its correct number of arguments returns a function that takes the rest. When the function gets the correct number of arguments it is then evaluated.
