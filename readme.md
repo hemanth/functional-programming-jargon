@@ -179,25 +179,35 @@ A function is pure if the return value is only determined by its
 input values, and does not produce side effects.
 
 ```js
-const greet = (name) => 'Hi, ' + name
+const greet = (name) => `Hi, ${name}`
 
 greet('Brianne') // 'Hi, Brianne'
-
 ```
 
-As opposed to:
+As opposed to each of the following:
 
 ```js
+window.name = 'Brianne'
 
-let greeting
-
-const greet = () => {
-  greeting = 'Hi, ' + window.name
-}
+const greet = () => `Hi, ${window.name}`
 
 greet() // "Hi, Brianne"
-
 ```
+
+The above example's output is based on data stored outside of the function...
+
+```js
+let greeting
+
+const greet = (name) => {
+  greeting = `Hi, ${name}`
+}
+
+greet('Brianne')
+greeting // "Hi, Brianne"
+```
+
+... and this one modifies state outside of the function.
 
 ## Side effects
 
