@@ -313,16 +313,15 @@ john.age + five === ({name: 'John', age: 30}).age + (5)
 
 An object that implements a `map` function which, while running over each value in the object to produce a new object, adheres to two rules:
 
-```js
-// preserves identity
-object.map(x => x) === object
+### Preserves identity
+```
+object.map(x => x) ≍ object
 ```
 
-and
+### Composable
 
-```js
-// composable
-object.map(x => f(g(x))) === object.map(g).map(f)
+```
+object.map(compose(f, g)) ≍ object.map(g).map(f)
 ```
 
 (`f`, `g` be arbitrary functions)
