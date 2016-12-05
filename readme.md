@@ -651,7 +651,7 @@ TODO
 
 Often functions in JavaScript will include comments that indicate the types of their arguments and return values.
 
-There's quite a bit of variance across the community but they often follow the following patterns:
+There's quite a bit of variance across the community but they often follow the following patterns, written in the Hindley-Milner type system:
 
 ```js
 // functionName :: firstArgType -> secondArgType -> returnType
