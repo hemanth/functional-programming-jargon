@@ -270,7 +270,7 @@ const predicate = (a) => a > 2
 
 ## Contracts
 
-TODO
+A contract specifies the obligations and guarentees of the behavior from a function or expression at runtime. This acts as a set of rules that are expected from the input and output of a function or expression, and errors are generally reported whenever a contract is violated.
 
 ## Guarded Functions
 
