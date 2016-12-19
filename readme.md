@@ -31,6 +31,8 @@ __Table of Contents__
 * [Value](#value)
 * [Constant](#constant)
 * [Functor](#functor)
+  * [Preserves identity](#preserves-identity)
+  * [Composable](#composable)
 * [Pointed Functor](#pointed-functor)
 * [Lift](#lift)
 * [Referential Transparency](#referential-transparency)
