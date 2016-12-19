@@ -272,6 +272,19 @@ const predicate = (a) => a > 2
 
 A contract specifies the obligations and guarentees of the behavior from a function or expression at runtime. This acts as a set of rules that are expected from the input and output of a function or expression, and errors are generally reported whenever a contract is violated.
 
+```js
+// Define our contract : int -> int
+const contract = (input) => {
+  if (typeof input === 'number') return true
+  throw new Error('Contract violated: expected int -> int')
+}
+
+const addOne = (num) => contract(num) && num + 1
+
+addOne(2) // 3
+addOne('some string') // Contract violated: expected int -> int
+```
+
 ## Guarded Functions
 
 TODO
