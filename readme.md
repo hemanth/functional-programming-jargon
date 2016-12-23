@@ -178,7 +178,7 @@ floorAndToString(121.212121) // '121'
 
 ## Continuation
 
-At any given point in a program, the collection of instructions that still need to be processed in order for the program to complete is known as a continuation.
+At any given point in a program, the part of the code that's yet to be executed is known as a continuation.
 
 ```js
 const printAsString = (num) => console.log(`Given ${num}`)
