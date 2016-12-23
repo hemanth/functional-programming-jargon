@@ -313,7 +313,7 @@ A variable that cannot be reassigned once defined.
 
 ```js
 const five = 5
-const john = {name: 'John', age: 30}
+const john = Object.freeze({name: 'John', age: 30})
 ```
 
 Constants are [referentially transparent](#referential-transparency). That is, they can be replaced with the values that they represent without affecting the result.
