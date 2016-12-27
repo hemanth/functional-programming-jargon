@@ -782,6 +782,7 @@ getNestedPrice({item: {price: 9.99}}) // Some(9.99)
 
 * [Ramda](https://github.com/ramda/ramda)
 * [Folktale](http://folktalejs.org)
+* [monet.js](https://cwmyers.github.io/monet.js/)
 * [lodash](https://github.com/lodash/lodash)
 * [Underscore.js](https://github.com/jashkenas/underscore)
 * [Lazy.js](https://github.com/dtao/lazy.js)
