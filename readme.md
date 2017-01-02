@@ -21,6 +21,7 @@ __Table of Contents__
 * [Currying](#currying)
 * [Auto Currying](#auto-currying)
 * [Function Composition](#function-composition)
+* [Continuation](#continuation)
 * [Purity](#purity)
 * [Side effects](#side-effects)
 * [Idempotent](#idempotent)
@@ -174,6 +175,37 @@ The act of putting two functions together to form a third function where the out
 const compose = (f, g) => (a) => f(g(a)) // Definition
 const floorAndToString = compose((val) => val.toString(), Math.floor) // Usage
 floorAndToString(121.212121) // '121'
+```
+
+## Continuation
+
+At any given point in a program, the part of the code that's yet to be executed is known as a continuation.
+
+```js
+const printAsString = (num) => console.log(`Given ${num}`)
+
+const addOneAndContinue = (num, cc) => {
+  const result = num + 1
+  cc(result)
+}
+
+addOneAndContinue(2, printAsString) // 'Given 3'
+```
+
+Continuations are often seen in asynchronous programming when the program needs to wait to receive data before it can continue. The response is often passed off to the rest of the program, which is the continuation, once it's been received.
+
+```js
+const continueProgramWith = (data) => {
+  // Continues program with data
+}
+
+readFileAsync('path/to/file', (err, response) => {
+  if (err) {
+    // handle error
+    return
+  }
+  continueProgramWith(response)
+})
 ```
 
 ## Purity
