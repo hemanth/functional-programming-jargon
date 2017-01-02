@@ -813,6 +813,8 @@ getNestedPrice({item: {price: 9.99}}) // Some(9.99)
 
 ## Functional Programming Libraries in JavaScript
 
+* [mori](https://github.com/swannodette/mori)
+* [Immutable](https://github.com/facebook/immutable-js/)
 * [Ramda](https://github.com/ramda/ramda)
 * [Folktale](http://folktalejs.org)
 * [monet.js](https://cwmyers.github.io/monet.js/)
