@@ -10,6 +10,7 @@ Where applicable, this document uses terms defined in the [Fantasy Land spec](ht
 
 __Translations__
 * [Portuguese](https://github.com/alexmoreno/jargoes-programacao-funcional)
+* [Spanish](https://github.com/idcmardelplata/functional-programming-jargon/tree/master)
 
 __Table of Contents__
 <!-- RM(noparent,notop) -->
