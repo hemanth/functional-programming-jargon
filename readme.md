@@ -326,7 +326,7 @@ TODO
 
 ## Categories
 
-Objects with associated functions that adhere to certain rules. E.g. [Monoid](#monoid)
+A Category is a collection of objects (types) and functions (aka morphisms) between those types, typically sending values to values. Further, functions `a->b` and `b->c` can be composed into a new function `a->c`, the composition is associative, and there is identity function `a->a` for each object `a` that does not change functions by composing from right or from left.
 
 ## Value
 
