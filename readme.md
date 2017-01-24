@@ -28,7 +28,7 @@ __Table of Contents__
 * [Point-Free Style](#point-free-style)
 * [Predicate](#predicate)
 * [Contracts](#contracts)
-* [Guarded Functions](#guarded-functions)
+* [Guards](#guards)
 * [Categories](#categories)
 * [Value](#value)
 * [Constant](#constant)
@@ -320,9 +320,23 @@ addOne(2) // 3
 addOne('some string') // Contract violated: expected int -> int
 ```
 
-## Guarded Functions
+## Guards
+Guards are boolean expressions that prevent evaluation of code unless the guard evaluates to true.
+It can be simulated thanks to the conditional ternary Operator.
 
-TODO
+```js
+const max = (a, b) => 
+    (a > b) ? a
+    : /* otherwise */ b; 
+
+// Chain guards
+const sign = (n) => 
+    (n < 0) ? -1
+    : (n == 0) ? 0
+    : /* otherwise */ 1; 
+```
+ 
+If the first guard fails then the check falls through to the second guard.`otherwise` is a catchall guard, akin to `else` in C languages.
 
 ## Categories
 
