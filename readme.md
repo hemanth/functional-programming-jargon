@@ -675,7 +675,7 @@ An object that has an `equals` function which can be used to compare other objec
 Make array a setoid:
 
 ```js
-Array.prototype.equals = (arr) => {
+Array.prototype.equals = function (arr) {
   const len = this.length
   if (len !== arr.length) {
     return false
