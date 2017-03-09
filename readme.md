@@ -331,7 +331,7 @@ To be a valid category 3 rules must be met:
     and `f` is a morphism from `a -> b`, and `g` is a morphism from `b -> c`;
     `g(f(x))` must be equivalent to `(g • f)(x)`.
 3. Composition must be associative
-    `f • (g • h)` is the same as `(f • g) * h`
+    `f • (g • h)` is the same as `(f • g) • h`
 
 Since these rules govern composition at very abstract level, category theory is great at uncovering new ways of composing things.
 
