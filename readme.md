@@ -145,7 +145,7 @@ add2(10) // 12
 ## Auto Currying
 Transforming a function that takes multiple arguments into one that if given less than its correct number of arguments returns a function that takes the rest. When the function gets the correct number of arguments it is then evaluated.
 
-Underscore, lodash, and ramda have a `curry` function that works this way.
+lodash & ramda have a `curry` function that works this way.
 
 ```js
 const add = (x, y) => x + y
