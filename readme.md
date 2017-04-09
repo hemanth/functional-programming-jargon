@@ -169,6 +169,7 @@ Lexical scoping is the reason why it is able to find the values of x and add - t
 The stack along with the lexical scope of the function is stored in form of reference to the parent. This prevents the closure and the underlying variables from being garbage collected(since there is at least one live reference to it).
 
 Lambda Vs Closure: A lambda is essentially a function that is defined inline rather than the standard method of declaring functions. Lambdas can frequently be passed around as objects.
+
 A closure is a function that encloses its surrounding state by referencing fields external to its body. The enclosed state remains across invocations of the closure. 
 
 
