@@ -20,6 +20,7 @@ __Table of Contents__
 * [Higher-Order Functions (HOF)](#higher-order-functions-hof)
 * [Partial Application](#partial-application)
 * [Currying](#currying)
+* [Closure](#closure)
 * [Auto Currying](#auto-currying)
 * [Function Composition](#function-composition)
 * [Continuation](#continuation)
@@ -141,6 +142,37 @@ const add2 = curriedSum(2) // (b) => 2 + b
 add2(10) // 12
 
 ```
+
+## Closure
+
+A closure is a way of accessing a variable outside its scope.
+Formally, a closure is a technique for implementing lexically scopped named binding. It is a way of storing a function with an environment. 
+
+A closure is a scope which captures local variables of a function for access even after the execution has moved out of the block in which it is defined.
+ie. they allow referencing a scope after the block in which the variables were declared has finished executing. 
+
+
+```js
+const addTo = x => y => x + y;
+var addToFive = addTo(5);
+addToFive(3); //returns 8
+```
+The function ```addTo()``` returns a function(internally called ```add()```), lets store it in a variable called ```addToFive``` with a curried call having parameter 5.
+
+Ideally, when the function ```addTo``` finishes execution, its scope, with local variables add, x, y should not be accessible. But, it returns 8 on calling ```addToFive()```. This means that the state of the function ```addTo``` is saved even after the block of code has finished executing, otherwise there is no way of knowing that ```addTo``` was called as ```addTo(5)``` and the value of x was set to 5. 
+
+Lexical scoping is the reason why it is able to find the values of x and add - the private variables of the parent which has finished executing. This value is called a Closure.
+
+The stack along with the lexical scope of the function is stored in form of reference to the parent. This prevents the closure and the underlying variables from being garbage collected(since there is at least one live reference to it).
+
+Lambda Vs Closure: A lambda is essentially a function that is defined inline rather than the standard method of declaring functions. Lambdas can frequently be passed around as objects.
+
+A closure is a function that encloses its surrounding state by referencing fields external to its body. The enclosed state remains across invocations of the closure. 
+
+
+__Further reading/Sources__
+* [Lambda Vs Closure](http://stackoverflow.com/questions/220658/what-is-the-difference-between-a-closure-and-a-lambda)
+* [JavaScript Closures highly voted disucussion](http://stackoverflow.com/questions/111102/how-do-javascript-closures-work)
 
 ## Auto Currying
 Transforming a function that takes multiple arguments into one that if given less than its correct number of arguments returns a function that takes the rest. When the function gets the correct number of arguments it is then evaluated.
