@@ -698,7 +698,7 @@ pairToCoords(coordsToPair({x: 1, y: 2})) // {x: 1, y: 2}
 
 ### Catamorphism
 
-A `reduceRight` function. Take a bunch of things, and combine them into another. The morphism is from "bunch of things" to "another".
+A `reduceRight` function that applies a function against an accumulator and each value of the array (from right-to-left) to reduce it to a single value.
 
 ```js
 const sum = xs => xs.reduceRight((acc, x) => acc + x, 0)
@@ -734,17 +734,22 @@ The combination of anamorphism and catamorphism.
 
 ### Paramorphism
 
-Enhancement of catamorphism. It's like `reduceRight`. However, there's a difference:
+A function just like `reduceRight`. However, there's a difference:
 
 In paramorphism, your reducer's arguments are the current value, the reduction of all previous values, and the list of values that formed that reduction.
 
 ```js
 // Obviously not safe for lists containing `undefined`,
 // but good enough to make the point.
-const para = (reducer, accumulator, [x, ... xs]) =>
-  x !== undefined
-  ? reducer(x, xs, para(reducer, accumulator, xs))
-  : accumulator
+const para = (reducer, accumulator, elements) => {
+  if (elements.length === 0)
+    return accumulator
+
+  const head = elements[0]
+  const tail = elements.slice(1)
+
+  return reducer(head, tail, para(reducer, accumulator, tail))
+}
 
 const suffixes = list => para(
   (x, xs, suffxs) => [xs, ... suffxs],
