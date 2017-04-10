@@ -800,7 +800,7 @@ An object that has a `concat` function that combines it with another object of t
 
 ## Foldable
 
-An object that has a `reduce` function that can transform that object into some other type.
+An object that has a `reduce` function that applies a function against an accumulator and each element in the array (from left to right) to reduce it to a single value.
 
 ```js
 const sum = (list) => list.reduce((acc, val) => acc + val, 0)
