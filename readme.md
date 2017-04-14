@@ -456,7 +456,7 @@ const mult = a => b => a * b
 const liftedMult = liftA2(mult) // this function now works on functors like array
 
 liftedMult([1, 2], [3]) // [3, 6]
-liftA2((a, b) => a + b)([1, 2], [3, 4]) // [4, 5, 5, 6]
+liftA2(a => b => a + b)([1, 2], [3, 4]) // [4, 5, 5, 6]
 ```
 
 Lifting a one-argument function and applying it does the same thing as `map`.
