@@ -51,6 +51,7 @@ __Table of Contents__
 * [Morphism](#morphism)
   * [Endomorphism](#endomorphism)
   * [Isomorphism](#isomorphism)
+  * [Homomorphism](#homomorphism)
   * [Catamorphism](#catamorphism)
   * [Anamorphism](#anamorphism)
   * [Hylomorphism](#hylomorphism)
@@ -694,6 +695,16 @@ const coordsToPair = (coords) => [coords.x, coords.y]
 coordsToPair(pairToCoords([1, 2])) // [1, 2]
 
 pairToCoords(coordsToPair({x: 1, y: 2})) // {x: 1, y: 2}
+```
+
+### Homomorphism
+
+A homomorphism is just a structure preserving map. In fact, a functor is just a homomorphism between categories as it preserves the original category's structure under the mapping.
+
+```js
+A.of(f).ap(A.of(x)) == A.of(f(x))
+
+Either.of(_.toUpper).ap(Either.of("oreos")) == Either.of(_.toUpper("oreos"))
 ```
 
 ### Catamorphism
