@@ -402,7 +402,7 @@ john.age + five === ({name: 'John', age: 30}).age + (5)
 
 ## Functor
 
-An object that implements a `map` function which, while running over each value in the object to produce a new object, adheres to two rules:
+An map between categories sending objects to objects and morphisms to morphisms. In programming, typically that means a map `f` sending type `a` to type `f a`, and `map` sending function `f: a -> b` into function `map(f): f a -> f b` or in the pointed notation `object.map(f)`, where `object` is of type `f a`. The `map` adheres to two rules:
 
 ### Preserves identity
 ```
@@ -417,7 +417,7 @@ object.map(compose(f, g)) ≍ object.map(g).map(f)
 
 (`f`, `g` be arbitrary functions)
 
-A common functor in JavaScript is `Array` since it abides to the two functor rules:
+A common functor in JavaScript is `Array` (sending type `a` to type `[a]`) since it abides to the two functor rules:
 
 ```js
 [1, 2, 3].map(x => x) // = [1, 2, 3]
@@ -435,6 +435,7 @@ const g = x => x * 2
 
 ## Pointed Functor
 An object with an `of` function that puts _any_ single value into it.
+The `of` function must satisfy the so-called [laws of natural tranformations](https://en.wikipedia.org/wiki/Natural_transformation)
 
 ES2015 adds `Array.of` making arrays a pointed functor.
 
