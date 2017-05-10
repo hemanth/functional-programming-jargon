@@ -146,7 +146,7 @@ add2(10) // 12
 ## Closure
 
 A closure is a way of accessing a variable outside its scope.
-Formally, a closure is a technique for implementing lexically scopped named binding. It is a way of storing a function with an environment. 
+Formally, a closure is a technique for implementing lexically scoped named binding. It is a way of storing a function with an environment. 
 
 A closure is a scope which captures local variables of a function for access even after the execution has moved out of the block in which it is defined.
 ie. they allow referencing a scope after the block in which the variables were declared has finished executing. 
