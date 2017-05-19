@@ -867,6 +867,11 @@ getNestedPrice({item: {price: 9.99}}) // Some(9.99)
 * [Lazy.js](https://github.com/dtao/lazy.js)
 * [maryamyriameliamurphies.js](https://github.com/sjsyrek/maryamyriameliamurphies.js)
 * [Haskell in ES6](https://github.com/casualjavascript/haskell-in-es6)
+* [Fantasy Land Specification](https://github.com/fantasyland/fantasy-land) - Specification for interportability of common algebraic structures in JavaScript.
+* [Static Land](https://github.com/rpominov/static-land) - Specification for common algebraic types in JavaScript based on Fantasy Land.
+* [Universal utils](https://github.com/matthiasak/universal-utils) - Small functional problem-solving, event, state-management, and caching utilities.
+* [Streams handbook](https://github.com/substack/stream-handbook)
+* [highland.js](http://highlandjs.org/)
 
 ---
 
