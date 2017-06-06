@@ -56,8 +56,9 @@ __Table of Contents__
 * [Foldable](#foldable)
 * [Traversable](#traversable)
 * [Type Signatures](#type-signatures)
-* [Union type](#union-type)
-* [Product type](#product-type)
+* [Algebraic data type](#algebraic-data-type)
+  * [Sum type](#sum-type)
+  * [Product type](#product-type)
 * [Option](#option)
 * [Functional Programming Libraries in JavaScript](#functional-programming-libraries-in-javascript)
 
@@ -102,9 +103,9 @@ Partially applying a function means creating a new function by pre-filling some 
 // Helper to create partially applied functions
 // Takes a function and some arguments
 const partial = (f, ...args) =>
-  // returns a function that takes the rest of the arguments
-  (...moreArgs) =>
-    // and calls the original function with all of them
+    // returns a function that takes the rest of the arguments
+    (...moreArgs) =>
+        // and calls the original function with all of them
     f(...args, ...moreArgs)
 
 // Something to apply
@@ -146,10 +147,10 @@ add2(10) // 12
 ## Closure
 
 A closure is a way of accessing a variable outside its scope.
-Formally, a closure is a technique for implementing lexically scoped named binding. It is a way of storing a function with an environment. 
+Formally, a closure is a technique for implementing lexically scoped named binding. It is a way of storing a function with an environment.
 
 A closure is a scope which captures local variables of a function for access even after the execution has moved out of the block in which it is defined.
-ie. they allow referencing a scope after the block in which the variables were declared has finished executing. 
+ie. they allow referencing a scope after the block in which the variables were declared has finished executing.
 
 
 ```js
@@ -159,7 +160,7 @@ addToFive(3); //returns 8
 ```
 The function ```addTo()``` returns a function(internally called ```add()```), lets store it in a variable called ```addToFive``` with a curried call having parameter 5.
 
-Ideally, when the function ```addTo``` finishes execution, its scope, with local variables add, x, y should not be accessible. But, it returns 8 on calling ```addToFive()```. This means that the state of the function ```addTo``` is saved even after the block of code has finished executing, otherwise there is no way of knowing that ```addTo``` was called as ```addTo(5)``` and the value of x was set to 5. 
+Ideally, when the function ```addTo``` finishes execution, its scope, with local variables add, x, y should not be accessible. But, it returns 8 on calling ```addToFive()```. This means that the state of the function ```addTo``` is saved even after the block of code has finished executing, otherwise there is no way of knowing that ```addTo``` was called as ```addTo(5)``` and the value of x was set to 5.
 
 Lexical scoping is the reason why it is able to find the values of x and add - the private variables of the parent which has finished executing. This value is called a Closure.
 
@@ -167,7 +168,7 @@ The stack along with the lexical scope of the function is stored in form of refe
 
 Lambda Vs Closure: A lambda is essentially a function that is defined inline rather than the standard method of declaring functions. Lambdas can frequently be passed around as objects.
 
-A closure is a function that encloses its surrounding state by referencing fields external to its body. The enclosed state remains across invocations of the closure. 
+A closure is a function that encloses its surrounding state by referencing fields external to its body. The enclosed state remains across invocations of the closure.
 
 
 __Further reading/Sources__
@@ -294,7 +295,7 @@ Math.abs(Math.abs(10))
 ```
 
 ```js
-sort(sort(sort([2, 1])))
+sort(sort(sort([2,1])))
 ```
 
 ## Point-Free Style
@@ -352,7 +353,7 @@ TODO
 ## Category
 
 A category in category theory is a collection of objects and morphisms between them. In programming, typically types
-act as the objects and functions as morphisms. 
+act as the objects and functions as morphisms.
 
 To be a valid category 3 rules must be met:
 
@@ -368,7 +369,8 @@ To be a valid category 3 rules must be met:
 
 Since these rules govern composition at very abstract level, category theory is great at uncovering new ways of composing things.
 
-### Further reading
+__Further reading__
+
 * [Category Theory for Programmers](https://bartoszmilewski.com/2014/10/28/category-theory-for-programmers-the-preface/)
 
 ## Value
@@ -519,9 +521,9 @@ Lazy evaluation is a call-by-need evaluation mechanism that delays the evaluatio
 
 ```js
 const rand = function*() {
-  while (1 < 2) {
+    while (1 < 2) {
     yield Math.random()
-  }
+    }
 }
 ```
 
@@ -583,7 +585,7 @@ A monad is an object with [`of`](#pointed-functor) and `chain` functions. `chain
 
 ```js
 // Implementation
-Array.prototype.chain = function (f) {
+Array.prototype.chain = function(f){
   return this.reduce((acc, it) => acc.concat(f(it)), [])
 }
 
@@ -603,7 +605,7 @@ An object that has `extract` and `extend` functions.
 
 ```js
 const CoIdentity = (v) => ({
-  val: v,
+    val: v,
   extract () {
     return this.val
   },
@@ -631,7 +633,7 @@ An applicative functor is an object with an `ap` function. `ap` applies a functi
 
 ```js
 // Implementation
-Array.prototype.ap = function (xs) {
+Array.prototype.ap = function(xs){
   return this.reduce((acc, f) => acc.concat(xs.map(f)), [])
 }
 
@@ -701,16 +703,16 @@ Make array a setoid:
 
 ```js
 Array.prototype.equals = function (arr) {
-  const len = this.length
-  if (len !== arr.length) {
-    return false
-  }
-  for (let i = 0; i < len; i++) {
-    if (this[i] !== arr[i]) {
-      return false
+    const len = this.length
+    if (len !== arr.length) {
+        return false
     }
-  }
-  return true
+    for (let i = 0; i < len; i++) {
+        if (this[i] !== arr[i]) {
+            return false
+        }
+    }
+    return true
 }
 
 ;[1, 2].equals([1, 2]) // true
@@ -773,27 +775,29 @@ __Further reading__
 * [Mostly Adequate Guide](https://drboolean.gitbooks.io/mostly-adequate-guide/content/ch7.html#whats-your-type)
 * [What is Hindley-Milner?](http://stackoverflow.com/a/399392/22425) on Stack Overflow
 
-## Union type
-A union type is the combination of two types together into another one.
+## Algebraic data type
+A composite type made from putting other types together. Two common classes of algebraic types are [sum](#sum-type) and [product](#product-type).
 
-JS doesn't have static types but let's say we invent a type `NumOrString` which is a sum of `String` and `Number`.
+### Sum type
+A Sum type is the combination of two types together into another one. It is called sum because the number of possible values in the result type is the sum of the input types.
 
-The `+` operator in JS works on strings and numbers so we can use this new type to describe its inputs and outputs:
-
+JavaScript doesn't have types like this but we can use `Set`s to pretend:
 ```js
-// add :: (NumOrString, NumOrString) -> NumOrString
-const add = (a, b) => a + b
+// imagine that rather than sets here we have types that can only have these values
+const bools = new Set([true, false]);
+const halfTrue = new Set(['half-true']);
 
-add(1, 2) // Returns number 3
-add('Foo', 2) // Returns string "Foo2"
-add('Foo', 'Bar') // Returns string "FooBar"
+// The weakLogic type contains the sum of the values from bools and halfTrue
+const weakLogicValues = new Set([...bools, ...halfTrue])
 ```
 
-Union types are also known as algebraic types, tagged unions, or sum types.
+Sum types are sometimes called union types, discriminated unions, or tagged unions.
 
 There's a [couple](https://github.com/paldepind/union-type) [libraries](https://github.com/puffnfresh/daggy) in JS which help with defining and using union types.
 
-## Product type
+Flow includes [union types](https://flow.org/en/docs/types/unions/) and TypeScript has [Enums](https://www.typescriptlang.org/docs/handbook/enums.html) to serve the same role.
+
+### Product type
 
 A **product** type combines types together in a way you're probably more familiar with:
 
@@ -801,12 +805,12 @@ A **product** type combines types together in a way you're probably more familia
 // point :: (Number, Number) -> {x: Number, y: Number}
 const point = (x, y) => ({x: x, y: y})
 ```
-It's called a product because the total possible values of the data structure is the product of the different values.
+It's called a product because the total possible values of the data structure is the product of the different values. Many languages have a tuple type which is the simplest formulation of a product type.
 
 See also [Set theory](https://en.wikipedia.org/wiki/Set_theory).
 
 ## Option
-Option is a [union type](#union-type) with two cases often called `Some` and `None`.
+Option is a [sum type](#sum-type) with two cases often called `Some` and `None`.
 
 Option is useful for composing functions that might not return a value.
 
@@ -814,22 +818,22 @@ Option is useful for composing functions that might not return a value.
 // Naive definition
 
 const Some = (v) => ({
-  val: v,
-  map (f) {
+    val: v,
+    map(f) {
     return Some(f(this.val))
-  },
-  chain (f) {
+    },
+    chain(f) {
     return f(this.val)
-  }
+    }
 })
 
 const None = () => ({
-  map (f) {
+    map(f){
     return this
-  },
-  chain (f) {
+    },
+    chain(f){
     return this
-  }
+    }
 })
 
 // maybeProp :: (String, {a}) -> Option a
