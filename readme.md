@@ -256,14 +256,6 @@ const predicate = (a) => a > 2;
 [1, 2, 3, 4].filter(predicate); // [3, 4]
 ```
 
-## Contracts
-
-TODO
-
-## Guarded Functions
-
-TODO
-
 ## Categories
 
 Objects with associated functions that adhere to certain rules. E.g. [Monoid](#monoid)
@@ -625,10 +617,6 @@ An object that has a `reduce` function that can transform that object into some 
 const sum = (list) => list.reduce((acc, val) => acc + val, 0);
 sum([1, 2, 3]) // 6
 ```
-
-## Traversable
-
-TODO
 
 ## Type Signatures
 
