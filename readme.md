@@ -35,8 +35,6 @@ __Table of Contents__
 * [Value](#value)
 * [Constant](#constant)
 * [Functor](#functor)
-  * [Preserves identity](#preserves-identity)
-  * [Composable](#composable)
 * [Pointed Functor](#pointed-functor)
 * [Lift](#lift)
 * [Referential Transparency](#referential-transparency)
@@ -103,9 +101,9 @@ Partially applying a function means creating a new function by pre-filling some 
 // Helper to create partially applied functions
 // Takes a function and some arguments
 const partial = (f, ...args) =>
-    // returns a function that takes the rest of the arguments
-    (...moreArgs) =>
-        // and calls the original function with all of them
+  // returns a function that takes the rest of the arguments
+  (...moreArgs) =>
+    // and calls the original function with all of them
     f(...args, ...moreArgs)
 
 // Something to apply
@@ -154,9 +152,9 @@ ie. they allow referencing a scope after the block in which the variables were d
 
 
 ```js
-const addTo = x => y => x + y;
-var addToFive = addTo(5);
-addToFive(3); //returns 8
+const addTo = x => y => x + y
+var addToFive = addTo(5)
+addToFive(3) // returns 8
 ```
 The function ```addTo()``` returns a function(internally called ```add()```), lets store it in a variable called ```addToFive``` with a curried call having parameter 5.
 
@@ -173,12 +171,12 @@ A closure is a function that encloses its surrounding state by referencing field
 
 __Further reading/Sources__
 * [Lambda Vs Closure](http://stackoverflow.com/questions/220658/what-is-the-difference-between-a-closure-and-a-lambda)
-* [JavaScript Closures highly voted disucussion](http://stackoverflow.com/questions/111102/how-do-javascript-closures-work)
+* [How do JavaScript Closures Work?](http://stackoverflow.com/questions/111102/how-do-javascript-closures-work)
 
 ## Auto Currying
 Transforming a function that takes multiple arguments into one that if given less than its correct number of arguments returns a function that takes the rest. When the function gets the correct number of arguments it is then evaluated.
 
-lodash & ramda have a `curry` function that works this way.
+lodash & Ramda have a `curry` function that works this way.
 
 ```js
 const add = (x, y) => x + y
@@ -295,7 +293,7 @@ Math.abs(Math.abs(10))
 ```
 
 ```js
-sort(sort(sort([2,1])))
+sort(sort(sort([2, 1])))
 ```
 
 ## Point-Free Style
@@ -406,12 +404,12 @@ john.age + five === ({name: 'John', age: 30}).age + (5)
 
 An object that implements a `map` function which, while running over each value in the object to produce a new object, adheres to two rules:
 
-### Preserves identity
+__Preserves identity__
 ```
 object.map(x => x) ≍ object
 ```
 
-### Composable
+__Composable__
 
 ```
 object.map(compose(f, g)) ≍ object.map(g).map(f)
@@ -521,9 +519,9 @@ Lazy evaluation is a call-by-need evaluation mechanism that delays the evaluatio
 
 ```js
 const rand = function*() {
-    while (1 < 2) {
+  while (1 < 2) {
     yield Math.random()
-    }
+  }
 }
 ```
 
@@ -585,7 +583,7 @@ A monad is an object with [`of`](#pointed-functor) and `chain` functions. `chain
 
 ```js
 // Implementation
-Array.prototype.chain = function(f){
+Array.prototype.chain = function (f) {
   return this.reduce((acc, it) => acc.concat(f(it)), [])
 }
 
@@ -605,7 +603,7 @@ An object that has `extract` and `extend` functions.
 
 ```js
 const CoIdentity = (v) => ({
-    val: v,
+  val: v,
   extract () {
     return this.val
   },
@@ -633,7 +631,7 @@ An applicative functor is an object with an `ap` function. `ap` applies a functi
 
 ```js
 // Implementation
-Array.prototype.ap = function(xs){
+Array.prototype.ap = function (xs) {
   return this.reduce((acc, f) => acc.concat(xs.map(f)), [])
 }
 
@@ -703,16 +701,16 @@ Make array a setoid:
 
 ```js
 Array.prototype.equals = function (arr) {
-    const len = this.length
-    if (len !== arr.length) {
-        return false
+  const len = this.length
+  if (len !== arr.length) {
+    return false
+  }
+  for (let i = 0; i < len; i++) {
+    if (this[i] !== arr[i]) {
+      return false
     }
-    for (let i = 0; i < len; i++) {
-        if (this[i] !== arr[i]) {
-            return false
-        }
-    }
-    return true
+  }
+  return true
 }
 
 ;[1, 2].equals([1, 2]) // true
@@ -784,8 +782,8 @@ A Sum type is the combination of two types together into another one. It is call
 JavaScript doesn't have types like this but we can use `Set`s to pretend:
 ```js
 // imagine that rather than sets here we have types that can only have these values
-const bools = new Set([true, false]);
-const halfTrue = new Set(['half-true']);
+const bools = new Set([true, false])
+const halfTrue = new Set(['half-true'])
 
 // The weakLogic type contains the sum of the values from bools and halfTrue
 const weakLogicValues = new Set([...bools, ...halfTrue])
@@ -818,22 +816,22 @@ Option is useful for composing functions that might not return a value.
 // Naive definition
 
 const Some = (v) => ({
-    val: v,
-    map(f) {
+  val: v,
+  map (f) {
     return Some(f(this.val))
-    },
-    chain(f) {
+  },
+  chain (f) {
     return f(this.val)
-    }
+  }
 })
 
 const None = () => ({
-    map(f){
+  map (f) {
     return this
-    },
-    chain(f){
+  },
+  chain (f) {
     return this
-    }
+  }
 })
 
 // maybeProp :: (String, {a}) -> Option a
