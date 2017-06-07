@@ -1,0 +1,7 @@
+---
+  extends: "standard"
+  plugins: [markdown]
+  rules:
+    no-unused-vars: 0
+    no-undef: 0
+    no-extend-native: 0
