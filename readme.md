@@ -344,10 +344,6 @@ addOne(2) // 3
 addOne('some string') // Contract violated: expected int -> int
 ```
 
-## Guarded Functions
-
-TODO
-
 ## Category
 
 A category in category theory is a collection of objects and morphisms between them. In programming, typically types
@@ -733,10 +729,6 @@ An object that has a `reduce` function that can transform that object into some 
 const sum = (list) => list.reduce((acc, val) => acc + val, 0)
 sum([1, 2, 3]) // 6
 ```
-
-## Traversable
-
-TODO
 
 ## Type Signatures
 
