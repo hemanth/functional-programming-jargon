@@ -1,19 +1,24 @@
-# Functional Programming Jargon
+# Jargon Pemrograman Fungsional
 
-Functional programming (FP) provides many advantages, and its popularity has been increasing as a result. However, each programming paradigm comes with its own unique jargon and FP is no exception. By providing a glossary, we hope to make learning FP easier.
+_Functional programming_ (FP) atau pemrograman fungsional memberikan banyak
+keuntungan, dan kini popularitasnya telah meningkat sebagai hasilnya. Namun,
+setiap paradigma pemrograman datang dengan jargon uniknya masing-masing
+dan FP tidak terkecuali. Dengan memberikan glosarium,
+kami berharap dapat mempermudah belajar FP.
 
-Examples are presented in JavaScript (ES2015). [Why JavaScript?](https://github.com/hemanth/functional-programming-jargon/wiki/Why-JavaScript%3F)
+Contoh yang ada disajikan dalam JavaScript (ES2015).
+[Kenapa JavaScript?](https://github.com/hemanth/functional-programming-jargon/wiki/Why-JavaScript%3F)
 
-*This is a [WIP](https://github.com/hemanth/functional-programming-jargon/issues/20); please feel free to send a PR ;)*
+*Ini adalah sebuah
+[WIP](https://github.com/hemanth/functional-programming-jargon/issues/20)
+dari
+[Functional Programming Jargon](https://github.com/hemanth/functional-programming-jargon/)
+milik [hemanth](https://github.com/hemanth/); Jangan ragu untuk mengirim PR ;)*
 
-Where applicable, this document uses terms defined in the [Fantasy Land spec](https://github.com/fantasyland/fantasy-land)
+Jika ada, dokumen ini menggunakan istilah yang didefinisikan dalam spesifikasi
+[Fantasy Land](https://github.com/fantasyland/fantasy-land).
 
-__Translations__
-* [Portuguese](https://github.com/alexmoreno/jargoes-programacao-funcional)
-* [Spanish](https://github.com/idcmardelplata/functional-programming-jargon/tree/master)
-* [Chinese](https://github.com/shfshanyue/fp-jargon-zh)
-
-__Table of Contents__
+__Daftar Isi__
 <!-- RM(noparent,notop) -->
 
 * [Arity](#arity)
@@ -25,11 +30,11 @@ __Table of Contents__
 * [Function Composition](#function-composition)
 * [Continuation](#continuation)
 * [Purity](#purity)
-* [Side effects](#side-effects)
+* [Side Effect](#side-effects)
 * [Idempotent](#idempotent)
 * [Point-Free Style](#point-free-style)
 * [Predicate](#predicate)
-* [Contracts](#contracts)
+* [Contract](#contract)
 * [Category](#category)
 * [Value](#value)
 * [Constant](#constant)
@@ -51,19 +56,29 @@ __Table of Contents__
 * [Setoid](#setoid)
 * [Semigroup](#semigroup)
 * [Foldable](#foldable)
-* [Type Signatures](#type-signatures)
+* [Type Signature](#type-signature)
 * [Algebraic data type](#algebraic-data-type)
   * [Sum type](#sum-type)
   * [Product type](#product-type)
 * [Option](#option)
-* [Functional Programming Libraries in JavaScript](#functional-programming-libraries-in-javascript)
+* [Pustaka Pemrograman Fungsional dalam JavaScript](#pustaka-pemrograman-fungsional-dalam-javascript)
 
 
 <!-- /RM -->
 
 ## Arity
 
-The number of arguments a function takes. From words like unary, binary, ternary, etc. This word has the distinction of being composed of two suffixes, "-ary" and "-ity." Addition, for example, takes two arguments, and so it is defined as a binary function or a function with an arity of two. Such a function may sometimes be called "dyadic" by people who prefer Greek roots to Latin. Likewise, a function that takes a variable number of arguments is called "variadic," whereas a binary function must be given two and only two arguments, currying and partial application notwithstanding (see below).
+_Arity_ merupakan banyaknya argumen yang diambil oleh fungsi.
+Berasal dari kata-kata seperti _unary_, _binary_, _ternary_, dan lain-lain.
+Kata ini memiliki perbedaan yang terdiri dari dua sufiks, "-ary" dan "-ity."
+Penjumlahan, misalnya, mengambil dua argumen, dan jadi didefinisikan sebagai
+fungsi biner (_binary function_) atau fungsi dengan dua _arity_.
+Fungsi semacam itu terkadang disebut "_dyadic_" oleh orang-orang yang lebih
+menyukai bahasa Yunani dari bahasa Latin.
+Demikian juga, fungsi yang mengambil sejumlah variabel argumen disebut
+"_variadic_", sedangkan fungsi biner harus diberikan dua dan hanya dua
+argumen, meskipun _currying_ dan _partial application_ (lihat di bawah).
+
 
 ```js
 const sum = (a, b) => a + b
@@ -71,12 +86,14 @@ const sum = (a, b) => a + b
 const arity = sum.length
 console.log(arity) // 2
 
-// The arity of sum is 2
+// Arity dari fungsi `sum` adalah dua
 ```
 
 ## Higher-Order Functions (HOF)
 
-A function which takes a function as an argument and/or returns a function.
+_Higher-Order Function_ adalah sebuah fungsi yang mengambil fungsi sebagai
+argumen dan/atau mengembalikan sebuah fungsi.
+
 
 ```js
 const filter = (predicate, xs) => xs.filter(predicate)
@@ -92,40 +109,50 @@ filter(is(Number), [0, '1', 2, null]) // [0, 2]
 
 ## Partial Application
 
-Partially applying a function means creating a new function by pre-filling some of the arguments to the original function.
+Menerapkan fungsi secara parsial (_Partial Application_ atau Fungsi Parsial)
+artinya membuat fungsi baru dengan mengisi beberapa argumen ke fungsi semula.
 
 
 ```js
-// Helper to create partially applied functions
-// Takes a function and some arguments
+// Helper membuat sebagian fungsi yang diaplikasikan
+// Mengambil sebuah fungsi dan beberapa argumen
 const partial = (f, ...args) =>
-  // returns a function that takes the rest of the arguments
+  // mengembalikan sebuah fungsi yang mengambil sisa argumen
   (...moreArgs) =>
-    // and calls the original function with all of them
+    // dan memanggil fungsi asilnya dengan semuanya
     f(...args, ...moreArgs)
 
-// Something to apply
+// Sesuatu untuk diaplikasikan
 const add3 = (a, b, c) => a + b + c
 
-// Partially applying `2` and `3` to `add3` gives you a one-argument function
+// Menerapkan `2` dan `3` secara parsial ke `add3`
+// Sehingga, memberikan Anda sebuah fungsi dengan satu argumen
 const fivePlus = partial(add3, 2, 3) // (c) => 2 + 3 + c
 
 fivePlus(4) // 9
 ```
 
-You can also use `Function.prototype.bind` to partially apply a function in JS:
+Anda juga dapat menggunakan `Function.prototype.bind` untuk menerapkan
+fungsi parsial di JavaScript:
+
 
 ```js
 const add1More = add3.bind(null, 2, 3) // (c) => 2 + 3 + c
 ```
 
-Partial application helps create simpler functions from more complex ones by baking in data when you have it. [Curried](#currying) functions are automatically partially applied.
+_Partial application_ atau fungsi parsial membantu menciptakan fungsi yang
+lebih sederhana dari yang lebih kompleks dengan memadukan data saat Anda
+memilikinya. [_Curried_](#currying) _function_ sudah secara otomatis diterapkan
+secara parsial.
 
 ## Currying
 
-The process of converting a function that takes multiple arguments into a function that takes them one at a time.
+_Currying_ merupakan sebuah proses mengubah fungsi yang membutuhkan banyak
+argumen menjadi fungsi yang membawa mereka satu-persatu.
 
-Each time the function is called it only accepts one argument and returns a function that takes one argument until all arguments are passed.
+Setiap kali fungsi dipanggil hanya menerima satu argumen dan mengembalikan
+sebuah fungsi yang membutuhkan satu argumen sampai semua argumen dilewatkan.
+
 
 ```js
 const sum = (a, b) => a + b
@@ -142,39 +169,66 @@ add2(10) // 12
 
 ## Closure
 
-A closure is a way of accessing a variable outside its scope.
-Formally, a closure is a technique for implementing lexically scoped named binding. It is a way of storing a function with an environment.
+_Closure_ merupakan sebuah cara untuk mengakses sebuah variabel yang berada
+di luar cakupannya.
+Secara formal, _closure_ merupakan sebuah teknik untuk menerapkan _lexically
+scoped_ bernama _binding_. Ini adalah cara untuk menyimpan sebuah fungsi
+dengan sebuah _environment_.
 
-A closure is a scope which captures local variables of a function for access even after the execution has moved out of the block in which it is defined.
-ie. they allow referencing a scope after the block in which the variables were declared has finished executing.
+_Closure_ adalah lingkup yang menangkap variabel lokal dari suatu fungsi untuk
+askes bahkan setelah eksekusi telah berpindah dari blok yang didefinisikan.
+Yaitu, mereka membiarkan referensi lingkup setelah blok dimana variabel
+dinyatakan telah selesai mengeksekusi.
 
 
 ```js
 const addTo = x => y => x + y
 var addToFive = addTo(5)
-addToFive(3) // returns 8
+addToFive(3) // mengembalikan 8
 ```
-The function ```addTo()``` returns a function(internally called ```add()```), lets store it in a variable called ```addToFive``` with a curried call having parameter 5.
 
-Ideally, when the function ```addTo``` finishes execution, its scope, with local variables add, x, y should not be accessible. But, it returns 8 on calling ```addToFive()```. This means that the state of the function ```addTo``` is saved even after the block of code has finished executing, otherwise there is no way of knowing that ```addTo``` was called as ```addTo(5)``` and the value of x was set to 5.
+Fungsi `addTo()` mengembalikan sebuah fungsi (secara internal disebut `add()`),
+lalu disimpan di variabel yang disebut `addToFive` dengan _curried call_ yang
+memiliki parameter `5`.
 
-Lexical scoping is the reason why it is able to find the values of x and add - the private variables of the parent which has finished executing. This value is called a Closure.
+Idealnya, ketika fungsi `addTo` selesai dieksekusi, cakupannya,
+dengan variabel lokal `add`, `x`, `y` seharusnya tidak dapat diakses. Tapi,
+itu mengembalikan `8` ketika memanggil `addToFive()`. Ini artinya kondisi
+dari fungsi `addTo` disimpan bahkan setelah blok kode selesai dieksekusi.
+Jika tidak, tidak mungkin dapat mengetahui bahwa `addTo` telah dipanggil
+sebagai `addTo(5)` dan nilai dari `x` telah ditentukan menjadi `5`.
 
-The stack along with the lexical scope of the function is stored in form of reference to the parent. This prevents the closure and the underlying variables from being garbage collected(since there is at least one live reference to it).
+_Lexical scoping_ adalah alasan mengapa ia dapat menemukan nilai dari `x` dan
+`add` - sebuah variabel _private_ induk yang telah selesai dieksekusi.
+Nilai ini disebut _Closure_.
 
-Lambda Vs Closure: A lambda is essentially a function that is defined inline rather than the standard method of declaring functions. Lambdas can frequently be passed around as objects.
+`Stack` beserta `lexical scope` fungsinya disimpan dalam bentuk referensi
+ke induknya. Hal ini mencegah _closure_ dan variabel-variabel mendasar agar
+tidak dikumpulkan sebagai sampah (karena setidaknya ada satu refernsi
+langsung untuk itu).
 
-A closure is a function that encloses its surrounding state by referencing fields external to its body. The enclosed state remains across invocations of the closure.
+__Lambda Vs. Closure__
+_Lambda_ pada dasarnya adalah fungsi yang didefinisikan secara _inline_
+daripada metode standar untuk mendeklarasikan fungsi. Lambda sering dapat
+dilewatkan sebagai objek.
+
+_Closure_ adalah fungsi yang membungkus keadaan sekitarnya dengan
+mereferensikan bidang yang ada di luar tubuhnya. _State_ tertutup tetap
+berada di seberang seruan _closure_.
 
 
-__Further reading/Sources__
+__Bacaan lebih lanjut/Sumber__
 * [Lambda Vs Closure](http://stackoverflow.com/questions/220658/what-is-the-difference-between-a-closure-and-a-lambda)
 * [How do JavaScript Closures Work?](http://stackoverflow.com/questions/111102/how-do-javascript-closures-work)
 
 ## Auto Currying
-Transforming a function that takes multiple arguments into one that if given less than its correct number of arguments returns a function that takes the rest. When the function gets the correct number of arguments it is then evaluated.
 
-lodash & Ramda have a `curry` function that works this way.
+_Auto currying_ mengubah fungsi yang membutuhkan banyak argumen menjadi
+argumen yang jika diberikan kurang dari jumlah argumen yang benar mengembalikan
+sebuah fungsi yang mengambil sisanya. Bila fungsi mendapatkan jumlah argumen
+yang benar, maka akan dievaluasi.
+
+lodash dan Ramda memiliki fungsi `curry` yang bekerja seperti di bawah.
 
 ```js
 const add = (x, y) => x + y
@@ -185,23 +239,28 @@ curriedAdd(1) // (y) => 1 + y
 curriedAdd(1)(2) // 3
 ```
 
-__Further reading__
+__Bacaan lebih lanjut__
 * [Favoring Curry](http://fr.umio.us/favoring-curry/)
 * [Hey Underscore, You're Doing It Wrong!](https://www.youtube.com/watch?v=m3svKOdZijA)
 
 ## Function Composition
 
-The act of putting two functions together to form a third function where the output of one function is the input of the other.
+_Function composition_ atau komposisi fungsi adalah tindakan yang menempatkan
+dua fungsi bersama untuk membentuk fungsi ketiga dimana keluaran dari satu
+fungsi adalah masukan dari yang lain.
+
 
 ```js
-const compose = (f, g) => (a) => f(g(a)) // Definition
-const floorAndToString = compose((val) => val.toString(), Math.floor) // Usage
+const compose = (f, g) => (a) => f(g(a)) // Definisi
+const floorAndToString = compose((val) => val.toString(), Math.floor) // Penggunaan
 floorAndToString(121.212121) // '121'
 ```
 
 ## Continuation
 
-At any given point in a program, the part of the code that's yet to be executed is known as a continuation.
+Pada suatu titik dalam sebuah program, bagian dari kode yang belum dieksekusi
+dikenal sebagai kelanjutan/kontinuitas atau _continuation_.
+
 
 ```js
 const printAsString = (num) => console.log(`Given ${num}`)
@@ -214,16 +273,20 @@ const addOneAndContinue = (num, cc) => {
 addOneAndContinue(2, printAsString) // 'Given 3'
 ```
 
-Continuations are often seen in asynchronous programming when the program needs to wait to receive data before it can continue. The response is often passed off to the rest of the program, which is the continuation, once it's been received.
+Kontinuitas sering terlihat pada pemrograman _asynchronous_ saat program
+perlu menunggu untuk menerima data sebelum dapat melanjutkan. Responnya
+sering dilewatkan ke sisa program, yang merupakan kelanjutannya, begitu
+sudah diterima.
+
 
 ```js
 const continueProgramWith = (data) => {
-  // Continues program with data
+  // Melanjutkan program dengan data
 }
 
 readFileAsync('path/to/file', (err, response) => {
   if (err) {
-    // handle error
+    // mengatasi galat
     return
   }
   continueProgramWith(response)
@@ -232,8 +295,10 @@ readFileAsync('path/to/file', (err, response) => {
 
 ## Purity
 
-A function is pure if the return value is only determined by its
-input values, and does not produce side effects.
+Sebuah fungsi dikatan murni atau _pure_ jika mengembalikan nilai yang hanya
+ditentukan oleh nilai masukannya, dan tidak menghasilkan efek samping
+atau _side effect_.
+
 
 ```js
 const greet = (name) => `Hi, ${name}`
@@ -241,7 +306,8 @@ const greet = (name) => `Hi, ${name}`
 greet('Brianne') // 'Hi, Brianne'
 ```
 
-As opposed to each of the following:
+Berbeda dengan masing-masing hal di bawah:
+
 
 ```js
 window.name = 'Brianne'
@@ -251,7 +317,8 @@ const greet = () => `Hi, ${window.name}`
 greet() // "Hi, Brianne"
 ```
 
-The above example's output is based on data stored outside of the function...
+Contoh keluaran di atas didasarkan pada data yang tersimpan di luar fungsi...
+
 
 ```js
 let greeting
@@ -264,11 +331,14 @@ greet('Brianne')
 greeting // "Hi, Brianne"
 ```
 
-... and this one modifies state outside of the function.
+... dan yang satu ini memodifikasi keadaan di luar fungsi.
 
-## Side effects
+## Side Effect
 
-A function or expression is said to have a side effect if apart from returning a value, it interacts with (reads from or writes to) external mutable state.
+Sebuah fungsi atau ekspresi dikatakan memiliki efek samping jika selain
+mengembalikan nilai, ia berinterasksi dengan (membaca dari atau menulis ke)
+keadaan yang dapat berubah eksternal.
+
 
 ```js
 const differentEveryTime = new Date()
@@ -280,7 +350,9 @@ console.log('IO is a side effect!')
 
 ## Idempotent
 
-A function is idempotent if reapplying it to its result does not produce a different result.
+Suatu fungsi _idempotent_ jika mengaplikasikannya kembali hasilnya tidak
+menghasilkan hasil yang berbeda.
+
 
 ```
 f(f(x)) ≍ f(x)
@@ -296,28 +368,40 @@ sort(sort(sort([2, 1])))
 
 ## Point-Free Style
 
-Writing functions where the definition does not explicitly identify the arguments used. This style usually requires [currying](#currying) or other [Higher-Order functions](#higher-order-functions-hof). A.K.A Tacit programming.
+Menulis fungsi dimana definisi tidak secara eksplisit mengidentifikasi
+argumen yang digunakan. Gaya ini biasanya memerlukan [_currying_](#currying)
+atau lainnya [_Higher-Order function_](#higher-order-functions-hof).
+Alias, _Tacit programming_.
+
 
 ```js
-// Given
+// Diberikan
 const map = (fn) => (list) => list.map(fn)
 const add = (a) => (b) => a + b
 
-// Then
+// Lalu
 
-// Not points-free - `numbers` is an explicit argument
+// Bukan points-free - `numbers` merupakan argumen eksplisit
 const incrementAll = (numbers) => map(add(1))(numbers)
 
-// Points-free - The list is an implicit argument
+// Points-free - `list` merupakan argumen implisit
 const incrementAll2 = map(add(1))
 ```
 
-`incrementAll` identifies and uses the parameter `numbers`, so it is not points-free.  `incrementAll2` is written just by combining functions and values, making no mention of its arguments.  It __is__ points-free.
+`incrementAll` mengidentifikasi dan menggunakan parameter `numbers`, jadi itu
+bukan _points-free_.  `incrementAll2` dituliskan hanya dengan menggabungkan
+beberapa fungsi dan beberapa nilai, membuatnya tidak menyebut satu pun
+argumennya. Itu __adalah__ _points-free_.
 
-Points-free function definitions look just like normal assignments without `function` or `=>`.
+Definisi _points-free function_ terlihat seperti _assignment_ normal tanpa
+`function` atau `=>`.
 
 ## Predicate
-A predicate is a function that returns true or false for a given value. A common use of a predicate is as the callback for array filter.
+
+Suatu _predicate_ adalah sebuah fungsi yang mengembalikan nilai `true` atau
+`false` untuk suatu nilai yang diberikan. Biasanya digunakan sebagai _callback_
+untuk menyaring _array_.
+
 
 ```js
 const predicate = (a) => a > 2
@@ -325,12 +409,16 @@ const predicate = (a) => a > 2
 ;[1, 2, 3, 4].filter(predicate) // [3, 4]
 ```
 
-## Contracts
+## Contract
 
-A contract specifies the obligations and guarantees of the behavior from a function or expression at runtime. This acts as a set of rules that are expected from the input and output of a function or expression, and errors are generally reported whenever a contract is violated.
+Suatu _contract_ menentukan kewajiban dan jaminan perilaku dari suatu fungsi
+atau ekspresi saat _runtime_. Ini bertindak sebagai seperangkat aturan yang
+diharapkan dari masukan dan keluaran suatu fungsi atau ekspresi, dan
+kesalahan umumnya dilaporkan setiap kali sebuah kontrak dilanggar.
+
 
 ```js
-// Define our contract : int -> int
+// Mendefinisikan contract kami : int -> int
 const contract = (input) => {
   if (typeof input === 'number') return true
   throw new Error('Contract violated: expected int -> int')
@@ -344,30 +432,34 @@ addOne('some string') // Contract violated: expected int -> int
 
 ## Category
 
-A category in category theory is a collection of objects and morphisms between them. In programming, typically types
-act as the objects and functions as morphisms.
+Kategori dalam _category theory_ adalah kumpulan objek dan morfisme
+(_morphism_) di antara keduanya. Dalam pemrograman, biasanya _types_ bertindak
+sebagai objek dan fungsi sebagai morfisme.
 
-To be a valid category 3 rules must be met:
 
-1. There must be an identity morphism that maps an object to itself.
-    Where `a` is an object in some category,
-    there must be a function from `a -> a`.
-2. Morphisms must compose.
-    Where `a`, `b`, and `c` are objects in some category,
-    and `f` is a morphism from `a -> b`, and `g` is a morphism from `b -> c`;
-    `g(f(x))` must be equivalent to `(g • f)(x)`.
-3. Composition must be associative
-    `f • (g • h)` is the same as `(f • g) • h`
+Untuk menjadi kategori yang sah, tiga aturan harus dipenuhi:
 
-Since these rules govern composition at very abstract level, category theory is great at uncovering new ways of composing things.
+1. Harus ada morfisme identitas yang memetakan objek itu sendiri.
+    Dimana `a` adalah sebuah objek dalam beberapa kategori,
+    harus ada fungsi dari `a -> a`.
+2. Morfisme harus disusun.
+    Dimana `a`, `b`, dan `c` adalah objek dalam beberapa kategori,
+    dan `f` adalah morfisme dari `a -> b`, serta `g` adalah morfisme dari
+    `b -> c`; `g(f(x))` harus sama dengan `(g • f)(x)`.
+3. Komposisi harus asosiatif.
+    `f • (g • h)` sama halnya dengan `(f • g) • h`.
 
-__Further reading__
+Karena aturan ini mengatur komposisi pada tingkat yang sangat abstrak,
+teori kategori sangat bagus dalam menemukan cara baru untuk menyusun sesuatu.
+
+__Bacaan lebih lanjut__
 
 * [Category Theory for Programmers](https://bartoszmilewski.com/2014/10/28/category-theory-for-programmers-the-preface/)
 
 ## Value
 
-Anything that can be assigned to a variable.
+Apa saja yang dapat di-_assign_ ke variabel.
+
 
 ```js
 5
@@ -379,16 +471,20 @@ undefined
 
 ## Constant
 
-A variable that cannot be reassigned once defined.
+Sebuah variabel yang tidak dapat ditetapkan kembali setelah ditentukan nilainya.
 
 ```js
 const five = 5
 const john = Object.freeze({name: 'John', age: 30})
 ```
 
-Constants are [referentially transparent](#referential-transparency). That is, they can be replaced with the values that they represent without affecting the result.
+_Constant_ atau konstanta adalah
+[_referentially transparent_](#referential-transparency). Artinya, mereka
+dapat diganti dengan nilai yang mereka wakili tanpa mempengaruhi hasilnya.
 
-With the above two constants the following expression will always return `true`.
+Dengan dua konstanta di atas, ekspresi berikut akan selalu mengembalikan
+nilai `true`.
+
 
 ```js
 john.age + five === ({name: 'John', age: 30}).age + (5)
@@ -396,7 +492,10 @@ john.age + five === ({name: 'John', age: 30}).age + (5)
 
 ## Functor
 
-An object that implements a `map` function which, while running over each value in the object to produce a new object, adheres to two rules:
+Suatu objek yang mengimplementasikan fungsi `map`, yang ketika menjalankan
+lebih dari setiap nilai pada objek untuk menghasilkan objek baru, mematuhi
+dua aturan:
+
 
 __Preserves identity__
 ```
@@ -409,15 +508,18 @@ __Composable__
 object.map(compose(f, g)) ≍ object.map(g).map(f)
 ```
 
-(`f`, `g` be arbitrary functions)
+(`f`, `g` menjadi fungsi sewenang-wenang)
 
-A common functor in JavaScript is `Array` since it abides to the two functor rules:
+_Functor_ umum dalam JavaScript adalah `Array` karena mematuhi dua aturan
+_functor_, yaitu:
+
 
 ```js
 [1, 2, 3].map(x => x) // = [1, 2, 3]
 ```
 
-and
+dan
+
 
 ```js
 const f = x => x + 1
@@ -428,9 +530,12 @@ const g = x => x * 2
 ```
 
 ## Pointed Functor
-An object with an `of` function that puts _any_ single value into it.
 
-ES2015 adds `Array.of` making arrays a pointed functor.
+Suatu objek dengan sebuah fungsi `of` yang mengambil _semua_ nilai tunggal
+ke dalamnya.
+
+ES2015 menambahkan `Array.of` yang menjadikannya _pointed functor_.
+
 
 ```js
 Array.of(1) // [1]
@@ -438,22 +543,30 @@ Array.of(1) // [1]
 
 ## Lift
 
-Lifting is when you take a value and put it into an object like a [functor](#pointed-functor). If you lift a function into an [Applicative Functor](#applicative-functor) then you can make it work on values that are also in that functor.
+_Lifting_ atau mengangkat (dari kata _lift_, angkat) adalah saat Anda
+mengambil sebuah nilai dan mengambilnya ke dalam suatu objek seperti
+[functor](#pointed-functor). Jika Anda mengangkat sebuah fungsi ke dalam
+[Applicative Functor](#applicative-functor), maka Anda dapat membuatnya
+bekerja pada nilai-nilai yang juga ada di _functor_ itu.
 
-Some implementations have a function called `lift`, or `liftA2` to make it easier to run functions on functors.
+Beberapa implementasi memiliki fungsi yang disebut `lift`, atau `liftA2` agar
+lebih mudah menjalankan fungsi pada _functor_.
+
 
 ```js
-const liftA2 = (f) => (a, b) => a.map(f).ap(b) // note it's `ap` and not `map`.
+const liftA2 = (f) => (a, b) => a.map(f).ap(b) // catatan: itu `ap`, bukan `map`.
 
 const mult = a => b => a * b
 
-const liftedMult = liftA2(mult) // this function now works on functors like array
+const liftedMult = liftA2(mult) // fungsi ini sekarang bekerja pada functor seperti array
 
 liftedMult([1, 2], [3]) // [3, 6]
 liftA2(a => b => a + b)([1, 2], [3, 4]) // [4, 5, 5, 6]
 ```
 
-Lifting a one-argument function and applying it does the same thing as `map`.
+Mengangkat fungsi satu argumen dan menerapkannya melakukan hal yang sama
+seperti `map`.
+
 
 ```js
 const increment = (x) => x + 1
@@ -462,28 +575,30 @@ lift(increment)([2]) // [3]
 ;[2].map(increment) // [3]
 ```
 
-
 ## Referential Transparency
 
-An expression that can be replaced with its value without changing the
-behavior of the program is said to be referentially transparent.
+Sebuah ekspresi yang dapat diganti nilainya dengan tanpa mengubah tingkah laku
+program tersebut dikatan _referentially_ transparan.
 
-Say we have function greet:
+Katakanlah kita memiliki fungsi `greet`:
+
 
 ```js
 const greet = () => 'Hello World!'
 ```
 
-Any invocation of `greet()` can be replaced with `Hello World!` hence greet is
-referentially transparent.
+Setiap seruan dari `greet()` dapat ditimpa dengan `Hello World!`, karena itu
+`greet` secara referensial transparan.
 
 ##  Equational Reasoning
 
-When an application is composed of expressions and devoid of side effects, truths about the system can be derived from the parts.
+Ketika sebuah aplikasi terdiri dari ekspresi dan tanpa efek samping,
+kebenaran tentang sistem dapat diturunkan dari bagian-bagiannya.
 
 ## Lambda
 
-An anonymous function that can be treated like a value.
+Fungsi anonim yang dapat diperlakukan seperti sebuah nilai.
+
 
 ```js
 ;(function (a) {
@@ -492,24 +607,33 @@ An anonymous function that can be treated like a value.
 
 ;(a) => a + 1
 ```
-Lambdas are often passed as arguments to Higher-Order functions.
+
+_Lambda_ juga sering dilewatkan sebagai argumen ke _Higher-Order function_.
+
 
 ```js
 [1, 2].map((a) => a + 1) // [2, 3]
 ```
 
-You can assign a lambda to a variable.
+Anda dapat menugaskan (_assign_) suatu _lambda_ ke dalam sebuah variabel.
+
 
 ```js
 const add1 = (a) => a + 1
 ```
 
 ## Lambda Calculus
-A branch of mathematics that uses functions to create a [universal model of computation](https://en.wikipedia.org/wiki/Lambda_calculus).
+
+Sebuah cabang dari matematika yang menggunakan fungsi untuk membuat suatu
+[model universal dari komputasi](https://en.wikipedia.org/wiki/Lambda_calculus).
 
 ## Lazy evaluation
 
-Lazy evaluation is a call-by-need evaluation mechanism that delays the evaluation of an expression until its value is needed. In functional languages, this allows for structures like infinite lists, which would not normally be available in an imperative language where the sequencing of commands is significant.
+_Lazy evaluation_ adalah mekanisme evaluasi panggilan-per-kebutuhan yang
+menunda evaluasi suatu ekspresi sampai nilainya dibutuhkan. Dalam bahasa
+fungsional, ini memungkinkan struktur seperti _infinite list_, yang biasanya
+tidak tersedia dalam bahasa imperatif dimana urutan perintah sangat penting.
+
 
 ```js
 const rand = function*() {
@@ -521,79 +645,97 @@ const rand = function*() {
 
 ```js
 const randIter = rand()
-randIter.next() // Each execution gives a random value, expression is evaluated on need.
+randIter.next() // Setiap eksekusi memberikan nilai acak, ekspresi dievaluasi hanya saat dibutuhkan
 ```
 
 ## Monoid
 
-An object with a function that "combines" that object with another of the same type.
+Objek dengan fungsi yang "menggabungkan" objek itu sendiri dengan tipe lain
+yang sama.
 
-One simple monoid is the addition of numbers:
+Salah satu _monoid_ sederhana adalah penjumlahan angka:
+
 
 ```js
 1 + 1 // 2
 ```
-In this case number is the object and `+` is the function.
 
-An "identity" value must also exist that when combined with a value doesn't change it.
+Dalam kasus ini, angka adalah objek dan `+` adalah fungsi.
 
-The identity value for addition is `0`.
+Nilai "identitas" juga harus ada bila dikombinasikan dengan nilai yang tidak
+mengubahnya.
+
+Nilai identitas untuk penjumlahan adalah `0`.
+
+
 ```js
 1 + 0 // 1
 ```
 
-It's also required that the grouping of operations will not affect the result (associativity):
+Ini juga memerlukan pengelompokkan operasi yang tidak akan mempengaruhi
+hasilnya (asosiatif):
+
 
 ```js
 1 + (2 + 3) === (1 + 2) + 3 // true
 ```
 
-Array concatenation also forms a monoid:
+Rangkaian _array_ juga membentuk _monoid_:
+
 
 ```js
 ;[1, 2].concat([3, 4]) // [1, 2, 3, 4]
 ```
 
-The identity value is empty array `[]`
+Nilai identitasnya adalah _array_ kosong atau `[]`.
+
 
 ```js
 ;[1, 2].concat([]) // [1, 2]
 ```
 
-If identity and compose functions are provided, functions themselves form a monoid:
+Jika fungsi identitas dan komposisi disediakan, maka fungsinya membentuk monoid:
+
 
 ```js
 const identity = (a) => a
 const compose = (f, g) => (x) => f(g(x))
 ```
-`foo` is any function that takes one argument.
+
+`foo` adalah fungsi apapun yang mengambil satu argumen.
+
+
 ```
 compose(foo, identity) ≍ compose(identity, foo) ≍ foo
 ```
 
 ## Monad
 
-A monad is an object with [`of`](#pointed-functor) and `chain` functions. `chain` is like [`map`](#functor) except it un-nests the resulting nested object.
+_Monad_ adalah sebuah objek dengan fungsi [`of`](#pointed-functor) dan `chain`.
+`chain` ini seperti [`map`](#functor), kecuali itu "membatalkan" objek
+bersarang yang dihasilkan.
+
 
 ```js
-// Implementation
+// Implementasi
 Array.prototype.chain = function (f) {
   return this.reduce((acc, it) => acc.concat(f(it)), [])
 }
 
-// Usage
+// Penggunaan
 ;Array.of('cat,dog', 'fish,bird').chain((a) => a.split(',')) // ['cat', 'dog', 'fish', 'bird']
 
-// Contrast to map
+// Kontras ke map
 ;Array.of('cat,dog', 'fish,bird').map((a) => a.split(',')) // [['cat', 'dog'], ['fish', 'bird']]
 ```
 
-`of` is also known as `return` in other functional languages.
-`chain` is also known as `flatmap` and `bind` in other languages.
+`of` juga diketahui sebagai `return` di bahasa fungsional lainnya.
+`chain` juga diketahui sebagai `flatmap` dan `bind` di bahasa lainnya.
 
 ## Comonad
 
-An object that has `extract` and `extend` functions.
+Suatu objek yang memiliki fungsi `extract` dan `extend`.
+
 
 ```js
 const CoIdentity = (v) => ({
@@ -607,13 +749,16 @@ const CoIdentity = (v) => ({
 })
 ```
 
-Extract takes a value out of a functor.
+`extract` mengambil sebuah nilai keluar dari _functor_.
+
 
 ```js
 CoIdentity(1).extract() // 1
 ```
 
-Extend runs a function on the comonad. The function should return the same type as the comonad.
+_extend_ menjalankan fungsi di atas _comonad_. Fungsi tersebut seharusnya
+mengembalikan tipe yang sama dengan _comonad_.
+
 
 ```js
 CoIdentity(1).extend((co) => co.extract() + 1) // CoIdentity(2)
@@ -621,32 +766,38 @@ CoIdentity(1).extend((co) => co.extract() + 1) // CoIdentity(2)
 
 ## Applicative Functor
 
-An applicative functor is an object with an `ap` function. `ap` applies a function in the object to a value in another object of the same type.
+Suatu _applicative functor_ adalah sebuah objek dengan fungsi `ap`. `ap`
+menerapkan fungsi pada objek ke nilai objek lain dari tipe yang sama.
+
 
 ```js
-// Implementation
+// Implementasi
 Array.prototype.ap = function (xs) {
   return this.reduce((acc, f) => acc.concat(xs.map(f)), [])
 }
 
-// Example usage
+// Contoh penggunaan
 ;[(a) => a + 1].ap([1]) // [2]
 ```
 
-This is useful if you have two objects and you want to apply a binary function to their contents.
+Ini berguna jika Anda memiliki dua objek dan Anda ingin menerapkan fungsi biner
+ke isinya.
+
 
 ```js
-// Arrays that you want to combine
+// Array yang ingin digabungkan
 const arg1 = [1, 3]
 const arg2 = [4, 5]
 
-// combining function - must be curried for this to work
+// menggabungkan fungsi - harus curried untuk pekerjaan ini
 const add = (x) => (y) => x + y
 
 const partiallyAppliedAdds = [add].ap(arg1) // [(y) => 1 + y, (y) => 3 + y]
 ```
 
-This gives you an array of functions that you can call `ap` on to get the result:
+Ini memberi Anda sebuah _array_ dari sejumlah fungsi yang dapat Anda sebut `ap`
+untuk mendapatkan hasilnya:
+
 
 ```js
 partiallyAppliedAdds.ap(arg2) // [5, 6, 7, 8]
@@ -654,11 +805,12 @@ partiallyAppliedAdds.ap(arg2) // [5, 6, 7, 8]
 
 ## Morphism
 
-A transformation function.
+Sebuah fungsi transformasi.
 
 ### Endomorphism
 
-A function where the input type is the same as the output.
+Sebuah fungsi dimana tipe masukannya sama dengan keluarannya.
+
 
 ```js
 // uppercase :: String -> String
@@ -670,12 +822,15 @@ const decrement = (x) => x - 1
 
 ### Isomorphism
 
-A pair of transformations between 2 types of objects that is structural in nature and no data is lost.
+Sepasang transformasi antara dua jenis benda yang bersifat struktural dan tidak
+ada data yang hilang.
 
-For example, 2D coordinates could be stored as an array `[2,3]` or object `{x: 2, y: 3}`.
+Sebagai contoh, koordinat 2D dapat disimpan sebagai _array_ `[2, 3]` atau objek
+`{x: 2, y: 3}`.
+
 
 ```js
-// Providing functions to convert in both directions makes them isomorphic.
+// Menyediakan fungsi untuk mengubah kedua arah membuat mereka isomorfik
 const pairToCoords = (pair) => ({x: pair[0], y: pair[1]})
 
 const coordsToPair = (coords) => [coords.x, coords.y]
@@ -685,13 +840,13 @@ coordsToPair(pairToCoords([1, 2])) // [1, 2]
 pairToCoords(coordsToPair({x: 1, y: 2})) // {x: 1, y: 2}
 ```
 
-
-
 ## Setoid
 
-An object that has an `equals` function which can be used to compare other objects of the same type.
+Suatu objek yang memiliki fungsi `equals` yang mana dapat digunakan untuk
+membandingkan objek lain dengan tipe yang sama.
 
-Make array a setoid:
+Menjadikan _array_ suatu _setoid_:
+
 
 ```js
 Array.prototype.equals = function (arr) {
@@ -713,7 +868,9 @@ Array.prototype.equals = function (arr) {
 
 ## Semigroup
 
-An object that has a `concat` function that combines it with another object of the same type.
+Suatu objek yang memiliki fungsi `concat` yang menggabungkannya dengan objek
+lain dengan tipe yang sama.
+
 
 ```js
 ;[1].concat([2]) // [1, 2]
@@ -721,18 +878,23 @@ An object that has a `concat` function that combines it with another object of t
 
 ## Foldable
 
-An object that has a `reduce` function that can transform that object into some other type.
+Suatu objek yang memiliki fungsi `reduce` yang dapat mengubah objek tersebut
+menjadi tipe yang lain.
+
 
 ```js
 const sum = (list) => list.reduce((acc, val) => acc + val, 0)
 sum([1, 2, 3]) // 6
 ```
 
-## Type Signatures
+## Type Signature
 
-Often functions in JavaScript will include comments that indicate the types of their arguments and return values.
+Seringkali fungsi dalam JavaScript memiliki komentar yang menunjukkan tipe dari
+argumen dan nilai pengembaliannya.
 
-There's quite a bit of variance across the community but they often follow the following patterns:
+Ada sedikit perbedaan di antara komunitas/masyarakat, namun mereka sering
+mengikuti pola berikut:
+
 
 ```js
 // functionName :: firstArgType -> secondArgType -> returnType
@@ -744,66 +906,95 @@ const add = (x) => (y) => x + y
 const increment = (x) => x + 1
 ```
 
-If a function accepts another function as an argument it is wrapped in parentheses.
+Jika suatu fungsi menerima fungsi lain sebagai argumennya, maka itu dibungkus
+dengan tanda kurung.
+
 
 ```js
 // call :: (a -> b) -> a -> b
 const call = (f) => (x) => f(x)
 ```
 
-The letters `a`, `b`, `c`, `d` are used to signify that the argument can be of any type. The following version of `map` takes a function that transforms a value of some type `a` into another type `b`, an array of values of type `a`, and returns an array of values of type `b`.
+Huruf `a`, `b`, `c`, `d` digunakan sebagai tanda bahwa argumen tersebut dapat
+berbentuk apa saja. Layaknya versi dari `map`, mengambil sebuah fungsi
+yang mengubah nilai dari bentuk `a` ke bentuk lain `b`, sebuah _array_ dengan
+nilai berbentuk `a`, dan mengembalikan sebuah _array_ dengan nilai berbentuk
+`b`.
+
 
 ```js
 // map :: (a -> b) -> [a] -> [b]
 const map = (f) => (list) => list.map(f)
 ```
 
-__Further reading__
+__Bacan lebih lanjut__
 * [Ramda's type signatures](https://github.com/ramda/ramda/wiki/Type-Signatures)
 * [Mostly Adequate Guide](https://drboolean.gitbooks.io/mostly-adequate-guide/content/ch7.html#whats-your-type)
-* [What is Hindley-Milner?](http://stackoverflow.com/a/399392/22425) on Stack Overflow
+* [What is Hindley-Milner?](http://stackoverflow.com/a/399392/22425) di Stack Overflow
 
 ## Algebraic data type
-A composite type made from putting other types together. Two common classes of algebraic types are [sum](#sum-type) and [product](#product-type).
+
+Jenis komposit yang dibuat dari jenis lainnya. Dua kelas umum dari tipe aljabar
+(_algebraic type_) adalah [_sum_](#sum-type) dan [_product_](#product-type).
 
 ### Sum type
-A Sum type is the combination of two types together into another one. It is called sum because the number of possible values in the result type is the sum of the input types.
 
-JavaScript doesn't have types like this but we can use `Set`s to pretend:
+_Sum type_ adalah kombinasi dari dua _type_ menjadi satu sama lain. Ini disebut
+jumlah (_sum_) karena jumlah nilai yang mungkin terjadi pada _type_ hasil
+adalah jumlah dari tipe masukan.
+
+JavaScript tidak memiliki _type_ seperti ini, tapi kita dapat menggunakan `Set`
+untuk berpura-pura:
+
+
 ```js
-// imagine that rather than sets here we have types that can only have these values
+// bayangkan bahwa daripada Set di sini kita memiliki tipe yang hanya memiliki nilai-nilai ini
 const bools = new Set([true, false])
 const halfTrue = new Set(['half-true'])
 
-// The weakLogic type contains the sum of the values from bools and halfTrue
+// Tipe `weakLogic` mengandung jumlah nilai dari `bools` dan `halfTrue`
 const weakLogicValues = new Set([...bools, ...halfTrue])
 ```
 
-Sum types are sometimes called union types, discriminated unions, or tagged unions.
+_Sum type_ terkadang disebut _union type_, _discriminated union_, atau _tagged
+union_.
 
-There's a [couple](https://github.com/paldepind/union-type) [libraries](https://github.com/puffnfresh/daggy) in JS which help with defining and using union types.
+Ada [beberapa](https://github.com/paldepind/union-type)
+[pustaka](https://github.com/puffnfresh/daggy) dalam JavaScript yang
+membantu mendefinisikan dan menggunakan _union type_.
 
-Flow includes [union types](https://flow.org/en/docs/types/unions/) and TypeScript has [Enums](https://www.typescriptlang.org/docs/handbook/enums.html) to serve the same role.
+_Flow_ memasukkan [_union type_](https://flow.org/en/docs/types/unions/) dan
+TypeScript memiliki
+[Enums](https://www.typescriptlang.org/docs/handbook/enums.html) untuk melayani
+peran yang sama.
 
 ### Product type
 
-A **product** type combines types together in a way you're probably more familiar with:
+Tipe ***product*** menggabungkan beberapa tipe bersama, dengan cara yang mungkin
+Anda telah akrab:
 
 ```js
 // point :: (Number, Number) -> {x: Number, y: Number}
 const point = (x, y) => ({x: x, y: y})
 ```
-It's called a product because the total possible values of the data structure is the product of the different values. Many languages have a tuple type which is the simplest formulation of a product type.
 
-See also [Set theory](https://en.wikipedia.org/wiki/Set_theory).
+Ini disebut produk (_product_) karena nilai total dari struktur data adalah
+produk dari nilai yang berbeda. Banyak bahasa memiliki tipe _tuple_ yang
+merupakan formulasi sederhana dari _product type_.
+
+Lihat juga [teori himpunan](https://id.wikipedia.org/wiki/Teori_himpunan).
 
 ## Option
-Option is a [sum type](#sum-type) with two cases often called `Some` and `None`.
 
-Option is useful for composing functions that might not return a value.
+_Option_ adalah suatu _[sum type](#sum-type)_ dengan dua kasus yang sering
+disebut `Some` dan `None`.
+
+_Option_ sangat berguna untuk menyusun fungsi-fungsi yang mungkin tidak
+mengembalikan sebuah nilai.
+
 
 ```js
-// Naive definition
+// Definisi naif
 
 const Some = (v) => ({
   val: v,
@@ -827,7 +1018,10 @@ const None = () => ({
 // maybeProp :: (String, {a}) -> Option a
 const maybeProp = (key, obj) => typeof obj[key] === 'undefined' ? None() : Some(obj[key])
 ```
-Use `chain` to sequence functions that return `Option`s
+
+Gunakan `chain` untuk mengurutkan fungsi yang mengembalikan `Option`.
+
+
 ```js
 
 // getItem :: Cart -> Option CartItem
@@ -844,9 +1038,10 @@ getNestedPrice({item: {foo: 1}}) // None()
 getNestedPrice({item: {price: 9.99}}) // Some(9.99)
 ```
 
-`Option` is also known as `Maybe`. `Some` is sometimes called `Just`. `None` is sometimes called `Nothing`.
+`Option` juga dikenal sebagai `Maybe`. `Some` terkadang disebut `Just`.
+`None` terkadang disebut `Nothing`.
 
-## Functional Programming Libraries in JavaScript
+## Pustaka Pemrograman Fungsional dalam JavaScript
 
 * [mori](https://github.com/swannodette/mori)
 * [Immutable](https://github.com/facebook/immutable-js/)
@@ -862,4 +1057,8 @@ getNestedPrice({item: {price: 9.99}}) // Some(9.99)
 
 ---
 
-__P.S:__ This repo is successful due to the wonderful [contributions](https://github.com/hemanth/functional-programming-jargon/graphs/contributors)!
+__P.S:__ _Repository_ ini di-_fork_ dari proyek
+[_Functional Programming Jargon_](https://github.com/hemanth/functional-programming-jargon/)
+milik [hemanth](https://github.com/hemanth/) dan telah dikatakan berhasil karena
+[kontribusi](https://github.com/hemanth/functional-programming-jargon/graphs/contributors)
+yang luar biasa.

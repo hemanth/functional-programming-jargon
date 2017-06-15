@@ -1,7 +1,7 @@
 {
-  "name": "functional-programming-jargons",
+  "name": "jargon-pemrograman-fungsional",
   "version": "1.0.0",
-  "description": "Jargon from the functional programming world in simple terms!",
+  "description": "Jargon dari dunia pemrograman fungsional secara sederhana!",
   "main": "index.js",
   "scripts": {
     "test": "eslint readme.md",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hemanth/functional-programming-jargon.git"
+    "url": "git+https://github.com/wisn/jargon-pemrograman-fungsional.git"
   },
-  "author": "hemanth",
+  "author": "wisn",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/hemanth/functional-programming-jargon/issues"
+    "url": "https://github.com/wisn/jargon-pemrograman-fungsional/issues"
   },
-  "homepage": "https://github.com/hemanth/functional-programming-jargon#readme",
+  "homepage": "https://github.com/wisn/jargon-pemrograman-fungsional#readme",
   "devDependencies": {
     "eslint": "^3.4.0",
     "eslint-config-standard": "^6.0.0",
