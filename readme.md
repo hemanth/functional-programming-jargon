@@ -415,7 +415,7 @@ object.map(compose(f, g)) ≍ object.map(g).map(f)
 A common functor in JavaScript is `Array` since it abides to the two functor rules:
 
 ```js
-[1, 2, 3].map(x => x) // = [1, 2, 3]
+;[1, 2, 3].map(x => x) // = [1, 2, 3]
 ```
 
 and
@@ -496,7 +496,7 @@ An anonymous function that can be treated like a value.
 Lambdas are often passed as arguments to Higher-Order functions.
 
 ```js
-[1, 2].map((a) => a + 1) // [2, 3]
+;[1, 2].map((a) => a + 1) // [2, 3]
 ```
 
 You can assign a lambda to a variable.
