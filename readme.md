@@ -12,6 +12,7 @@ __Translations__
 * [Portuguese](https://github.com/alexmoreno/jargoes-programacao-funcional)
 * [Spanish](https://github.com/idcmardelplata/functional-programming-jargon/tree/master)
 * [Chinese](https://github.com/shfshanyue/fp-jargon-zh)
+* [Bahasa Indonesia](https://github.com/wisn/jargon-pemrograman-fungsional)
 
 __Table of Contents__
 <!-- RM(noparent,notop) -->
@@ -30,13 +31,10 @@ __Table of Contents__
 * [Point-Free Style](#point-free-style)
 * [Predicate](#predicate)
 * [Contracts](#contracts)
-* [Guarded Functions](#guarded-functions)
 * [Category](#category)
 * [Value](#value)
 * [Constant](#constant)
 * [Functor](#functor)
-  * [Preserves identity](#preserves-identity)
-  * [Composable](#composable)
 * [Pointed Functor](#pointed-functor)
 * [Lift](#lift)
 * [Referential Transparency](#referential-transparency)
@@ -54,10 +52,10 @@ __Table of Contents__
 * [Setoid](#setoid)
 * [Semigroup](#semigroup)
 * [Foldable](#foldable)
-* [Traversable](#traversable)
 * [Type Signatures](#type-signatures)
-* [Union type](#union-type)
-* [Product type](#product-type)
+* [Algebraic data type](#algebraic-data-type)
+  * [Sum type](#sum-type)
+  * [Product type](#product-type)
 * [Option](#option)
 * [Functional Programming Libraries in JavaScript](#functional-programming-libraries-in-javascript)
 
@@ -146,20 +144,20 @@ add2(10) // 12
 ## Closure
 
 A closure is a way of accessing a variable outside its scope.
-Formally, a closure is a technique for implementing lexically scoped named binding. It is a way of storing a function with an environment. 
+Formally, a closure is a technique for implementing lexically scoped named binding. It is a way of storing a function with an environment.
 
 A closure is a scope which captures local variables of a function for access even after the execution has moved out of the block in which it is defined.
-ie. they allow referencing a scope after the block in which the variables were declared has finished executing. 
+ie. they allow referencing a scope after the block in which the variables were declared has finished executing.
 
 
 ```js
-const addTo = x => y => x + y;
-var addToFive = addTo(5);
-addToFive(3); //returns 8
+const addTo = x => y => x + y
+var addToFive = addTo(5)
+addToFive(3) // returns 8
 ```
 The function ```addTo()``` returns a function(internally called ```add()```), lets store it in a variable called ```addToFive``` with a curried call having parameter 5.
 
-Ideally, when the function ```addTo``` finishes execution, its scope, with local variables add, x, y should not be accessible. But, it returns 8 on calling ```addToFive()```. This means that the state of the function ```addTo``` is saved even after the block of code has finished executing, otherwise there is no way of knowing that ```addTo``` was called as ```addTo(5)``` and the value of x was set to 5. 
+Ideally, when the function ```addTo``` finishes execution, its scope, with local variables add, x, y should not be accessible. But, it returns 8 on calling ```addToFive()```. This means that the state of the function ```addTo``` is saved even after the block of code has finished executing, otherwise there is no way of knowing that ```addTo``` was called as ```addTo(5)``` and the value of x was set to 5.
 
 Lexical scoping is the reason why it is able to find the values of x and add - the private variables of the parent which has finished executing. This value is called a Closure.
 
@@ -167,17 +165,17 @@ The stack along with the lexical scope of the function is stored in form of refe
 
 Lambda Vs Closure: A lambda is essentially a function that is defined inline rather than the standard method of declaring functions. Lambdas can frequently be passed around as objects.
 
-A closure is a function that encloses its surrounding state by referencing fields external to its body. The enclosed state remains across invocations of the closure. 
+A closure is a function that encloses its surrounding state by referencing fields external to its body. The enclosed state remains across invocations of the closure.
 
 
 __Further reading/Sources__
 * [Lambda Vs Closure](http://stackoverflow.com/questions/220658/what-is-the-difference-between-a-closure-and-a-lambda)
-* [JavaScript Closures highly voted disucussion](http://stackoverflow.com/questions/111102/how-do-javascript-closures-work)
+* [How do JavaScript Closures Work?](http://stackoverflow.com/questions/111102/how-do-javascript-closures-work)
 
 ## Auto Currying
 Transforming a function that takes multiple arguments into one that if given less than its correct number of arguments returns a function that takes the rest. When the function gets the correct number of arguments it is then evaluated.
 
-lodash & ramda have a `curry` function that works this way.
+lodash & Ramda have a `curry` function that works this way.
 
 ```js
 const add = (x, y) => x + y
@@ -345,14 +343,10 @@ addOne(2) // 3
 addOne('some string') // Contract violated: expected int -> int
 ```
 
-## Guarded Functions
-
-TODO
-
 ## Category
 
 A category in category theory is a collection of objects and morphisms between them. In programming, typically types
-act as the objects and functions as morphisms. 
+act as the objects and functions as morphisms.
 
 To be a valid category 3 rules must be met:
 
@@ -368,7 +362,8 @@ To be a valid category 3 rules must be met:
 
 Since these rules govern composition at very abstract level, category theory is great at uncovering new ways of composing things.
 
-### Further reading
+__Further reading__
+
 * [Category Theory for Programmers](https://bartoszmilewski.com/2014/10/28/category-theory-for-programmers-the-preface/)
 
 ## Value
@@ -404,12 +399,12 @@ john.age + five === ({name: 'John', age: 30}).age + (5)
 
 An object that implements a `map` function which, while running over each value in the object to produce a new object, adheres to two rules:
 
-### Preserves identity
+__Preserves identity__
 ```
 object.map(x => x) ≍ object
 ```
 
-### Composable
+__Composable__
 
 ```
 object.map(compose(f, g)) ≍ object.map(g).map(f)
@@ -420,7 +415,7 @@ object.map(compose(f, g)) ≍ object.map(g).map(f)
 A common functor in JavaScript is `Array` since it abides to the two functor rules:
 
 ```js
-[1, 2, 3].map(x => x) // = [1, 2, 3]
+;[1, 2, 3].map(x => x) // = [1, 2, 3]
 ```
 
 and
@@ -501,7 +496,7 @@ An anonymous function that can be treated like a value.
 Lambdas are often passed as arguments to Higher-Order functions.
 
 ```js
-[1, 2].map((a) => a + 1) // [2, 3]
+;[1, 2].map((a) => a + 1) // [2, 3]
 ```
 
 You can assign a lambda to a variable.
@@ -588,10 +583,10 @@ Array.prototype.chain = function (f) {
 }
 
 // Usage
-;Array.of('cat,dog', 'fish,bird').chain((a) => a.split(',')) // ['cat', 'dog', 'fish', 'bird']
+Array.of('cat,dog', 'fish,bird').chain((a) => a.split(',')) // ['cat', 'dog', 'fish', 'bird']
 
 // Contrast to map
-;Array.of('cat,dog', 'fish,bird').map((a) => a.split(',')) // [['cat', 'dog'], ['fish', 'bird']]
+Array.of('cat,dog', 'fish,bird').map((a) => a.split(',')) // [['cat', 'dog'], ['fish', 'bird']]
 ```
 
 `of` is also known as `return` in other functional languages.
@@ -734,10 +729,6 @@ const sum = (list) => list.reduce((acc, val) => acc + val, 0)
 sum([1, 2, 3]) // 6
 ```
 
-## Traversable
-
-TODO
-
 ## Type Signatures
 
 Often functions in JavaScript will include comments that indicate the types of their arguments and return values.
@@ -773,27 +764,29 @@ __Further reading__
 * [Mostly Adequate Guide](https://drboolean.gitbooks.io/mostly-adequate-guide/content/ch7.html#whats-your-type)
 * [What is Hindley-Milner?](http://stackoverflow.com/a/399392/22425) on Stack Overflow
 
-## Union type
-A union type is the combination of two types together into another one.
+## Algebraic data type
+A composite type made from putting other types together. Two common classes of algebraic types are [sum](#sum-type) and [product](#product-type).
 
-JS doesn't have static types but let's say we invent a type `NumOrString` which is a sum of `String` and `Number`.
+### Sum type
+A Sum type is the combination of two types together into another one. It is called sum because the number of possible values in the result type is the sum of the input types.
 
-The `+` operator in JS works on strings and numbers so we can use this new type to describe its inputs and outputs:
-
+JavaScript doesn't have types like this but we can use `Set`s to pretend:
 ```js
-// add :: (NumOrString, NumOrString) -> NumOrString
-const add = (a, b) => a + b
+// imagine that rather than sets here we have types that can only have these values
+const bools = new Set([true, false])
+const halfTrue = new Set(['half-true'])
 
-add(1, 2) // Returns number 3
-add('Foo', 2) // Returns string "Foo2"
-add('Foo', 'Bar') // Returns string "FooBar"
+// The weakLogic type contains the sum of the values from bools and halfTrue
+const weakLogicValues = new Set([...bools, ...halfTrue])
 ```
 
-Union types are also known as algebraic types, tagged unions, or sum types.
+Sum types are sometimes called union types, discriminated unions, or tagged unions.
 
 There's a [couple](https://github.com/paldepind/union-type) [libraries](https://github.com/puffnfresh/daggy) in JS which help with defining and using union types.
 
-## Product type
+Flow includes [union types](https://flow.org/en/docs/types/unions/) and TypeScript has [Enums](https://www.typescriptlang.org/docs/handbook/enums.html) to serve the same role.
+
+### Product type
 
 A **product** type combines types together in a way you're probably more familiar with:
 
@@ -801,12 +794,12 @@ A **product** type combines types together in a way you're probably more familia
 // point :: (Number, Number) -> {x: Number, y: Number}
 const point = (x, y) => ({x: x, y: y})
 ```
-It's called a product because the total possible values of the data structure is the product of the different values.
+It's called a product because the total possible values of the data structure is the product of the different values. Many languages have a tuple type which is the simplest formulation of a product type.
 
 See also [Set theory](https://en.wikipedia.org/wiki/Set_theory).
 
 ## Option
-Option is a [union type](#union-type) with two cases often called `Some` and `None`.
+Option is a [sum type](#sum-type) with two cases often called `Some` and `None`.
 
 Option is useful for composing functions that might not return a value.
 
@@ -867,6 +860,7 @@ getNestedPrice({item: {price: 9.99}}) // Some(9.99)
 * [Lazy.js](https://github.com/dtao/lazy.js)
 * [maryamyriameliamurphies.js](https://github.com/sjsyrek/maryamyriameliamurphies.js)
 * [Haskell in ES6](https://github.com/casualjavascript/haskell-in-es6)
+* [Sanctuary](https://github.com/sanctuary-js/sanctuary)
 
 ---
 
