@@ -464,10 +464,14 @@ lift(increment)([2]) // [3]
 ```
 
 
-## Referential Transparency
+## Referential Transparency and substitutability
 
-An expression that can be replaced with its value without changing the
-behavior of the program is said to be referentially transparent.
+Referential transparency is a more formal way of defining a pure function. Purity in
+this sense refers to the existence of a pure mapping between a function’s arguments
+and its return value. Hence, if a function consistently yields the same result on the
+same input, it’s said to be referentially transparent.
+In another words: an expression that can be replaced with its value without changing the
+behavior of the program (*substitutability*) is said to be referentially transparent.
 
 Say we have function greet:
 
