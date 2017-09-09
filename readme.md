@@ -410,7 +410,7 @@ __Composable__
 object.map(compose(f, g)) ≍ object.map(g).map(f)
 ```
 
-(`f`, `g` be arbitrary functions)
+(`f`, `g` are arbitrary functions)
 
 A common functor in JavaScript is `Array` since it abides to the two functor rules:
 
