@@ -52,6 +52,7 @@ __Table of Contents__
 * [Setoid](#setoid)
 * [Semigroup](#semigroup)
 * [Foldable](#foldable)
+* [Lens](#lens)
 * [Type Signatures](#type-signatures)
 * [Algebraic data type](#algebraic-data-type)
   * [Sum type](#sum-type)
@@ -728,6 +729,56 @@ An object that has a `reduce` function that can transform that object into some 
 const sum = (list) => list.reduce((acc, val) => acc + val, 0)
 sum([1, 2, 3]) // 6
 ```
+
+## Lens ##
+A lens is a structure (often an object or function) that pairs a getter and a non-mutating setter for some other data
+structure.
+
+```js
+// Using [Ramda's lens](http://ramdajs.com/docs/#lens)
+const nameLens = R.lens(
+  // getter for name property on an object
+  (obj) => obj.name,
+  // setter for name property
+  (val, obj) => Object.assign({}, obj, {name: val})
+)
+```
+
+Having the pair of get and set for a given data structure enables a few key features.
+
+```js
+const person = {name: 'Gertrude Blanch'}
+
+// invoke the getter
+R.view(nameLens, person) // 'Gertrude Blanch'
+
+// invoke the setter
+R.set(nameLens, 'Shafi Goldwasser', person) // {name: 'Shafi Goldwasser'}
+
+// run a function on the value in the structure
+R.over(nameLens, uppercase, person) // {name: 'GERTRUDE BLANCH'}
+```
+
+Lenses are also composable. This allows easy immutable updates to deeply nested data.
+
+```js
+// This lens focuses on the first item in a non-empty array
+const firstLens = R.lens(
+  // get first item in array
+  xs => xs[0],
+  // non-mutating setter for first item in array
+  (val, [__, ...xs]) => [val, ...xs]
+)
+
+const people = [{name: 'Gertrude Blanch'}, {name: 'Shafi Goldwasser'}]
+
+// Despite what you may assume, lenses compose left-to-right.
+R.over(compose(firstLens, nameLens), uppercase, people) // [{'name': 'GERTRUDE BLANCH'}, {'name': 'Shafi Goldwasser'}]
+```
+
+Other implementations:
+* [partial.lenses](https://github.com/calmm-js/partial.lenses) - Tasty syntax sugar and a lot of powerful features
+* [nanoscope](http://www.kovach.me/nanoscope/) - Fluent-interface
 
 ## Type Signatures
 
