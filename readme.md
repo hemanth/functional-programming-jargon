@@ -843,7 +843,7 @@ A **product** type combines types together in a way you're probably more familia
 
 ```js
 // point :: (Number, Number) -> {x: Number, y: Number}
-const point = (x, y) => ({x: x, y: y})
+const point = (x, y) => ({ x, y })
 ```
 It's called a product because the total possible values of the data structure is the product of the different values. Many languages have a tuple type which is the simplest formulation of a product type.
 
