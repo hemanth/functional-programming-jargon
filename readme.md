@@ -576,7 +576,9 @@ compose(foo, identity) ≍ compose(identity, foo) ≍ foo
 
 ## Monad
 
-A monad is an object with [`of`](#pointed-functor) and `chain` functions. `chain` is like [`map`](#functor) except it un-nests the resulting nested object.
+A monad is an object that chains a list of functions even if they have incompatible input and return types between them. To solve this, a monad uses [`of`](#pointed-functor) and `chain` functions. 
+
+The [`of`](#pointed-functor) function implements the initialization of the chain and the `chain` function implements the glue code. `chain` is like [`map`](#functor) except it un-nests the resulting nested object.
 
 ```js
 // Implementation
