@@ -13,6 +13,7 @@ __Translations__
 * [Spanish](https://github.com/idcmardelplata/functional-programming-jargon/tree/master)
 * [Chinese](https://github.com/shfshanyue/fp-jargon-zh)
 * [Bahasa Indonesia](https://github.com/wisn/jargon-pemrograman-fungsional)
+* [Scala World](https://github.com/ikhoon/functional-programming-jargon.scala)
 
 __Table of Contents__
 <!-- RM(noparent,notop) -->
