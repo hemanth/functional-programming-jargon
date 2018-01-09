@@ -892,7 +892,7 @@ const getItem = (cart) => maybeProp('item', cart)
 const getPrice = (item) => maybeProp('price', item)
 
 // getNestedPrice :: cart -> Option a
-const getNestedPrice = (cart) => getItem(obj).chain(getPrice)
+const getNestedPrice = (cart) => getItem(cart).chain(getPrice)
 
 getNestedPrice({}) // None()
 getNestedPrice({item: {foo: 1}}) // None()
