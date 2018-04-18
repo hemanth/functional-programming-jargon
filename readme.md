@@ -44,6 +44,7 @@ __Table of Contents__
 * [Lambda](#lambda)
 * [Lambda Calculus](#lambda-calculus)
 * [Lazy evaluation](#lazy-evaluation)
+* [Thunk] (#thunk)
 * [Monoid](#monoid)
 * [Monad](#monad)
 * [Comonad](#comonad)
@@ -533,6 +534,19 @@ const rand = function*() {
 ```js
 const randIter = rand()
 randIter.next() // Each execution gives a random value, expression is evaluated on need.
+```
+
+## Thunk
+
+A thunk is another word for a function used to inject an additional calculation into another function (or simply a function that is returned by another function). Thunks are primarily used to delay a calculation until its result is needed, or to insert operations at the beginning or end of the other function.
+
+```
+function not_a_thunk() {
+	// this one is a "thunk" because it defers work for later:
+	return function() {
+		console.log('do stuff now')
+	}
+}
 ```
 
 ## Monoid
