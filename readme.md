@@ -1,22 +1,10 @@
-# Functional Programming Jargon
+# Fonksiyonel Programlama Jargonu
 
-Functional programming (FP) provides many advantages, and its popularity has been increasing as a result. However, each programming paradigm comes with its own unique jargon and FP is no exception. By providing a glossary, we hope to make learning FP easier.
+Fonksiyonel Programlama (FP) bir çok avantaj sağlar ve bunun bir sonucu olarak gittikçe popülerleşmektedir. Bununla beraber, her programlama paradigması kendine özgü bir jargona sahiptir. Bir sözlük sağlayarak, kullanıcıların fonksiyonel programlamayı öğrenmelerini kolaylaştırmayı umuyoruz.
 
-Examples are presented in JavaScript (ES2015). [Why JavaScript?](https://github.com/hemanth/functional-programming-jargon/wiki/Why-JavaScript%3F)
+Örnekler JavaScript ile yazıldı. (ES2015). [Neden JavaScript?](https://github.com/hemanth/functional-programming-jargon/wiki/Why-JavaScript%3F)
 
-*This is a [WIP](https://github.com/hemanth/functional-programming-jargon/issues/20); please feel free to send a PR ;)*
-
-Where applicable, this document uses terms defined in the [Fantasy Land spec](https://github.com/fantasyland/fantasy-land)
-
-__Translations__
-* [Portuguese](https://github.com/alexmoreno/jargoes-programacao-funcional)
-* [Spanish](https://github.com/idcmardelplata/functional-programming-jargon/tree/master)
-* [Chinese](https://github.com/shfshanyue/fp-jargon-zh)
-* [Bahasa Indonesia](https://github.com/wisn/jargon-pemrograman-fungsional)
-* [Scala World](https://github.com/ikhoon/functional-programming-jargon.scala)
-* [Korean](https://github.com/sphilee/functional-programming-jargon)
-
-__Table of Contents__
+__İçindekiler__
 <!-- RM(noparent,notop) -->
 
 * [Arity](#arity)
@@ -67,7 +55,7 @@ __Table of Contents__
 
 ## Arity
 
-The number of arguments a function takes. From words like unary, binary, ternary, etc. This word has the distinction of being composed of two suffixes, "-ary" and "-ity." Addition, for example, takes two arguments, and so it is defined as a binary function or a function with an arity of two. Such a function may sometimes be called "dyadic" by people who prefer Greek roots to Latin. Likewise, a function that takes a variable number of arguments is called "variadic," whereas a binary function must be given two and only two arguments, currying and partial application notwithstanding (see below).
+Bir fonksiyonun aldığı argüman sayısıdır. Bir fonksiyon aldığı argüman sayısına göre unary(1 argüman), binary(2 argüman), ternary(3 argüman)... olarak adlandırılır. Eğer bir fonksiyon değişken sayıda argüman alıyorsa variadic olarak adlandırılır.
 
 ```js
 const sum = (a, b) => a + b
@@ -75,7 +63,7 @@ const sum = (a, b) => a + b
 const arity = sum.length
 console.log(arity) // 2
 
-// The arity of sum is 2
+// sum fonksiyonunun arity'si 2dir.
 ```
 
 ## Higher-Order Functions (HOF)
