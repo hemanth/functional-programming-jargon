@@ -55,7 +55,7 @@ __İçindekiler__
 
 ## Arity
 
-Bir fonksiyonun aldığı argüman sayısıdır. Bir fonksiyon aldığı argüman sayısına göre unary(1 argüman), binary(2 argüman), ternary(3 argüman)... olarak adlandırılır. Eğer bir fonksiyon değişken sayıda argüman alıyorsa variadic olarak adlandırılır.
+Bir fonksiyonun aldığı argüman sayısıdır. Bir fonksiyon aldığı argüman sayısına göre _unary_ (1 argüman), _binary_ (2 argüman), _ternary_ (3 argüman)... olarak adlandırılır. Eğer bir fonksiyon değişken sayıda argüman alıyorsa _variadic_ olarak adlandırılır.
 
 ```js
 const sum = (a, b) => a + b
@@ -68,7 +68,7 @@ console.log(arity) // 2
 
 ## Higher-Order Functions (HOF)
 
-A function which takes a function as an argument and/or returns a function.
+Argüman olarak bir fonksiyon alan ya da bir fonksiyonu çıktı veren fonksiyonlardır.
 
 ```js
 const filter = (predicate, xs) => xs.filter(predicate)
@@ -84,8 +84,8 @@ filter(is(Number), [0, '1', 2, null]) // [0, 2]
 
 ## Closure
 
-A closure is a scope which retains variables available to a function when it's created. This is important for
-[partial application](#partial-application) to work.
+_Kapanış_, bir fonksiyona bağlı değişkenleri koruyan bir kapsamdır.
+[Kısmi uygulama](#partial-application) için önemlidir.
 
 
 ```js
@@ -96,25 +96,19 @@ const addTo = (x) => {
 }
 ```
 
-We can call `addTo` with a number and get back a function with a baked-in `x`.
+`addTo` fonksiyonunu bir sayı ile çağıralım.
 
 ```js
 var addToFive = addTo(5)
 ```
 
-In this case the `x` is retained in `addToFive`'s closure with the value `5`. We can then call `addToFive` with the `y`
-and get back the desired number.
+Bu durumda `x = 5` değeri `addToFive` fonksiyonunun kapanışında korunur. Şimdi `addToFive` fonksiyonunu bir `y` değeri ile çağırırsak:
 
 ```
 addToFive(3) // => 8
 ```
 
-This works because variables that are in parent scopes are not garbage-collected as long as the function itself is retained.
-
-Closures are commonly used in event handlers so that they still have access to variables defined in their parents when they
-are eventually called.
-
-__Further reading__
+__Daha Fazla Bilgi İçin__
 * [Lambda Vs Closure](http://stackoverflow.com/questions/220658/what-is-the-difference-between-a-closure-and-a-lambda)
 * [How do JavaScript Closures Work?](http://stackoverflow.com/questions/111102/how-do-javascript-closures-work)
 
