@@ -115,7 +115,7 @@ __Daha Fazla Bilgi İçin__
 
 ## Partial Application
 
-Kısmi uygulama, bir fonksiyonun bazı argümanlarını önceden doldurarak yeni bir fonksiyon oluşturmaktır.
+_Kısmi uygulama_, bir fonksiyonun bazı argümanlarını önceden doldurarak yeni bir fonksiyon oluşturmaktır.
 
 ```js
 // Orjinal fonksiyonumuz
