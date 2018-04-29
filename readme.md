@@ -4,55 +4,6 @@ Fonksiyonel Programlama (FP) bir çok avantaj sağlar ve bunun bir sonucu olarak
 
 Örnekler JavaScript ile yazıldı. (ES2015). [Neden JavaScript?](https://github.com/hemanth/functional-programming-jargon/wiki/Why-JavaScript%3F)
 
-__İçindekiler__
-<!-- RM(noparent,notop) -->
-
-* [Arity](#arity)
-* [Higher-Order Functions (HOF)](#higher-order-functions-hof)
-* [Closure](#closure)
-* [Partial Application](#partial-application)
-* [Currying](#currying)
-* [Auto Currying](#auto-currying)
-* [Function Composition](#function-composition)
-* [Continuation](#continuation)
-* [Purity](#purity)
-* [Side effects](#side-effects)
-* [Idempotent](#idempotent)
-* [Point-Free Style](#point-free-style)
-* [Predicate](#predicate)
-* [Contracts](#contracts)
-* [Category](#category)
-* [Value](#value)
-* [Constant](#constant)
-* [Functor](#functor)
-* [Pointed Functor](#pointed-functor)
-* [Lift](#lift)
-* [Referential Transparency](#referential-transparency)
-* [Equational Reasoning](#equational-reasoning)
-* [Lambda](#lambda)
-* [Lambda Calculus](#lambda-calculus)
-* [Lazy evaluation](#lazy-evaluation)
-* [Monoid](#monoid)
-* [Monad](#monad)
-* [Comonad](#comonad)
-* [Applicative Functor](#applicative-functor)
-* [Morphism](#morphism)
-  * [Endomorphism](#endomorphism)
-  * [Isomorphism](#isomorphism)
-* [Setoid](#setoid)
-* [Semigroup](#semigroup)
-* [Foldable](#foldable)
-* [Lens](#lens)
-* [Type Signatures](#type-signatures)
-* [Algebraic data type](#algebraic-data-type)
-  * [Sum type](#sum-type)
-  * [Product type](#product-type)
-* [Option](#option)
-* [Functional Programming Libraries in JavaScript](#functional-programming-libraries-in-javascript)
-
-
-<!-- /RM -->
-
 ## Arity
 
 Bir fonksiyonun aldığı argüman sayısıdır. Bir fonksiyon aldığı argüman sayısına göre _unary_ (1 argüman), _binary_ (2 argüman), _ternary_ (3 argüman)... olarak adlandırılır. Eğer bir fonksiyon değişken sayıda argüman alıyorsa _variadic_ olarak adlandırılır.
@@ -154,69 +105,18 @@ add2(10) // 12
 
 ```
 
-## Auto Currying
-Transforming a function that takes multiple arguments into one that if given less than its correct number of arguments returns a function that takes the rest. When the function gets the correct number of arguments it is then evaluated.
-
-lodash & Ramda have a `curry` function that works this way.
-
-```js
-const add = (x, y) => x + y
-
-const curriedAdd = _.curry(add)
-curriedAdd(1, 2) // 3
-curriedAdd(1) // (y) => 1 + y
-curriedAdd(1)(2) // 3
-```
-
-__Further reading__
-* [Favoring Curry](http://fr.umio.us/favoring-curry/)
-* [Hey Underscore, You're Doing It Wrong!](https://www.youtube.com/watch?v=m3svKOdZijA)
-
 ## Function Composition
 
-The act of putting two functions together to form a third function where the output of one function is the input of the other.
-
+İki farklı fonksiyonu bir araya getirerek, bir fonksiyonun çıktısı diğer fonksiyonun girdisi olan üçüncü bir fonksiyon oluşturmaktır.
 ```js
 const compose = (f, g) => (a) => f(g(a)) // Definition
 const floorAndToString = compose((val) => val.toString(), Math.floor) // Usage
 floorAndToString(121.212121) // '121'
 ```
 
-## Continuation
-
-At any given point in a program, the part of the code that's yet to be executed is known as a continuation.
-
-```js
-const printAsString = (num) => console.log(`Given ${num}`)
-
-const addOneAndContinue = (num, cc) => {
-  const result = num + 1
-  cc(result)
-}
-
-addOneAndContinue(2, printAsString) // 'Given 3'
-```
-
-Continuations are often seen in asynchronous programming when the program needs to wait to receive data before it can continue. The response is often passed off to the rest of the program, which is the continuation, once it's been received.
-
-```js
-const continueProgramWith = (data) => {
-  // Continues program with data
-}
-
-readFileAsync('path/to/file', (err, response) => {
-  if (err) {
-    // handle error
-    return
-  }
-  continueProgramWith(response)
-})
-```
-
 ## Purity
 
-A function is pure if the return value is only determined by its
-input values, and does not produce side effects.
+Bir fonksiyonun çıktısı sadece girdi veya girdilerine bağlı ve fonksiyon yan etki oluşturmuyor ise, fonksiyon saftır denir.
 
 ```js
 const greet = (name) => `Hi, ${name}`
@@ -224,7 +124,7 @@ const greet = (name) => `Hi, ${name}`
 greet('Brianne') // 'Hi, Brianne'
 ```
 
-As opposed to each of the following:
+Saf olmayan fonksiyona bir örnek:
 
 ```js
 window.name = 'Brianne'
@@ -234,8 +134,7 @@ const greet = () => `Hi, ${window.name}`
 greet() // "Hi, Brianne"
 ```
 
-The above example's output is based on data stored outside of the function...
-
+Yukarıdaki  fonksiyonun çıktısı fonksiyonun dışarısında tanımlı bir değişkene bağlıdır.
 ```js
 let greeting
 
@@ -246,12 +145,11 @@ const greet = (name) => {
 greet('Brianne')
 greeting // "Hi, Brianne"
 ```
-
-... and this one modifies state outside of the function.
+Bu fonksiyon ise, fonksiyonun dışarısında tanımlanan bir değişkeni değiştirmektedir (yani saf değildir).
 
 ## Side effects
 
-A function or expression is said to have a side effect if apart from returning a value, it interacts with (reads from or writes to) external mutable state.
+Bir fonksiyon veya ifade, dışarısındaki bir durum ile etkileşime geçiyor ise (okuma veya yazma), yan etkiye sahiptir denir.
 
 ```js
 const differentEveryTime = new Date()
