@@ -116,7 +116,7 @@ floorAndToString(121.212121) // '121'
 
 ## Purity
 
-Bir fonksiyonun çıktısı sadece girdi veya girdilerine bağlı ve fonksiyon yan etki oluşturmuyor ise, fonksiyon saftır denir.
+Bir fonksiyonun çıktısı sadece girdi veya girdilerine bağlı ve fonksiyon yan etki oluşturmuyor ise, fonksiyon _saftır_ denir.
 
 ```js
 const greet = (name) => `Hi, ${name}`
@@ -149,7 +149,7 @@ Bu fonksiyon ise, fonksiyonun dışarısında tanımlanan bir değişkeni deği�
 
 ## Side effects
 
-Bir fonksiyon veya ifade, dışarısındaki bir durum ile etkileşime geçiyor ise (okuma veya yazma), yan etkiye sahiptir denir.
+Bir fonksiyon veya ifade, dışarısındaki bir durum ile etkileşime geçiyor ise (okuma veya yazma), _yan etki_ye sahiptir denir.
 
 ```js
 const differentEveryTime = new Date()
@@ -161,7 +161,7 @@ console.log('IO is a side effect!')
 
 ## Idempotent
 
-A function is idempotent if reapplying it to its result does not produce a different result.
+Bir fonksiyon, sonucuna tekrar uygulandığında sonuç değişmiyorsa _idempotent_ olarak adlandırılır.
 
 ```
 f(f(x)) ≍ f(x)
@@ -177,28 +177,26 @@ sort(sort(sort([2, 1])))
 
 ## Point-Free Style
 
-Writing functions where the definition does not explicitly identify the arguments used. This style usually requires [currying](#currying) or other [Higher-Order functions](#higher-order-functions-hof). A.K.A Tacit programming.
+Argümanların açıkca tanımlanmadığı fonksiyonlar yazmaktır. _Tacit programming_ olarak da bilinir.
 
 ```js
-// Given
+// map ve add fonksiyonları verilsin
 const map = (fn) => (list) => list.map(fn)
 const add = (a) => (b) => a + b
 
-// Then
+// incrementAll fonksiyonunu tanımlayalım
 
-// Not points-free - `numbers` is an explicit argument
+// Point-free değildir - `numbers` argümanı belirtilmiştir
 const incrementAll = (numbers) => map(add(1))(numbers)
 
-// Points-free - The list is an implicit argument
+// Point-free - Fonksiyonun aldığı argüman açıkca belirtilmemiştir
 const incrementAll2 = map(add(1))
 ```
 
-`incrementAll` identifies and uses the parameter `numbers`, so it is not points-free.  `incrementAll2` is written just by combining functions and values, making no mention of its arguments.  It __is__ points-free.
-
-Points-free function definitions look just like normal assignments without `function` or `=>`.
+`incrementAll` fonksiyonunun `numbers` argümanını aldığı belirtilmiştir, bu nedenle point-free değildir.  `incrementAll2` fonksiyonu ise, fonksiyon ve değerlerin bir bileşimidir ve argüman bilgisi belirtilmemiştir.  Yani _point-free_ dir.
 
 ## Predicate
-A predicate is a function that returns true or false for a given value. A common use of a predicate is as the callback for array filter.
+Verilen bir değer için doğru veya yanlış değerini dönen fonksiyonlardır. Genellikle _filter_ ile beraber kullanılırlar.
 
 ```js
 const predicate = (a) => a > 2
@@ -776,21 +774,6 @@ getNestedPrice({item: {price: 9.99}}) // Some(9.99)
 ```
 
 `Option` is also known as `Maybe`. `Some` is sometimes called `Just`. `None` is sometimes called `Nothing`.
-
-## Functional Programming Libraries in JavaScript
-
-* [mori](https://github.com/swannodette/mori)
-* [Immutable](https://github.com/facebook/immutable-js/)
-* [Ramda](https://github.com/ramda/ramda)
-* [ramda-adjunct](https://github.com/char0n/ramda-adjunct)
-* [Folktale](http://folktale.origamitower.com/)
-* [monet.js](https://cwmyers.github.io/monet.js/)
-* [lodash](https://github.com/lodash/lodash)
-* [Underscore.js](https://github.com/jashkenas/underscore)
-* [Lazy.js](https://github.com/dtao/lazy.js)
-* [maryamyriameliamurphies.js](https://github.com/sjsyrek/maryamyriameliamurphies.js)
-* [Haskell in ES6](https://github.com/casualjavascript/haskell-in-es6)
-* [Sanctuary](https://github.com/sanctuary-js/sanctuary)
 
 ---
 
