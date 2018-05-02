@@ -149,7 +149,7 @@ Bu fonksiyon ise, fonksiyonun dışarısında tanımlanan bir değişkeni deği�
 
 ## Side effects
 
-Bir fonksiyon veya ifade, dışarısındaki bir durum ile etkileşime geçiyor ise (okuma veya yazma), _yan etki_ye sahiptir denir.
+Bir fonksiyon veya ifade, dışarısındaki bir durum ile etkileşime geçiyor ise (okuma veya yazma), _yan etki_ ye sahiptir denir.
 
 ```js
 const differentEveryTime = new Date()
