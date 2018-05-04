@@ -232,26 +232,18 @@ undefined
 
 ## Constant
 
-A variable that cannot be reassigned once defined.
+Bir kere tanımlandıktan sonra yeniden atanamayan değişkenlerdir.
 
 ```js
 const five = 5
 const john = Object.freeze({name: 'John', age: 30})
 ```
 
-Constants are [referentially transparent](#referential-transparency). That is, they can be replaced with the values that they represent without affecting the result.
-
-With the above two constants the following expression will always return `true`.
-
-```js
-john.age + five === ({name: 'John', age: 30}).age + (5)
-```
-
 ## Functor
 
-An object that implements a `map` function which, while running over each value in the object to produce a new object, adheres to two rules:
+`map` fonksiyonunu implemente eden bir nesnedir ve aşağıdaki iki özelliği sağlar:
 
-__Preserves identity__
+__Identity__
 ```
 object.map(x => x) ≍ object
 ```
@@ -260,24 +252,6 @@ __Composable__
 
 ```
 object.map(compose(f, g)) ≍ object.map(g).map(f)
-```
-
-(`f`, `g` are arbitrary functions)
-
-A common functor in JavaScript is `Array` since it abides to the two functor rules:
-
-```js
-;[1, 2, 3].map(x => x) // = [1, 2, 3]
-```
-
-and
-
-```js
-const f = x => x + 1
-const g = x => x * 2
-
-;[1, 2, 3].map(x => f(g(x))) // = [3, 5, 7]
-;[1, 2, 3].map(g).map(f)     // = [3, 5, 7]
 ```
 
 ## Pointed Functor
