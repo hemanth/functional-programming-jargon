@@ -206,7 +206,7 @@ const predicate = (a) => a > 2
 
 ## Category
 
-Kategory teorisinde bir _kategori_, matematiksel yapılar ve bunlar arasında tanımlı morfizmlerden oluşur. Proglamada ise, tipler matematiksel yapılar, fonksiyonlar ise morfizmlerdir.
+Kategory teorisinde bir _kategori_, matematiksel yapılar ve bunlar arasında tanımlı morfizmlerden oluşur. Programlamada ise, tipler matematiksel yapılar, fonksiyonlar ise morfizmlerdir.
 
 Bir kategori aşağıdaki üç koşulu sağlar:
 
