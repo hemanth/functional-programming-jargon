@@ -204,49 +204,23 @@ const predicate = (a) => a > 2
 ;[1, 2, 3, 4].filter(predicate) // [3, 4]
 ```
 
-## Contracts
-
-A contract specifies the obligations and guarantees of the behavior from a function or expression at runtime. This acts as a set of rules that are expected from the input and output of a function or expression, and errors are generally reported whenever a contract is violated.
-
-```js
-// Define our contract : int -> int
-const contract = (input) => {
-  if (typeof input === 'number') return true
-  throw new Error('Contract violated: expected int -> int')
-}
-
-const addOne = (num) => contract(num) && num + 1
-
-addOne(2) // 3
-addOne('some string') // Contract violated: expected int -> int
-```
-
 ## Category
 
-A category in category theory is a collection of objects and morphisms between them. In programming, typically types
-act as the objects and functions as morphisms.
+Kategory teorisinde bir _kategori_, matematiksel yapılar ve bunlar arasında tanımlı morfizmlerden oluşur. Proglamada ise, tipler matematiksel yapılar, fonksiyonlar ise morfizmlerdir.
 
-To be a valid category 3 rules must be met:
+Bir kategori aşağıdaki üç koşulu sağlar:
 
-1. There must be an identity morphism that maps an object to itself.
-    Where `a` is an object in some category,
-    there must be a function from `a -> a`.
-2. Morphisms must compose.
-    Where `a`, `b`, and `c` are objects in some category,
-    and `f` is a morphism from `a -> b`, and `g` is a morphism from `b -> c`;
-    `g(f(x))` must be equivalent to `(g • f)(x)`.
-3. Composition must be associative
-    `f • (g • h)` is the same as `(f • g) • h`
+1. Bir yapıyı kendisine eşleyen bir birim morfizm vardır. Yani `a` herhangi bir kategori içinde bir yapı ise, `a -> a` şeklinde tanımlı bir fonksiyon vardır.
+2. `a`, `b` ve `c` herhangi bir kategori içindeki yapılar ve `f : a -> b` ve `g : b -> c` ise `h : a -> c`, `h(x)=(g • f)(x)=g(f(x))` vardır.
+3. `f • (g • h)` ve `(f • g) • h` ifadeleri aynıdır.
 
-Since these rules govern composition at very abstract level, category theory is great at uncovering new ways of composing things.
-
-__Further reading__
+__Daha Fazla Kaynak__
 
 * [Category Theory for Programmers](https://bartoszmilewski.com/2014/10/28/category-theory-for-programmers-the-preface/)
 
 ## Value
 
-Anything that can be assigned to a variable.
+Bir değişkene atanabilen herşeydir.
 
 ```js
 5
