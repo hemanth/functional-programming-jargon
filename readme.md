@@ -254,48 +254,9 @@ __Composable__
 object.map(compose(f, g)) ≍ object.map(g).map(f)
 ```
 
-## Pointed Functor
-An object with an `of` function that puts _any_ single value into it.
-
-ES2015 adds `Array.of` making arrays a pointed functor.
-
-```js
-Array.of(1) // [1]
-```
-
-## Lift
-
-Lifting is when you take a value and put it into an object like a [functor](#pointed-functor). If you lift a function into an [Applicative Functor](#applicative-functor) then you can make it work on values that are also in that functor.
-
-Some implementations have a function called `lift`, or `liftA2` to make it easier to run functions on functors.
-
-```js
-const liftA2 = (f) => (a, b) => a.map(f).ap(b) // note it's `ap` and not `map`.
-
-const mult = a => b => a * b
-
-const liftedMult = liftA2(mult) // this function now works on functors like array
-
-liftedMult([1, 2], [3]) // [3, 6]
-liftA2(a => b => a + b)([1, 2], [3, 4]) // [4, 5, 5, 6]
-```
-
-Lifting a one-argument function and applying it does the same thing as `map`.
-
-```js
-const increment = (x) => x + 1
-
-lift(increment)([2]) // [3]
-;[2].map(increment) // [3]
-```
-
-
 ## Referential Transparency
 
-An expression that can be replaced with its value without changing the
-behavior of the program is said to be referentially transparent.
-
-Say we have function greet:
+Bir ifade değeri ile yer değiştirildiğinde programın davranışı değişmiyor ise, ifade _referentially transparent_ olarak adlandırılır.
 
 ```js
 const greet = () => 'Hello World!'
@@ -304,13 +265,9 @@ const greet = () => 'Hello World!'
 Any invocation of `greet()` can be replaced with `Hello World!` hence greet is
 referentially transparent.
 
-##  Equational Reasoning
-
-When an application is composed of expressions and devoid of side effects, truths about the system can be derived from the parts.
-
 ## Lambda
 
-An anonymous function that can be treated like a value.
+Anonim (isimsiz) fonksiyonlardır.
 
 ```js
 ;(function (a) {
@@ -319,20 +276,11 @@ An anonymous function that can be treated like a value.
 
 ;(a) => a + 1
 ```
-Lambdas are often passed as arguments to Higher-Order functions.
+Çoğunlukla yüksek mertebeden fonksiyonlar ile birlikte kullanılırlar.
 
 ```js
 ;[1, 2].map((a) => a + 1) // [2, 3]
 ```
-
-You can assign a lambda to a variable.
-
-```js
-const add1 = (a) => a + 1
-```
-
-## Lambda Calculus
-A branch of mathematics that uses functions to create a [universal model of computation](https://en.wikipedia.org/wiki/Lambda_calculus).
 
 ## Lazy evaluation
 
