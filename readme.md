@@ -218,27 +218,6 @@ __Daha Fazla Kaynak__
 
 * [Category Theory for Programmers](https://bartoszmilewski.com/2014/10/28/category-theory-for-programmers-the-preface/)
 
-## Value
-
-Bir değişkene atanabilen herşeydir.
-
-```js
-5
-Object.freeze({name: 'John', age: 30}) // The `freeze` function enforces immutability.
-;(a) => a
-;[1]
-undefined
-```
-
-## Constant
-
-Bir kere tanımlandıktan sonra yeniden atanamayan değişkenlerdir.
-
-```js
-const five = 5
-const john = Object.freeze({name: 'John', age: 30})
-```
-
 ## Functor
 
 `map` fonksiyonunu implemente eden bir nesnedir ve aşağıdaki iki özelliği sağlar:
@@ -254,6 +233,14 @@ __Composable__
 object.map(compose(f, g)) ≍ object.map(g).map(f)
 ```
 
+## Pointed Functor
+
+Herhangi bir değeri içerisine alan bir `of` fonksiyonuna sahip bir nesnedir.
+
+```js
+Array.of(1) // [1]
+```
+
 ## Referential Transparency
 
 Bir ifade değeri ile yer değiştirildiğinde programın davranışı değişmiyor ise, ifade _referentially transparent_ olarak adlandırılır.
@@ -262,8 +249,7 @@ Bir ifade değeri ile yer değiştirildiğinde programın davranışı değişmi
 const greet = () => 'Hello World!'
 ```
 
-Any invocation of `greet()` can be replaced with `Hello World!` hence greet is
-referentially transparent.
+`greet()` fonksiyonu kullanıldığı her yerde `Hello World!` değeri ile değiştirilebilir.
 
 ## Lambda
 
@@ -284,7 +270,7 @@ Anonim (isimsiz) fonksiyonlardır.
 
 ## Lazy evaluation
 
-Lazy evaluation is a call-by-need evaluation mechanism that delays the evaluation of an expression until its value is needed. In functional languages, this allows for structures like infinite lists, which would not normally be available in an imperative language where the sequencing of commands is significant.
+_Lazy evaluation_, bir ifadenin, ifade sonucuna ihtiyaç duyulana kadar hesaplanmamasıdır. Böylece, sonsuz listeler gibi yapılar tanımlanabilir.
 
 ```js
 const rand = function*() {
@@ -296,59 +282,37 @@ const rand = function*() {
 
 ```js
 const randIter = rand()
-randIter.next() // Each execution gives a random value, expression is evaluated on need.
+randIter.next() // Her çalıştırma farklı bir rastgele sayı döndürür.
 ```
 
 ## Monoid
 
-An object with a function that "combines" that object with another of the same type.
+Bir nesneyi aynı tip başka bir nesne ile birleştiren bir fonksiyona sahip bir objedir.
 
-One simple monoid is the addition of numbers:
+Basit bir monoid örneği sayıların toplanmasıdır:
 
 ```js
 1 + 1 // 2
 ```
-In this case number is the object and `+` is the function.
+Bu durumda sayılar nesneler, `+` operatörü ise fonksiyondur.
 
-An "identity" value must also exist that when combined with a value doesn't change it.
+Birim eleman olmak zorundadır,
 
-The identity value for addition is `0`.
+Toplama işleminin birim elemanı `0` dır.
+
 ```js
 1 + 0 // 1
 ```
 
-It's also required that the grouping of operations will not affect the result (associativity):
+ve geçişkenlik özelliği de gereklidir (associativity):
 
 ```js
-1 + (2 + 3) === (1 + 2) + 3 // true
-```
-
-Array concatenation also forms a monoid:
-
-```js
-;[1, 2].concat([3, 4]) // [1, 2, 3, 4]
-```
-
-The identity value is empty array `[]`
-
-```js
-;[1, 2].concat([]) // [1, 2]
-```
-
-If identity and compose functions are provided, functions themselves form a monoid:
-
-```js
-const identity = (a) => a
-const compose = (f, g) => (x) => f(g(x))
-```
-`foo` is any function that takes one argument.
-```
-compose(foo, identity) ≍ compose(identity, foo) ≍ foo
+1 + (2 + 3) === (1 + 2) + 3
 ```
 
 ## Monad
 
-A monad is an object with [`of`](#pointed-functor) and `chain` functions. `chain` is like [`map`](#functor) except it un-nests the resulting nested object.
+[`of`](#pointed-functor) ve `chain` fonksiyonlarına sahip bir nesne _monad_ olarak adlandırılır.
 
 ```js
 // Implementation
@@ -363,8 +327,8 @@ Array.of('cat,dog', 'fish,bird').chain((a) => a.split(',')) // ['cat', 'dog', 'f
 Array.of('cat,dog', 'fish,bird').map((a) => a.split(',')) // [['cat', 'dog'], ['fish', 'bird']]
 ```
 
-`of` is also known as `return` in other functional languages.
-`chain` is also known as `flatmap` and `bind` in other languages.
+`of` fonksiyonu bazı fonksiyonel programlama dillerinde `return` olarak;
+`chain` fonksiyonu ise `flatmap` ve `bind` olarak geçmektedir.
 
 ## Comonad
 
@@ -429,11 +393,11 @@ partiallyAppliedAdds.ap(arg2) // [5, 6, 7, 8]
 
 ## Morphism
 
-A transformation function.
+Bir dönüşüm fonksiyonudur.
 
 ### Endomorphism
 
-A function where the input type is the same as the output.
+Girdi ve çıktı tipinin aynı olduğu fonksiyonlardır.
 
 ```js
 // uppercase :: String -> String
