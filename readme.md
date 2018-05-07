@@ -332,7 +332,7 @@ Array.of('cat,dog', 'fish,bird').map((a) => a.split(',')) // [['cat', 'dog'], ['
 
 ## Comonad
 
-An object that has `extract` and `extend` functions.
+`extract` ve `extend` fonksiyonlarına sahip bir nesnedir.
 
 ```js
 const CoIdentity = (v) => ({
@@ -346,13 +346,13 @@ const CoIdentity = (v) => ({
 })
 ```
 
-Extract takes a value out of a functor.
+Extract fonksiyonu bir değeri funktorun dışına çıkarır.
 
 ```js
 CoIdentity(1).extract() // 1
 ```
 
-Extend runs a function on the comonad. The function should return the same type as the comonad.
+Extend fonksiyonu comonad üzerinde bir fonksiyon çalıştırır. Fonksiyonun çıktı tipi comonad ile aynıdır.
 
 ```js
 CoIdentity(1).extend((co) => co.extract() + 1) // CoIdentity(2)
