@@ -360,7 +360,7 @@ CoIdentity(1).extend((co) => co.extract() + 1) // CoIdentity(2)
 
 ## Applicative Functor
 
-An applicative functor is an object with an `ap` function. `ap` applies a function in the object to a value in another object of the same type.
+_Applicative functor_, `ap` fonksiyonuna sahip bir nesnedir. `ap` fonksiyonu nesnedeki bir fonksiyonu, aynı tipte başka bir nesnedeki bir değere uygular.
 
 ```js
 // Implementation
@@ -370,25 +370,6 @@ Array.prototype.ap = function (xs) {
 
 // Example usage
 ;[(a) => a + 1].ap([1]) // [2]
-```
-
-This is useful if you have two objects and you want to apply a binary function to their contents.
-
-```js
-// Arrays that you want to combine
-const arg1 = [1, 3]
-const arg2 = [4, 5]
-
-// combining function - must be curried for this to work
-const add = (x) => (y) => x + y
-
-const partiallyAppliedAdds = [add].ap(arg1) // [(y) => 1 + y, (y) => 3 + y]
-```
-
-This gives you an array of functions that you can call `ap` on to get the result:
-
-```js
-partiallyAppliedAdds.ap(arg2) // [5, 6, 7, 8]
 ```
 
 ## Morphism
@@ -409,9 +390,7 @@ const decrement = (x) => x - 1
 
 ### Isomorphism
 
-A pair of transformations between 2 types of objects that is structural in nature and no data is lost.
-
-For example, 2D coordinates could be stored as an array `[2,3]` or object `{x: 2, y: 3}`.
+İki farklı tipteki nesne arasındaki bir dönüşüm ve ters dönüşüm çiftidir.
 
 ```js
 // Providing functions to convert in both directions makes them isomorphic.
@@ -424,13 +403,10 @@ coordsToPair(pairToCoords([1, 2])) // [1, 2]
 pairToCoords(coordsToPair({x: 1, y: 2})) // {x: 1, y: 2}
 ```
 
-
-
 ## Setoid
 
-An object that has an `equals` function which can be used to compare other objects of the same type.
+`equals` fonksiyonuna (aynı tipler arasında karşılaştırma yapmaya imkan veren) sahip bir nesnedir.
 
-Make array a setoid:
 
 ```js
 Array.prototype.equals = function (arr) {
