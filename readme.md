@@ -9,7 +9,7 @@ Prelude> let sum a b = a + b
 Prelude> :t sum
 sum :: Num a => a -> a -> a
 
-// sum fonksiyonunun arity'si 2dir.
+-- sum fonksiyonunun arity'si 2dir.
 ```
 
 ## Higher-Order Functions (HOF)
