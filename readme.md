@@ -1,18 +1,13 @@
 # Fonksiyonel Programlama Jargonu
 
-Fonksiyonel Programlama (FP) bir çok avantaj sağlar ve bunun bir sonucu olarak gittikçe popülerleşmektedir. Bununla beraber, her programlama paradigması kendine özgü bir jargona sahiptir. Bir sözlük sağlayarak, kullanıcıların fonksiyonel programlamayı öğrenmelerini kolaylaştırmayı umuyoruz.
-
-Örnekler JavaScript ile yazıldı. (ES2015). [Neden JavaScript?](https://github.com/hemanth/functional-programming-jargon/wiki/Why-JavaScript%3F)
-
 ## Arity
 
 Bir fonksiyonun aldığı argüman sayısıdır. Bir fonksiyon aldığı argüman sayısına göre _unary_ (1 argüman), _binary_ (2 argüman), _ternary_ (3 argüman)... olarak adlandırılır. Eğer bir fonksiyon değişken sayıda argüman alıyorsa _variadic_ olarak adlandırılır.
 
-```js
-const sum = (a, b) => a + b
-
-const arity = sum.length
-console.log(arity) // 2
+```haskell
+Prelude> let sum a b = a + b
+Prelude> :t sum
+sum :: Num a => a -> a -> a
 
 // sum fonksiyonunun arity'si 2dir.
 ```
@@ -428,7 +423,7 @@ Array.prototype.equals = function (arr) {
 
 ## Semigroup
 
-An object that has a `concat` function that combines it with another object of the same type.
+Bir nesneyi aynı tipteki başka bir nesne ile birleştirmeye imkan veren `concat` fonksiyonuna sahip bir nesnedir.
 
 ```js
 ;[1].concat([2]) // [1, 2]
@@ -436,180 +431,24 @@ An object that has a `concat` function that combines it with another object of t
 
 ## Foldable
 
-An object that has a `reduce` function that can transform that object into some other type.
+bir yapıyı tek bir değere dönüştüren `reduce` fonksiyonuna sahip bir nesnedir.
 
 ```js
 const sum = (list) => list.reduce((acc, val) => acc + val, 0)
 sum([1, 2, 3]) // 6
 ```
 
-## Lens ##
-A lens is a structure (often an object or function) that pairs a getter and a non-mutating setter for some other data
-structure.
-
-```js
-// Using [Ramda's lens](http://ramdajs.com/docs/#lens)
-const nameLens = R.lens(
-  // getter for name property on an object
-  (obj) => obj.name,
-  // setter for name property
-  (val, obj) => Object.assign({}, obj, {name: val})
-)
-```
-
-Having the pair of get and set for a given data structure enables a few key features.
-
-```js
-const person = {name: 'Gertrude Blanch'}
-
-// invoke the getter
-R.view(nameLens, person) // 'Gertrude Blanch'
-
-// invoke the setter
-R.set(nameLens, 'Shafi Goldwasser', person) // {name: 'Shafi Goldwasser'}
-
-// run a function on the value in the structure
-R.over(nameLens, uppercase, person) // {name: 'GERTRUDE BLANCH'}
-```
-
-Lenses are also composable. This allows easy immutable updates to deeply nested data.
-
-```js
-// This lens focuses on the first item in a non-empty array
-const firstLens = R.lens(
-  // get first item in array
-  xs => xs[0],
-  // non-mutating setter for first item in array
-  (val, [__, ...xs]) => [val, ...xs]
-)
-
-const people = [{name: 'Gertrude Blanch'}, {name: 'Shafi Goldwasser'}]
-
-// Despite what you may assume, lenses compose left-to-right.
-R.over(compose(firstLens, nameLens), uppercase, people) // [{'name': 'GERTRUDE BLANCH'}, {'name': 'Shafi Goldwasser'}]
-```
-
-Other implementations:
-* [partial.lenses](https://github.com/calmm-js/partial.lenses) - Tasty syntax sugar and a lot of powerful features
-* [nanoscope](http://www.kovach.me/nanoscope/) - Fluent-interface
-
-## Type Signatures
-
-Often functions in JavaScript will include comments that indicate the types of their arguments and return values.
-
-There's quite a bit of variance across the community but they often follow the following patterns:
-
-```js
-// functionName :: firstArgType -> secondArgType -> returnType
-
-// add :: Number -> Number -> Number
-const add = (x) => (y) => x + y
-
-// increment :: Number -> Number
-const increment = (x) => x + 1
-```
-
-If a function accepts another function as an argument it is wrapped in parentheses.
-
-```js
-// call :: (a -> b) -> a -> b
-const call = (f) => (x) => f(x)
-```
-
-The letters `a`, `b`, `c`, `d` are used to signify that the argument can be of any type. The following version of `map` takes a function that transforms a value of some type `a` into another type `b`, an array of values of type `a`, and returns an array of values of type `b`.
-
-```js
-// map :: (a -> b) -> [a] -> [b]
-const map = (f) => (list) => list.map(f)
-```
-
-__Further reading__
-* [Ramda's type signatures](https://github.com/ramda/ramda/wiki/Type-Signatures)
-* [Mostly Adequate Guide](https://drboolean.gitbooks.io/mostly-adequate-guide/content/ch7.html#whats-your-type)
-* [What is Hindley-Milner?](http://stackoverflow.com/a/399392/22425) on Stack Overflow
-
 ## Algebraic data type
-A composite type made from putting other types together. Two common classes of algebraic types are [sum](#sum-type) and [product](#product-type).
+
+Bileşke veri tipleridir - başka tiplerin bir araya gelmesiyle oluşur. En yaygın cebirsel veri tipleri [_toplamsal tipler_](#sum-type) ve [_çarpımsal tipler_](#product-type)dir.
 
 ### Sum type
-A Sum type is the combination of two types together into another one. It is called sum because the number of possible values in the result type is the sum of the input types.
 
-JavaScript doesn't have types like this but we can use `Set`s to pretend:
-```js
-// imagine that rather than sets here we have types that can only have these values
-const bools = new Set([true, false])
-const halfTrue = new Set(['half-true'])
-
-// The weakLogic type contains the sum of the values from bools and halfTrue
-const weakLogicValues = new Set([...bools, ...halfTrue])
-```
-
-Sum types are sometimes called union types, discriminated unions, or tagged unions.
-
-There's a [couple](https://github.com/paldepind/union-type) [libraries](https://github.com/puffnfresh/daggy) in JS which help with defining and using union types.
-
-Flow includes [union types](https://flow.org/en/docs/types/unions/) and TypeScript has [Enums](https://www.typescriptlang.org/docs/handbook/enums.html) to serve the same role.
 
 ### Product type
 
-A **product** type combines types together in a way you're probably more familiar with:
-
-```js
-// point :: (Number, Number) -> {x: Number, y: Number}
-const point = (x, y) => ({ x, y })
-```
-It's called a product because the total possible values of the data structure is the product of the different values. Many languages have a tuple type which is the simplest formulation of a product type.
-
-See also [Set theory](https://en.wikipedia.org/wiki/Set_theory).
 
 ## Option
-Option is a [sum type](#sum-type) with two cases often called `Some` and `None`.
-
-Option is useful for composing functions that might not return a value.
-
-```js
-// Naive definition
-
-const Some = (v) => ({
-  val: v,
-  map (f) {
-    return Some(f(this.val))
-  },
-  chain (f) {
-    return f(this.val)
-  }
-})
-
-const None = () => ({
-  map (f) {
-    return this
-  },
-  chain (f) {
-    return this
-  }
-})
-
-// maybeProp :: (String, {a}) -> Option a
-const maybeProp = (key, obj) => typeof obj[key] === 'undefined' ? None() : Some(obj[key])
-```
-Use `chain` to sequence functions that return `Option`s
-```js
-
-// getItem :: Cart -> Option CartItem
-const getItem = (cart) => maybeProp('item', cart)
-
-// getPrice :: Item -> Option Number
-const getPrice = (item) => maybeProp('price', item)
-
-// getNestedPrice :: cart -> Option a
-const getNestedPrice = (cart) => getItem(cart).chain(getPrice)
-
-getNestedPrice({}) // None()
-getNestedPrice({item: {foo: 1}}) // None()
-getNestedPrice({item: {price: 9.99}}) // Some(9.99)
-```
-
-`Option` is also known as `Maybe`. `Some` is sometimes called `Just`. `None` is sometimes called `Nothing`.
 
 ---
 
