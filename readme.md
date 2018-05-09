@@ -16,16 +16,15 @@ sum :: Num a => a -> a -> a
 
 Argüman olarak bir fonksiyon alan ya da bir fonksiyonu çıktı veren fonksiyonlardır.
 
-```js
-const filter = (predicate, xs) => xs.filter(predicate)
+```haskell
+Prelude> let add3 a = a + 3
+Prelude> map add3 [1..4]
+[4,5,6,7]
 ```
 
-```js
-const is = (type) => (x) => Object(x) instanceof type
-```
-
-```js
-filter(is(Number), [0, '1', 2, null]) // [0, 2]
+```haskell
+Prelude> filter (<4) [1..10]
+[1,2,3]
 ```
 
 ## Closure
@@ -34,30 +33,22 @@ _Kapanış_, bir fonksiyona bağlı değişkenleri koruyan bir kapsamdır.
 [Kısmi uygulama](#partial-application) için önemlidir.
 
 
-```js
-const addTo = (x) => {
-    return (y) => {
-        return x + y
-    }
-}
+```haskell
+Prelude> let f x = (\y -> x + y)
 ```
 
-`addTo` fonksiyonunu bir sayı ile çağıralım.
+`f` fonksiyonunu bir sayı ile çağıralım.
 
-```js
-var addToFive = addTo(5)
+```haskell
+Prelude> let g = f 5
 ```
 
-Bu durumda `x = 5` değeri `addToFive` fonksiyonunun kapanışında korunur. Şimdi `addToFive` fonksiyonunu bir `y` değeri ile çağırırsak:
+Bu durumda `x = 5` değeri `g` fonksiyonunun kapanışında korunur. Şimdi `g` fonksiyonunu bir `y` değeri ile çağırırsak:
 
+```haskell
+Prelude> g 3
+8
 ```
-addToFive(3) // => 8
-```
-
-__Daha Fazla Bilgi İçin__
-* [Lambda Vs Closure](http://stackoverflow.com/questions/220658/what-is-the-difference-between-a-closure-and-a-lambda)
-* [How do JavaScript Closures Work?](http://stackoverflow.com/questions/111102/how-do-javascript-closures-work)
-
 
 ## Partial Application
 
