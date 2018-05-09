@@ -54,20 +54,15 @@ Prelude> g 3
 
 _Kısmi uygulama_, bir fonksiyonun bazı argümanlarını önceden doldurarak yeni bir fonksiyon oluşturmaktır.
 
-```js
+```haskell
 // Orjinal fonksiyonumuz
-const add3 = (a, b, c) => a + b + c
+Prelude> let add3 a b c = a + b + c
 
 //`2` ve `3` argümanlarını `add3` fonksiyonumuza vererek `fivePlus` fonksiyonumuzu oluşturuyoruz
-const fivePlus = partial(add3, 2, 3) // (c) => 2 + 3 + c
+Prelude> let fivePlus = add3 2 3
 
-fivePlus(4) // 9
-```
-
-Kısmi uygulama için `Function.prototype.bind` de kullanılabilir:
-
-```js
-const add1More = add3.bind(null, 2, 3) // (c) => 2 + 3 + c
+Prelude> fivePlus 4
+9
 ```
 
 Kısmi uygulama, kompleks fonksiyonlardan daha basit fonksiyonlar oluşturmaya yardım eder. [Curried](#currying) fonksiyonlar otomatik olarak kısmi uygulanmış fonksiyonlardır.
