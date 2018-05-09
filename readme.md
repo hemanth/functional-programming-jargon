@@ -55,10 +55,10 @@ Prelude> g 3
 _Kısmi uygulama_, bir fonksiyonun bazı argümanlarını önceden doldurarak yeni bir fonksiyon oluşturmaktır.
 
 ```haskell
-// Orjinal fonksiyonumuz
+-- Orjinal fonksiyonumuz
 Prelude> let add3 a b c = a + b + c
 
-//`2` ve `3` argümanlarını `add3` fonksiyonumuza vererek `fivePlus` fonksiyonumuzu oluşturuyoruz
+--`2` ve `3` argümanlarını `add3` fonksiyonumuza vererek `fivePlus` fonksiyonumuzu oluşturuyoruz
 Prelude> let fivePlus = add3 2 3
 
 Prelude> fivePlus 4
