@@ -88,56 +88,39 @@ Prelude> add2 10
 ## Function Composition
 
 İki farklı fonksiyonu bir araya getirerek, bir fonksiyonun çıktısı diğer fonksiyonun girdisi olan üçüncü bir fonksiyon oluşturmaktır.
-```js
-const compose = (f, g) => (a) => f(g(a)) // Definition
-const floorAndToString = compose((val) => val.toString(), Math.floor) // Usage
-floorAndToString(121.212121) // '121'
+```haskell
+-- fonksiyonları bir araya getirmek için '.' operatörü kullanılır
+Prelude> let floorAndToString = show . floor
+Prelude> floorAndToString 32.123
+"32"
 ```
 
 ## Purity
 
 Bir fonksiyonun çıktısı sadece girdi veya girdilerine bağlı ve fonksiyon yan etki oluşturmuyor ise, fonksiyon _saftır_ denir.
 
-```js
-const greet = (name) => `Hi, ${name}`
-
-greet('Brianne') // 'Hi, Brianne'
+```haskell
+Prelude> let greet name = "Hello " ++ name
+Prelude> greet "Brianne"
+"Hello Brianne"
 ```
 
 Saf olmayan fonksiyona bir örnek:
 
-```js
-window.name = 'Brianne'
-
-const greet = () => `Hi, ${window.name}`
-
-greet() // "Hi, Brianne"
+```haskell
+Prelude> let name1 = "Brianne"
+Prelude> let greet = "Hello " ++ name1
+Prelude> greet
+"Hello Brianne"
 ```
 
 Yukarıdaki  fonksiyonun çıktısı fonksiyonun dışarısında tanımlı bir değişkene bağlıdır.
-```js
-let greeting
-
-const greet = (name) => {
-  greeting = `Hi, ${name}`
-}
-
-greet('Brianne')
-greeting // "Hi, Brianne"
-```
-Bu fonksiyon ise, fonksiyonun dışarısında tanımlanan bir değişkeni değiştirmektedir (yani saf değildir).
 
 ## Side effects
 
 Bir fonksiyon veya ifade, dışarısındaki bir durum ile etkileşime geçiyor ise (okuma veya yazma), _yan etki_ ye sahiptir denir.
 
-```js
-const differentEveryTime = new Date()
-```
-
-```js
-console.log('IO is a side effect!')
-```
+Haskell'deki tüm fonksiyonlar saftır.
 
 ## Idempotent
 
@@ -147,12 +130,14 @@ Bir fonksiyon, sonucuna tekrar uygulandığında sonuç değişmiyorsa _idempote
 f(f(x)) ≍ f(x)
 ```
 
-```js
-Math.abs(Math.abs(10))
+```haskell
+Prelude> abs (abs (-1))
+1
 ```
 
-```js
-sort(sort(sort([2, 1])))
+```haskell
+Prelude Data.List> sort (sort [1,4,3,1,5])
+[1,1,3,4,5]
 ```
 
 ## Point-Free Style
