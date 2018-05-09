@@ -144,18 +144,16 @@ Prelude Data.List> sort (sort [1,4,3,1,5])
 
 Argümanların açıkca tanımlanmadığı fonksiyonlar yazmaktır. _Tacit programming_ olarak da bilinir.
 
-```js
-// map ve add fonksiyonları verilsin
-const map = (fn) => (list) => list.map(fn)
-const add = (a) => (b) => a + b
+```haskell
+Prelude> let add a b = a + b
 
-// incrementAll fonksiyonunu tanımlayalım
+-- incrementAll fonksiyonunu tanımlayalım
 
-// Point-free değildir - `numbers` argümanı belirtilmiştir
-const incrementAll = (numbers) => map(add(1))(numbers)
+-- Point-free değildir - `numbers` argümanı belirtilmiştir
+Prelude> let incrementAll numbers = map (+1) numbers
 
-// Point-free - Fonksiyonun aldığı argüman açıkca belirtilmemiştir
-const incrementAll2 = map(add(1))
+-- Point-free - Fonksiyonun aldığı argüman açıkca belirtilmemiştir
+Prelude> let incrementAll = map (+1)
 ```
 
 `incrementAll` fonksiyonunun `numbers` argümanını aldığı belirtilmiştir, bu nedenle point-free değildir.  `incrementAll2` fonksiyonu ise, fonksiyon ve değerlerin bir bileşimidir ve argüman bilgisi belirtilmemiştir.  Yani _point-free_ dir.
@@ -163,10 +161,10 @@ const incrementAll2 = map(add(1))
 ## Predicate
 Verilen bir değer için doğru veya yanlış değerini dönen fonksiyonlardır. Genellikle _filter_ ile beraber kullanılırlar.
 
-```js
-const predicate = (a) => a > 2
-
-;[1, 2, 3, 4].filter(predicate) // [3, 4]
+```haskell
+Prelude> let predicate a = a < 3
+Prelude> filter predicate [1..10]
+[1,2]
 ```
 
 ## Category
@@ -200,54 +198,41 @@ object.map(compose(f, g)) ≍ object.map(g).map(f)
 
 ## Pointed Functor
 
-Herhangi bir değeri içerisine alan bir `of` fonksiyonuna sahip bir nesnedir.
+Her `a` tipi için 
 
-```js
-Array.of(1) // [1]
-```
+``
+of :: a -> F a 
+``
+
+ile tanımlı bir `of` fonksiyonuna sahip `F` funktoruna denir.
 
 ## Referential Transparency
 
 Bir ifade değeri ile yer değiştirildiğinde programın davranışı değişmiyor ise, ifade _referentially transparent_ olarak adlandırılır.
 
-```js
-const greet = () => 'Hello World!'
-```
-
-`greet()` fonksiyonu kullanıldığı her yerde `Hello World!` değeri ile değiştirilebilir.
-
 ## Lambda
 
 Anonim (isimsiz) fonksiyonlardır.
 
-```js
-;(function (a) {
-  return a + 1
-})
+``
+\x -> x + 1
+``
 
-;(a) => a + 1
-```
 Çoğunlukla yüksek mertebeden fonksiyonlar ile birlikte kullanılırlar.
 
-```js
-;[1, 2].map((a) => a + 1) // [2, 3]
+```haskell
+Prelude> map (\x -> x + 1) [1..4]
+[2,3,4,5]
 ```
 
 ## Lazy evaluation
 
 _Lazy evaluation_, bir ifadenin, ifade sonucuna ihtiyaç duyulana kadar hesaplanmamasıdır. Böylece, sonsuz listeler gibi yapılar tanımlanabilir.
 
-```js
-const rand = function*() {
-  while (1 < 2) {
-    yield Math.random()
-  }
-}
-```
-
-```js
-const randIter = rand()
-randIter.next() // Her çalıştırma farklı bir rastgele sayı döndürür.
+```haskell
+Prelude> let lst0 = [1..]
+Prelude> take 5 lst0
+[1,2,3,4,5]
 ```
 
 ## Monoid
@@ -256,8 +241,8 @@ Bir nesneyi aynı tip başka bir nesne ile birleştiren bir fonksiyona sahip bir
 
 Basit bir monoid örneği sayıların toplanmasıdır:
 
-```js
-1 + 1 // 2
+```haskell
+1 + 1 -- 2
 ```
 Bu durumda sayılar nesneler, `+` operatörü ise fonksiyondur.
 
@@ -265,14 +250,14 @@ Birim eleman olmak zorundadır,
 
 Toplama işleminin birim elemanı `0` dır.
 
-```js
-1 + 0 // 1
+```haskell
+1 + 0 -- 2
 ```
 
 ve geçişkenlik özelliği de gereklidir (associativity):
 
-```js
-1 + (2 + 3) === (1 + 2) + 3
+```haskell
+1 + (2 + 3) == (1 + 2) + 3
 ```
 
 ## Monad
