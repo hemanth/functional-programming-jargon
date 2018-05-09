@@ -78,7 +78,6 @@ Prelude> let sum (a, b) = a + b
 Prelude> let curriedSum = curry sum
 Prelude> curriedSum 40 2
 42
-
 Prelude> let add2 = curriedSum 2
 Prelude> add2 10
 12
@@ -88,6 +87,7 @@ Prelude> add2 10
 ## Function Composition
 
 İki farklı fonksiyonu bir araya getirerek, bir fonksiyonun çıktısı diğer fonksiyonun girdisi olan üçüncü bir fonksiyon oluşturmaktır.
+
 ```haskell
 -- fonksiyonları bir araya getirmek için '.' operatörü kullanılır
 Prelude> let floorAndToString = show . floor
@@ -167,45 +167,6 @@ Prelude> filter predicate [1..10]
 [1,2]
 ```
 
-## Category
-
-Kategory teorisinde bir _kategori_, matematiksel yapılar ve bunlar arasında tanımlı morfizmlerden oluşur. Programlamada ise, tipler matematiksel yapılar, fonksiyonlar ise morfizmlerdir.
-
-Bir kategori aşağıdaki üç koşulu sağlar:
-
-1. Bir yapıyı kendisine eşleyen bir birim morfizm vardır. Yani `a` herhangi bir kategori içinde bir yapı ise, `a -> a` şeklinde tanımlı bir fonksiyon vardır.
-2. `a`, `b` ve `c` herhangi bir kategori içindeki yapılar ve `f : a -> b` ve `g : b -> c` ise `h : a -> c`, `h(x)=(g • f)(x)=g(f(x))` vardır.
-3. `f • (g • h)` ve `(f • g) • h` ifadeleri aynıdır.
-
-__Daha Fazla Kaynak__
-
-* [Category Theory for Programmers](https://bartoszmilewski.com/2014/10/28/category-theory-for-programmers-the-preface/)
-
-## Functor
-
-`map` fonksiyonunu implemente eden bir nesnedir ve aşağıdaki iki özelliği sağlar:
-
-__Identity__
-```
-object.map(x => x) ≍ object
-```
-
-__Composable__
-
-```
-object.map(compose(f, g)) ≍ object.map(g).map(f)
-```
-
-## Pointed Functor
-
-Her `a` tipi için 
-
-``
-of :: a -> F a 
-``
-
-ile tanımlı bir `of` fonksiyonuna sahip `F` funktoruna denir.
-
 ## Referential Transparency
 
 Bir ifade değeri ile yer değiştirildiğinde programın davranışı değişmiyor ise, ifade _referentially transparent_ olarak adlandırılır.
@@ -235,167 +196,42 @@ Prelude> take 5 lst0
 [1,2,3,4,5]
 ```
 
+
+## Category
+
+__Daha Fazla Kaynak__
+
+* [Category Theory for Programmers](https://bartoszmilewski.com/2014/10/28/category-theory-for-programmers-the-preface/)
+
+## Functor
+
+
+
+## Pointed Functor
+
+
 ## Monoid
 
-Bir nesneyi aynı tip başka bir nesne ile birleştiren bir fonksiyona sahip bir objedir.
-
-Basit bir monoid örneği sayıların toplanmasıdır:
-
-```haskell
-1 + 1 -- 2
-```
-Bu durumda sayılar nesneler, `+` operatörü ise fonksiyondur.
-
-Birim eleman olmak zorundadır,
-
-Toplama işleminin birim elemanı `0` dır.
-
-```haskell
-1 + 0 -- 2
-```
-
-ve geçişkenlik özelliği de gereklidir (associativity):
-
-```haskell
-1 + (2 + 3) == (1 + 2) + 3
-```
 
 ## Monad
 
-[`of`](#pointed-functor) ve `chain` fonksiyonlarına sahip bir nesne _monad_ olarak adlandırılır.
-
-```js
-// Implementation
-Array.prototype.chain = function (f) {
-  return this.reduce((acc, it) => acc.concat(f(it)), [])
-}
-
-// Usage
-Array.of('cat,dog', 'fish,bird').chain((a) => a.split(',')) // ['cat', 'dog', 'fish', 'bird']
-
-// Contrast to map
-Array.of('cat,dog', 'fish,bird').map((a) => a.split(',')) // [['cat', 'dog'], ['fish', 'bird']]
-```
-
-`of` fonksiyonu bazı fonksiyonel programlama dillerinde `return` olarak;
-`chain` fonksiyonu ise `flatmap` ve `bind` olarak geçmektedir.
-
 ## Comonad
-
-`extract` ve `extend` fonksiyonlarına sahip bir nesnedir.
-
-```js
-const CoIdentity = (v) => ({
-  val: v,
-  extract () {
-    return this.val
-  },
-  extend (f) {
-    return CoIdentity(f(this))
-  }
-})
-```
-
-Extract fonksiyonu bir değeri funktorun dışına çıkarır.
-
-```js
-CoIdentity(1).extract() // 1
-```
-
-Extend fonksiyonu comonad üzerinde bir fonksiyon çalıştırır. Fonksiyonun çıktı tipi comonad ile aynıdır.
-
-```js
-CoIdentity(1).extend((co) => co.extract() + 1) // CoIdentity(2)
-```
 
 ## Applicative Functor
 
-_Applicative functor_, `ap` fonksiyonuna sahip bir nesnedir. `ap` fonksiyonu nesnedeki bir fonksiyonu, aynı tipte başka bir nesnedeki bir değere uygular.
-
-```js
-// Implementation
-Array.prototype.ap = function (xs) {
-  return this.reduce((acc, f) => acc.concat(xs.map(f)), [])
-}
-
-// Example usage
-;[(a) => a + 1].ap([1]) // [2]
-```
-
 ## Morphism
-
-Bir dönüşüm fonksiyonudur.
 
 ### Endomorphism
 
-Girdi ve çıktı tipinin aynı olduğu fonksiyonlardır.
-
-```js
-// uppercase :: String -> String
-const uppercase = (str) => str.toUpperCase()
-
-// decrement :: Number -> Number
-const decrement = (x) => x - 1
-```
-
 ### Isomorphism
-
-İki farklı tipteki nesne arasındaki bir dönüşüm ve ters dönüşüm çiftidir.
-
-```js
-// Providing functions to convert in both directions makes them isomorphic.
-const pairToCoords = (pair) => ({x: pair[0], y: pair[1]})
-
-const coordsToPair = (coords) => [coords.x, coords.y]
-
-coordsToPair(pairToCoords([1, 2])) // [1, 2]
-
-pairToCoords(coordsToPair({x: 1, y: 2})) // {x: 1, y: 2}
-```
 
 ## Setoid
 
-`equals` fonksiyonuna (aynı tipler arasında karşılaştırma yapmaya imkan veren) sahip bir nesnedir.
-
-
-```js
-Array.prototype.equals = function (arr) {
-  const len = this.length
-  if (len !== arr.length) {
-    return false
-  }
-  for (let i = 0; i < len; i++) {
-    if (this[i] !== arr[i]) {
-      return false
-    }
-  }
-  return true
-}
-
-;[1, 2].equals([1, 2]) // true
-;[1, 2].equals([0]) // false
-```
-
 ## Semigroup
-
-Bir nesneyi aynı tipteki başka bir nesne ile birleştirmeye imkan veren `concat` fonksiyonuna sahip bir nesnedir.
-
-```js
-;[1].concat([2]) // [1, 2]
-```
 
 ## Foldable
 
-bir yapıyı tek bir değere dönüştüren `reduce` fonksiyonuna sahip bir nesnedir.
-
-```js
-const sum = (list) => list.reduce((acc, val) => acc + val, 0)
-sum([1, 2, 3]) // 6
-```
-
 ## Algebraic data type
-
-Bileşke veri tipleridir - başka tiplerin bir araya gelmesiyle oluşur. En yaygın cebirsel veri tipleri [_toplamsal tipler_](#sum-type) ve [_çarpımsal tipler_](#product-type)dir.
 
 ### Sum type
 
@@ -406,5 +242,4 @@ Bileşke veri tipleridir - başka tiplerin bir araya gelmesiyle oluşur. En yayg
 ## Option
 
 ---
-
-__P.S:__ This repo is successful due to the wonderful [contributions](https://github.com/hemanth/functional-programming-jargon/graphs/contributors)!
+First few sections of these definitions was translated from [hemanth/functional-programming-jargon](https://github.com/hemanth/functional-programming-jargon).
