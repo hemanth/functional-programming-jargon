@@ -73,16 +73,15 @@ Birden çok parametre alan bir fonksiyonu, her defasında sadece bir parametre a
 
 Fonksiyon her çağrıldığında sadece bir argüman kabul eder ve tüm argümanlar verilene kadar sadece bir argüman alan bir fonksiyon döndürür.
 
-```js
-const sum = (a, b) => a + b
+```haskell
+Prelude> let sum (a, b) = a + b
+Prelude> let curriedSum = curry sum
+Prelude> curriedSum 40 2
+42
 
-const curriedSum = (a) => (b) => a + b
-
-curriedSum(40)(2) // 42.
-
-const add2 = curriedSum(2) // (b) => 2 + b
-
-add2(10) // 12
+Prelude> let add2 = curriedSum 2
+Prelude> add2 10
+12
 
 ```
 
