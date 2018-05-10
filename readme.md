@@ -217,6 +217,12 @@ Aşağıdaki tabloda bir kaç kategori örneği verilmiştir.
 | Top | Topolojik uzaylar | Sürekli fonksiyonlar |
 | Uni | Düzgün uzaylar | Düzgün sürekli fonksiyonlar |
 
+### Haskell'de kategoriler
+
+**Hask**, Haskell tiplerinin ve fonksiyonlarının bir kategorisidir.
+
+**Hask** kategorisinin nesneleri Haskell'deki _tipler_, ```A``` nesnesinden ```B``` nesnesine tanımlı morfizmler ise ```A -> B``` şeklindeki fonksiyonlardır. 
+
 
 __Daha Fazla Kaynak__
 
