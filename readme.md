@@ -196,8 +196,18 @@ Prelude> take 5 lst0
 [1,2,3,4,5]
 ```
 
-
 ## Category
+Bir ![](./src/c.png) kategorisi üç şeyden oluşur:
+
+ - Nesnelerin bir kümesi,
+ - Her bir nesne çifti için, morfizmlerin bir kümesi,
+ - Birbiriyle uyumlu morfizm çiftleri arasında tanımlı bir ikili işlem.
+
+ve aşağıdaki iki beliti sağlar:
+
+ - ![](./src/ABCD.png) nesneler ve ![](./src/fgh.png) morfizmler olmak üzere, ![](./src/fAB.png), ![](./src/gBC.png)  ve ![](./src/hCD.png) ise ![](./src/cat_ax_1.png) dir,
+ - Her ![](./src/x.png) nesnesi ve her ![](./src/fax.png) ve ![](./src/gxb.png) için, ![](./src/1xff.png) ve ![](./src/g1xg.png) koşullarını sağlayan bir ![](./src/1xxx.png) morfizmi vardır.
+
 
 __Daha Fazla Kaynak__
 
