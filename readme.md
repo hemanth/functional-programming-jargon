@@ -230,7 +230,21 @@ __Daha Fazla Kaynak__
 
 ## Functor
 
+![](./src/c.png) ve ![](./src/d.png) iki kategori olsun. Bir ![](./src/fCD.png) funktoru
 
+ - ![](./src/c.png) kategorisindeki her ![](./src/bigX.png) nesnesi için ![](./src/func_ax_1.png),
+ - ![](./src/c.png) kategorisindeki her ![](./src/fXY.png) ve ![](./src/gYZ.png) morfizmaları için ![](./src/func_ax_2.png)
+
+koşullarını sağlayan bir eşlemedir.
+
+### Haskell'de funktorlar
+
+Funktor, üzerine ``map`` fonksiyonu uygulanabilen bir tiptir (listeler üzerine uygulanan map fonksiyonunu genelleştirir) ve tek bir metoda sahiptir:
+
+```haskell
+class Functor f where
+    fmap :: (a -> b) -> f a -> f b
+```
 
 ## Pointed Functor
 
@@ -267,4 +281,7 @@ __Daha Fazla Kaynak__
 ## Option
 
 ---
-First few sections of these definitions was translated from [hemanth/functional-programming-jargon](https://github.com/hemanth/functional-programming-jargon).
+## References
+- [Haskell - Wiki](https://wiki.haskell.org/Haskell)
+- [Haskell - Wikibooks](https://en.wikibooks.org/wiki/Haskell)
+- [hemanth/functional-programming-jargon](https://github.com/hemanth/functional-programming-jargon).
