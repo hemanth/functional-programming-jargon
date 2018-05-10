@@ -200,17 +200,17 @@ Prelude> take 5 lst0
 Bir ![](./src/c.png) kategorisi üç şeyden oluşur:
 
  - Nesnelerin bir kümesi,
- - Her bir nesne çifti için, morfizmlerin bir kümesi,
- - Birbiriyle uyumlu morfizm çiftleri arasında tanımlı bir ikili işlem.
+ - Her bir nesne çifti için, morfizmaların bir kümesi,
+ - Birbiriyle uyumlu morfizma çiftleri arasında tanımlı bir ikili işlem.
 
 ve aşağıdaki iki beliti sağlar:
 
- - ![](./src/ABCD.png) nesneler ve ![](./src/fgh.png) morfizmler olmak üzere, ![](./src/fAB.png), ![](./src/gBC.png)  ve ![](./src/hCD.png) ise ![](./src/cat_ax_1.png) dir,
- - Her ![](./src/x.png) nesnesi ve her ![](./src/fax.png) ve ![](./src/gxb.png) için, ![](./src/1xff.png) ve ![](./src/g1xg.png) koşullarını sağlayan bir ![](./src/1xxx.png) morfizmi vardır.
+ - ![](./src/ABCD.png) nesneler ve ![](./src/fgh.png) morfizmalar olmak üzere, ![](./src/fAB.png), ![](./src/gBC.png)  ve ![](./src/hCD.png) ise ![](./src/cat_ax_1.png) dir,
+ - Her ![](./src/x.png) nesnesi ve her ![](./src/fax.png) ve ![](./src/gxb.png) için, ![](./src/1xff.png) ve ![](./src/g1xg.png) koşullarını sağlayan bir ![](./src/1xxx.png) morfizması vardır.
 
 Aşağıdaki tabloda bir kaç kategori örneği verilmiştir.
 
-| Kategori       | Nesneler           | Morfizmler  |
+| Kategori       | Nesneler           | Morfizmalar  |
 |------------------|--------------------|----------------|
 | Set  | Kümeler | Fonksiyonlar |
 | Grp | Gruplar | Grup homomorfizmaları |
@@ -221,7 +221,7 @@ Aşağıdaki tabloda bir kaç kategori örneği verilmiştir.
 
 **Hask**, Haskell tiplerinin ve fonksiyonlarının bir kategorisidir.
 
-**Hask** kategorisinin nesneleri Haskell'deki _tipler_, ```A``` nesnesinden ```B``` nesnesine tanımlı morfizmler ise ```A -> B``` şeklindeki fonksiyonlardır. 
+**Hask** kategorisinin nesneleri Haskell'deki _tipler_, ```A``` nesnesinden ```B``` nesnesine tanımlı morfizmalar ise ```A -> B``` şeklindeki fonksiyonlardır. 
 
 
 __Daha Fazla Kaynak__
