@@ -208,6 +208,15 @@ ve aşağıdaki iki beliti sağlar:
  - ![](./src/ABCD.png) nesneler ve ![](./src/fgh.png) morfizmler olmak üzere, ![](./src/fAB.png), ![](./src/gBC.png)  ve ![](./src/hCD.png) ise ![](./src/cat_ax_1.png) dir,
  - Her ![](./src/x.png) nesnesi ve her ![](./src/fax.png) ve ![](./src/gxb.png) için, ![](./src/1xff.png) ve ![](./src/g1xg.png) koşullarını sağlayan bir ![](./src/1xxx.png) morfizmi vardır.
 
+Aşağıdaki tabloda bir kaç kategori örneği verilmiştir.
+
+| Kategori       | Nesneler           | Morfizmler  |
+|------------------|--------------------|----------------|
+| Set  | Kümeler | Fonksiyonlar |
+| Grp | Gruplar | Grup homomorfizmaları |
+| Top | Topolojik uzaylar | Sürekli fonksiyonlar |
+| Uni | Düzgün uzaylar | Düzgün sürekli fonksiyonlar |
+
 
 __Daha Fazla Kaynak__
 
