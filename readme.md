@@ -309,7 +309,7 @@ Bu tanım şunu söylemektedir: Bir `Bool`, `False` veya `True` değerlerinden h
 Çarpımsal tipler, `ve` bağlacı ile oluşturulan tiplerdir.  Bir örnek verelim:
 
 ```haskell
-data Color = Int Int Int
+data Color = Color Int Int Int
 ```
 
 `Color` tipi üç `int` değerinden oluşmaktadır.
