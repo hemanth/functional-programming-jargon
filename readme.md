@@ -257,32 +257,20 @@ class Functor f where
     fmap :: (a -> b) -> f a -> f b
 ```
 
-## Monoid
-
-
 ## Monad
 
-## Comonad
+Bir ![](src/MCC.png) funktoru verilsin. ![](src/c.png) kategorisindeki her ![](src/bigX.png) nesnesi için 
+-  ![](src/unitMX.png)
+- ![](src/joinMX.png)
+morfizmalarını tanımlayalım. ```M``` funktoru, ```unit``` ve ```join``` morfizmaları ile birlikte bir _monad_ olarak adlandırılır.
 
-## Applicative Functor
-
-
-
-## Setoid
-
-## Semigroup
-
-## Foldable
+### Haskell'de monadlar
 
 ## Algebraic data type
 
 ### Sum type
 
-
 ### Product type
-
-
-## Option
 
 ---
 ## References
