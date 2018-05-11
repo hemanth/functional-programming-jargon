@@ -289,3 +289,4 @@ class Functor f where
 - [Haskell - Wiki](https://wiki.haskell.org/Haskell)
 - [Haskell - Wikibooks](https://en.wikibooks.org/wiki/Haskell)
 - [hemanth/functional-programming-jargon](https://github.com/hemanth/functional-programming-jargon).
+- [Wolfram MathWorld](http://mathworld.wolfram.com)
