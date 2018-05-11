@@ -257,6 +257,27 @@ class Functor f where
     fmap :: (a -> b) -> f a -> f b
 ```
 
+## Applicative Functor
+
+Applicative functor, funktor ve monad arasında konumlanan ve 
+
+```
+pure id <*> v = v                            -- Identity
+pure f <*> pure x = pure (f x)               -- Homomorphism
+u <*> pure y = pure ($ y) <*> u              -- Interchange
+pure (.) <*> u <*> v <*> w = u <*> (v <*> w) -- Composition
+```
+
+koşullarını sağlayan bir yapıdır.
+
+Haskell'de applicative funktorlar aşağıdaki gibi tanımlanır:
+
+```haskell
+class (Functor f) => Applicative f where
+    pure  :: a -> f a
+    (<*>) :: f (a -> b) -> f a -> f b
+```
+
 ## Monad
 
 Bir ![](src/MCC.png) funktoru verilsin. ![](src/c.png) kategorisindeki her ![](src/bigX.png) nesnesi için 
@@ -266,11 +287,32 @@ morfizmalarını tanımlayalım. ```M``` funktoru, ```unit``` ve ```join``` morf
 
 ### Haskell'de monadlar
 
+Monadlar, bir araya getirilebilen hesaplama adımları olarak düşünülebilirler. Ayrıca monadlar, saf hesaplamalara G/Ç, ortak ortam, güncellenebilir durumlar vb. özellikler ekler.
+
 ## Algebraic data type
+
+Cebirsel veri tipleri, bileşik tiplerdir - diğer tiplerin bir araya getirilmesiyle oluşurlar.
+
+En yaygın cebirsel veri tipleri toplamsal tipler (sum types) ve çarpımsal tipler (product types) dir.
 
 ### Sum type
 
+Toplamsal tipler, basit olarak `veya` bağlacı ile oluşturulan tipler denilebilir. En basit toplamsal tip olan `Bool` tipinin tanımına bakalım:
+
+```haskell
+data Bool = False | True
+```
+Bu tanım şunu söylemektedir: Bir `Bool`, `False` veya `True` değerlerinden herhangi birini alabilir. 
+
 ### Product type
+
+Çarpımsal tipler, `ve` bağlacı ile oluşturulan tiplerdir.  Bir örnek verelim:
+
+```haskell
+data Color = Int Int Int
+```
+
+`Color` tipi üç `int` değerinden oluşmaktadır.
 
 ---
 ## References
