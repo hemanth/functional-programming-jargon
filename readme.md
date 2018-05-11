@@ -228,6 +228,17 @@ __Daha Fazla Kaynak__
 
 * [Category Theory for Programmers](https://bartoszmilewski.com/2014/10/28/category-theory-for-programmers-the-preface/)
 
+## Morphism
+
+_Morfizma_, bir kategorideki iki nesne arasındaki eşlemedir.
+
+1. _Homomorfizma_, aynı tipteki iki cebirsel yapı arasındaki bir eşlemedir. Morfizmanın daha genel halidir.
+2. Bir kategorideki ![](./src/fYX.png) morfizması ve bu kategorideki her ![](src/uv.png) morfizmaları için ![](src/monomorf.png) ise ```f``` morfizması _monomorfizma_ olarak adlandırılır.
+3. Bir kategorideki ![](./src/fYX.png) morfizması ve bu kategorideki her ![](src/uvXZ.png) morfizmaları için ![](src/epimorf.png) ise ```f``` morfizması _epimorfizma_ olarak adlandırılır.
+4. Birebir ve örten morfizmalar, _isomorfizma_ olarak adlandırılır.
+5. Bir nesneden kendisine ve örten morfizmalar, _endomorfizma_ olarak adlandırılır.
+6. Bir nesneden kendisine isomorfizmalar, _otomorfizma_ olarak adlandırılır.
+
 ## Functor
 
 ![](./src/c.png) ve ![](./src/d.png) iki kategori olsun. Bir ![](./src/fCD.png) funktoru
@@ -246,9 +257,6 @@ class Functor f where
     fmap :: (a -> b) -> f a -> f b
 ```
 
-## Pointed Functor
-
-
 ## Monoid
 
 
@@ -258,11 +266,7 @@ class Functor f where
 
 ## Applicative Functor
 
-## Morphism
 
-### Endomorphism
-
-### Isomorphism
 
 ## Setoid
 
