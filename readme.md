@@ -921,6 +921,7 @@ getNestedPrice({item: {price: 9.99}}) // Some(9.99)
 * [maryamyriameliamurphies.js](https://github.com/sjsyrek/maryamyriameliamurphies.js)
 * [Haskell in ES6](https://github.com/casualjavascript/haskell-in-es6)
 * [Sanctuary](https://github.com/sanctuary-js/sanctuary)
+* [Crocks](https://github.com/evilsoft/crocks)
 
 ---
 
