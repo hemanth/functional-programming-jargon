@@ -60,6 +60,7 @@ __Table of Contents__
   * [Sum type](#sum-type)
   * [Product type](#product-type)
 * [Option](#option)
+* [Totality](#totality)
 * [Functional Programming Libraries in JavaScript](#functional-programming-libraries-in-javascript)
 
 
@@ -906,6 +907,83 @@ getNestedPrice({item: {price: 9.99}}) // Some(9.99)
 ```
 
 `Option` is also known as `Maybe`. `Some` is sometimes called `Just`. `None` is sometimes called `Nothing`.
+
+## Totality
+### Total functions
+The total function is just like a function in math - it will always return a result of the expected type for expected inputs and will always terminate. The easiest example is `identity` function:
+```js
+// identity :: a -> a
+const identity = a => a
+```
+or `negate`:
+```js
+// negate :: Boolean -> Boolean
+const negate = value => !value
+```
+Such functions always meet the requirements, you just can't provide such arguments, which satisfy inputs but break outputs.
+### Partial functions
+It's a function which violates the requirements to be total - it may return an unexpected result with some inputs or it may never terminate. Partial functions add cognitive overhead, they are harder to reason about and they can lead to runtime errors. Some examples:
+```js
+// example 1: sum of the list
+// sum :: [Number] -> Number
+const sum = arr => arr.reduce((a, b) => a + b)
+sum([1, 2, 3]) // 6
+sqrt([]) // TypeError: Reduce of empty array with no initial value
+
+// example 2: get the first item in list
+// first :: [A] -> A
+const first = a => a[0]
+first([42]) // 42
+first([]) // undefined
+//or even worse:
+first([[42]])[0] // 42
+first([])[0] // Uncaught TypeError: Cannot read property '0' of undefined
+
+// example 3: repeat function N times
+// times :: Number -> (Number -> Number) -> Number
+const times = n => fn => n && (fn(n), times(n - 1)(fn))
+times(3)(console.log)
+// 3
+// 2
+// 1
+times(-1)(console.log) 
+// RangeError: Maximum call stack size exceeded
+```
+### Avoiding partial functions
+Partial functions are dangerous, you can sometimes get the expected result, sometimes the wrong result, and sometimes your function can't stop the calculations at all. The input of partial functions should be always checked, and it can be hard to track all edge cases through entire applications, the easiest way to deal with it it's just to convert all partial functions to the total. General advice can be the usage of `Optional` type, providing default values for edge cases and checking function conditions to make them always terminate:
+```js
+// example 1: sum of the list
+// we can provide default value so it will always return result
+// sum :: [Number] -> Number
+const sum = arr => arr.reduce((a, b) => a + b, 0)
+sum([1, 2, 3]) // 6
+sqrt([]) // 0
+
+// example 2: get the first item in list
+// change result to Option
+// first :: [A] -> Option A
+const first = a => a.length ? Some(a[0]) : None()
+first([[42]]).map(a => console.log(a)) // 42
+first([]).map(a => console.log(a)) // console.log won't execute at all
+//our previous worst case
+first([[42]]).map(a => console.log(a[0])) // 42
+first([]).map(a => console.log(a[0])) // won't execte, so we won't have error here
+// more of that, you will know by function return type (Option)
+// that you should use `.map` method to access the data and you will never forget
+// to check your input because such check become built-in into the function
+
+// example 3: repeat function N times
+// we should make function always terminate by changing conditions:
+// times :: Number -> (Number -> Number) -> Number
+const times = n => fn => n > 0 && (fn(n), times(n - 1)(fn))
+times(3)(console.log)
+// 3
+// 2
+// 1
+times(-1)(console.log) 
+// won't execute anything
+```
+If you will change all your functions from partial to total, it can prevent you from having runtime exceptions, will make code easier to reason about and easier to maintain.
 
 ## Functional Programming Libraries in JavaScript
 
