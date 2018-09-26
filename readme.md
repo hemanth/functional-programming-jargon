@@ -334,7 +334,7 @@ A predicate is a function that returns true or false for a given value. A common
 ```js
 const predicate = (a) => a > 2
 
-;[1, 2, 3, 4].filter(predicate) // [3, 4]
+[1, 2, 3, 4].filter(predicate) // [3, 4]
 ```
 
 ## Contracts
