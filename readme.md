@@ -989,6 +989,7 @@ If you will change all your functions from partial to total, it can prevent you 
 
 * [mori](https://github.com/swannodette/mori)
 * [Immutable](https://github.com/facebook/immutable-js/)
+* [Immer](https://github.com/mweststrate/immer)
 * [Ramda](https://github.com/ramda/ramda)
 * [ramda-adjunct](https://github.com/char0n/ramda-adjunct)
 * [Folktale](http://folktale.origamitower.com/)
@@ -1000,6 +1001,7 @@ If you will change all your functions from partial to total, it can prevent you 
 * [Haskell in ES6](https://github.com/casualjavascript/haskell-in-es6)
 * [Sanctuary](https://github.com/sanctuary-js/sanctuary)
 * [Crocks](https://github.com/evilsoft/crocks)
+* [Fluture](https://github.com/fluture-js/Fluture)
 
 ---
 
