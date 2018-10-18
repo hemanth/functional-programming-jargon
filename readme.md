@@ -946,7 +946,7 @@ times(3)(console.log)
 // 3
 // 2
 // 1
-times(-1)(console.log) 
+times(-1)(console.log)
 // RangeError: Maximum call stack size exceeded
 ```
 ### Avoiding partial functions
@@ -980,7 +980,7 @@ times(3)(console.log)
 // 3
 // 2
 // 1
-times(-1)(console.log) 
+times(-1)(console.log)
 // won't execute anything
 ```
 If you will change all your functions from partial to total, it can prevent you from having runtime exceptions, will make code easier to reason about and easier to maintain.
