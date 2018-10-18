@@ -950,7 +950,7 @@ times(-1)(console.log)
 // RangeError: Maximum call stack size exceeded
 ```
 ### Avoiding partial functions
-Partial functions are dangerous, you can sometimes get the expected result, sometimes the wrong result, and sometimes your function can't stop the calculations at all. The input of partial functions should be always checked, and it can be hard to track all edge cases through entire applications, the easiest way to deal with it it's just to convert all partial functions to the total. General advice can be the usage of `Optional` type, providing default values for edge cases and checking function conditions to make them always terminate:
+Partial functions are dangerous, you can sometimes get the expected result, sometimes the wrong result, and sometimes your function can't stop the calculations at all. The input of partial functions should be always checked, and it can be hard to track all edge cases through entire applications, the easiest way to deal with it it's just to convert all partial functions to the total. General advice can be the usage of `Option` type, providing default values for edge cases and checking function conditions to make them always terminate:
 ```js
 // example 1: sum of the list
 // we can provide default value so it will always return result
