@@ -60,7 +60,8 @@ __Table of Contents__
   * [Sum type](#sum-type)
   * [Product type](#product-type)
 * [Option](#option)
-* [Totality](#totality)
+* [Function](#function)
+* [Partial function](#partial-function)
 * [Functional Programming Libraries in JavaScript](#functional-programming-libraries-in-javascript)
 
 
@@ -908,9 +909,12 @@ getNestedPrice({item: {price: 9.99}}) // Some(9.99)
 
 `Option` is also known as `Maybe`. `Some` is sometimes called `Just`. `None` is sometimes called `Nothing`.
 
-## Totality
-### Total functions
-The total function is just like a function in math - it will always return a result of the expected type for expected inputs and will always terminate. The easiest example is `identity` function:
+## Function
+Category Threory: A function is just an arrow between types. It has a direction. Replace arrow with mapping maybe?
+
+A **function** `f: A -> B` maps every element from its domain (A) to an element in its co-domain (B); or in other words: takes exactly one argument and maps it to exactly one (and always the same) value. That value depends entirely on the argument. This is what makes functions so pleasant to work with: there is no room for side-effects; a function is always pure – by definition. Functions exhibit [referential transparency](#referential-transparency).
+
+A very simple example is the `identity` function:
 ```js
 // identity :: a -> a
 const identity = a => a
@@ -920,9 +924,24 @@ or `negate`:
 // negate :: Boolean -> Boolean
 const negate = value => !value
 ```
-Such functions always meet the requirements, you just can't provide such arguments, which satisfy inputs but break outputs.
-### Partial functions
-It's a function which violates the requirements to be total - it may return an unexpected result with some inputs or it may never terminate. Partial functions add cognitive overhead, they are harder to reason about and they can lead to runtime errors. Some examples:
+
+When programmers talk about functions though they often mean **expressions**: methods, procedures, and the likes. This is where some of the misconceptions regarding e.g. [Purity](#purity) and [Side effects](#side-effects) as special to some subset of functions come from, so that they need to be adressed here. What we really mean to say is: An expression which does not produce any side-effects (or: is pure) is a function. Programmers also have a concept of *functions expecting more than one parameter*, although those are *convenience methods* for their [curried forms](#currying). And rightfully so! Convenience is an important aspect of programming.
+
+```js
+// not a function, but an expression or more specifically a method
+// add :: (number, number) -> number
+const add = (a, b) => a + b
+
+// add :: number => number => number
+// curried form: a function - taking one argument and returning a value, in this case another function
+const addCurried = a => b => a + b
+add(1, 2) // might be considered more convenient than addCurried(1)(2)
+```
+
+It's totally fine to use the term "function" in a more loose way – depending on context –, but keep in mind its original meaning as *side-effect-free* or *pure* is often implicit with resources like the documentation of your favourite [fp libraries](#functional-programming-libraries-in-javascript).
+
+## Partial function
+A partial function is a function which may not be defined for all inputs - it might return an unexpected result with some inputs or it may never terminate. Partial functions add cognitive overhead, they are harder to reason about and they can lead to runtime errors. Some examples:
 ```js
 // example 1: sum of the list
 // sum :: [Number] -> Number
@@ -949,8 +968,10 @@ times(3)(console.log)
 times(-1)(console.log)
 // RangeError: Maximum call stack size exceeded
 ```
-### Avoiding partial functions
-Partial functions are dangerous, you can sometimes get the expected result, sometimes the wrong result, and sometimes your function can't stop the calculations at all. The input of partial functions should be always checked, and it can be hard to track all edge cases through entire applications, the easiest way to deal with it it's just to convert all partial functions to the total. General advice can be the usage of `Option` type, providing default values for edge cases and checking function conditions to make them always terminate:
+
+### Dealing with partial functions
+Partial functions are dangerous as they need to be treated with great caution. You might get an unexpected (wrong) result or run into runtime errors. Sometimes a partial function might not return at all. Being aware of and treating all these edge cases accordingly can become very tedious.
+Fortunately a partial function can be converted to a regular (or total) one. We can provide default values or use guards to deal with inputs for which the (previously) partial function is undefined. Utilizing the [`Option`](#Option) type, we can yield either `Some(value)` or `None` where we would otherwise have behaved unexpectedly:
 ```js
 // example 1: sum of the list
 // we can provide default value so it will always return result
@@ -963,7 +984,7 @@ sqrt([]) // 0
 // change result to Option
 // first :: [A] -> Option A
 const first = a => a.length ? Some(a[0]) : None()
-first([[42]]).map(a => console.log(a)) // 42
+first([42]).map(a => console.log(a)) // 42
 first([]).map(a => console.log(a)) // console.log won't execute at all
 //our previous worst case
 first([[42]]).map(a => console.log(a[0])) // 42
@@ -983,7 +1004,7 @@ times(3)(console.log)
 times(-1)(console.log)
 // won't execute anything
 ```
-If you will change all your functions from partial to total, it can prevent you from having runtime exceptions, will make code easier to reason about and easier to maintain.
+Making your partial functions total ones, these kinds of runtime errors can be prevented. Always returning a value will also make for code that is both easier to maintain as well as to reason about.
 
 ## Functional Programming Libraries in JavaScript
 
