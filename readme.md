@@ -910,9 +910,7 @@ getNestedPrice({item: {price: 9.99}}) // Some(9.99)
 `Option` is also known as `Maybe`. `Some` is sometimes called `Just`. `None` is sometimes called `Nothing`.
 
 ## Function
-Category Threory: A function is just an arrow between types. It has a direction. Replace arrow with mapping maybe?
-
-A **function** `f: A -> B` maps every element from its domain (A) to an element in its co-domain (B); or in other words: takes exactly one argument and maps it to exactly one (and always the same) value. That value depends entirely on the argument. This is what makes functions so pleasant to work with: there is no room for side-effects; a function is always pure – by definition. Functions exhibit [referential transparency](#referential-transparency).
+A **function** `f: A -> B` maps every element of type A to an element of type B. It takes *exactly one* argument and maps it to exactly one (and always the same) value. That value depends entirely on the argument. This is what makes functions so pleasant to work with: there is no room for side-effects; a function is always pure – by definition. Functions exhibit [referential transparency](#referential-transparency) which allow for [equational reasoning](#equational-reasoning).
 
 A very simple example is the `identity` function:
 ```js
@@ -925,7 +923,7 @@ or `negate`:
 const negate = value => !value
 ```
 
-When programmers talk about functions though they often mean **expressions**: methods, procedures, and the likes. This is where some of the misconceptions regarding e.g. [Purity](#purity) and [Side effects](#side-effects) as special to some subset of functions come from, so that they need to be adressed here. What we really mean to say is: An expression which does not produce any side-effects (or: is pure) is a function. Programmers also have a concept of *functions expecting more than one parameter*, although those are *convenience methods* for their [curried forms](#currying). And rightfully so! Convenience is an important aspect of programming.
+When programmers talk about functions though they often mean **expressions**: methods, procedures, and the likes. This is where some of the misconceptions regarding e.g. [purity](#purity) and [side effects](#side-effects) as special to some subset of function come from. What we really mean to say is: An expression which does not produce any side-effects (or: is pure) is a function. Programmers also have a concept of *functions expecting more than one parameter*, although those are *convenience methods* for their [curried forms](#currying). And rightfully so! Convenience is an important aspect of programming.
 
 ```js
 // not a function, but an expression or more specifically a method
