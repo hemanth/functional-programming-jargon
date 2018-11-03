@@ -914,7 +914,7 @@ getNestedPrice({item: {price: 9.99}}) // Some(9.99)
 A **function** is a special kind of language construct: often specified as an arrow or lambda expression - an anonymous or named block of code (the body) with optional parameters. It allows us to treat a piece of code as data and e.g. pass it to methods:
 
 ```js
-button.onClick(e => console.log("the button has been clicked")) // valid function, but with a side effect (see below)
+button.onClick(e => console.log("the button has been clicked"))
 ```
 
 ```js
