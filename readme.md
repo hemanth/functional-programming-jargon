@@ -910,33 +910,28 @@ getNestedPrice({item: {price: 9.99}}) // Some(9.99)
 `Option` is also known as `Maybe`. `Some` is sometimes called `Just`. `None` is sometimes called `Nothing`.
 
 ## Function
-A **function** `f: A -> B` maps every element of type A to an element of type B. It takes *exactly one* argument and maps it to exactly one (and always the same) value. That value depends entirely on the argument. This is what makes functions so pleasant to work with: there is no room for side-effects; a function is always pure – by definition. Functions exhibit [referential transparency](#referential-transparency) which allow for [equational reasoning](#equational-reasoning).
-
-A very simple example is the `identity` function:
-```js
-// identity :: a -> a
-const identity = a => a
-```
-or `negate`:
-```js
-// negate :: Boolean -> Boolean
-const negate = value => !value
-```
-
-When programmers talk about functions though they often mean **expressions**: methods, procedures, and the likes. This is where some of the misconceptions regarding e.g. [purity](#purity) and [side effects](#side-effects) as special to some subset of function come from. What we really mean to say is: An expression which does not produce any side-effects (or: is pure) is a function. Programmers also have a concept of *functions expecting more than one parameter*, although those are *convenience methods* for their [curried forms](#currying). And rightfully so! Convenience is an important aspect of programming.
+#### Definition
+A **function** is a special kind of language construct: often specified as an arrow or lambda expression - an anonymous or named block of code (the body) with optional parameters. It allows us to treat a piece of code as data and e.g. pass it to methods:
 
 ```js
-// not a function, but an expression or more specifically a method
-// add :: (number, number) -> number
-const add = (a, b) => a + b
-
-// add :: number => number => number
-// curried form: a function - taking one argument and returning a value, in this case another function
-const addCurried = a => b => a + b
-add(1, 2) // might be considered more convenient than addCurried(1)(2)
+button.onClick(e => console.log("the button has been clicked")) // valid function, but with a side effect (see below)
 ```
 
-It's totally fine to use the term "function" in a more loose way – depending on context –, but keep in mind its original meaning as *side-effect-free* or *pure* is often implicit with resources like the documentation of your favourite [fp libraries](#functional-programming-libraries-in-javascript).
+```js
+// times2 :: Number -> Number
+const times2 = n => n * 2
+
+[1, 2, 3].map(times2) // [2, 4, 6]
+```
+
+#### Differentiation
+Functional programming has its origins in mathematics and so do a lot of its terms. We hence need to differentiate between the concept of a function and its implementation as a language construct (as outlined above): In terms of set theory, a function `f: X -> Y` is an arrow between two sets `X` and `Y`. It maps *every* element in its *domain* `X` to an element in its *codomain* `Y` (note the use of singular here).
+
+
+Translating this into the language of computer science, a function is an expression with **exactly one (immutable)** parameter and **exactly one** return value. That value depends entirely on the argument which makes functions context-independant. This property is called [referential transparency](#referential-transparency) which allows for [equational reasoning](#equational-reasoning). Its mathematical origin also necessitates the absence of hidden [side effects](#side-effects) - a function is always [pure](#purity), by definition. These features make functions (as defined by mathematics) so pleasant to work with: they are entirely deterministic and therefore predictable.
+
+
+Contrast this with the definition above: none of the aforementioned constrains are baked into the language constructs we need to deal with. They have been sacrificed in part for pragmatism, convenience, and expressiveness - useful features of programming languages. This mismatch the concept of a function and its concrete implementation must be accounted for by the programmer; she must appreciate the principles functional programming is grounded on in order to benefit from its promises.
 
 ## Partial function
 A partial function is a function which may not be defined for all inputs - it might return an unexpected result with some inputs or it may never terminate. Partial functions add cognitive overhead, they are harder to reason about and they can lead to runtime errors. Some examples:
