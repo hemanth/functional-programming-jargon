@@ -920,7 +920,7 @@ const times2 = n => n * 2
 ```
 
 ## Partial function
-A partial function is a function which may not be defined for all inputs - it might return an unexpected result with some inputs or it may never terminate. Partial functions add cognitive overhead, they are harder to reason about and they can lead to runtime errors. Some examples:
+A partial function is a [function](#function) which is not defined for all arguments - it might return an unexpected result or may never terminate. Partial functions add cognitive overhead, they are harder to reason about and can lead to runtime errors. Some examples:
 ```js
 // example 1: sum of the list
 // sum :: [Number] -> Number
