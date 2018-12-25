@@ -926,7 +926,7 @@ A partial function is a [function](#function) which is not defined for all argum
 // sum :: [Number] -> Number
 const sum = arr => arr.reduce((a, b) => a + b)
 sum([1, 2, 3]) // 6
-sqrt([]) // TypeError: Reduce of empty array with no initial value
+sum([]) // TypeError: Reduce of empty array with no initial value
 
 // example 2: get the first item in list
 // first :: [A] -> A
@@ -957,7 +957,7 @@ Fortunately a partial function can be converted to a regular (or total) one. We 
 // sum :: [Number] -> Number
 const sum = arr => arr.reduce((a, b) => a + b, 0)
 sum([1, 2, 3]) // 6
-sqrt([]) // 0
+sum([]) // 0
 
 // example 2: get the first item in list
 // change result to Option
