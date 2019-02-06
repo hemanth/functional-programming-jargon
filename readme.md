@@ -346,13 +346,13 @@ A contract specifies the obligations and guarantees of the behavior from a funct
 // Define our contract : int -> boolean
 const contract = (input) => {
   if (typeof input === 'number') return true
-  throw new Error('Contract violated: expected int -> int')
+  throw new Error('Contract violated: expected int -> boolean')
 }
 
 const addOne = (num) => contract(num) && num + 1
 
 addOne(2) // 3
-addOne('some string') // Contract violated: expected int -> int
+addOne('some string') // Contract violated: expected int -> boolean
 ```
 
 ## Category
