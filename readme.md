@@ -49,6 +49,12 @@ __Table of Contents__
 * [Morphism](#morphism)
   * [Endomorphism](#endomorphism)
   * [Isomorphism](#isomorphism)
+  * [Homomorphism](#homomorphism)
+  * [Catamorphism](#catamorphism)
+  * [Anamorphism](#anamorphism)
+  * [Hylomorphism](#hylomorphism)
+  * [Paramorphism](#paramorphism)
+  * [Apomorphism](#apomorphism)
 * [Setoid](#setoid)
 * [Semigroup](#semigroup)
 * [Foldable](#foldable)
@@ -181,6 +187,37 @@ const add2 = curriedSum(2) // (b) => 2 + b
 add2(10) // 12
 
 ```
+
+## Closure
+
+A closure is a way of accessing a variable outside its scope.
+Formally, a closure is a technique for implementing lexically scopped named binding. It is a way of storing a function with an environment.
+
+A closure is a scope which captures local variables of a function for access even after the execution has moved out of the block in which it is defined.
+ie. they allow referencing a scope after the block in which the variables were declared has finished executing.
+
+
+```js
+const addTo = x => y => x + y;
+var addToFive = addTo(5);
+addToFive(3); //returns 8
+```
+The function ```addTo()``` returns a function(internally called ```add()```), lets store it in a variable called ```addToFive``` with a curried call having parameter 5.
+
+Ideally, when the function ```addTo``` finishes execution, its scope, with local variables add, x, y should not be accessible. But, it returns 8 on calling ```addToFive()```. This means that the state of the function ```addTo``` is saved even after the block of code has finished executing, otherwise there is no way of knowing that ```addTo``` was called as ```addTo(5)``` and the value of x was set to 5.
+
+Lexical scoping is the reason why it is able to find the values of x and add - the private variables of the parent which has finished executing. This value is called a Closure.
+
+The stack along with the lexical scope of the function is stored in form of reference to the parent. This prevents the closure and the underlying variables from being garbage collected(since there is at least one live reference to it).
+
+Lambda Vs Closure: A lambda is essentially a function that is defined inline rather than the standard method of declaring functions. Lambdas can frequently be passed around as objects.
+
+A closure is a function that encloses its surrounding state by referencing fields external to its body. The enclosed state remains across invocations of the closure.
+
+
+__Further reading/Sources__
+* [Lambda Vs Closure](http://stackoverflow.com/questions/220658/what-is-the-difference-between-a-closure-and-a-lambda)
+* [JavaScript Closures highly voted disucussion](http://stackoverflow.com/questions/111102/how-do-javascript-closures-work)
 
 ## Auto Currying
 Transforming a function that takes multiple arguments into one that if given less than its correct number of arguments returns a function that takes the rest. When the function gets the correct number of arguments it is then evaluated.
@@ -696,7 +733,85 @@ coordsToPair(pairToCoords([1, 2])) // [1, 2]
 pairToCoords(coordsToPair({x: 1, y: 2})) // {x: 1, y: 2}
 ```
 
+### Homomorphism
 
+A homomorphism is just a structure preserving map. In fact, a functor is just a homomorphism between categories as it preserves the original category's structure under the mapping.
+
+```js
+A.of(f).ap(A.of(x)) == A.of(f(x))
+
+Either.of(_.toUpper).ap(Either.of("oreos")) == Either.of(_.toUpper("oreos"))
+```
+
+### Catamorphism
+
+A `reduceRight` function that applies a function against an accumulator and each value of the array (from right-to-left) to reduce it to a single value.
+
+```js
+const sum = xs => xs.reduceRight((acc, x) => acc + x, 0)
+
+sum([1, 2, 3, 4, 5]) // 15
+```
+
+### Anamorphism
+
+An `unfold` function. An `unfold` is the opposite of `fold` (`reduce`). It generates a list from a single value.
+
+```js
+const unfold = (f, seed) => {
+  function go(f, seed, acc) {
+    const res = f(seed);
+    return res ? go(f, res[1], acc.concat([res[0]])) : acc;
+  }
+  return go(f, seed, [])
+}
+```
+
+```js
+const countDown = n => unfold((n) => {
+  return n <= 0 ? undefined : [n, n - 1]
+}, n)
+
+countDown(5) // [5, 4, 3, 2, 1]
+```
+
+### Hylomorphism
+
+The combination of anamorphism and catamorphism.
+
+### Paramorphism
+
+A function just like `reduceRight`. However, there's a difference:
+
+In paramorphism, your reducer's arguments are the current value, the reduction of all previous values, and the list of values that formed that reduction.
+
+```js
+// Obviously not safe for lists containing `undefined`,
+// but good enough to make the point.
+const para = (reducer, accumulator, elements) => {
+  if (elements.length === 0)
+    return accumulator
+
+  const head = elements[0]
+  const tail = elements.slice(1)
+
+  return reducer(head, tail, para(reducer, accumulator, tail))
+}
+
+const suffixes = list => para(
+  (x, xs, suffxs) => [xs, ... suffxs],
+  [],
+  list
+)
+
+suffixes([1, 2, 3, 4, 5]) // [[2, 3, 4, 5], [3, 4, 5], [4, 5], [5], []]
+```
+
+The third parameter in the reducer (in the above example, `[x, ... xs]`) is kind of like having a history of what got you to your current acc value.
+
+### Apomorphism
+
+it's the opposite of paramorphism, just as anamorphism is the opposite of catamorphism. Whereas with paramorphism, you combine with access to the accumulator and what has been accumulated, apomorphism lets you `unfold` with the potential to return early.
 
 ## Setoid
 
@@ -732,7 +847,7 @@ An object that has a `concat` function that combines it with another object of t
 
 ## Foldable
 
-An object that has a `reduce` function that can transform that object into some other type.
+An object that has a `reduce` function that applies a function against an accumulator and each element in the array (from left to right) to reduce it to a single value.
 
 ```js
 const sum = (list) => list.reduce((acc, val) => acc + val, 0)
