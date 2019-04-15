@@ -191,7 +191,7 @@ add2(10) // 12
 ## Closure
 
 A closure is a way of accessing a variable outside its scope.
-Formally, a closure is a technique for implementing lexically scopped named binding. It is a way of storing a function with an environment.
+Formally, a closure is a technique for implementing lexically scoped named binding. It is a way of storing a function with an environment.
 
 A closure is a scope which captures local variables of a function for access even after the execution has moved out of the block in which it is defined.
 ie. they allow referencing a scope after the block in which the variables were declared has finished executing.
@@ -217,7 +217,7 @@ A closure is a function that encloses its surrounding state by referencing field
 
 __Further reading/Sources__
 * [Lambda Vs Closure](http://stackoverflow.com/questions/220658/what-is-the-difference-between-a-closure-and-a-lambda)
-* [JavaScript Closures highly voted disucussion](http://stackoverflow.com/questions/111102/how-do-javascript-closures-work)
+* [JavaScript Closures highly voted discussion](http://stackoverflow.com/questions/111102/how-do-javascript-closures-work)
 
 ## Auto Currying
 Transforming a function that takes multiple arguments into one that if given less than its correct number of arguments returns a function that takes the rest. When the function gets the correct number of arguments it is then evaluated.
