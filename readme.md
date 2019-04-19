@@ -242,7 +242,7 @@ __Further reading__
 The act of putting two functions together to form a third function where the output of one function is the input of the other.
 
 ```js
-const compose = (f, g) => (a) => f(g(a)) // Definition
+const compose = (f, g) => (a) => g(f(a)) // Definition
 const floorAndToString = compose((val) => val.toString(), Math.floor) // Usage
 floorAndToString(121.212121) // '121'
 ```
