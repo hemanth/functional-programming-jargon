@@ -1077,6 +1077,7 @@ Making your partial functions total ones, these kinds of runtime errors can be p
 * [Sanctuary](https://github.com/sanctuary-js/sanctuary)
 * [Crocks](https://github.com/evilsoft/crocks)
 * [Fluture](https://github.com/fluture-js/Fluture)
+* [fp-ts](https://github.com/gcanti/fp-ts)
 
 ---
 
