@@ -12,6 +12,7 @@ __Translations__
 * [Chinese](https://github.com/shfshanyue/fp-jargon-zh)
 * [Bahasa Indonesia](https://github.com/wisn/jargon-pemrograman-fungsional)
 * [Scala World](https://github.com/ikhoon/functional-programming-jargon.scala)
+* [Rust World](https://github.com/JasonShin/functional-programming-jargon.rs)
 * [Korean](https://github.com/sphilee/functional-programming-jargon)
 
 __Table of Contents__
