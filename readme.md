@@ -11,6 +11,7 @@ __Translations__
 * [Spanish](https://github.com/idcmardelplata/functional-programming-jargon/tree/master)
 * [Chinese](https://github.com/shfshanyue/fp-jargon-zh)
 * [Bahasa Indonesia](https://github.com/wisn/jargon-pemrograman-fungsional)
+* [Python World](https://github.com/jmesyou/functional-programming-jargon.py)
 * [Scala World](https://github.com/ikhoon/functional-programming-jargon.scala)
 * [Rust World](https://github.com/JasonShin/functional-programming-jargon.rs)
 * [Korean](https://github.com/sphilee/functional-programming-jargon)
