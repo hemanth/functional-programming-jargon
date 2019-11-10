@@ -15,6 +15,7 @@ __Translations__
 * [Scala World](https://github.com/ikhoon/functional-programming-jargon.scala)
 * [Rust World](https://github.com/JasonShin/functional-programming-jargon.rs)
 * [Korean](https://github.com/sphilee/functional-programming-jargon)
+* [Haskell Turkish](https://github.com/mrtkp9993/functional-programming-jargon)
 
 __Table of Contents__
 <!-- RM(noparent,notop) -->
