@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/hemanth/functional-programming-jargon#readme",
   "devDependencies": {
-    "eslint": "^3.4.0",
+    "eslint": "^6.6.0",
     "eslint-config-standard": "^6.0.0",
     "eslint-plugin-markdown": "^1.0.0-beta.6",
     "eslint-plugin-standard": "^3.0.1",
