@@ -115,9 +115,9 @@ ie. they allow referencing a scope after the block in which the variables were d
 
 
 ```js
-const addTo = x => y => x + y;
-var addToFive = addTo(5);
-addToFive(3); //returns 8
+const addTo = x => y => x + y
+var addToFive = addTo(5)
+addToFive(3) // returns 8
 ```
 The function ```addTo()``` returns a function(internally called ```add()```), lets store it in a variable called ```addToFive``` with a curried call having parameter 5.
 
@@ -439,7 +439,7 @@ const f = x => x + 1
 const g = x => x * 2
 
 ;[1, 2, 3].map(x => f(g(x))) // = [3, 5, 7]
-;[1, 2, 3].map(g).map(f)     // = [3, 5, 7]
+;[1, 2, 3].map(g).map(f) // = [3, 5, 7]
 ```
 
 ## Pointed Functor
@@ -704,7 +704,7 @@ A homomorphism is just a structure preserving map. In fact, a functor is just a 
 ```js
 A.of(f).ap(A.of(x)) == A.of(f(x))
 
-Either.of(_.toUpper).ap(Either.of("oreos")) == Either.of(_.toUpper("oreos"))
+Either.of(_.toUpper).ap(Either.of('oreos')) == Either.of(_.toUpper('oreos'))
 ```
 
 ### Catamorphism
@@ -723,9 +723,9 @@ An `unfold` function. An `unfold` is the opposite of `fold` (`reduce`). It gener
 
 ```js
 const unfold = (f, seed) => {
-  function go(f, seed, acc) {
-    const res = f(seed);
-    return res ? go(f, res[1], acc.concat([res[0]])) : acc;
+  function go (f, seed, acc) {
+    const res = f(seed)
+    return res ? go(f, res[1], acc.concat([res[0]])) : acc
   }
   return go(f, seed, [])
 }
@@ -753,8 +753,7 @@ In paramorphism, your reducer's arguments are the current value, the reduction o
 // Obviously not safe for lists containing `undefined`,
 // but good enough to make the point.
 const para = (reducer, accumulator, elements) => {
-  if (elements.length === 0)
-    return accumulator
+  if (elements.length === 0) { return accumulator }
 
   const head = elements[0]
   const tail = elements.slice(1)
@@ -763,7 +762,7 @@ const para = (reducer, accumulator, elements) => {
 }
 
 const suffixes = list => para(
-  (x, xs, suffxs) => [xs, ... suffxs],
+  (x, xs, suffxs) => [xs, ...suffxs],
   [],
   list
 )
@@ -991,7 +990,7 @@ A **function** `f :: A => B` is an expression - often called arrow or lambda exp
 
 ```js
 // times2 :: Number -> Number
-const times2 = n => n * 2
+const times2 = n => n * 2;
 
 [1, 2, 3].map(times2) // [2, 4, 6]
 ```
@@ -1010,7 +1009,7 @@ sum([]) // TypeError: Reduce of empty array with no initial value
 const first = a => a[0]
 first([42]) // 42
 first([]) // undefined
-//or even worse:
+// or even worse:
 first([[42]])[0] // 42
 first([])[0] // Uncaught TypeError: Cannot read property '0' of undefined
 
@@ -1042,7 +1041,7 @@ sum([]) // 0
 const first = a => a.length ? Some(a[0]) : None()
 first([42]).map(a => console.log(a)) // 42
 first([]).map(a => console.log(a)) // console.log won't execute at all
-//our previous worst case
+// our previous worst case
 first([[42]]).map(a => console.log(a[0])) // 42
 first([]).map(a => console.log(a[0])) // won't execte, so we won't have error here
 // more of that, you will know by function return type (Option)
@@ -1069,6 +1068,7 @@ Making your partial functions total ones, these kinds of runtime errors can be p
 * [Immer](https://github.com/mweststrate/immer)
 * [Ramda](https://github.com/ramda/ramda)
 * [ramda-adjunct](https://github.com/char0n/ramda-adjunct)
+* [ramda-extension](https://github.com/tommmyy/ramda-extension)
 * [Folktale](http://folktale.origamitower.com/)
 * [monet.js](https://cwmyers.github.io/monet.js/)
 * [lodash](https://github.com/lodash/lodash)
