@@ -30,7 +30,7 @@ __Table of Contents__
 * [Auto Currying](#auto-currying)
 * [Function Composition](#function-composition)
 * [Continuation](#continuation)
-* [Purity](#purity)
+* [Pure Function](#pure-function)
 * [Side effects](#side-effects)
 * [Idempotent](#idempotent)
 * [Point-Free Style](#point-free-style)
@@ -39,6 +39,9 @@ __Table of Contents__
 * [Category](#category)
 * [Value](#value)
 * [Constant](#constant)
+  * [Constant Function](#constant-function)
+  * [Constant Functor](#constant-functor)
+  * [Constant Monad](#constant-monad)
 * [Functor](#functor)
 * [Pointed Functor](#pointed-functor)
 * [Lift](#lift)
@@ -78,16 +81,20 @@ __Table of Contents__
 
 ## Arity
 
-The number of arguments a function takes. From words like unary, binary, ternary, etc. This word has the distinction of being composed of two suffixes, "-ary" and "-ity." Addition, for example, takes two arguments, and so it is defined as a binary function or a function with an arity of two. Such a function may sometimes be called "dyadic" by people who prefer Greek roots to Latin. Likewise, a function that takes a variable number of arguments is called "variadic," whereas a binary function must be given two and only two arguments, currying and partial application notwithstanding (see below).
+The number of arguments a function takes. From words like unary, binary, ternary, etc. 
 
 ```js
 const sum = (a, b) => a + b
-
-const arity = sum.length
-console.log(arity) // 2
-
-// The arity of sum is 2
+// The arity of sum is 2 (binary)
+const inc = a => a + 1
+// The arity of inc is 1 (unary)
+const zero = () => 0
+// The arity of zero is 0 (nullary)
 ```
+
+__Further reading__
+
+* [Arity](https://en.wikipedia.org/wiki/Arity) on wikipedia.
 
 ## Higher-Order Functions (HOF)
 
@@ -107,29 +114,18 @@ filter(is(Number), [0, '1', 2, null]) // [0, 2]
 
 ## Closure
 
-A closure is a way of accessing a variable outside its scope.
-Formally, a closure is a technique for implementing lexically scoped named binding. It is a way of storing a function with an environment.
-
 A closure is a scope which captures local variables of a function for access even after the execution has moved out of the block in which it is defined.
-ie. they allow referencing a scope after the block in which the variables were declared has finished executing.
+This allows the values in the closure to be accessed by returned functions.
 
 
 ```js
 const addTo = x => y => x + y
 var addToFive = addTo(5)
-addToFive(3) // returns 8
+addToFive(3) // => 8
 ```
-The function ```addTo()``` returns a function(internally called ```add()```), lets store it in a variable called ```addToFive``` with a curried call having parameter 5.
 
-Ideally, when the function ```addTo``` finishes execution, its scope, with local variables add, x, y should not be accessible. But, it returns 8 on calling ```addToFive()```. This means that the state of the function ```addTo``` is saved even after the block of code has finished executing, otherwise there is no way of knowing that ```addTo``` was called as ```addTo(5)``` and the value of x was set to 5.
-
-Lexical scoping is the reason why it is able to find the values of x and add - the private variables of the parent which has finished executing. This value is called a Closure.
-
-The stack along with the lexical scope of the function is stored in form of reference to the parent. This prevents the closure and the underlying variables from being garbage collected(since there is at least one live reference to it).
-
-Lambda Vs Closure: A lambda is essentially a function that is defined inline rather than the standard method of declaring functions. Lambdas can frequently be passed around as objects.
-
-A closure is a function that encloses its surrounding state by referencing fields external to its body. The enclosed state remains across invocations of the closure.
+In this case the `x` is retained in `addToFive`'s closure with the value `5`. `addToFive` can then be called with the `y`
+to get back the sum.
 
 __Further reading/Sources__
 * [Lambda Vs Closure](http://stackoverflow.com/questions/220658/what-is-the-difference-between-a-closure-and-a-lambda)
@@ -138,7 +134,6 @@ __Further reading/Sources__
 ## Partial Application
 
 Partially applying a function means creating a new function by pre-filling some of the arguments to the original function.
-
 
 ```js
 // Helper to create partially applied functions
@@ -206,7 +201,7 @@ __Further reading__
 
 ## Function Composition
 
-The act of putting two functions together to form a third function where the output of one function is the input of the other.
+The act of putting two functions together to form a third function where the output of one function is the input of the other. This is one of the most important ideas of functional programming.
 
 ```js
 const compose = (f, g) => (a) => f(g(a)) // Definition
@@ -245,10 +240,9 @@ readFileAsync('path/to/file', (err, response) => {
 })
 ```
 
-## Purity
+## Pure Function
 
-A function is pure if the return value is only determined by its
-input values, and does not produce side effects.
+A function is pure if the return value is only determined by its input values, and does not produce side effects. The function must always return the same result when given the same input.
 
 ```js
 const greet = (name) => `Hi, ${name}`
@@ -297,10 +291,6 @@ console.log('IO is a side effect!')
 
 A function is idempotent if reapplying it to its result does not produce a different result.
 
-```
-f(f(x)) ≍ f(x)
-```
-
 ```js
 Math.abs(Math.abs(10))
 ```
@@ -320,16 +310,14 @@ const add = (a) => (b) => a + b
 
 // Then
 
-// Not points-free - `numbers` is an explicit argument
+// Not point-free - `numbers` is an explicit argument
 const incrementAll = (numbers) => map(add(1))(numbers)
 
-// Points-free - The list is an implicit argument
+// Point-free - The list is an implicit argument
 const incrementAll2 = map(add(1))
 ```
 
-`incrementAll` identifies and uses the parameter `numbers`, so it is not points-free.  `incrementAll2` is written just by combining functions and values, making no mention of its arguments.  It __is__ points-free.
-
-Points-free function definitions look just like normal assignments without `function` or `=>`.
+Point-free function definitions look just like normal assignments without `function` or `=>`. It's worth mentioning that point-free functions are not necessarily better than their counterparts, as they can be more difficult to understand when complex.
 
 ## Predicate
 A predicate is a function that returns true or false for a given value. A common use of a predicate is as the callback for array filter.
@@ -376,6 +364,27 @@ To be a valid category 3 rules must be met:
 
 Since these rules govern composition at very abstract level, category theory is great at uncovering new ways of composing things.
 
+As an example we can define a category Max as a class
+```js
+
+class Max {
+  constructor (a) {
+    this.a = a
+  }
+  id () {
+    return this
+  }
+  compose (b) {
+    return this.a > b.a ? this : b
+  }
+  toString () {
+    return `Max(${this.a})`
+  }
+}
+
+new Max(2).compose(new Max(3)).compose(new Max(5)).id().id() // => Max(5)
+```
+
 __Further reading__
 
 * [Category Theory for Programmers](https://bartoszmilewski.com/2014/10/28/category-theory-for-programmers-the-preface/)
@@ -409,9 +418,35 @@ With the above two constants the following expression will always return `true`.
 john.age + five === ({name: 'John', age: 30}).age + (5)
 ```
 
+### Constant Function
+
+A [curried](#currying) function that ignores its second argument:
+
+```js
+const constant = a => () => a;
+
+[1, 2].map(constant(0)) // => [0, 0]
+```
+
+### Constant Functor
+
+Object whose `map` doesn't transform the contents. See [Functor](#functor)
+
+```js
+  Constant(1).map(n => n + 1) // => Constant(1)
+```
+
+### Constant Monad
+
+Object whose `chain` doesn't transform the contents. See [Monad](#monad)
+
+```js
+  Constant(1).chain(n => Constant(n + 1)) // => Constant(1)
+```
+
 ## Functor
 
-An object that implements a `map` function which, while running over each value in the object to produce a new object, adheres to two rules:
+An object that implements a `map` function that takes a function which is run on the contents of that object. A functor must adhere to two rules:
 
 __Preserves identity__
 ```
@@ -477,24 +512,42 @@ lift(increment)([2]) // [3]
 ;[2].map(increment) // [3]
 ```
 
+Lifting simple values can be simply creating the object.
+
+```js
+Array.of(1) // => [1]
+```
+
 
 ## Referential Transparency
 
 An expression that can be replaced with its value without changing the
 behavior of the program is said to be referentially transparent.
 
-Say we have function greet:
+Given the function greet:
 
 ```js
 const greet = () => 'Hello World!'
 ```
 
 Any invocation of `greet()` can be replaced with `Hello World!` hence greet is
-referentially transparent.
+referentially transparent. This would be broken if greet depended on external
+state like configuration or a database call. See also [Pure Function](#pure-function) and
+[Equational Reasoning](#equational-reasoning).
 
 ##  Equational Reasoning
 
-When an application is composed of expressions and devoid of side effects, truths about the system can be derived from the parts.
+When an application is composed of expressions and devoid of side effects,
+truths about the system can be derived from the parts. You can also be confident
+about details of your system without having to go through every function.
+
+```js
+const grainToDogs = compose(chickenIntoDogs, grainIntoChicken)
+const grainToCats = compose(dogsIntoCats, grainToDogs)
+```
+In the example above, if you know that `chickenIntoDogs` and `grainIntoChicken`
+are pure then you know that the composition is pure. This can be taken further
+when more is known about the functions (associative, communtative, idempotent, etc...)
 
 ## Lambda
 
