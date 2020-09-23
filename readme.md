@@ -539,7 +539,7 @@ randIter.next() // Each execution gives a random value, expression is evaluated 
 
 ## Monoid
 
-An object with a function that "combines" that object with another of the same type.
+An object with a function that "combines" that object with another of the same type (semigroup) which has an "identity" value.
 
 One simple monoid is the addition of numbers:
 
@@ -548,11 +548,13 @@ One simple monoid is the addition of numbers:
 ```
 In this case number is the object and `+` is the function.
 
-An "identity" value must also exist that when combined with a value doesn't change it.
+When any value is combined with the "identity" value the result must be the original value. The identity must also be commutative.
 
 The identity value for addition is `0`.
 ```js
 1 + 0 // 1
+0 + 1 // 1
+1 + 0 === 0 + 1
 ```
 
 It's also required that the grouping of operations will not affect the result (associativity):
@@ -573,15 +575,10 @@ The identity value is empty array `[]`
 ;[1, 2].concat([]) // [1, 2]
 ```
 
-If identity and compose functions are provided, functions themselves form a monoid:
+As a counterexample, subtraction does not form a monoid because there is no commutative identity value:
 
 ```js
-const identity = (a) => a
-const compose = (f, g) => (x) => f(g(x))
-```
-`foo` is any function that takes one argument.
-```
-compose(foo, identity) ≍ compose(identity, foo) ≍ foo
+0 - 4 === 4 - 0 // false
 ```
 
 ## Monad
