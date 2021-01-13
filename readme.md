@@ -586,7 +586,11 @@ As a counterexample, subtraction does not form a monoid because there is no comm
 A monad is an object with [`of`](#pointed-functor) and `chain` functions. `chain` is like [`map`](#functor) except it un-nests the resulting nested object.
 
 ```js
-Array.of('cat,dog', 'fish,bird').flatMap((a) => a.split(',')) // ['cat', 'dog', 'fish', 'bird']
+// Implementation
+Array.prototype.chain = Array.prototype.flatMap
+
+// Usage
+Array.of('cat,dog', 'fish,bird').chain((a) => a.split(',')) // ['cat', 'dog', 'fish', 'bird']
 
 // Contrast to map
 Array.of('cat,dog', 'fish,bird').map((a) => a.split(',')) // [['cat', 'dog'], ['fish', 'bird']]
