@@ -294,7 +294,8 @@ console.log('IO is a side effect!')
 
 ## Идемпотент / Idempotent 
 
-Функция является идемпотентной, если ее повторное применение к результату не приводит к другому результату.
+Функция является идемпотентной, если ее повторное применение к результату не приводит к другому результату. 
+Функция идемпотент - это функция, которую можно применять несколько раз без изменения результата, то есть f(f(x)) совпадает с f(x). Функция может быть чистой, идемпотентной, и той, и другой, или ни одной из них. Поскольку чистые функции не допускают побочных эффектов, чистые функции также тривиально «идемпотентны».
 
 ```
 f(f(x)) ≍ f(x)
@@ -330,8 +331,8 @@ const incrementAll2 = map(add(1))
 
 Определения функций без точек выглядят как обычные присваивания без `function` или `=>`.
 
-## Predicate
-A predicate is a function that returns true or false for a given value. A common use of a predicate is as the callback for array filter.
+## Предикат
+Предикат - это функция, которая возвращает true или false для заданного значения. Обычно предикат используется в качестве обратного вызова для фильтра массива.
 
 ```js
 const predicate = (a) => a > 2
@@ -339,9 +340,9 @@ const predicate = (a) => a > 2
 ;[1, 2, 3, 4].filter(predicate) // [3, 4]
 ```
 
-## Contracts
+## Контракты
 
-A contract specifies the obligations and guarantees of the behavior from a function or expression at runtime. This acts as a set of rules that are expected from the input and output of a function or expression, and errors are generally reported whenever a contract is violated.
+Контракт определяет обязательства и гарантии поведения функции или выражения во время выполнения. Он действует как набор правил, которые ожидаются от входа и выхода функции или выражения, и при нарушении контракта обычно сообщается об ошибках.
 
 ```js
 // Define our contract : int -> boolean
@@ -356,32 +357,32 @@ addOne(2) // 3
 addOne('some string') // Contract violated: expected int -> boolean
 ```
 
-## Category
+## Категория
 
-A category in category theory is a collection of objects and morphisms between them. In programming, typically types
-act as the objects and functions as morphisms.
+Категория в теории категорий - это набор объектов и морфизмов между ними. В программировании, как правило, типы
+выступают в качестве объектов, а функции - в качестве морфизмов.
 
-To be a valid category 3 rules must be met:
+Для того чтобы категория была действительной, необходимо соблюсти 3 правила:
 
-1. There must be an identity morphism that maps an object to itself.
-    Where `a` is an object in some category,
-    there must be a function from `a -> a`.
-2. Morphisms must compose.
-    Where `a`, `b`, and `c` are objects in some category,
-    and `f` is a morphism from `a -> b`, and `g` is a morphism from `b -> c`;
-    `g(f(x))` must be equivalent to `(g • f)(x)`.
-3. Composition must be associative
-    `f • (g • h)` is the same as `(f • g) • h`
+1. Должен существовать морфизм тождества, который отображает объект на себя.
+    Где `a` - объект в некоторой категории,
+    должна существовать функция от `a -> a`.
+2. Морфизмы должны быть составными.
+    Где `a`, `b` и `c` - объекты в некоторой категории,
+    и `f` - морфизм из `a -> b`, а `g` - морфизм из `b -> c`;
+    `g(f(x))` должно быть эквивалентно `(g - f)(x)`.
+3. Композиция должна быть ассоциативной
+    `f - (g - h)` то же самое, что `(f - g) - h`.
 
-Since these rules govern composition at very abstract level, category theory is great at uncovering new ways of composing things.
+Поскольку эти правила управляют композицией на очень абстрактном уровне, теория категорий отлично подходит для открытия новых способов композиции вещей.
 
-__Further reading__
+__Дальнейшее чтение__
 
 * [Category Theory for Programmers](https://bartoszmilewski.com/2014/10/28/category-theory-for-programmers-the-preface/)
 
-## Value
+## Значение
 
-Anything that can be assigned to a variable.
+Все, что может быть присвоено переменной.
 
 ```js
 5
@@ -391,47 +392,47 @@ Object.freeze({name: 'John', age: 30}) // The `freeze` function enforces immutab
 undefined
 ```
 
-## Constant
+## Константа
 
-A variable that cannot be reassigned once defined.
+Переменная, которая не может быть переназначена после определения.
 
 ```js
 const five = 5
 const john = Object.freeze({name: 'John', age: 30})
 ```
 
-Constants are [referentially transparent](#referential-transparency). That is, they can be replaced with the values that they represent without affecting the result.
+Константы [ссылочно-прозрачны](#referential-transparency). То есть они могут быть заменены на значения, которые они представляют, без изменения результата.
 
-With the above two constants the following expression will always return `true`.
+С двумя вышеуказанными константами следующее выражение всегда будет возвращать `true`.
 
 ```js
 john.age + five === ({name: 'John', age: 30}).age + (5)
 ```
 
-## Functor
+## Функтор
 
-An object that implements a `map` function which, while running over each value in the object to produce a new object, adheres to two rules:
+Объект, реализующий функцию `map`, которая, перебирая каждое значение в объекте для получения нового объекта, придерживается двух правил:
 
-__Preserves identity__
+__Сохраняет индивидуальность__
 ```
 object.map(x => x) ≍ object
 ```
 
-__Composable__
+__Составляемая__
 
 ```
 object.map(compose(f, g)) ≍ object.map(g).map(f)
 ```
 
-(`f`, `g` are arbitrary functions)
+(`f`, `g` являются произвольными функциями)
 
-A common functor in JavaScript is `Array` since it abides to the two functor rules:
+Распространенным функтором в JavaScript является `Array`, так как он подчиняется двум правилам функторов:
 
 ```js
 ;[1, 2, 3].map(x => x) // = [1, 2, 3]
 ```
 
-and
+и
 
 ```js
 const f = x => x + 1
@@ -441,33 +442,33 @@ const g = x => x * 2
 ;[1, 2, 3].map(g).map(f)     // = [3, 5, 7]
 ```
 
-## Pointed Functor
-An object with an `of` function that puts _any_ single value into it.
+## Точечный функтор
+Объект с функцией `of`, которая помещает в него _любое_ единичное значение.
 
-ES2015 adds `Array.of` making arrays a pointed functor.
+ES2015 добавляет `Array.of`, делая массивы указательным функтором.
 
 ```js
 Array.of(1) // [1]
 ```
 
-## Lift
+## Подъём \ Lift
 
-Lifting is when you take a value and put it into an object like a [functor](#pointed-functor). If you lift a function into an [Applicative Functor](#applicative-functor) then you can make it work on values that are also in that functor.
+Подъём - это когда вы берете значение и помещаете его в объект типа [функтор](#pointed-functor). Если поднять функцию в [Аппликативный функтор](#applicative-functor), то можно заставить её работать со значениями, которые также находятся в этом функторе.
 
-Some implementations have a function called `lift`, or `liftA2` to make it easier to run functions on functors.
+В некоторых реализациях есть функция `lift` или `liftA2`, чтобы облегчить выполнение функций на функторах.
 
 ```js
-const liftA2 = (f) => (a, b) => a.map(f).ap(b) // note it's `ap` and not `map`.
+const liftA2 = (f) => (a, b) => a.map(f).ap(b) // обратите внимание, что это `ap`, а не `map`.
 
 const mult = a => b => a * b
 
-const liftedMult = liftA2(mult) // this function now works on functors like array
+const liftedMult = liftA2(mult) // теперь эта функция работает с функторами типа массив
 
 liftedMult([1, 2], [3]) // [3, 6]
 liftA2(a => b => a + b)([1, 2], [3, 4]) // [4, 5, 5, 6]
 ```
 
-Lifting a one-argument function and applying it does the same thing as `map`.
+Поднятие одноаргументной функции и ее применение делает то же самое, что и `map`.
 
 ```js
 const increment = (x) => x + 1
@@ -477,27 +478,27 @@ lift(increment)([2]) // [3]
 ```
 
 
-## Referential Transparency
+## Прозрачность ссылок
 
-An expression that can be replaced with its value without changing the
-behavior of the program is said to be referentially transparent.
+Выражение, которое может быть заменено своим значением без изменения
+поведение программы, считается ссылочно прозрачным.
 
-Say we have function greet:
+Допустим, у нас есть функция greet:
 
 ```js
 const greet = () => 'Hello World!'
 ```
 
-Any invocation of `greet()` can be replaced with `Hello World!` hence greet is
-referentially transparent.
+Любой вызов `greet()` может быть заменен на `Hello World!`, поэтому greet является
+референциально прозрачно.
 
 ##  Equational Reasoning
 
-When an application is composed of expressions and devoid of side effects, truths about the system can be derived from the parts.
+Когда приложение состоит из выражений и лишено побочных эффектов, истины о системе могут быть получены из частей.
 
 ## Lambda
 
-An anonymous function that can be treated like a value.
+Анонимная функция, с которой можно обращаться как со значением.
 
 ```js
 ;(function (a) {
@@ -506,24 +507,24 @@ An anonymous function that can be treated like a value.
 
 ;(a) => a + 1
 ```
-Lambdas are often passed as arguments to Higher-Order functions.
+Лямбды часто передаются в качестве аргументов функциям высшего порядка.
 
 ```js
 ;[1, 2].map((a) => a + 1) // [2, 3]
 ```
 
-You can assign a lambda to a variable.
+Вы можете присвоить лямбду переменной.
 
 ```js
 const add1 = (a) => a + 1
 ```
 
-## Lambda Calculus
-A branch of mathematics that uses functions to create a [universal model of computation](https://en.wikipedia.org/wiki/Lambda_calculus).
+## Лямбда-исчисление
+Ветвь математики, использующая функции для создания [универсальной модели вычислений](https://en.wikipedia.org/wiki/Lambda_calculus).
 
-## Lazy evaluation
+## Ленивая оценка
 
-Lazy evaluation is a call-by-need evaluation mechanism that delays the evaluation of an expression until its value is needed. In functional languages, this allows for structures like infinite lists, which would not normally be available in an imperative language where the sequencing of commands is significant.
+Ленивая оценка - это механизм оценки "вызов по необходимости", который откладывает оценку выражения до тех пор, пока не понадобится его значение. В функциональных языках это позволяет использовать такие структуры, как бесконечные списки, которые обычно недоступны в императивных языках, где последовательность команд имеет большое значение.
 
 ```js
 const rand = function*() {
@@ -538,45 +539,46 @@ const randIter = rand()
 randIter.next() // Each execution gives a random value, expression is evaluated on need.
 ```
 
-## Monoid
+## Моноид
 
-An object with a function that "combines" that object with another of the same type (semigroup) which has an "identity" value.
+Объект с функцией, которая "объединяет" этот объект с другим объектом того же типа (полугруппой), имеющим значение "тождества".
 
-One simple monoid is the addition of numbers:
+Одним из простых моноидов является сложение чисел:
 
 ```js
 1 + 1 // 2
 ```
-In this case number is the object and `+` is the function.
+В этом случае число является объектом, а `+` - функцией.
 
-When any value is combined with the "identity" value the result must be the original value. The identity must also be commutative.
+Когда любое значение объединяется с "тождественным" значением, результатом должно быть исходное значение. Тождество также должно быть коммутативным.
 
-The identity value for addition is `0`.
+Тождественным значением для сложения является `0`.
+
 ```js
 1 + 0 // 1
 0 + 1 // 1
 1 + 0 === 0 + 1
 ```
 
-It's also required that the grouping of operations will not affect the result (associativity):
+Также требуется, чтобы группировка операций не влияла на результат (ассоциативность):
 
 ```js
 1 + (2 + 3) === (1 + 2) + 3 // true
 ```
 
-Array concatenation also forms a monoid:
+Конкатенация массивов также образует моноид:
 
 ```js
 ;[1, 2].concat([3, 4]) // [1, 2, 3, 4]
 ```
 
-The identity value is empty array `[]`
+Значение идентификатора - пустой массив `[]`
 
 ```js
 ;[1, 2].concat([]) // [1, 2]
 ```
 
-As a counterexample, subtraction does not form a monoid because there is no commutative identity value:
+В качестве контрпримера, вычитание не образует моноид, потому что не существует коммутативного тождества:
 
 ```js
 0 - 4 === 4 - 0 // false
