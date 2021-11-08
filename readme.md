@@ -17,66 +17,67 @@ __Translations__
 * [Korean](https://github.com/sphilee/functional-programming-jargon)
 * [Haskell Turkish](https://github.com/mrtkp9993/functional-programming-jargon)
 * [Russian / Русский](https://github.com/thinkjazz/functional-programming-jargon)
-__Table of Contents__
+
+__Оглавление__
 <!-- RM(noparent,notop) -->
 
-* [Arity](#arity)
-* [Higher-Order Functions (HOF)](#higher-order-functions-hof)
-* [Closure](#closure)
-* [Partial Application](#partial-application)
-* [Currying](#currying)
-* [Auto Currying](#auto-currying)
-* [Function Composition](#function-composition)
-* [Continuation](#continuation)
-* [Purity](#purity)
-* [Side effects](#side-effects)
-* [Idempotent](#idempotent)
-* [Point-Free Style](#point-free-style)
-* [Predicate](#predicate)
-* [Contracts](#contracts)
-* [Category](#category)
-* [Value](#value)
-* [Constant](#constant)
-* [Functor](#functor)
-* [Pointed Functor](#pointed-functor)
-* [Lift](#lift)
-* [Referential Transparency](#referential-transparency)
-* [Equational Reasoning](#equational-reasoning)
-* [Lambda](#lambda)
-* [Lambda Calculus](#lambda-calculus)
-* [Lazy evaluation](#lazy-evaluation)
-* [Monoid](#monoid)
-* [Monad](#monad)
-* [Comonad](#comonad)
-* [Applicative Functor](#applicative-functor)
-* [Morphism](#morphism)
-  * [Endomorphism](#endomorphism)
-  * [Isomorphism](#isomorphism)
-  * [Homomorphism](#homomorphism)
-  * [Catamorphism](#catamorphism)
-  * [Anamorphism](#anamorphism)
-  * [Hylomorphism](#hylomorphism)
-  * [Paramorphism](#paramorphism)
-  * [Apomorphism](#apomorphism)
-* [Setoid](#setoid)
-* [Semigroup](#semigroup)
-* [Foldable](#foldable)
-* [Lens](#lens)
-* [Type Signatures](#type-signatures)
-* [Algebraic data type](#algebraic-data-type)
-  * [Sum type](#sum-type)
-  * [Product type](#product-type)
-* [Option](#option)
-* [Function](#function)
-* [Partial function](#partial-function)
-* [Functional Programming Libraries in JavaScript](#functional-programming-libraries-in-javascript)
+* [Арность](#arity)
+* [Функции высшего порядка (ФВП)](#higher-order-functions-hof)
+* [Замыкание](#closure)
+* [Частичное приминение](#partial-application)
+* [Каррирование](#currying)
+* [Автокаррирование](#auto-currying)
+* [Композиция функций](#function-composition)
+* [Продолжение](#continuation)
+* [Чистота](#purity)
+* [Побочные эффекты](#side-effects)
+* [Идемпотент](#idempotent)
+* [Стиль без точек](#point-free-style)
+* [Предикат](#predicate)
+* [Контракты](#contracts)
+* [Категория](#category)
+* [Значение](#value)
+* [Постоянная](#constant)
+* [Функтор](#functor)
+* [Точечный функтор](#pointed-functor)
+* [Лифт](#lift)
+* [Референциальная прозрачность](#referential-transparency)
+* [Уравнительные рассуждения](#equational-reasoning)
+* [Лямбда](#lambda)
+* [Лямбда-исчисление](#lambda-calculus)
+* [Ленивая оценка](#lazy-evaluation)
+* [Моноид](#monoid)
+* [Монад](#monad)
+* [Комонад](#comonad)
+* [Аппликативный функтор](#applicative-functor)
+* [Морфизм](#morphism)
+  * [Эндоморфизм](#endomorphism)
+  * [Изоморфизм](#isomorphism)
+  * [Гомоморфизм](#homomorphism)
+  * [Катаморфизм](#catamorphism)
+  * [Анаморфизм](#anamorphism)
+  * [Гиломорфизм](#hylomorphism)
+  * [Параморфизм](#paramorphism)
+  * [Апоморфизм](#apomorphism)
+* [Сетоид](#setoid)
+* [Полугруппа](#semigroup)
+* [Складной](#foldable)
+* [Линза](#lens)
+* [Типы сигнатур](#type-signatures)
+* [Алгебраический тип данных](#algebraic-data-type)
+  * [Тип суммы](#sum-type)
+  * [Тип продукта](#product-type)
+* [Параметр](#option)
+* [Функция](#function)
+* [Частичная функция](#partial-function)
+* [Библиотеки функционального программирования на JavaScript](#functional-programming-libraries-in-javascript)
 
 
 <!-- /RM -->
 
-## Arity
+## Арность 
 
-The number of arguments a function takes. From words like unary, binary, ternary, etc. This word has the distinction of being composed of two suffixes, "-ary" and "-ity." Addition, for example, takes two arguments, and so it is defined as a binary function or a function with an arity of two. Such a function may sometimes be called "dyadic" by people who prefer Greek roots to Latin. Likewise, a function that takes a variable number of arguments is called "variadic," whereas a binary function must be given two and only two arguments, currying and partial application notwithstanding (see below).
+Количество аргументов, которые принимает функция. От таких слов, как унарный, бинарный, тернарный и т.д. Это слово отличается тем, что состоит из двух суффиксов, "-ary" и "-ity". Сложение, например, принимает два аргумента, поэтому оно определяется как бинарная функция или функция с показателем числа два. Такую функцию иногда называют "диадической" те, кто предпочитает греческие корни латинским. Аналогично, функция, принимающая переменное число аргументов, называется "вариативной", тогда как бинарная функция должна иметь два и только два аргумента, несмотря на керринг и частичное применение (см. ниже).
 
 ```js
 const sum = (a, b) => a + b
@@ -87,9 +88,8 @@ console.log(arity) // 2
 // The arity of sum is 2
 ```
 
-## Higher-Order Functions (HOF)
-
-A function which takes a function as an argument and/or returns a function.
+## Функция высшего порядка (ФВП) / higher order functions (hof)
+Функция высшего порядка (ФВП) это функция, которая принимает функцию в качестве аргумента и/или возвращает другую функцию.
 
 ```js
 const filter = (predicate, xs) => xs.filter(predicate)
@@ -103,13 +103,13 @@ const is = (type) => (x) => Object(x) instanceof type
 filter(is(Number), [0, '1', 2, null]) // [0, 2]
 ```
 
-## Closure
+## Замыкание
 
-A closure is a way of accessing a variable outside its scope.
-Formally, a closure is a technique for implementing lexically scoped named binding. It is a way of storing a function with an environment.
+Замыкание - это способ доступа к переменной за пределами её области видимости.
+Формально, замыкание - это техника реализации лексического области именованного связывания. Это способ хранения функции с окружением.
 
-A closure is a scope which captures local variables of a function for access even after the execution has moved out of the block in which it is defined.
-ie. they allow referencing a scope after the block in which the variables were declared has finished executing.
+Замыкание - это область видимости, которая захватывает локальные переменные функции для доступа к ним даже после того, как выполнение вышло за пределы блока, в котором они определены.
+Т.е. они позволяют ссылаться на область видимости после завершения выполнения блока, в котором были объявлены переменные.
 
 
 ```js
@@ -117,25 +117,27 @@ const addTo = x => y => x + y;
 var addToFive = addTo(5);
 addToFive(3); //returns 8
 ```
-The function ```addTo()``` returns a function(internally called ```add()```), lets store it in a variable called ```addToFive``` with a curried call having parameter 5.
+Функция ```addTo()``` возвращает функцию (внутренне называемую ```add()```), давайте сохраним ее в переменной ```addToFive``` с помощью каррированого вызова с параметром 5.
 
-Ideally, when the function ```addTo``` finishes execution, its scope, with local variables add, x, y should not be accessible. But, it returns 8 on calling ```addToFive()```. This means that the state of the function ```addTo``` is saved even after the block of code has finished executing, otherwise there is no way of knowing that ```addTo``` was called as ```addTo(5)``` and the value of x was set to 5.
 
-Lexical scoping is the reason why it is able to find the values of x and add - the private variables of the parent which has finished executing. This value is called a Closure.
+В идеале, когда функция ```addTo``` завершает выполнение, ее область видимости с локальными переменными add, x, y не должна быть доступна. Но при вызове функции ```addToFive()``` она возвращает 8. Это означает, что состояние функции ```addTo``` сохраняется даже после завершения выполнения блока кода, иначе невозможно узнать, что ```addTo``` была вызвана как ```addTo(5)``` и значение x было установлено в 5.
 
-The stack along with the lexical scope of the function is stored in form of reference to the parent. This prevents the closure and the underlying variables from being garbage collected(since there is at least one live reference to it).
+Лексическая область видимости - это причина, по которой можно найти значения x и add - частных переменных родителя, который закончил выполнение. Это значение называется замыканием (Closure).
 
-Lambda Vs Closure: A lambda is essentially a function that is defined inline rather than the standard method of declaring functions. Lambdas can frequently be passed around as objects.
+Стек вместе с лексической областью видимости функции хранится в виде ссылки на её родителя. Это предотвращает сборку мусора для закрытия и базовых переменных (поскольку существует по крайней мере одна живая ссылка на него).
 
-A closure is a function that encloses its surrounding state by referencing fields external to its body. The enclosed state remains across invocations of the closure.
+Лямбда и замыкание: Лямбда - это, по сути, функция, которая определяется inline, а не стандартным методом объявления функций. Лямбды часто могут передаваться как объекты.
+
+Замыкание - это функция, которая окружает свое состояние ссылками на поля, внешние по отношению к её телу. Замкнутое состояние сохраняется при всех вызовах замыкания.
+
 
 __Further reading/Sources__
 * [Lambda Vs Closure](http://stackoverflow.com/questions/220658/what-is-the-difference-between-a-closure-and-a-lambda)
 * [JavaScript Closures highly voted discussion](http://stackoverflow.com/questions/111102/how-do-javascript-closures-work)
 
-## Partial Application
+## Partial Application \ Частичное применение
 
-Partially applying a function means creating a new function by pre-filling some of the arguments to the original function.
+Частичное применение функции означает создание новой функции путем предварительного заполнения некоторых аргументов исходной функции.
 
 
 ```js
