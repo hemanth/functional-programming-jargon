@@ -169,9 +169,9 @@ const add1More = add3.bind(null, 2, 3) // (c) => 2 + 3 + c
 
 ## Каррирование
 
-The process of converting a function that takes multiple arguments into a function that takes them one at a time.
+Каррирование — процесс преобразования функции, принимающей несколько аргументов, в функцию, принимающую их по одному.
 
-Each time the function is called it only accepts one argument and returns a function that takes one argument until all arguments are passed.
+При каждом вызове функции она принимает только один аргумент и возвращает функцию, принимающую один аргумент, пока все аргументы не будут переданы.
 
 ```js
 const sum = (a, b) => a + b
@@ -186,10 +186,10 @@ add2(10) // 12
 
 ```
 
-## Auto Currying
-Transforming a function that takes multiple arguments into one that if given less than its correct number of arguments returns a function that takes the rest. When the function gets the correct number of arguments it is then evaluated.
+## Автокаррирование 
+Автокаррирование — преобразование функции, принимающей несколько аргументов, в функцию, которая, получив меньше нужного количества аргументов, возвращает функцию, принимающую остальные. Когда функция получает нужное количество аргументов, она оценивается.
 
-lodash & Ramda have a `curry` function that works this way.
+У lodash & Ramda есть функция `curry`, которая работает таким образом.
 
 ```js
 const add = (x, y) => x + y
@@ -200,13 +200,13 @@ curriedAdd(1) // (y) => 1 + y
 curriedAdd(1)(2) // 3
 ```
 
-__Further reading__
+__Дальнейшее чтение__
 * [Favoring Curry](http://fr.umio.us/favoring-curry/)
 * [Hey Underscore, You're Doing It Wrong!](https://www.youtube.com/watch?v=m3svKOdZijA)
 
-## Function Composition
+## Композиция функций
 
-The act of putting two functions together to form a third function where the output of one function is the input of the other.
+Композиция функций действие по объединению двух функций для формирования третьей функции, когда выход одной функции является входом другой.
 
 ```js
 const compose = (f, g) => (a) => f(g(a)) // Definition
@@ -214,9 +214,9 @@ const floorAndToString = compose((val) => val.toString(), Math.floor) // Usage
 floorAndToString(121.212121) // '121'
 ```
 
-## Continuation
+## Продолжение
 
-At any given point in a program, the part of the code that's yet to be executed is known as a continuation.
+В любой момент времени в программе часть кода, которая еще не выполнена, называется продолжением.
 
 ```js
 const printAsString = (num) => console.log(`Given ${num}`)
@@ -229,7 +229,7 @@ const addOneAndContinue = (num, cc) => {
 addOneAndContinue(2, printAsString) // 'Given 3'
 ```
 
-Continuations are often seen in asynchronous programming when the program needs to wait to receive data before it can continue. The response is often passed off to the rest of the program, which is the continuation, once it's been received.
+Продолжения часто встречаются в асинхронном программировании, когда программе необходимо дождаться получения данных, прежде чем она сможет продолжить работу. Ответ часто передается остальной части программы, которая является продолжением, после его получения.
 
 ```js
 const continueProgramWith = (data) => {
@@ -245,10 +245,9 @@ readFileAsync('path/to/file', (err, response) => {
 })
 ```
 
-## Purity
+## Чистота
 
-A function is pure if the return value is only determined by its
-input values, and does not produce side effects.
+Функция является чистой, если возвращаемое значение определяется только её входными значениями и не производит побочных эффектов.
 
 ```js
 const greet = (name) => `Hi, ${name}`
@@ -256,7 +255,7 @@ const greet = (name) => `Hi, ${name}`
 greet('Brianne') // 'Hi, Brianne'
 ```
 
-As opposed to each of the following:
+В отличие от каждого из перечисленных ниже:
 
 ```js
 window.name = 'Brianne'
@@ -266,7 +265,7 @@ const greet = () => `Hi, ${window.name}`
 greet() // "Hi, Brianne"
 ```
 
-The above example's output is based on data stored outside of the function...
+Вывод приведенного выше примера основан на данных, хранящихся вне функции...
 
 ```js
 let greeting
@@ -279,11 +278,11 @@ greet('Brianne')
 greeting // "Hi, Brianne"
 ```
 
-... and this one modifies state outside of the function.
+... а этот изменяет состояние вне функции.
 
-## Side effects
+##  Побочные эффекты / Side effects
 
-A function or expression is said to have a side effect if apart from returning a value, it interacts with (reads from or writes to) external mutable state.
+Считается, что функция или выражение имеет побочный эффект, если помимо возврата значения она работает с внешним изменяемым состоянием (читает из него или записывает в него).
 
 ```js
 const differentEveryTime = new Date()
@@ -293,9 +292,9 @@ const differentEveryTime = new Date()
 console.log('IO is a side effect!')
 ```
 
-## Idempotent
+## Идемпотент / Idempotent 
 
-A function is idempotent if reapplying it to its result does not produce a different result.
+Функция является идемпотентной, если ее повторное применение к результату не приводит к другому результату.
 
 ```
 f(f(x)) ≍ f(x)
@@ -309,27 +308,27 @@ Math.abs(Math.abs(10))
 sort(sort(sort([2, 1])))
 ```
 
-## Point-Free Style
+## Стиль без точек
 
-Writing functions where the definition does not explicitly identify the arguments used. This style usually requires [currying](#currying) or other [Higher-Order functions](#higher-order-functions-hof). A.K.A Tacit programming.
+Написание функций, в определении которых нет явного указания на используемые аргументы. Этот стиль обычно требует [каррирование](#currying) или других [Функций высшего порядка](#higher-order-functions-hof). Также известен как негласное программирование (Tacit programming).
 
 ```js
-// Given
+// Дано
 const map = (fn) => (list) => list.map(fn)
 const add = (a) => (b) => a + b
 
-// Then
+// Потом
 
-// Not points-free - `numbers` is an explicit argument
+// Не свободен от точек - `numbers` является явным аргументом
 const incrementAll = (numbers) => map(add(1))(numbers)
 
-// Points-free - The list is an implicit argument
+// Без точек - Список является неявным аргументом
 const incrementAll2 = map(add(1))
 ```
 
-`incrementAll` identifies and uses the parameter `numbers`, so it is not points-free.  `incrementAll2` is written just by combining functions and values, making no mention of its arguments.  It __is__ points-free.
+`incrementAll` определяет и использует параметр `numbers`, поэтому он не свободен от точек.  `incrementAll2` написан просто путем объединения функций и значений, без упоминания аргументов.  Оно __является_ свободным от точек.
 
-Points-free function definitions look just like normal assignments without `function` or `=>`.
+Определения функций без точек выглядят как обычные присваивания без `function` или `=>`.
 
 ## Predicate
 A predicate is a function that returns true or false for a given value. A common use of a predicate is as the callback for array filter.
