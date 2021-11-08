@@ -141,33 +141,33 @@ __Further reading/Sources__
 
 
 ```js
-// Helper to create partially applied functions
-// Takes a function and some arguments
+// Помощник для создания частично применяемых функций
+// Принимает функцию и некоторые аргументы
 const partial = (f, ...args) =>
-  // returns a function that takes the rest of the arguments
+  // возвращает функцию, которая принимает остальные аргументы
   (...moreArgs) =>
-    // and calls the original function with all of them
+    // и вызывает исходную функцию со всеми из них
     f(...args, ...moreArgs)
 
-// Something to apply
+// Что-то, что можно применить
 const add3 = (a, b, c) => a + b + c
 
-// Partially applying `2` and `3` to `add3` gives you a one-argument function
+// Частичное применение `2` и `3` к `add3` дает вам одноаргументную функцию
 const fivePlus = partial(add3, 2, 3) // (c) => 2 + 3 + c
 
 fivePlus(4) // 9
 ```
 
-You can also use `Function.prototype.bind` to partially apply a function in JS:
+Вы также можете использовать `Function.prototype.bind` для частичного применения функции в JS:
 
 ```js
 const add1More = add3.bind(null, 2, 3) // (c) => 2 + 3 + c
 ```
 
-Partial application helps create simpler functions from more complex ones by baking in data when you have it. [Curried](#currying) functions are automatically partially applied.
+Частичное применение помогает создавать более простые функции из более сложных, запекая данные, когда они у вас есть. Функции [Каррирование](#каррирование) автоматически частично применяются.
 
 
-## Currying
+## Каррирование
 
 The process of converting a function that takes multiple arguments into a function that takes them one at a time.
 
