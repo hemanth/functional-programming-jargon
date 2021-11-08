@@ -1,10 +1,10 @@
-# Functional Programming Jargon
+# Жаргон функционального программирования(ФП)
 
-Functional programming (FP) provides many advantages, and its popularity has been increasing as a result. However, each programming paradigm comes with its own unique jargon and FP is no exception. By providing a glossary, we hope to make learning FP easier.
+Функциональное программирование (ФП) дает множество преимуществ, и в результате его популярность постоянно растет. Однако каждая парадигма программирования имеет свой собственный уникальный жаргон, и ФП не является исключением. Приводя глоссарий, мы надеемся облегчить изучение FP.
 
-Examples are presented in JavaScript (ES2015). [Why JavaScript?](https://github.com/hemanth/functional-programming-jargon/wiki/Why-JavaScript%3F)
+Примеры представлены на языке JavaScript (ES2015). [Почему JavaScript?](https://github.com/hemanth/functional-programming-jargon/wiki/Why-JavaScript%3F)
 
-Where applicable, this document uses terms defined in the [Fantasy Land spec](https://github.com/fantasyland/fantasy-land)
+Там, где это применимо, в данном документе используются термины, определенные в [Fantasy Land spec](https://github.com/fantasyland/fantasy-land).
 
 __Translations__
 * [Portuguese](https://github.com/alexmoreno/jargoes-programacao-funcional)
@@ -16,7 +16,7 @@ __Translations__
 * [Rust World](https://github.com/JasonShin/functional-programming-jargon.rs)
 * [Korean](https://github.com/sphilee/functional-programming-jargon)
 * [Haskell Turkish](https://github.com/mrtkp9993/functional-programming-jargon)
-
+* [Russian / Русский](https://github.com/thinkjazz/functional-programming-jargon)
 __Table of Contents__
 <!-- RM(noparent,notop) -->
 
