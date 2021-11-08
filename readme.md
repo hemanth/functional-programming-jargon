@@ -492,7 +492,7 @@ const greet = () => 'Hello World!'
 Любой вызов `greet()` может быть заменен на `Hello World!`, поэтому greet является
 референциально прозрачно.
 
-##  Equational Reasoning
+##  Уравнительные рассуждения
 
 Когда приложение состоит из выражений и лишено побочных эффектов, истины о системе могут быть получены из частей.
 
@@ -584,9 +584,9 @@ randIter.next() // Each execution gives a random value, expression is evaluated 
 0 - 4 === 4 - 0 // false
 ```
 
-## Monad
+## Монада
 
-A monad is an object with [`of`](#pointed-functor) and `chain` functions. `chain` is like [`map`](#functor) except it un-nests the resulting nested object.
+Монада - это объект с функциями [`of`](#pointed-functor) и `chain`. `chain` подобна [`map`](#functor), за исключением того, что она разворачивает результирующий вложенный объект.
 
 ```js
 // Implementation
@@ -601,12 +601,12 @@ Array.of('cat,dog', 'fish,bird').chain((a) => a.split(',')) // ['cat', 'dog', 'f
 Array.of('cat,dog', 'fish,bird').map((a) => a.split(',')) // [['cat', 'dog'], ['fish', 'bird']]
 ```
 
-`of` is also known as `return` in other functional languages.
-`chain` is also known as `flatmap` and `bind` in other languages.
+`of` также известно как `return` в других функциональных языках.
+`chain` также известен как `flatmap` и `bind` в других языках.
 
-## Comonad
+## Комонада
 
-An object that has `extract` and `extend` functions.
+Объект, имеющий функции `extract` и `extend`.
 
 ```js
 const CoIdentity = (v) => ({
@@ -620,21 +620,21 @@ const CoIdentity = (v) => ({
 })
 ```
 
-Extract takes a value out of a functor.
+Extract извлекает значение из функтора.
 
 ```js
 CoIdentity(1).extract() // 1
 ```
 
-Extend runs a function on the comonad. The function should return the same type as the comonad.
+Extend запускает функцию на комонаде. Функция должна возвращать тот же тип, что и комонада.
 
 ```js
 CoIdentity(1).extend((co) => co.extract() + 1) // CoIdentity(2)
 ```
 
-## Applicative Functor
+## Аппликативный функтор
 
-An applicative functor is an object with an `ap` function. `ap` applies a function in the object to a value in another object of the same type.
+Аппликативный вектор - это объект с функцией `ap`. Функция `ap` применяет функцию в объекте к значению в другом объекте того же типа.
 
 ```js
 // Implementation
@@ -646,32 +646,32 @@ Array.prototype.ap = function (xs) {
 ;[(a) => a + 1].ap([1]) // [2]
 ```
 
-This is useful if you have two objects and you want to apply a binary function to their contents.
+Это полезно, если у вас есть два объекта и вы хотите применить бинарную функцию к их содержимому.
 
 ```js
-// Arrays that you want to combine
+// Массивы, которые вы хотите объединить
 const arg1 = [1, 3]
 const arg2 = [4, 5]
 
-// combining function - must be curried for this to work
+// объединяющая функция - для ее работы необходимо, чтобы был curried
 const add = (x) => (y) => x + y
 
 const partiallyAppliedAdds = [add].ap(arg1) // [(y) => 1 + y, (y) => 3 + y]
 ```
 
-This gives you an array of functions that you can call `ap` on to get the result:
+Это дает вам массив функций, которые вы можете вызвать `ap` для получения результата:
 
 ```js
 partiallyAppliedAdds.ap(arg2) // [5, 6, 7, 8]
 ```
 
-## Morphism
+## Морфизм
 
-A transformation function.
+Функция преобразования.
 
-### Endomorphism
+### Эндоморфизм
 
-A function where the input type is the same as the output.
+Функция, в которой тип входа совпадает с типом выхода.
 
 ```js
 // uppercase :: String -> String
@@ -681,14 +681,15 @@ const uppercase = (str) => str.toUpperCase()
 const decrement = (x) => x - 1
 ```
 
-### Isomorphism
+### Изоморфизм
 
-A pair of transformations between 2 types of objects that is structural in nature and no data is lost.
+Пара преобразований между двумя типами объектов, которые носят структурный характер и при этом данные не теряются.
 
-For example, 2D coordinates could be stored as an array `[2,3]` or object `{x: 2, y: 3}`.
+Например, двумерные координаты можно хранить как массив `[2,3]` или объект `{x: 2, y: 3}`.
 
 ```js
-// Providing functions to convert in both directions makes them isomorphic.
+// Предоставление функций для преобразования в обоих направлениях делает их изоморфными.
+
 const pairToCoords = (pair) => ({x: pair[0], y: pair[1]})
 
 const coordsToPair = (coords) => [coords.x, coords.y]
@@ -698,9 +699,9 @@ coordsToPair(pairToCoords([1, 2])) // [1, 2]
 pairToCoords(coordsToPair({x: 1, y: 2})) // {x: 1, y: 2}
 ```
 
-### Homomorphism
+### Гомоморфизм
 
-A homomorphism is just a structure preserving map. In fact, a functor is just a homomorphism between categories as it preserves the original category's structure under the mapping.
+Гомоморфизм - это просто карта, сохраняющая структуру. На самом деле функтор - это просто гомоморфизм между категориями, поскольку он сохраняет структуру исходной категории при отображении.
 
 ```js
 A.of(f).ap(A.of(x)) == A.of(f(x))
@@ -708,9 +709,9 @@ A.of(f).ap(A.of(x)) == A.of(f(x))
 Either.of(_.toUpper).ap(Either.of("oreos")) == Either.of(_.toUpper("oreos"))
 ```
 
-### Catamorphism
+### Катаморфизм
 
-A `reduceRight` function that applies a function against an accumulator and each value of the array (from right-to-left) to reduce it to a single value.
+Функция `reduceRight`, которая применяет функцию к аккумулятору и каждому значению массива (справа налево), чтобы уменьшить его до одного значения.
 
 ```js
 const sum = xs => xs.reduceRight((acc, x) => acc + x, 0)
@@ -718,9 +719,9 @@ const sum = xs => xs.reduceRight((acc, x) => acc + x, 0)
 sum([1, 2, 3, 4, 5]) // 15
 ```
 
-### Anamorphism
+### Анаморфизм
 
-An `unfold` function. An `unfold` is the opposite of `fold` (`reduce`). It generates a list from a single value.
+Функция `unfold`. Функция `unfold` является противоположностью `fold` (`reduce`). Она формирует список из одного значения.
 
 ```js
 const unfold = (f, seed) => {
@@ -740,15 +741,15 @@ const countDown = n => unfold((n) => {
 countDown(5) // [5, 4, 3, 2, 1]
 ```
 
-### Hylomorphism
+### Гиломорфизм
 
-The combination of anamorphism and catamorphism.
+Сочетание анаморфизма и катаморфизма.
 
-### Paramorphism
+### Параморфизм
 
-A function just like `reduceRight`. However, there's a difference:
+Функция, подобная `reduceRight`. Однако есть разница:
 
-In paramorphism, your reducer's arguments are the current value, the reduction of all previous values, and the list of values that formed that reduction.
+При параморфизме аргументами вашего reducer'а являются текущее значение, сокращение всех предыдущих значений и список значений, которые образовали это сокращение.
 
 ```js
 // Obviously not safe for lists containing `undefined`,
@@ -772,17 +773,17 @@ const suffixes = list => para(
 suffixes([1, 2, 3, 4, 5]) // [[2, 3, 4, 5], [3, 4, 5], [4, 5], [5], []]
 ```
 
-The third parameter in the reducer (in the above example, `[x, ... xs]`) is kind of like having a history of what got you to your current acc value.
+Третий параметр в редукторе (в примере выше `[x, ... xs]`) - это своего рода история того, что привело вас к текущему значению acc.
 
-### Apomorphism
+### Апоморфизм
 
-it's the opposite of paramorphism, just as anamorphism is the opposite of catamorphism. Whereas with paramorphism, you combine with access to the accumulator and what has been accumulated, apomorphism lets you `unfold` with the potential to return early.
+это противоположность параморфизму, так же как анаморфизм противоположен катаморфизму. В то время как при параморфизме вы комбинируете с доступом к аккумулятору и тому, что было накоплено, апоморфизм позволяет вам `unfold` с потенциальным возвратом раньше времени.
 
-## Setoid
+## Сетоид \ Setoid 
 
-An object that has an `equals` function which can be used to compare other objects of the same type.
+Объект, имеющий функцию `equals`, которая может быть использована для сравнения других объектов одного типа.
 
-Make array a setoid:
+Сделайте массив сетоидом:
 
 ```js
 Array.prototype.equals = function (arr) {
@@ -802,26 +803,26 @@ Array.prototype.equals = function (arr) {
 ;[1, 2].equals([0]) // false
 ```
 
-## Semigroup
+## Полугруппа
 
-An object that has a `concat` function that combines it with another object of the same type.
+Объект, имеющий функцию `concat`, которая объединяет его с другим объектом того же типа.
 
 ```js
 ;[1].concat([2]) // [1, 2]
 ```
 
-## Foldable
+## Складываемый
 
-An object that has a `reduce` function that applies a function against an accumulator and each element in the array (from left to right) to reduce it to a single value.
+Объект, имеющий функцию `reduce`, которая применяет функцию к аккумулятору и каждому элементу массива (слева направо), чтобы уменьшить их до одного значения.
 
 ```js
 const sum = (list) => list.reduce((acc, val) => acc + val, 0)
 sum([1, 2, 3]) // 6
 ```
 
-## Lens ##
-A lens is a structure (often an object or function) that pairs a getter and a non-mutating setter for some other data
-structure.
+## Линза ##
+Линза - это структура (часто объект или функция), которая сопрягает геттер и не изменяющийся сеттер для некоторой другой структуры данных.
+структура.
 
 ```js
 // Using [Ramda's lens](http://ramdajs.com/docs/#lens)
@@ -833,29 +834,29 @@ const nameLens = R.lens(
 )
 ```
 
-Having the pair of get and set for a given data structure enables a few key features.
+Наличие пары get и set для данной структуры данных позволяет реализовать несколько ключевых возможностей.
 
 ```js
 const person = {name: 'Gertrude Blanch'}
 
-// invoke the getter
+// вызываем геттер
 R.view(nameLens, person) // 'Gertrude Blanch'
 
-// invoke the setter
+// вызываем сеттер
 R.set(nameLens, 'Shafi Goldwasser', person) // {name: 'Shafi Goldwasser'}
 
-// run a function on the value in the structure
+// запустить функцию на значении в структуре
 R.over(nameLens, uppercase, person) // {name: 'GERTRUDE BLANCH'}
 ```
 
-Lenses are also composable. This allows easy immutable updates to deeply nested data.
+Линзы также являются составными. Это позволяет легко выполнять неизменяемые обновления глубоко вложенных данных.
 
 ```js
-// This lens focuses on the first item in a non-empty array
+// Эта линза фокусируется на первом элементе в непустом массиве
 const firstLens = R.lens(
   // get first item in array
   xs => xs[0],
-  // non-mutating setter for first item in array
+  // не мутирующий сеттер для первого элемента в массиве
   (val, [__, ...xs]) => [val, ...xs]
 )
 
@@ -865,15 +866,15 @@ const people = [{name: 'Gertrude Blanch'}, {name: 'Shafi Goldwasser'}]
 R.over(compose(firstLens, nameLens), uppercase, people) // [{'name': 'GERTRUDE BLANCH'}, {'name': 'Shafi Goldwasser'}]
 ```
 
-Other implementations:
+Другие реализации:
 * [partial.lenses](https://github.com/calmm-js/partial.lenses) - Tasty syntax sugar and a lot of powerful features
 * [nanoscope](http://www.kovach.me/nanoscope/) - Fluent-interface
 
-## Type Signatures
+## Подписи типов
 
-Often functions in JavaScript will include comments that indicate the types of their arguments and return values.
+Часто функции в JavaScript содержат комментарии, указывающие на типы их аргументов и возвращаемых значений.
 
-There's quite a bit of variance across the community but they often follow the following patterns:
+В сообществе существует довольно много различий, но часто они следуют следующим шаблонам:
 
 ```js
 // functionName :: firstArgType -> secondArgType -> returnType
@@ -885,32 +886,33 @@ const add = (x) => (y) => x + y
 const increment = (x) => x + 1
 ```
 
-If a function accepts another function as an argument it is wrapped in parentheses.
+Если функция принимает в качестве аргумента другую функцию, она заключается в круглые скобки.
 
 ```js
 // call :: (a -> b) -> a -> b
 const call = (f) => (x) => f(x)
 ```
 
-The letters `a`, `b`, `c`, `d` are used to signify that the argument can be of any type. The following version of `map` takes a function that transforms a value of some type `a` into another type `b`, an array of values of type `a`, and returns an array of values of type `b`.
+Буквы `a`, `b`, `c`, `d` используются для обозначения того, что аргумент может быть любого типа. Следующая версия `map` принимает функцию, которая преобразует значение некоторого типа `a` в другой тип `b`, массив значений типа `a` и возвращает массив значений типа `b`.
 
 ```js
 // map :: (a -> b) -> [a] -> [b]
 const map = (f) => (list) => list.map(f)
 ```
 
-__Further reading__
+__Дополнительные материалы__
 * [Ramda's type signatures](https://github.com/ramda/ramda/wiki/Type-Signatures)
 * [Mostly Adequate Guide](https://drboolean.gitbooks.io/mostly-adequate-guide/content/ch7.html#whats-your-type)
 * [What is Hindley-Milner?](http://stackoverflow.com/a/399392/22425) on Stack Overflow
 
-## Algebraic data type
-A composite type made from putting other types together. Two common classes of algebraic types are [sum](#sum-type) and [product](#product-type).
+## Алгебраический тип данных
+Составной тип, полученный в результате объединения других типов. Двумя распространенными классами алгебраических типов являются [sum](#sum-type) и [product](#product-type).
 
-### Sum type
-A Sum type is the combination of two types together into another one. It is called sum because the number of possible values in the result type is the sum of the input types.
+### Суммарный тип
+Тип Sum - это объединение двух типов в один. Он называется sum, потому что количество возможных значений в типе результата равно сумме входных типов.
 
-JavaScript doesn't have types like this but we can use `Set`s to pretend:
+В JavaScript нет подобных типов, но мы можем использовать `Set`, чтобы сделать вид:
+
 ```js
 // imagine that rather than sets here we have types that can only have these values
 const bools = new Set([true, false])
@@ -920,28 +922,28 @@ const halfTrue = new Set(['half-true'])
 const weakLogicValues = new Set([...bools, ...halfTrue])
 ```
 
-Sum types are sometimes called union types, discriminated unions, or tagged unions.
+Суммовые типы иногда называют союзными типами, дискриминированными союзами или тегированными союзами.
 
-There's a [couple](https://github.com/paldepind/union-type) [libraries](https://github.com/puffnfresh/daggy) in JS which help with defining and using union types.
+В JS есть [пара](https://github.com/paldepind/union-type) [библиотек](https://github.com/puffnfresh/daggy), которые помогают в определении и использовании типов объединений.
 
-Flow includes [union types](https://flow.org/en/docs/types/unions/) and TypeScript has [Enums](https://www.typescriptlang.org/docs/handbook/enums.html) to serve the same role.
+Flow включает [union types](https://flow.org/en/docs/types/unions/), а TypeScript имеет [Enums](https://www.typescriptlang.org/docs/handbook/enums.html) для выполнения той же роли.
 
-### Product type
+### Продукционный тип
 
-A **product** type combines types together in a way you're probably more familiar with:
+Тип **продукт** объединяет типы в единое целое способом, с которым вы, вероятно, более знакомы:
 
 ```js
 // point :: (Number, Number) -> {x: Number, y: Number}
 const point = (x, y) => ({ x, y })
 ```
-It's called a product because the total possible values of the data structure is the product of the different values. Many languages have a tuple type which is the simplest formulation of a product type.
+Он называется продукционным, потому что общее количество возможных значений структуры данных является произведением различных значений. Многие языки имеют тип кортеж, который является простейшей формулировкой продукционного типа.
 
-See also [Set theory](https://en.wikipedia.org/wiki/Set_theory).
+См. также [Теория множеств](https://en.wikipedia.org/wiki/Set_theory).
 
-## Option
-Option is a [sum type](#sum-type) with two cases often called `Some` and `None`.
+## Опция
+Option - это [sum type](#sum-type) с двумя случаями, часто называемыми `Some` и `None`.
 
-Option is useful for composing functions that might not return a value.
+Опция полезна для составления функций, которые могут не возвращать значение.
 
 ```js
 // Naive definition
@@ -968,7 +970,7 @@ const None = () => ({
 // maybeProp :: (String, {a}) -> Option a
 const maybeProp = (key, obj) => typeof obj[key] === 'undefined' ? None() : Some(obj[key])
 ```
-Use `chain` to sequence functions that return `Option`s
+Используйте `chain` для последовательности функций, которые возвращают `Option`s.
 ```js
 
 // getItem :: Cart -> Option CartItem
@@ -985,10 +987,10 @@ getNestedPrice({item: {foo: 1}}) // None()
 getNestedPrice({item: {price: 9.99}}) // Some(9.99)
 ```
 
-`Option` is also known as `Maybe`. `Some` is sometimes called `Just`. `None` is sometimes called `Nothing`.
+Вариант `Option` также известен как `Maybe`. `Some` иногда называют `Just`. `None` иногда называют `Nothing`.
 
-## Function
-A **function** `f :: A => B` is an expression - often called arrow or lambda expression - with **exactly one (immutable)** parameter of type `A` and **exactly one** return value of type `B`. That value depends entirely on the argument, making functions context-independant, or [referentially transparent](#referential-transparency). What is implied here is that a function must not produce any hidden [side effects](#side-effects) - a function is always [pure](#purity), by definition. These properties make functions pleasant to work with: they are entirely deterministic and therefore predictable. Functions enable working with code as data, abstracting over behaviour:
+## Функция
+A **function** `f :: A => B` это выражение - часто называемое стрелкой или лямбда-выражением - с **точно одним (неизменяемым)** параметром типа `A` и **точно одним** возвращаемым значением типа `B`. Это значение полностью зависит от аргумента, что делает функции контекстно-независимыми, или [ссылочно-прозрачными] (#referential-transparency). Здесь подразумевается, что функция не должна производить никаких скрытых [побочных эффектов](#side-effects) - функция всегда [чиста](#purity), по определению. Эти свойства делают функции приятными для работы: они полностью детерминированы и поэтому предсказуемы. Функции позволяют работать с кодом как с данными, абстрагируясь от поведения:
 
 ```js
 // times2 :: Number -> Number
@@ -997,8 +999,8 @@ const times2 = n => n * 2
 [1, 2, 3].map(times2) // [2, 4, 6]
 ```
 
-## Partial function
-A partial function is a [function](#function) which is not defined for all arguments - it might return an unexpected result or may never terminate. Partial functions add cognitive overhead, they are harder to reason about and can lead to runtime errors. Some examples:
+## Частичная функция
+Частичная функция - это [функция](#function), которая определена не для всех аргументов - она может вернуть неожиданный результат или никогда не завершиться. Частичные функции увеличивают когнитивную нагрузку, о них сложнее рассуждать и они могут привести к ошибкам во время выполнения. Некоторые примеры:
 ```js
 // example 1: sum of the list
 // sum :: [Number] -> Number
@@ -1026,32 +1028,33 @@ times(-1)(console.log)
 // RangeError: Maximum call stack size exceeded
 ```
 
-### Dealing with partial functions
-Partial functions are dangerous as they need to be treated with great caution. You might get an unexpected (wrong) result or run into runtime errors. Sometimes a partial function might not return at all. Being aware of and treating all these edge cases accordingly can become very tedious.
-Fortunately a partial function can be converted to a regular (or total) one. We can provide default values or use guards to deal with inputs for which the (previously) partial function is undefined. Utilizing the [`Option`](#Option) type, we can yield either `Some(value)` or `None` where we would otherwise have behaved unexpectedly:
+### Работа с частичными функциями
+Частичные функции опасны, поскольку к ним нужно относиться с большой осторожностью. Вы можете получить неожиданный (неправильный) результат или столкнуться с ошибками во время выполнения. Иногда частичная функция может вообще не вернуться. Знание и соответствующая обработка всех этих крайних случаев может стать очень утомительным занятием.
+К счастью, частичная функция может быть преобразована в обычную (или полную). Мы можем предоставить значения по умолчанию или использовать защитные функции для работы со входами, для которых (ранее) частичная функция не определена. Используя тип [`Option`](#Option), мы можем выдать либо `Some(value)`, либо `None` там, где в противном случае мы бы повели себя неожиданно:
+
 ```js
-// example 1: sum of the list
-// we can provide default value so it will always return result
+// пример 1: сумма списка
+// мы можем предоставить значение по умолчанию, чтобы он всегда возвращал результат
 // sum :: [Number] -> Number
 const sum = arr => arr.reduce((a, b) => a + b, 0)
 sum([1, 2, 3]) // 6
 sum([]) // 0
 
-// example 2: get the first item in list
-// change result to Option
+// пример 2: получить первый элемент в списке
+// изменить результат на Option
 // first :: [A] -> Option A
 const first = a => a.length ? Some(a[0]) : None()
 first([42]).map(a => console.log(a)) // 42
-first([]).map(a => console.log(a)) // console.log won't execute at all
-//our previous worst case
+first([]).map(a => console.log(a)) // console.log не будет выполняться вообще
+//наш предыдущий наихудший случай
 first([[42]]).map(a => console.log(a[0])) // 42
-first([]).map(a => console.log(a[0])) // won't execte, so we won't have error here
-// more of that, you will know by function return type (Option)
-// that you should use `.map` method to access the data and you will never forget
-// to check your input because such check become built-in into the function
+first([]).map(a => console.log(a[0])) // не будет экзекуции, поэтому здесь у нас не будет ошибки
+// более того, вы узнаете по типу возврата функции (Option)
+// что для доступа к данным нужно использовать метод `.map`, и вы никогда не забудете.
+// проверить свой ввод, потому что такая проверка становится встроенной в функцию
 
-// example 3: repeat function N times
-// we should make function always terminate by changing conditions:
+// пример 3: повторить функцию N раз
+// мы должны сделать так, чтобы функция всегда завершалась при изменении условий:
 // times :: Number -> (Number -> Number) -> Number
 const times = n => fn => n > 0 && (fn(n), times(n - 1)(fn))
 times(3)(console.log)
@@ -1061,9 +1064,9 @@ times(3)(console.log)
 times(-1)(console.log)
 // won't execute anything
 ```
-Making your partial functions total ones, these kinds of runtime errors can be prevented. Always returning a value will also make for code that is both easier to maintain as well as to reason about.
+Если сделать частичные функции полными, можно предотвратить подобные ошибки во время выполнения. Постоянное возвращение значения также сделает код более легким как для сопровождения, так и для рассуждений.
 
-## Functional Programming Libraries in JavaScript
+## Библиотеки функционального программирования на JavaScript
 
 * [mori](https://github.com/swannodette/mori)
 * [Immutable](https://github.com/facebook/immutable-js/)
@@ -1084,4 +1087,4 @@ Making your partial functions total ones, these kinds of runtime errors can be p
 
 ---
 
-__P.S:__ This repo is successful due to the wonderful [contributions](https://github.com/hemanth/functional-programming-jargon/graphs/contributors)!
+__P.S:__ Эта репозиция успешна благодаря замечательным [вкладам](https://github.com/hemanth/functional-programming-jargon/graphs/contributors)!
