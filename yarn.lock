@@ -572,9 +572,9 @@ handlebars-ansi@~0.2.0:
     ansi-escape-sequences "^1.0.2"
 
 handlebars@^3:
-  version "3.0.7"
-  resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-3.0.7.tgz#d64f0d6a480e0a637420af75713475166a2d644b"
-  integrity sha512-Pb/VCTFwbcm3KbD5rIzVVsbVBk7XMfhS4ZIJUfXdMF7H+UngtsofnUBfop/i24GSr3HCDG1PL0KoIX0YqEsXTg==
+  version "3.0.8"
+  resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-3.0.8.tgz#4e6ce3650fe6c53c151d106dcff1c5a7ca79e164"
+  integrity sha512-frzSzoxbJZSB719r+lM3UFKrnHIY6VPY/j47+GNOHVnBHxO+r+Y/iDjozAbj1SztmmMpr2CcZY6rLeN5mqX8zA==
   dependencies:
     optimist "^0.6.1"
     source-map "^0.1.40"
