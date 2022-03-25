@@ -423,9 +423,9 @@ john.age + five === ({name: 'John', age: 30}).age + (5)
 A [curried](#currying) function that ignores its second argument:
 
 ```js
-const constant = a => () => a;
+const constant = a => () => a
 
-[1, 2].map(constant(0)) // => [0, 0]
+;[1, 2].map(constant(0)) // => [0, 0]
 ```
 
 ### Constant Functor
@@ -1043,9 +1043,9 @@ A **function** `f :: A => B` is an expression - often called arrow or lambda exp
 
 ```js
 // times2 :: Number -> Number
-const times2 = n => n * 2;
+const times2 = n => n * 2
 
-[1, 2, 3].map(times2) // [2, 4, 6]
+;[1, 2, 3].map(times2) // [2, 4, 6]
 ```
 
 ## Partial function
