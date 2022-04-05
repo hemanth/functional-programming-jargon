@@ -7,6 +7,7 @@
 Там, где это применимо, в данном документе используются термины, определенные в [Fantasy Land spec](https://github.com/fantasyland/fantasy-land).
 
 __Translations__
+* [English](https://github.com/hemanth/functional-programming-jargon)
 * [Portuguese](https://github.com/alexmoreno/jargoes-programacao-funcional)
 * [Spanish](https://github.com/idcmardelplata/functional-programming-jargon/tree/master)
 * [Chinese](https://github.com/shfshanyue/fp-jargon-zh)
@@ -32,23 +33,23 @@ __Оглавление__
 * [Чистота](#purity)
 * [Побочные эффекты](#side-effects)
 * [Идемпотент](#idempotent)
-* [Стиль без точек](#point-free-style)
+* [Безточечный стиль](#point-free-style)
 * [Предикат](#predicate)
 * [Контракты](#contracts)
 * [Категория](#category)
 * [Значение](#value)
-* [Постоянная](#constant)
+* [Константа](#constant)
 * [Функтор](#functor)
 * [Точечный функтор](#pointed-functor)
 * [Лифт](#lift)
-* [Референциальная прозрачность](#referential-transparency)
+* [Ссылочная прозрачность](#referential-transparency)
 * [Уравнительные рассуждения](#equational-reasoning)
 * [Лямбда](#lambda)
 * [Лямбда-исчисление](#lambda-calculus)
 * [Ленивая оценка](#lazy-evaluation)
 * [Моноид](#monoid)
-* [Монад](#monad)
-* [Комонад](#comonad)
+* [Монада](#monad)
+* [Комонада](#comonad)
 * [Аппликативный функтор](#applicative-functor)
 * [Морфизм](#morphism)
   * [Эндоморфизм](#endomorphism)
@@ -67,7 +68,7 @@ __Оглавление__
 * [Алгебраический тип данных](#algebraic-data-type)
   * [Тип суммы](#sum-type)
   * [Тип продукта](#product-type)
-* [Параметр](#option)
+* [Опция или Maybe](#option)
 * [Функция](#function)
 * [Частичная функция](#partial-function)
 * [Библиотеки функционального программирования на JavaScript](#functional-programming-libraries-in-javascript)
@@ -940,9 +941,9 @@ const point = (x, y) => ({ x, y })
 
 См. также [Теория множеств](https://en.wikipedia.org/wiki/Set_theory).
 
-## Опция
+## Опция или Maybe
 Option - это [sum type](#sum-type) с двумя случаями, часто называемыми `Some` и `None`.
-
+Действие по сути это объединение логи проверки пустых(null) значений
 Опция полезна для составления функций, которые могут не возвращать значение.
 
 ```js
