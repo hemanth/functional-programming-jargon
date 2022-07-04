@@ -752,7 +752,7 @@ pairToCoords(coordsToPair({x: 1, y: 2})) // {x: 1, y: 2}
 
 ### Homomorphism
 
-A homomorphism is just a structure preserving map. In fact, a functor is just a homomorphism between categories as it preserves the original category's structure under the mapping.
+In algebra homomorphism is a map between two groups, that keeps the structure of the two groups. Homomorphic structures are basically the same, while the numbers, or operations in the equations are different. This means the two structures can be easily compared.
 
 ```js
 A.of(f).ap(A.of(x)) == A.of(f(x))
