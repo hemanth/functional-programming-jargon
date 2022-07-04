@@ -18,6 +18,7 @@ __Translations__
 * [Polish](https://github.com/Deloryn/functional-programming-jargon)
 * [Haskell Turkish](https://github.com/mrtkp9993/functional-programming-jargon)
 * [Haskell Russian](https://github.com/epogrebnyak/functional-programming-jargon)
+* [Julia World](https://github.com/Moelf/functional-programming-jargon.jl)
 
 __Table of Contents__
 <!-- RM(noparent,notop) -->
