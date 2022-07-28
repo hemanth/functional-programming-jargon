@@ -450,17 +450,27 @@ Object whose `chain` doesn't transform the contents. See [Monad](#monad)
 An object that implements a `map` function that takes a function which is run on the contents of that object. A functor must adhere to two rules:
 
 __Preserves identity__
-```
-object.map(x => x) ≍ object
-```
+
+```js
+object.map(x => x)
+``` 
+
+is equivalent to just `object`. 
+
 
 __Composable__
 
-```
-object.map(compose(f, g)) ≍ object.map(g).map(f)
+```js
+object.map(compose(f, g))
 ```
 
-(`f`, `g` are arbitrary functions)
+is equivalent to
+
+```js
+ object.map(g).map(f)
+```
+
+(`f`, `g` are arbitrary composable functions)
 
 A common functor in JavaScript is `Array` since it abides to the two functor rules:
 
