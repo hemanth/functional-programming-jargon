@@ -75,6 +75,7 @@ __Table of Contents__
 * [Option](#option)
 * [Function](#function)
 * [Partial function](#partial-function)
+  * [Dealing with partial functions](#dealing-with-partial-functions)
 * [Functional Programming Libraries in JavaScript](#functional-programming-libraries-in-javascript)
 
 
@@ -121,7 +122,7 @@ This allows the values in the closure to be accessed by returned functions.
 
 ```js
 const addTo = x => y => x + y
-var addToFive = addTo(5)
+const addToFive = addTo(5)
 addToFive(3) // => 8
 ```
 
@@ -179,7 +180,6 @@ curriedSum(40)(2) // 42.
 const add2 = curriedSum(2) // (b) => 2 + b
 
 add2(10) // 12
-
 ```
 
 ## Auto Currying
@@ -372,12 +372,15 @@ class Max {
   constructor (a) {
     this.a = a
   }
+
   id () {
     return this
   }
+
   compose (b) {
     return this.a > b.a ? this : b
   }
+
   toString () {
     return `Max(${this.a})`
   }
@@ -396,7 +399,7 @@ Anything that can be assigned to a variable.
 
 ```js
 5
-Object.freeze({name: 'John', age: 30}) // The `freeze` function enforces immutability.
+Object.freeze({ name: 'John', age: 30 }) // The `freeze` function enforces immutability.
 ;(a) => a
 ;[1]
 undefined
@@ -408,7 +411,7 @@ A variable that cannot be reassigned once defined.
 
 ```js
 const five = 5
-const john = Object.freeze({name: 'John', age: 30})
+const john = Object.freeze({ name: 'John', age: 30 })
 ```
 
 Constants are [referentially transparent](#referential-transparency). That is, they can be replaced with the values that they represent without affecting the result.
@@ -416,7 +419,7 @@ Constants are [referentially transparent](#referential-transparency). That is, t
 With the above two constants the following expression will always return `true`.
 
 ```js
-john.age + five === ({name: 'John', age: 30}).age + (5)
+john.age + five === ({ name: 'John', age: 30 }).age + 5
 ```
 
 ### Constant Function
@@ -434,7 +437,7 @@ const constant = a => () => a
 Object whose `map` doesn't transform the contents. See [Functor](#functor)
 
 ```js
-  Constant(1).map(n => n + 1) // => Constant(1)
+Constant(1).map(n => n + 1) // => Constant(1)
 ```
 
 ### Constant Monad
@@ -442,7 +445,7 @@ Object whose `map` doesn't transform the contents. See [Functor](#functor)
 Object whose `chain` doesn't transform the contents. See [Monad](#monad)
 
 ```js
-  Constant(1).chain(n => Constant(n + 1)) // => Constant(1)
+Constant(1).chain(n => Constant(n + 1)) // => Constant(1)
 ```
 
 ## Functor
@@ -581,7 +584,7 @@ A branch of mathematics that uses functions to create a [universal model of comp
 Lazy evaluation is a call-by-need evaluation mechanism that delays the evaluation of an expression until its value is needed. In functional languages, this allows for structures like infinite lists, which would not normally be available in an imperative language where the sequencing of commands is significant.
 
 ```js
-const rand = function*() {
+const rand = function * () {
   while (1 < 2) {
     yield Math.random()
   }
@@ -742,13 +745,13 @@ For example, 2D coordinates could be stored as an array `[2,3]` or object `{x: 2
 
 ```js
 // Providing functions to convert in both directions makes them isomorphic.
-const pairToCoords = (pair) => ({x: pair[0], y: pair[1]})
+const pairToCoords = (pair) => ({ x: pair[0], y: pair[1] })
 
 const coordsToPair = (coords) => [coords.x, coords.y]
 
 coordsToPair(pairToCoords([1, 2])) // [1, 2]
 
-pairToCoords(coordsToPair({x: 1, y: 2})) // {x: 1, y: 2}
+pairToCoords(coordsToPair({ x: 1, y: 2 })) // {x: 1, y: 2}
 ```
 
 ### Homomorphism
@@ -881,14 +884,14 @@ const nameLens = R.lens(
   // getter for name property on an object
   (obj) => obj.name,
   // setter for name property
-  (val, obj) => Object.assign({}, obj, {name: val})
+  (val, obj) => Object.assign({}, obj, { name: val })
 )
 ```
 
 Having the pair of get and set for a given data structure enables a few key features.
 
 ```js
-const person = {name: 'Gertrude Blanch'}
+const person = { name: 'Gertrude Blanch' }
 
 // invoke the getter
 R.view(nameLens, person) // 'Gertrude Blanch'
@@ -911,7 +914,7 @@ const firstLens = R.lens(
   (val, [__, ...xs]) => [val, ...xs]
 )
 
-const people = [{name: 'Gertrude Blanch'}, {name: 'Shafi Goldwasser'}]
+const people = [{ name: 'Gertrude Blanch' }, { name: 'Shafi Goldwasser' }]
 
 // Despite what you may assume, lenses compose left-to-right.
 R.over(compose(firstLens, nameLens), uppercase, people) // [{'name': 'GERTRUDE BLANCH'}, {'name': 'Shafi Goldwasser'}]
@@ -1033,8 +1036,8 @@ const getPrice = (item) => maybeProp('price', item)
 const getNestedPrice = (cart) => getItem(cart).chain(getPrice)
 
 getNestedPrice({}) // None()
-getNestedPrice({item: {foo: 1}}) // None()
-getNestedPrice({item: {price: 9.99}}) // Some(9.99)
+getNestedPrice({ item: { foo: 1 } }) // None()
+getNestedPrice({ item: { price: 9.99 } }) // Some(9.99)
 ```
 
 `Option` is also known as `Maybe`. `Some` is sometimes called `Just`. `None` is sometimes called `Nothing`.

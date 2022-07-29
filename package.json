@@ -18,11 +18,13 @@
   },
   "homepage": "https://github.com/hemanth/functional-programming-jargon#readme",
   "devDependencies": {
-    "eslint": "^6.6.0",
-    "eslint-config-standard": "^6.0.0",
-    "eslint-plugin-markdown": "^1.0.0-beta.6",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^3.0.1",
+    "eslint": "^8.20.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-markdown": "^3.0.0",
+    "eslint-plugin-n": "^15.2.4",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-standard": "^5.0.0",
     "pre-commit": "^1.2.2",
     "roadmarks": "^1.6.3"
   },
