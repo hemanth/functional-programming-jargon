@@ -55,6 +55,7 @@ __Table of Contents__
 * [Monoid](#monoid)
 * [Monad](#monad)
 * [Comonad](#comonad)
+* [Kleisi Composition](#kleisi-composition)
 * [Applicative Functor](#applicative-functor)
 * [Morphism](#morphism)
   * [Homomorphism](#homomorphism)
@@ -472,7 +473,7 @@ object.map(x => g(f(x)))
 is equivalent to
 
 ```js
- object.map(f).map(g)
+object.map(f).map(g)
 ```
 
 (`f`, `g` are arbitrary composable functions)
@@ -717,6 +718,40 @@ Extend runs a function on the comonad. The function should return the same type 
 ```js
 CoIdentity(1).extend((co) => co.extract() + 1) // CoIdentity(2)
 ```
+
+## Kleisi Composition
+
+An operation for composing two [monad](#monad)-returning functions (Kleisli Arrows) where they have compatible types. In Haskell this is the `>=>` operator.
+
+Using [Option](#option):
+
+```js
+// safeParseNum :: String -> Option Number
+const safeParseNum = (b) => {
+  const n = parseNumber(b)
+  return isNaN(n) ? none() : some(n)
+}
+
+// validatePositive :: Number -> Option Number
+const validatePositive = (a) => a > 0 ? some(a) : none()
+
+// kleisliCompose :: Monad M => ((b -> M c), (a -> M b)) -> a -> M c
+const kleisliCompose = (g, f) => (x) => f(x).chain(g)
+
+// parseAndValidate :: String -> Option Number
+const parseAndValidate = kleisliCompose(validatePositive, safeParseNum)
+
+parseAndValidate('1') // => Some(1)
+parseAndValidate('asdf') // => None
+parseAndValidate('999') // => None
+```
+
+This works because:
+
+ * [Option](#option) is a [monad](#monad)
+ * Both `validatePositive` and `safeParseNum` return the same kind of monad (Option).
+ * The type of `validatePositive`'s argument matches `safeParseNum`'s unwrapped return.
+ 
 
 ## Applicative Functor
 
