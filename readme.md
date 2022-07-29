@@ -461,21 +461,21 @@ is equivalent to just `object`.
 __Composable__
 
 ```js
-object.map(compose(f, g))
+object.map(x => g(f(x)))
 ```
 
 is equivalent to
 
 ```js
- object.map(g).map(f)
+ object.map(f).map(g)
 ```
 
 (`f`, `g` are arbitrary composable functions)
 
-A common functor in JavaScript is `Array` since it abides to the two functor rules:
+The reference implementation of [Option](#option) is a functor as it satisfies the rules:
 
 ```js
-;[1, 2, 3].map(x => x) // = [1, 2, 3]
+some(1).map(x => x) // = some(1)
 ```
 
 and
@@ -484,8 +484,8 @@ and
 const f = x => x + 1
 const g = x => x * 2
 
-;[1, 2, 3].map(x => f(g(x))) // = [3, 5, 7]
-;[1, 2, 3].map(g).map(f) // = [3, 5, 7]
+some(1).map(x => g(f(x))) // = some(3)
+some(1).map(f).map(g) // = some(3)
 ```
 
 ## Pointed Functor
