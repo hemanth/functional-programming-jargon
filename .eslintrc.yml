@@ -8,3 +8,4 @@ rules:
   eqeqeq: 0
   no-undef: 0
   no-extend-native: 0
+  prefer-const: 0 # we need to be able to misuse this for illustrative purposes
