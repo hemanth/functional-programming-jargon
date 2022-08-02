@@ -76,6 +76,7 @@ __Table of Contents__
 * [Function](#function)
 * [Partial function](#partial-function)
   * [Dealing with partial functions](#dealing-with-partial-functions)
+* [Total Function](#total-function)
 * [Functional Programming Libraries in JavaScript](#functional-programming-libraries-in-javascript)
 
 
@@ -1139,6 +1140,10 @@ times(-1)(console.log)
 // won't execute anything
 ```
 Making your partial functions total ones, these kinds of runtime errors can be prevented. Always returning a value will also make for code that is both easier to maintain as well as to reason about.
+
+## Total Function
+
+A function which returns a valid result for all inputs defined in its type. This is as opposed to [Partial Functions](#partial-function) which may throw an error, return an unexpected result, or fail to terminate.
 
 ## Functional Programming Libraries in JavaScript
 
