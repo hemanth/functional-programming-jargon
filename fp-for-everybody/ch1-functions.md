@@ -1,5 +1,5 @@
 
-# 1: Functions all the way down
+# Functions all the way down
 
 This is a topic of much debate but a broadly applicable definition of functional programming would be a coding style where programs are constructed of pure functions.
 
@@ -61,6 +61,11 @@ greet('Brianne') // 'Hi, Brianne'
 
 Doing this gives us back the flexibility of being able to use this function for Rida or any other name we like and still gives us the confidence of knowing that it will always behave consistently.
 
+### Exercise
+1. Make the following function pure using the techniques above: `const aMinuteFromNow = () => new Date(Date.now() + 60 * 1000)`. Hint: You may have to rename it.
+2. Take a simple impure function you've written in the past and see if you can make it pure.
+
+
 ## Referential transparency
 
 > Referential Transparency - An expression that can be replaced with its value without changing the behavior of the program is referentially transparent.
@@ -112,6 +117,21 @@ greet('Brianne') + '. Your order is ready!'
 
 It may seem like a small thing but referential transparency unlocks a lot of cool techniques for simplifying code which keeps it easy to wraph your head around.
 
+### Exercise
+
+Compute the result of the following code by hand by substitution:
+
+```js
+const you = { mood: 'happy', knowIt: true }
+const isHappy = (x) => x.mood === 'happy'
+const knowsIt = (x) => x.knowIt
+
+const shouldClap = (person) => isHappy(person) && knowsIt(person) ? 'clap hands' : ''
+
+shouldClap(you)
+```
+
+
 ## Composition
 
 Writing a single pure function is good and all but how do you create bigger programs? The answer, as simple as it sounds, is to compose functions.
@@ -136,6 +156,10 @@ compose(isGreaterThan20, add10)(12) // => true
 > Unary function - A function which only takes one argument. A function with two arguments is called binary, three is ternary, and so on. The general property of how many arguments a function has is called its "arity"
 
 An important constraint with this compose function is that each function passed to it must only take one argument. This may seem horribly limiting but there's a trick to make any function a one-argument function.
+
+### Exercise
+
+1. Create a variant of `compose` that calls its arguments left to right, you can call this function "flow" if you like.
 
 
 ## Curying
@@ -177,6 +201,11 @@ When defining `add10` above we "partially applied" `add` to create a new functio
 ```js
 compose(isGreaterThan(20), add(10))(12) // => true
 ```
+
+### Exercises
+1. Curry `compose` and and rename it to `B` to match the B-combinator
+2. Copy `add`, `isGreaterThan`, and `B` into a JS file called "lib". This will be the library we build together as you go through this book.
+3. Experiment with using the `B` combinator in its curried form. Consider what it means to partially-apply it.
 
 ## Morphism intro
 
