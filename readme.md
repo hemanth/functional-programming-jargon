@@ -50,6 +50,7 @@ __Table of Contents__
 * [Equational Reasoning](#equational-reasoning)
 * [Lambda](#lambda)
 * [Lambda Calculus](#lambda-calculus)
+* [Functional Combinator](#functional-combinator)
 * [Lazy evaluation](#lazy-evaluation)
 * [Monoid](#monoid)
 * [Monad](#monad)
@@ -579,6 +580,24 @@ const add1 = (a) => a + 1
 
 ## Lambda Calculus
 A branch of mathematics that uses functions to create a [universal model of computation](https://en.wikipedia.org/wiki/Lambda_calculus).
+
+## Functional Combinator
+A higher-order function, usually curried, which returns a new function changed in some way. Functional combinators are often used in [Point-Free Style](#point-free-style) to write especially terse programs.
+
+```js
+// The "C" combinator takes a curried two-argument function and returns one which calls the original function with the arguments reversed.
+const C = (f) => (a) => (b) => f(b)(a)
+
+const divide = (a) => (b) => a / b
+
+const divideBy = C(divide)
+
+const divBy10 = divideBy(10)
+
+divBy10(30) // => 3
+```
+
+See also [List of Functional Combinators in JavaScript](https://gist.github.com/Avaq/1f0636ec5c8d6aed2e45) which includes links to more references.
 
 ## Lazy evaluation
 
