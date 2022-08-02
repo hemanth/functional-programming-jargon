@@ -56,9 +56,9 @@ __Table of Contents__
 * [Comonad](#comonad)
 * [Applicative Functor](#applicative-functor)
 * [Morphism](#morphism)
+  * [Homomorphism](#homomorphism)
   * [Endomorphism](#endomorphism)
   * [Isomorphism](#isomorphism)
-  * [Homomorphism](#homomorphism)
   * [Catamorphism](#catamorphism)
   * [Anamorphism](#anamorphism)
   * [Hylomorphism](#hylomorphism)
@@ -723,11 +723,35 @@ partiallyAppliedAdds.ap(arg2) // [5, 6, 7, 8]
 
 ## Morphism
 
-A transformation function.
+A relationship between objects within a [category](#category). In the context of functional programming all functions are morphisms.
+
+### Homomorphism
+
+A function where there is a structural property that is the same in the input as well as the output.
+
+For example, in a [Monoid](#monoid) homomorphism both the input and the output are monoids even if their types are different. 
+
+```js
+// toList :: [number] -> string
+const toList = (a) => a.join(', ')
+```
+
+`toList` is a homomorphism because:
+* array is a monoid - has a `concat` operation and an identity value (`[]`)
+* string is a monoid - has a `concat` operation and an identity value (`''`)
+
+In this way, a homomorphism relates to whatever property you care about in the input and output of a transformation.
+
+[Endomorphisms](#endomorphism) and [Isomorphisms](#isomorphism) are examples of homomorphisms.
+
+__Further Reading__ 
+* [Homomorphism | Learning Functional Programming in Go](https://subscription.packtpub.com/book/application-development/9781787281394/11/ch11lvl1sec90/homomorphism#:~:text=A%20homomorphism%20is%20a%20correspondence,pointing%20to%20it%20from%20A.)
+
+
 
 ### Endomorphism
 
-A function where the input type is the same as the output.
+A function where the input type is the same as the output. Since the types are identical, endomorphisms are also [homomorphisms](#homomorphism).
 
 ```js
 // uppercase :: String -> String
@@ -739,12 +763,12 @@ const decrement = (x) => x - 1
 
 ### Isomorphism
 
-A pair of transformations between 2 types of objects that is structural in nature and no data is lost.
+A morphism made of a pair of transformations between 2 types of objects that is structural in nature and no data is lost.  
 
 For example, 2D coordinates could be stored as an array `[2,3]` or object `{x: 2, y: 3}`.
 
 ```js
-// Providing functions to convert in both directions makes them isomorphic.
+// Providing functions to convert in both directions makes the 2D coordinate structures isomorphic.
 const pairToCoords = (pair) => ({ x: pair[0], y: pair[1] })
 
 const coordsToPair = (coords) => [coords.x, coords.y]
@@ -754,21 +778,14 @@ coordsToPair(pairToCoords([1, 2])) // [1, 2]
 pairToCoords(coordsToPair({ x: 1, y: 2 })) // {x: 1, y: 2}
 ```
 
-### Homomorphism
-
-A homomorphism is just a structure preserving map. In fact, a functor is just a homomorphism between categories as it preserves the original category's structure under the mapping.
-
-```js
-A.of(f).ap(A.of(x)) == A.of(f(x))
-
-Either.of(_.toUpper).ap(Either.of('oreos')) == Either.of(_.toUpper('oreos'))
-```
+Isomorphisms are an interesting example of [morphism](#morphism) because more than single function is necessary for it to be satisfied. Isomorphisms are also [homomorphisms](#homomorphism) since both input and output types share the property of being reversable.
 
 ### Catamorphism
 
-A `reduceRight` function that applies a function against an accumulator and each value of the array (from right-to-left) to reduce it to a single value.
+A function which deconstructs a structure into a single value. `reduceRight` is an example of a catamorphism for array structures.
 
 ```js
+// sum is a catamorphism from [Number] -> Number
 const sum = xs => xs.reduceRight((acc, x) => acc + x, 0)
 
 sum([1, 2, 3, 4, 5]) // 15
@@ -776,7 +793,7 @@ sum([1, 2, 3, 4, 5]) // 15
 
 ### Anamorphism
 
-An `unfold` function. An `unfold` is the opposite of `fold` (`reduce`). It generates a list from a single value.
+A function that builds up a structure by repeatedly applying a function to its argument. `unfold` is an example which generates an array by from a function and a seed value. This is the opposite of a [catamorphism](#catamorphism). You can think of this as a anamorphism builds up a structure and catamorphism breaks it down.
 
 ```js
 const unfold = (f, seed) => {
@@ -798,7 +815,12 @@ countDown(5) // [5, 4, 3, 2, 1]
 
 ### Hylomorphism
 
-The combination of anamorphism and catamorphism.
+The function which composes a [anamorphism](#anamorphism) followed by a [catamorphism](#catamorphism).
+
+```js
+const sumUpToX = (x) => sum(countDown(x))
+sumUpToX(5) // 15
+```
 
 ### Paramorphism
 
@@ -831,7 +853,7 @@ The third parameter in the reducer (in the above example, `[x, ... xs]`) is kind
 
 ### Apomorphism
 
-it's the opposite of paramorphism, just as anamorphism is the opposite of catamorphism. Whereas with paramorphism, you combine with access to the accumulator and what has been accumulated, apomorphism lets you `unfold` with the potential to return early.
+The opposite of paramorphism, just as anamorphism is the opposite of catamorphism. With paramorphism, you retain access to the accumulator and what has been accumulated, apomorphism lets you `unfold` with the potential to return early.
 
 ## Setoid
 
