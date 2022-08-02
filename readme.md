@@ -455,22 +455,32 @@ Constant(1).chain(n => Constant(n + 1)) // => Constant(1)
 An object that implements a `map` function that takes a function which is run on the contents of that object. A functor must adhere to two rules:
 
 __Preserves identity__
-```
-object.map(x => x) ≍ object
-```
+
+```js
+object.map(x => x)
+``` 
+
+is equivalent to just `object`. 
+
 
 __Composable__
 
-```
-object.map(compose(f, g)) ≍ object.map(g).map(f)
+```js
+object.map(x => g(f(x)))
 ```
 
-(`f`, `g` are arbitrary functions)
-
-A common functor in JavaScript is `Array` since it abides to the two functor rules:
+is equivalent to
 
 ```js
-;[1, 2, 3].map(x => x) // = [1, 2, 3]
+ object.map(f).map(g)
+```
+
+(`f`, `g` are arbitrary composable functions)
+
+The reference implementation of [Option](#option) is a functor as it satisfies the rules:
+
+```js
+some(1).map(x => x) // = some(1)
 ```
 
 and
@@ -479,8 +489,8 @@ and
 const f = x => x + 1
 const g = x => x * 2
 
-;[1, 2, 3].map(x => f(g(x))) // = [3, 5, 7]
-;[1, 2, 3].map(g).map(f) // = [3, 5, 7]
+some(1).map(x => g(f(x))) // = some(3)
+some(1).map(f).map(g) // = some(3)
 ```
 
 ## Pointed Functor
