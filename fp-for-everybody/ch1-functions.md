@@ -110,11 +110,79 @@ greet('Brianne') + '. Your order is ready!'
 
 > "Easy to reason about" - Common phrase uttered by FP enthusiasts meaning that code can be understood without worrying about side effects or implementation details complicating matters. 
 
-It may seem like a small thing but referential transparency unlocks a lot of cool techniques for simplifying code which keeping it easy to wraph your head around.
+It may seem like a small thing but referential transparency unlocks a lot of cool techniques for simplifying code which keeps it easy to wraph your head around.
 
 ## Composition
-## Identity function / combinator intro
+
+Writing a single pure function is good and all but how do you create bigger programs? The answer, as simple as it sounds, is to compose functions.
+
+function_that_does_one_thing + function_that_does_another_thing = function_that_does_both_things
+
+In the above you may have noticed the `+` operator. Plus may not make a lot of sense but the important thing is that when you're working with numbers you have multiple operators to work with depending on what you want to do. With functions it's the same, there are a number of functional combinators that we can use to perform operations on functions. To get us started let's start with the analog to `+`, the compose function (A.K.A the "B" combinator)
+
+```js
+const compose = (g, f) => (x) => g(f(x))
+```
+That is, `compose` takes two functions and returns a function which calls the second function with it's argument and passes the result to the first function.
+
+```js
+const add10 = (x) => x + 10
+
+const isGreaterThan20 = (x) => x > 20
+
+compose(isGreaterThan20, add10)(12) // => true
+```
+
+> Unary function - A function which only takes one argument. A function with two arguments is called binary, three is ternary, and so on. The general property of how many arguments a function has is called its "arity"
+
+An important constraint with this compose function is that each function passed to it must only take one argument. This may seem horribly limiting but there's a trick to make any function a one-argument function.
+
+
+## Curying
+
+Curying is the process of taking a function that has more than one argument and changing it into a function that only takes one. The trick is that the return of that function is another function.
+
+```js
+// normal binary (two-argument) function
+const addBinary = (x, y) => x + y
+
+// curried
+const add = (x) => (y) => x + y
+
+// used with butt notation
+add(10)(12) // => 22
+```
+
+What's interesting is that since calling the curried `add` with an argument returns a function it can be saved to a variable.
+
+```js
+const add10 = add(10)
+```
+
+> Point-Free Style - A style of programming that writes functions without explicitly defining their arguments. A.K.A Tacit Programming
+
+You can see in this case we have created a function without an `=>` or function statement. This process of creating functions is called "Point-free Programming"
+
+### Exercises
+1. Define `isGreaterThan` as a binary function that returns a boolean
+2. Curry `isGreaterThan` so that it takes one argument at a time
+3. Define `isGreaterThan20` without an arrow or function statement
+
+## Composing partially applied functions
+
+> Partial application - The process of applying a part of a functions arguments leaving a function which takes the remaining. 
+
+When defining `add10` above we "partially applied" `add` to create a new function. In that case we assigned it to a variable but we can also just use that function as an argument to another as with our original compose example:
+
+```js
+compose(isGreaterThan(20), add(10))(12) // => true
+```
+
 ## Morphism intro
+
+
+
+## Identity function
 
 
 
