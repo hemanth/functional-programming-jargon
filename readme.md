@@ -495,13 +495,17 @@ some(1).map(f).map(g) // = some(3)
 ```
 
 ## Pointed Functor
-An object with an `of` function that puts _any_ single value into it.
+An object that is a [Functor](#functor) that can be created from _any_ value. A pointed functor can be seen as a container that can wrap something of any type by [lifting](#lift) that value into it.
 
-ES2015 adds `Array.of` making arrays a pointed functor.
+Since JS arrays are functors (have a `.map` method) and have an `Array.of()` function they are pointed functors!
 
 ```js
 Array.of(1) // [1]
+
+Array.of(1).map(add(1)) // [2]
 ```
+
+This `of` function is an important requirement for satisfying the [Monad](#monad) interface where it is an example of a [Kleisli Arrow](#kleisi-composition).
 
 ## Lift
 
