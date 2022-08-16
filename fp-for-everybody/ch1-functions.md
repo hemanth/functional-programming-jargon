@@ -3,7 +3,7 @@
 
 This is a topic of much debate but a broadly applicable definition of functional programming would be a coding style where programs are constructed of pure functions.
 
-> Functional programming - A programming style that only uses [pure functions](#pure-function)
+> Functional programming - A programming style that focuses on constructing programs from [pure functions](#pure-function).
 
 ## Pure Function
 
@@ -207,13 +207,27 @@ compose(isGreaterThan(20), add(10))(12) // => true
 2. Copy `add`, `isGreaterThan`, and `B` into a JS file called "lib". This will be the library we build together as you go through this book.
 3. Experiment with using the `B` combinator in its curried form. Consider what it means to partially-apply it.
 
-## Morphism intro
-
-
-
 ## Identity function
+Another combinator that we'll be using in examples is the `identity` function, a.k.a I-Combinator. 
 
+```js
+const identity = (x) => x
 
+const I = identity
+```
 
+Simply stated, it just returns it's argument without modification. This may seem like a pointless function but it can be useful as a placeholder and is important for describing some rules that FP concepts must follow.
 
+Trivial usage:
+```js
+[1, 2].map(identity) // => [1, 2]
+identity([1, 2]) // => [1, 2]
+```
 
+## A rose by another name...
+
+A significant word that will come up again later is "morphism". Strictly speaking, a morphism is just a relationship between two things but in the context of functional programming we can simplify to say that morphisms are just pure functions. That is, a function represents a relationship between it's input (domain) and output (codomain). 
+
+_Author note: Should we talk about domain and codomain here?_
+
+> Morphism - A relationship between two things. E.g. a pure function

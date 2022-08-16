@@ -8,6 +8,9 @@ export type None = {
 }
 
 
+/**
+ * Returns true if the passed option is None
+ */
 export const isNone = (opt: Option<unknown>): opt is None => opt.kind === 'Option/None'
 
 export type Option<T> = Some<T> | None
