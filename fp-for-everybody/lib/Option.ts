@@ -7,7 +7,6 @@ export type None = {
   readonly kind: "Option/None"
 }
 
-
 /**
  * Returns true if the passed option is None
  */

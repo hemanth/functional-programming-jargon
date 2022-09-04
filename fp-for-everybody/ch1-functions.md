@@ -228,6 +228,5 @@ identity([1, 2]) // => [1, 2]
 
 A significant word that will come up again later is "morphism". Strictly speaking, a morphism is just a relationship between two things but in the context of functional programming we can simplify to say that morphisms are just pure functions. That is, a function represents a relationship between it's input (domain) and output (codomain). 
 
-_Author note: Should we talk about domain and codomain here?_
 
 > Morphism - A relationship between two things. E.g. a pure function
