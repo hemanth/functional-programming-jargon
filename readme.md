@@ -750,7 +750,7 @@ const parseAndValidate = kleisliCompose(validatePositive, safeParseNum)
 
 parseAndValidate('1') // => Some(1)
 parseAndValidate('asdf') // => None
-parseAndValidate('999') // => None
+parseAndValidate('999') // => Some(999)
 ```
 
 This works because:
