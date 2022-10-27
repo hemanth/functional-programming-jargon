@@ -4,7 +4,7 @@ Functional programming (FP) provides many advantages, and its popularity has bee
 
 Examples are presented in JavaScript (ES2015). [Why JavaScript?](https://github.com/hemanth/functional-programming-jargon/wiki/Why-JavaScript%3F)
 
-Where applicable, this document uses terms defined in the [Fantasy Land spec](https://github.com/fantasyland/fantasy-land)
+Where applicable, this document uses terms defined in the [Fantasy Land spec](https://github.com/fantasyland/fantasy-land).
 
 __Translations__
 * [Portuguese](https://github.com/alexmoreno/jargoes-programacao-funcional)
@@ -86,7 +86,7 @@ __Table of Contents__
 
 ## Arity
 
-The number of arguments a function takes. From words like unary, binary, ternary, etc. 
+The number of arguments a function takes. From words like unary, binary, ternary, etc.
 
 ```js
 const sum = (a, b) => a + b
@@ -99,7 +99,7 @@ const zero = () => 0
 
 __Further reading__
 
-* [Arity](https://en.wikipedia.org/wiki/Arity) on wikipedia.
+* [Arity](https://en.wikipedia.org/wiki/Arity) on Wikipedia
 
 ## Higher-Order Functions (HOF)
 
@@ -121,7 +121,6 @@ filter(is(Number), [0, '1', 2, null]) // [0, 2]
 
 A closure is a scope which captures local variables of a function for access even after the execution has moved out of the block in which it is defined.
 This allows the values in the closure to be accessed by returned functions.
-
 
 ```js
 const addTo = x => y => x + y
@@ -166,7 +165,6 @@ const add1More = add3.bind(null, 2, 3) // (c) => 2 + 3 + c
 
 Partial application helps create simpler functions from more complex ones by baking in data when you have it. [Curried](#currying) functions are automatically partially applied.
 
-
 ## Currying
 
 The process of converting a function that takes multiple arguments into a function that takes them one at a time.
@@ -186,9 +184,10 @@ add2(10) // 12
 ```
 
 ## Auto Currying
+
 Transforming a function that takes multiple arguments into one that if given less than its correct number of arguments returns a function that takes the rest. When the function gets the correct number of arguments it is then evaluated.
 
-lodash & Ramda have a `curry` function that works this way.
+Lodash & Ramda have a `curry` function that works this way.
 
 ```js
 const add = (x, y) => x + y
@@ -324,6 +323,7 @@ const incrementAll2 = map(add(1))
 Point-free function definitions look just like normal assignments without `function` or `=>`. It's worth mentioning that point-free functions are not necessarily better than their counterparts, as they can be more difficult to understand when complex.
 
 ## Predicate
+
 A predicate is a function that returns true or false for a given value. A common use of a predicate is as the callback for array filter.
 
 ```js
@@ -354,7 +354,7 @@ addOne('some string') // Contract violated: expected int -> boolean
 A category in category theory is a collection of objects and morphisms between them. In programming, typically types
 act as the objects and functions as morphisms.
 
-To be a valid category 3 rules must be met:
+To be a valid category, three rules must be met:
 
 1. There must be an identity morphism that maps an object to itself.
     Where `a` is an object in some category,
@@ -364,11 +364,12 @@ To be a valid category 3 rules must be met:
     and `f` is a morphism from `a -> b`, and `g` is a morphism from `b -> c`;
     `g(f(x))` must be equivalent to `(g • f)(x)`.
 3. Composition must be associative
-    `f • (g • h)` is the same as `(f • g) • h`
+    `f • (g • h)` is the same as `(f • g) • h`.
 
 Since these rules govern composition at very abstract level, category theory is great at uncovering new ways of composing things.
 
-As an example we can define a category Max as a class
+As an example we can define a category Max as a class:
+
 ```js
 
 class Max {
@@ -437,7 +438,7 @@ const constant = a => () => a
 
 ### Constant Functor
 
-Object whose `map` doesn't transform the contents. See [Functor](#functor)
+Object whose `map` doesn't transform the contents. See [Functor](#functor).
 
 ```js
 Constant(1).map(n => n + 1) // => Constant(1)
@@ -445,7 +446,7 @@ Constant(1).map(n => n + 1) // => Constant(1)
 
 ### Constant Monad
 
-Object whose `chain` doesn't transform the contents. See [Monad](#monad)
+Object whose `chain` doesn't transform the contents. See [Monad](#monad).
 
 ```js
 Constant(1).chain(n => Constant(n + 1)) // => Constant(1)
@@ -459,10 +460,9 @@ __Preserves identity__
 
 ```js
 object.map(x => x)
-``` 
+```
 
-is equivalent to just `object`. 
-
+is equivalent to just `object`.
 
 __Composable__
 
@@ -495,6 +495,7 @@ some(1).map(f).map(g) // = some(3)
 ```
 
 ## Pointed Functor
+
 An object with an `of` function that puts _any_ single value into it.
 
 ES2015 adds `Array.of` making arrays a pointed functor.
@@ -535,7 +536,6 @@ Lifting simple values can be simply creating the object.
 Array.of(1) // => [1]
 ```
 
-
 ## Referential Transparency
 
 An expression that can be replaced with its value without changing the
@@ -552,7 +552,7 @@ referentially transparent. This would be broken if greet depended on external
 state like configuration or a database call. See also [Pure Function](#pure-function) and
 [Equational Reasoning](#equational-reasoning).
 
-##  Equational Reasoning
+## Equational Reasoning
 
 When an application is composed of expressions and devoid of side effects,
 truths about the system can be derived from the parts. You can also be confident
@@ -562,9 +562,10 @@ about details of your system without having to go through every function.
 const grainToDogs = compose(chickenIntoDogs, grainIntoChicken)
 const grainToCats = compose(dogsIntoCats, grainToDogs)
 ```
+
 In the example above, if you know that `chickenIntoDogs` and `grainIntoChicken`
-are pure then you know that the composition is pure. This can be taken further
-when more is known about the functions (associative, communtative, idempotent, etc...)
+are [pure](#pure-function) then you know that the composition is pure. This can be taken further
+when more is known about the functions (associative, commutative, idempotent, etc...).
 
 ## Lambda
 
@@ -577,22 +578,25 @@ An anonymous function that can be treated like a value.
 
 ;(a) => a + 1
 ```
-Lambdas are often passed as arguments to Higher-Order functions.
+
+Lambdas are often passed as arguments to Higher-Order functions:
 
 ```js
 ;[1, 2].map((a) => a + 1) // [2, 3]
 ```
 
-You can assign a lambda to a variable.
+You can assign a lambda to a variable:
 
 ```js
 const add1 = (a) => a + 1
 ```
 
 ## Lambda Calculus
+
 A branch of mathematics that uses functions to create a [universal model of computation](https://en.wikipedia.org/wiki/Lambda_calculus).
 
 ## Functional Combinator
+
 A higher-order function, usually curried, which returns a new function changed in some way. Functional combinators are often used in [Point-Free Style](#point-free-style) to write especially terse programs.
 
 ```js
@@ -636,11 +640,13 @@ One simple monoid is the addition of numbers:
 ```js
 1 + 1 // 2
 ```
+
 In this case number is the object and `+` is the function.
 
 When any value is combined with the "identity" value the result must be the original value. The identity must also be commutative.
 
 The identity value for addition is `0`.
+
 ```js
 1 + 0 // 1
 0 + 1 // 1
@@ -659,7 +665,7 @@ Array concatenation also forms a monoid:
 ;[1, 2].concat([3, 4]) // [1, 2, 3, 4]
 ```
 
-The identity value is empty array `[]`
+The identity value is empty array `[]`:
 
 ```js
 ;[1, 2].concat([]) // [1, 2]
@@ -707,13 +713,13 @@ const CoIdentity = (v) => ({
 })
 ```
 
-Extract takes a value out of a functor.
+`extract` takes a value out of a functor:
 
 ```js
 CoIdentity(1).extract() // 1
 ```
 
-Extend runs a function on the comonad. The function should return the same type as the comonad.
+`extend` runs a function on the comonad. The function should return the same type as the comonad:
 
 ```js
 CoIdentity(1).extend((co) => co.extract() + 1) // CoIdentity(2)
@@ -748,10 +754,9 @@ parseAndValidate('999') // => None
 
 This works because:
 
- * [Option](#option) is a [monad](#monad)
- * Both `validatePositive` and `safeParseNum` return the same kind of monad (Option).
- * The type of `validatePositive`'s argument matches `safeParseNum`'s unwrapped return.
- 
+ * [option](#option) is a [monad](#monad),
+ * both `validatePositive` and `safeParseNum` return the same kind of monad (Option),
+ * the type of `validatePositive`'s argument matches `safeParseNum`'s unwrapped return.
 
 ## Applicative Functor
 
@@ -794,7 +799,7 @@ A relationship between objects within a [category](#category). In the context of
 
 A function where there is a structural property that is the same in the input as well as the output.
 
-For example, in a [Monoid](#monoid) homomorphism both the input and the output are monoids even if their types are different. 
+For example, in a [Monoid](#monoid) homomorphism both the input and the output are monoids even if their types are different.
 
 ```js
 // toList :: [number] -> string
@@ -802,17 +807,15 @@ const toList = (a) => a.join(', ')
 ```
 
 `toList` is a homomorphism because:
-* array is a monoid - has a `concat` operation and an identity value (`[]`)
-* string is a monoid - has a `concat` operation and an identity value (`''`)
+* array is a monoid - has a `concat` operation and an identity value (`[]`),
+* string is a monoid - has a `concat` operation and an identity value (`''`).
 
 In this way, a homomorphism relates to whatever property you care about in the input and output of a transformation.
 
 [Endomorphisms](#endomorphism) and [Isomorphisms](#isomorphism) are examples of homomorphisms.
 
-__Further Reading__ 
+__Further Reading__
 * [Homomorphism | Learning Functional Programming in Go](https://subscription.packtpub.com/book/application-development/9781787281394/11/ch11lvl1sec90/homomorphism#:~:text=A%20homomorphism%20is%20a%20correspondence,pointing%20to%20it%20from%20A.)
-
-
 
 ### Endomorphism
 
@@ -828,7 +831,7 @@ const decrement = (x) => x - 1
 
 ### Isomorphism
 
-A morphism made of a pair of transformations between 2 types of objects that is structural in nature and no data is lost.  
+A morphism made of a pair of transformations between 2 types of objects that is structural in nature and no data is lost.
 
 For example, 2D coordinates could be stored as an array `[2,3]` or object `{x: 2, y: 3}`.
 
@@ -843,7 +846,7 @@ coordsToPair(pairToCoords([1, 2])) // [1, 2]
 pairToCoords(coordsToPair({ x: 1, y: 2 })) // {x: 1, y: 2}
 ```
 
-Isomorphisms are an interesting example of [morphism](#morphism) because more than single function is necessary for it to be satisfied. Isomorphisms are also [homomorphisms](#homomorphism) since both input and output types share the property of being reversable.
+Isomorphisms are an interesting example of [morphism](#morphism) because more than single function is necessary for it to be satisfied. Isomorphisms are also [homomorphisms](#homomorphism) since both input and output types share the property of being reversible.
 
 ### Catamorphism
 
@@ -858,7 +861,7 @@ sum([1, 2, 3, 4, 5]) // 15
 
 ### Anamorphism
 
-A function that builds up a structure by repeatedly applying a function to its argument. `unfold` is an example which generates an array by from a function and a seed value. This is the opposite of a [catamorphism](#catamorphism). You can think of this as a anamorphism builds up a structure and catamorphism breaks it down.
+A function that builds up a structure by repeatedly applying a function to its argument. `unfold` is an example which generates an array from a function and a seed value. This is the opposite of a [catamorphism](#catamorphism). You can think of this as an anamorphism builds up a structure and catamorphism breaks it down.
 
 ```js
 const unfold = (f, seed) => {
@@ -880,7 +883,7 @@ countDown(5) // [5, 4, 3, 2, 1]
 
 ### Hylomorphism
 
-The function which composes a [anamorphism](#anamorphism) followed by a [catamorphism](#catamorphism).
+The function which composes an [anamorphism](#anamorphism) followed by a [catamorphism](#catamorphism).
 
 ```js
 const sumUpToX = (x) => sum(countDown(x))
@@ -961,7 +964,8 @@ const sum = (list) => list.reduce((acc, val) => acc + val, 0)
 sum([1, 2, 3]) // 6
 ```
 
-## Lens ##
+## Lens
+
 A lens is a structure (often an object or function) that pairs a getter and a non-mutating setter for some other data
 structure.
 
@@ -1015,7 +1019,7 @@ Other implementations:
 
 Often functions in JavaScript will include comments that indicate the types of their arguments and return values.
 
-There's quite a bit of variance across the community but they often follow the following patterns:
+There's quite a bit of variance across the community, but they often follow the following patterns:
 
 ```js
 // functionName :: firstArgType -> secondArgType -> returnType
@@ -1043,16 +1047,19 @@ const map = (f) => (list) => list.map(f)
 
 __Further reading__
 * [Ramda's type signatures](https://github.com/ramda/ramda/wiki/Type-Signatures)
-* [Mostly Adequate Guide](https://drboolean.gitbooks.io/mostly-adequate-guide/content/ch7.html#whats-your-type)
+* [Mostly Adequate Guide](https://web.archive.org/web/20170602130913/https://drboolean.gitbooks.io/mostly-adequate-guide/content/ch7.html#whats-your-type)
 * [What is Hindley-Milner?](http://stackoverflow.com/a/399392/22425) on Stack Overflow
 
 ## Algebraic data type
+
 A composite type made from putting other types together. Two common classes of algebraic types are [sum](#sum-type) and [product](#product-type).
 
 ### Sum type
+
 A Sum type is the combination of two types together into another one. It is called sum because the number of possible values in the result type is the sum of the input types.
 
-JavaScript doesn't have types like this but we can use `Set`s to pretend:
+JavaScript doesn't have types like this, but we can use `Set`s to pretend:
+
 ```js
 // imagine that rather than sets here we have types that can only have these values
 const bools = new Set([true, false])
@@ -1078,9 +1085,11 @@ const point = (x, y) => ({ x, y })
 ```
 It's called a product because the total possible values of the data structure is the product of the different values. Many languages have a tuple type which is the simplest formulation of a product type.
 
-See also [Set theory](https://en.wikipedia.org/wiki/Set_theory).
+__Further reading__
+* [Set theory](https://en.wikipedia.org/wiki/Set_theory) on Wikipedia
 
 ## Option
+
 Option is a [sum type](#sum-type) with two cases often called `Some` and `None`.
 
 Option is useful for composing functions that might not return a value.
@@ -1110,7 +1119,9 @@ const None = () => ({
 // maybeProp :: (String, {a}) -> Option a
 const maybeProp = (key, obj) => typeof obj[key] === 'undefined' ? None() : Some(obj[key])
 ```
-Use `chain` to sequence functions that return `Option`s
+
+Use `chain` to sequence functions that return `Option`s:
+
 ```js
 
 // getItem :: Cart -> Option CartItem
@@ -1130,7 +1141,8 @@ getNestedPrice({ item: { price: 9.99 } }) // Some(9.99)
 `Option` is also known as `Maybe`. `Some` is sometimes called `Just`. `None` is sometimes called `Nothing`.
 
 ## Function
-A **function** `f :: A => B` is an expression - often called arrow or lambda expression - with **exactly one (immutable)** parameter of type `A` and **exactly one** return value of type `B`. That value depends entirely on the argument, making functions context-independant, or [referentially transparent](#referential-transparency). What is implied here is that a function must not produce any hidden [side effects](#side-effects) - a function is always [pure](#pure-function), by definition. These properties make functions pleasant to work with: they are entirely deterministic and therefore predictable. Functions enable working with code as data, abstracting over behaviour:
+
+A **function** `f :: A => B` is an expression - often called arrow or lambda expression - with **exactly one (immutable)** parameter of type `A` and **exactly one** return value of type `B`. That value depends entirely on the argument, making functions context-independent, or [referentially transparent](#referential-transparency). What is implied here is that a function must not produce any hidden [side effects](#side-effects) - a function is always [pure](#pure-function), by definition. These properties make functions pleasant to work with: they are entirely deterministic and therefore predictable. Functions enable working with code as data, abstracting over behaviour:
 
 ```js
 // times2 :: Number -> Number
@@ -1140,7 +1152,9 @@ const times2 = n => n * 2
 ```
 
 ## Partial function
+
 A partial function is a [function](#function) which is not defined for all arguments - it might return an unexpected result or may never terminate. Partial functions add cognitive overhead, they are harder to reason about and can lead to runtime errors. Some examples:
+
 ```js
 // example 1: sum of the list
 // sum :: [Number] -> Number
@@ -1169,8 +1183,10 @@ times(-1)(console.log)
 ```
 
 ### Dealing with partial functions
+
 Partial functions are dangerous as they need to be treated with great caution. You might get an unexpected (wrong) result or run into runtime errors. Sometimes a partial function might not return at all. Being aware of and treating all these edge cases accordingly can become very tedious.
 Fortunately a partial function can be converted to a regular (or total) one. We can provide default values or use guards to deal with inputs for which the (previously) partial function is undefined. Utilizing the [`Option`](#Option) type, we can yield either `Some(value)` or `None` where we would otherwise have behaved unexpectedly:
+
 ```js
 // example 1: sum of the list
 // we can provide default value so it will always return result
@@ -1187,7 +1203,7 @@ first([42]).map(a => console.log(a)) // 42
 first([]).map(a => console.log(a)) // console.log won't execute at all
 // our previous worst case
 first([[42]]).map(a => console.log(a[0])) // 42
-first([]).map(a => console.log(a[0])) // won't execte, so we won't have error here
+first([]).map(a => console.log(a[0])) // won't execute, so we won't have error here
 // more of that, you will know by function return type (Option)
 // that you should use `.map` method to access the data and you will never forget
 // to check your input because such check become built-in into the function
@@ -1203,7 +1219,8 @@ times(3)(console.log)
 times(-1)(console.log)
 // won't execute anything
 ```
-Making your partial functions total ones, these kinds of runtime errors can be prevented. Always returning a value will also make for code that is both easier to maintain as well as to reason about.
+
+Making your partial functions total ones, these kinds of runtime errors can be prevented. Always returning a value will also make for code that is both easier to maintain and to reason about.
 
 ## Total Function
 
