@@ -34,7 +34,7 @@ __Table of Contents__
 * [Continuation](#continuation)
 * [Pure Function](#pure-function)
 * [Side effects](#side-effects)
-* [Idempotent](#idempotent)
+* [Idempotence](#idempotence)
 * [Point-Free Style](#point-free-style)
 * [Predicate](#predicate)
 * [Contracts](#contracts)
@@ -56,7 +56,7 @@ __Table of Contents__
 * [Monoid](#monoid)
 * [Monad](#monad)
 * [Comonad](#comonad)
-* [Kleisi Composition](#kleisi-composition)
+* [Kleisli Composition](#kleisli-composition)
 * [Applicative Functor](#applicative-functor)
 * [Morphism](#morphism)
   * [Homomorphism](#homomorphism)
@@ -291,7 +291,7 @@ const differentEveryTime = new Date()
 console.log('IO is a side effect!')
 ```
 
-## Idempotent
+## Idempotence
 
 A function is idempotent if reapplying it to its result does not produce a different result.
 
@@ -519,7 +519,7 @@ const mult = a => b => a * b
 const liftedMult = liftA2(mult) // this function now works on functors like array
 
 liftedMult([1, 2], [3]) // [3, 6]
-liftA2(a => b => a + b)([1, 2], [3, 4]) // [4, 5, 5, 6]
+liftA2(a => b => a + b)([1, 2], [30, 40]) // [31, 41, 32, 42]
 ```
 
 Lifting a one-argument function and applying it does the same thing as `map`.
@@ -726,7 +726,7 @@ CoIdentity(1).extract() // 1
 CoIdentity(1).extend((co) => co.extract() + 1) // CoIdentity(2)
 ```
 
-## Kleisi Composition
+## Kleisli Composition
 
 An operation for composing two [monad](#monad)-returning functions (Kleisli Arrows) where they have compatible types. In Haskell this is the `>=>` operator.
 
