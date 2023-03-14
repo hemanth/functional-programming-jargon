@@ -491,8 +491,8 @@ and
 const f = x => x + 1
 const g = x => x * 2
 
-some(1).map(x => g(f(x))) // = some(3)
-some(1).map(f).map(g) // = some(3)
+some(1).map(x => g(f(x))) // = some(4)
+some(1).map(f).map(g) // = some(4)
 ```
 
 ## Pointed Functor
