@@ -1,5 +1,7 @@
 # Functional Programming Jargon
 
+[ [READONLY](https://readonly.link/articles/https://raw.githubusercontent.com/hemanth/functional-programming-jargon/master/readme.md) ]
+
 Functional programming (FP) provides many advantages, and its popularity has been increasing as a result. However, each programming paradigm comes with its own unique jargon and FP is no exception. By providing a glossary, we hope to make learning FP easier.
 
 Examples are presented in JavaScript (ES2015). [Why JavaScript?](https://github.com/hemanth/functional-programming-jargon/wiki/Why-JavaScript%3F)
