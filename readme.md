@@ -482,7 +482,7 @@ object.map(f).map(g)
 The reference implementation of [Option](#option) is a functor as it satisfies the rules:
 
 ```js
-some(1).map(x => x) // = some(1)
+Some(1).map(x => x) // = Some(1)
 ```
 
 and
@@ -491,8 +491,8 @@ and
 const f = x => x + 1
 const g = x => x * 2
 
-some(1).map(x => g(f(x))) // = some(4)
-some(1).map(f).map(g) // = some(4)
+Some(1).map(x => g(f(x))) // = Some(4)
+Some(1).map(f).map(g) // = Some(4)
 ```
 
 ## Pointed Functor
@@ -736,11 +736,11 @@ Using [Option](#option):
 // safeParseNum :: String -> Option Number
 const safeParseNum = (b) => {
   const n = parseNumber(b)
-  return isNaN(n) ? none() : some(n)
+  return isNaN(n) ? None() : Some(n)
 }
 
 // validatePositive :: Number -> Option Number
-const validatePositive = (a) => a > 0 ? some(a) : none()
+const validatePositive = (a) => a > 0 ? Some(a) : None()
 
 // kleisliCompose :: Monad M => ((b -> M c), (a -> M b)) -> a -> M c
 const kleisliCompose = (g, f) => (x) => f(x).chain(g)
