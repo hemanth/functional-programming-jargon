@@ -644,7 +644,7 @@ One simple monoid is the addition of numbers:
 
 In this case number is the object and `+` is the function.
 
-When any value is combined with the "identity" value the result must be the original value. The identity must also be commutative.
+When any value of the monoid is combined with the "identity" value the result must be the original value. Combining with identity must also be commutative.
 
 The identity value for addition is `0`.
 
@@ -700,14 +700,16 @@ Array.of('cat,dog', 'fish,bird').map((a) => a.split(',')) // [['cat', 'dog'], ['
 
 ## Comonad
 
-An object that has `extract` and `extend` functions.
+An object that has `extract` and `extend` functions. `extract` is the dual (opposite) of `of` from [Pointed Functor](#pointed-functor) and `extend` is the dual of `chain` from [Monad](#monad)
 
 ```js
 const CoIdentity = (v) => ({
   val: v,
+  // extract :: CoIdentity a ~> () -> a
   extract () {
     return this.val
   },
+  // extract :: CoIdentity a ~> (CoIdentity a -> CoIdentity b) -> CoIdentity b
   extend (f) {
     return CoIdentity(f(this))
   }
@@ -770,10 +772,10 @@ Array.prototype.ap = function (xs) {
 }
 
 // Example usage
-;[(a) => a + 1].ap([1]) // [2]
+Array.of((a) => a + 1).ap([1]) // [2]
 ```
 
-This is useful if you have two objects and you want to apply a binary function to their contents.
+This is useful if you have two objects and you want to apply a [binary](#arity) [curried](#currying) function to their contents.
 
 ```js
 // Arrays that you want to combine
@@ -791,6 +793,17 @@ This gives you an array of functions that you can call `ap` on to get the result
 ```js
 partiallyAppliedAdds.ap(arg2) // [5, 6, 7, 8]
 ```
+
+Using [Option](#option):
+
+```ts
+some(1).map(add).ap(some(2)) // some(3)
+
+none.map(add).ap(some(2)) // none
+
+```
+
+Note that `some(1).map(add).ap(some(2))` is equivalent to `some(add).ap(some(1)).ap(some(2))`. The difference is whether the argument is [lifted](#lift) first or the binary function. You can look at `.ap` like the function call syntax for functions that are inside of [functors](#functor).
 
 ## Morphism
 
@@ -1084,7 +1097,15 @@ A **product** type combines types together in a way you're probably more familia
 // point :: (Number, Number) -> {x: Number, y: Number}
 const point = (x, y) => ({ x, y })
 ```
-It's called a product because the total possible values of the data structure is the product of the different values. Many languages have a tuple type which is the simplest formulation of a product type.
+It's called a product because the total possible values of the data structure is the product of the different values.
+
+```ts
+type Rank = 'A' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | 'J' | 'Q' | 'K'
+type Suit = '♠' | '♥' | '♣' | '♦'
+type Card = {rank: Rank, suit: Suit}
+```
+In the above, `Card` is a type which is the product of `Rank` and `Suit` which leads to 52 possibilities (13 Ranks x 4 suits = 52 cards)
+
 
 __Further reading__
 * [Set theory](https://en.wikipedia.org/wiki/Set_theory) on Wikipedia
