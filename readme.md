@@ -7,6 +7,7 @@ Examples are presented in JavaScript (ES2015). [Why JavaScript?](https://github.
 Where applicable, this document uses terms defined in the [Fantasy Land spec](https://github.com/fantasyland/fantasy-land).
 
 __Translations__
+
 * [Portuguese](https://github.com/alexmoreno/jargoes-programacao-funcional)
 * [Spanish](https://github.com/idcmardelplata/functional-programming-jargon/tree/master)
 * [Chinese](https://github.com/shfshanyue/fp-jargon-zh)
@@ -133,6 +134,7 @@ In this case the `x` is retained in `addToFive`'s closure with the value `5`. `a
 to get back the sum.
 
 __Further reading/Sources__
+
 * [Lambda Vs Closure](http://stackoverflow.com/questions/220658/what-is-the-difference-between-a-closure-and-a-lambda)
 * [JavaScript Closures highly voted discussion](http://stackoverflow.com/questions/111102/how-do-javascript-closures-work)
 
@@ -200,6 +202,7 @@ curriedAdd(1)(2) // 3
 ```
 
 __Further reading__
+
 * [Favoring Curry](http://fr.umio.us/favoring-curry/)
 * [Hey Underscore, You're Doing It Wrong!](https://www.youtube.com/watch?v=m3svKOdZijA)
 
@@ -755,9 +758,9 @@ parseAndValidate('999') // => Some(999)
 
 This works because:
 
- * [option](#option) is a [monad](#monad),
- * both `validatePositive` and `safeParseNum` return the same kind of monad (Option),
- * the type of `validatePositive`'s argument matches `safeParseNum`'s unwrapped return.
+* [option](#option) is a [monad](#monad),
+* both `validatePositive` and `safeParseNum` return the same kind of monad (Option),
+* the type of `validatePositive`'s argument matches `safeParseNum`'s unwrapped return.
 
 ## Applicative Functor
 
@@ -808,6 +811,7 @@ const toList = (a) => a.join(', ')
 ```
 
 `toList` is a homomorphism because:
+
 * array is a monoid - has a `concat` operation and an identity value (`[]`),
 * string is a monoid - has a `concat` operation and an identity value (`''`).
 
@@ -816,6 +820,7 @@ In this way, a homomorphism relates to whatever property you care about in the i
 [Endomorphisms](#endomorphism) and [Isomorphisms](#isomorphism) are examples of homomorphisms.
 
 __Further Reading__
+
 * [Homomorphism | Learning Functional Programming in Go](https://subscription.packtpub.com/book/application-development/9781787281394/11/ch11lvl1sec90/homomorphism#:~:text=A%20homomorphism%20is%20a%20correspondence,pointing%20to%20it%20from%20A.)
 
 ### Endomorphism
@@ -1013,6 +1018,7 @@ R.over(compose(firstLens, nameLens), uppercase, people) // [{'name': 'GERTRUDE B
 ```
 
 Other implementations:
+
 * [partial.lenses](https://github.com/calmm-js/partial.lenses) - Tasty syntax sugar and a lot of powerful features
 * [nanoscope](http://www.kovach.me/nanoscope/) - Fluent-interface
 
@@ -1047,6 +1053,7 @@ const map = (f) => (list) => list.map(f)
 ```
 
 __Further reading__
+
 * [Ramda's type signatures](https://github.com/ramda/ramda/wiki/Type-Signatures)
 * [Mostly Adequate Guide](https://web.archive.org/web/20170602130913/https://drboolean.gitbooks.io/mostly-adequate-guide/content/ch7.html#whats-your-type)
 * [What is Hindley-Milner?](http://stackoverflow.com/a/399392/22425) on Stack Overflow
@@ -1078,15 +1085,17 @@ Flow includes [union types](https://flow.org/en/docs/types/unions/) and TypeScri
 
 ### Product type
 
-A **product** type combines types together in a way you're probably more familiar with:
+A __product__ type combines types together in a way you're probably more familiar with:
 
 ```js
 // point :: (Number, Number) -> {x: Number, y: Number}
 const point = (x, y) => ({ x, y })
 ```
+
 It's called a product because the total possible values of the data structure is the product of the different values. Many languages have a tuple type which is the simplest formulation of a product type.
 
 __Further reading__
+
 * [Set theory](https://en.wikipedia.org/wiki/Set_theory) on Wikipedia
 
 ## Option
@@ -1143,7 +1152,7 @@ getNestedPrice({ item: { price: 9.99 } }) // Some(9.99)
 
 ## Function
 
-A **function** `f :: A => B` is an expression - often called arrow or lambda expression - with **exactly one (immutable)** parameter of type `A` and **exactly one** return value of type `B`. That value depends entirely on the argument, making functions context-independent, or [referentially transparent](#referential-transparency). What is implied here is that a function must not produce any hidden [side effects](#side-effects) - a function is always [pure](#pure-function), by definition. These properties make functions pleasant to work with: they are entirely deterministic and therefore predictable. Functions enable working with code as data, abstracting over behaviour:
+A __function__ `f :: A => B` is an expression - often called arrow or lambda expression - with __exactly one (immutable)__ parameter of type `A` and __exactly one__ return value of type `B`. That value depends entirely on the argument, making functions context-independent, or [referentially transparent](#referential-transparency). What is implied here is that a function must not produce any hidden [side effects](#side-effects) - a function is always [pure](#pure-function), by definition. These properties make functions pleasant to work with: they are entirely deterministic and therefore predictable. Functions enable working with code as data, abstracting over behaviour:
 
 ```js
 // times2 :: Number -> Number
