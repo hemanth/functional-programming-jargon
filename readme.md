@@ -1,3 +1,5 @@
+i learn fork
+now i learn branch2
 # Functional Programming Jargon
 
 Functional programming (FP) provides many advantages, and its popularity has been increasing as a result. However, each programming paradigm comes with its own unique jargon and FP is no exception. By providing a glossary, we hope to make learning FP easier.
