@@ -47,18 +47,38 @@ export default function SearchHUD({
     return terms.filter(t => popularIds.includes(t.id));
   }, [terms]);
 
-  // Filtered terms matching query
+  // Filtered terms matching query, ranked by relevance
   const filteredTerms = useMemo(() => {
     if (!searchQuery.trim()) return defaultSuggestions;
     const q = searchQuery.toLowerCase().trim();
-    return terms.filter(t => {
-      const matchName = t.title.toLowerCase().includes(q);
-      const matchAlias = t.aliases && t.aliases.some(a => a.toLowerCase().includes(q));
-      const matchSummary = t.summary && t.summary.toLowerCase().includes(q);
-      const matchCategory = categories[t.category]?.name.toLowerCase().includes(q);
-      const matchCode = t.codeBlocks && t.codeBlocks.some(cb => cb.code.toLowerCase().includes(q));
-      return matchName || matchAlias || matchSummary || matchCategory || matchCode;
-    }).slice(0, 8);
+    
+    const scored = [];
+    for (const t of terms) {
+      const lowerTitle = t.title.toLowerCase();
+      let score = 0;
+      if (lowerTitle === q || t.id === q) {
+        score = 100;
+      } else if (lowerTitle.startsWith(q) || t.id.startsWith(q)) {
+        score = 80;
+      } else if (lowerTitle.includes(q) || t.id.includes(q)) {
+        score = 60;
+      } else if (t.aliases && t.aliases.some(a => a.toLowerCase().includes(q))) {
+        score = 40;
+      } else if (categories[t.category]?.name.toLowerCase().includes(q)) {
+        score = 30;
+      } else if (t.summary && t.summary.toLowerCase().includes(q)) {
+        score = 20;
+      } else if (t.codeBlocks && t.codeBlocks.some(cb => cb.code.toLowerCase().includes(q))) {
+        score = 10;
+      }
+
+      if (score > 0) {
+        scored.push({ term: t, score });
+      }
+    }
+
+    scored.sort((a, b) => b.score - a.score);
+    return scored.map(s => s.term).slice(0, 8);
   }, [terms, categories, searchQuery, defaultSuggestions]);
 
   // Reset highlight when list changes
@@ -121,7 +141,7 @@ export default function SearchHUD({
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Search 57 concepts, aliases, or code..."
+            placeholder={`Search ${terms.length} concepts, aliases, or code...`}
             className="w-full bg-transparent text-xs tracking-tight focus:outline-none placeholder:opacity-40"
           />
 

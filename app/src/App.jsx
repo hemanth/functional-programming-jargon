@@ -17,11 +17,25 @@ import { GithubIcon } from './components/Icons';
 export default function App() {
   const { meta, categories, terms, graph } = jargonsData;
   
-  // Highlighted node on the graph (Partial function on initial load)
-  const [selectedNodeId, setSelectedNodeId] = useState('partial-function');
+  // Highlighted node on the graph (or from initial URL hash)
+  const [selectedNodeId, setSelectedNodeId] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const hash = window.location.hash.replace(/^#/, '');
+      if (hash && terms.some(t => t.id === hash)) {
+        return hash;
+      }
+    }
+    return 'partial-function';
+  });
 
-  // Sidebar detail panel: strictly closed on load
-  const [isPanelOpen, setIsPanelOpen] = useState(false);
+  // Sidebar detail panel: open if valid hash in URL on initial load, otherwise closed
+  const [isPanelOpen, setIsPanelOpen] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const hash = window.location.hash.replace(/^#/, '');
+      return Boolean(hash && terms.some(t => t.id === hash));
+    }
+    return false;
+  });
 
   // Command palette search modal
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -48,30 +62,28 @@ export default function App() {
     return map;
   }, [terms]);
 
-  // Clean up any lingering hash from previous reloads and handle navigation
+  // Handle URL hash navigation on mount and on hash changes
   useEffect(() => {
-    // If the browser loaded with lingering default hash, clean it so the sidebar stays closed
-    if (window.location.hash === '#pure-function' || window.location.hash === '#partial-function') {
-      window.history.replaceState(null, '', window.location.pathname);
-    }
-
     const handleHash = () => {
       const hash = window.location.hash.replace(/^#/, '');
       if (hash && allTermsMap[hash]) {
         setSelectedNodeId(hash);
         setIsPanelOpen(true);
+        setSearchQuery('');
       } else if (!hash) {
         setIsPanelOpen(false);
       }
     };
 
+    handleHash();
     window.addEventListener('hashchange', handleHash);
     return () => window.removeEventListener('hashchange', handleHash);
   }, [allTermsMap]);
 
-  // Update hash when a node is selected
+  // Update hash and reset search filter when a node is selected
   const handleSelectNode = (nodeId) => {
     setSelectedNodeId(nodeId);
+    setSearchQuery('');
     if (nodeId) {
       setIsPanelOpen(true);
       window.history.replaceState(null, '', `#${nodeId}`);
@@ -118,6 +130,7 @@ export default function App() {
       if (e.key === 'Escape') {
         if (isSearchOpen) {
           setIsSearchOpen(false);
+          setSearchQuery('');
         } else if (isPanelOpen) {
           handleClosePanel();
         }
@@ -301,12 +314,19 @@ export default function App() {
       <SearchHUD
         isOpen={isSearchOpen}
         onOpen={() => setIsSearchOpen(true)}
-        onClose={() => setIsSearchOpen(false)}
+        onClose={() => {
+          setIsSearchOpen(false);
+          setSearchQuery('');
+        }}
         terms={terms}
         categories={categories}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
-        onSelectTerm={handleSelectNode}
+        onSelectTerm={(termId) => {
+          handleSelectNode(termId);
+          setIsSearchOpen(false);
+          setSearchQuery('');
+        }}
         soundEnabled={soundEnabled}
         isDark={isDark}
       />

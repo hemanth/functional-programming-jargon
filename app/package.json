@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "node scripts/parse-jargons.js && vite build",
     "preview": "vite preview",
+    "test": "node tests/e2e.test.mjs",
     "parse": "node scripts/parse-jargons.js"
   },
   "dependencies": {
@@ -20,6 +21,7 @@
   "devDependencies": {
     "@vitejs/plugin-react": "^6.1.1",
     "autoprefixer": "^10.5.6",
+    "playwright": "^1.63.0",
     "postcss": "^8.5.28",
     "tailwindcss": "^3.4.19",
     "vite": "^8.3.0"
