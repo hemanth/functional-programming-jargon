@@ -1,0 +1,27 @@
+{
+  "name": "fpjargon",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Interactive knowledge graph exploring functional programming jargons.",
+  "scripts": {
+    "dev": "vite",
+    "build": "node scripts/parse-jargons.js && vite build",
+    "preview": "vite preview",
+    "parse": "node scripts/parse-jargons.js"
+  },
+  "dependencies": {
+    "canvas-confetti": "^1.9.4",
+    "lucide-react": "^1.45.0",
+    "marked": "^18.0.12",
+    "prismjs": "^1.30.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.1.1",
+    "autoprefixer": "^10.5.6",
+    "postcss": "^8.5.28",
+    "tailwindcss": "^3.4.19",
+    "vite": "^8.3.0"
+  }
+}

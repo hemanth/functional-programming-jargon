@@ -1,0 +1,1473 @@
+# FP Jargon - Full Reference
+
+> Complete catalog of 57 functional programming concepts, morphisms, algebraic structures, and category theory terms with JavaScript ES2015 examples.
+> Source: https://github.com/hemanth/functional-programming-jargon
+> Live app: https://hemanth.github.io/functional-programming-jargon/
+
+## Arity
+
+- Category: Core Functions
+- ID: #arity
+- Aliases: unary, binary, ternary, nullary, variadic
+- Related concepts: #currying
+
+### Definition
+The number of arguments a function takes. From words like unary, binary, ternary, etc.
+
+### Code Examples
+
+```js
+const sum = (a, b) => a + b
+// The arity of sum is 2 (binary)
+const inc = a => a + 1
+// The arity of inc is 1 (unary)
+const zero = () => 0
+// The arity of zero is 0 (nullary)
+```
+
+---
+
+## Higher-Order Functions (HOF)
+
+- Category: Core Functions
+- ID: #higher-order-functions-hof
+- Aliases: hof, higher order function
+- Related concepts: #partial-application, #point-free-style, #functional-combinator, #closure, #predicate, #function-composition, #continuation
+
+### Definition
+A function which takes a function as an argument and/or returns a function.
+
+### Code Examples
+
+```js
+const filter = (predicate, xs) => xs.filter(predicate)
+```
+
+```js
+const is = (type) => (x) => Object(x) instanceof type
+```
+
+```js
+filter(is(Number), [0, '1', 2, null]) // [0, 2]
+```
+
+---
+
+## Closure
+
+- Category: Core Functions
+- ID: #closure
+- Related concepts: #lambda, #higher-order-functions-hof
+
+### Definition
+A closure is a scope which captures local variables of a function for access even after the execution has moved out of the block in which it is defined. This allows the values in the closure to be accessed by returned functions.
+
+### Code Examples
+
+```js
+const addTo = x => y => x + y
+const addToFive = addTo(5)
+addToFive(3) // => 8
+```
+
+---
+
+## Partial Application
+
+- Category: Composition & Flow
+- ID: #partial-application
+- Related concepts: #currying, #higher-order-functions-hof
+
+### Definition
+Partially applying a function means creating a new function by pre-filling some of the arguments to the original function.
+
+### Code Examples
+
+```js
+// Helper to create partially applied functions
+// Takes a function and some arguments
+const partial = (f, ...args) =>
+  // returns a function that takes the rest of the arguments
+  (...moreArgs) =>
+    // and calls the original function with all of them
+    f(...args, ...moreArgs)
+
+// Something to apply
+const add3 = (a, b, c) => a + b + c
+
+// Partially applying `2` and `3` to `add3` gives you a one-argument function
+const fivePlus = partial(add3, 2, 3) // (c) => 2 + 3 + c
+
+fivePlus(4) // 9
+```
+
+```js
+const add1More = add3.bind(null, 2, 3) // (c) => 2 + 3 + c
+```
+
+---
+
+## Currying
+
+- Category: Composition & Flow
+- ID: #currying
+- Aliases: curried
+- Related concepts: #partial-application, #arity, #auto-currying, #point-free-style, #constant-function
+
+### Definition
+The process of converting a function that takes multiple arguments into a function that takes them one at a time.
+
+### Code Examples
+
+```js
+const sum = (a, b) => a + b
+
+const curriedSum = (a) => (b) => a + b
+
+curriedSum(40)(2) // 42.
+
+const add2 = curriedSum(2) // (b) => 2 + b
+
+add2(10) // 12
+```
+
+---
+
+## Auto Currying
+
+- Category: Composition & Flow
+- ID: #auto-currying
+- Related concepts: #currying
+
+### Definition
+Transforming a function that takes multiple arguments into one that if given less than its correct number of arguments returns a function that takes the rest. When the function gets the correct number of arguments it is then evaluated.
+
+### Code Examples
+
+```js
+const add = (x, y) => x + y
+
+const curriedAdd = _.curry(add)
+curriedAdd(1, 2) // 3
+curriedAdd(1) // (y) => 1 + y
+curriedAdd(1)(2) // 3
+```
+
+---
+
+## Function Composition
+
+- Category: Composition & Flow
+- ID: #function-composition
+- Related concepts: #point-free-style, #category, #higher-order-functions-hof, #lens
+
+### Definition
+The act of putting two functions together to form a third function where the output of one function is the input of the other. This is one of the most important ideas of functional programming.
+
+### Code Examples
+
+```js
+const compose = (f, g) => (a) => f(g(a)) // Definition
+const floorAndToString = compose((val) => val.toString(), Math.floor) // Usage
+floorAndToString(121.212121) // '121'
+```
+
+---
+
+## Continuation
+
+- Category: Composition & Flow
+- ID: #continuation
+- Related concepts: #higher-order-functions-hof
+
+### Definition
+At any given point in a program, the part of the code that's yet to be executed is known as a continuation.
+
+### Code Examples
+
+```js
+const printAsString = (num) => console.log(`Given ${num}`)
+
+const addOneAndContinue = (num, cc) => {
+  const result = num + 1
+  cc(result)
+}
+
+addOneAndContinue(2, printAsString) // 'Given 3'
+```
+
+```js
+const continueProgramWith = (data) => {
+  // Continues program with data
+}
+
+readFileAsync('path/to/file', (err, response) => {
+  if (err) {
+    // handle error
+    return
+  }
+  continueProgramWith(response)
+})
+```
+
+---
+
+## Pure Function
+
+- Category: Core Functions
+- ID: #pure-function
+- Aliases: deterministic function, purity
+- Related concepts: #side-effects, #referential-transparency, #idempotence, #equational-reasoning, #function, #lazy-evaluation, #lens
+
+### Definition
+A function is pure if the return value is only determined by its input values, and does not produce side effects. The function must always return the same result when given the same input.
+
+### Code Examples
+
+```js
+const greet = (name) => `Hi, ${name}`
+
+greet('Brianne') // 'Hi, Brianne'
+```
+
+```js
+window.name = 'Brianne'
+
+const greet = () => `Hi, ${window.name}`
+
+greet() // "Hi, Brianne"
+```
+
+```js
+let greeting
+
+const greet = (name) => {
+  greeting = `Hi, ${name}`
+}
+
+greet('Brianne')
+greeting // "Hi, Brianne"
+```
+
+---
+
+## Side effects
+
+- Category: Purity & Reasoning
+- ID: #side-effects
+- Related concepts: #pure-function, #function
+
+### Definition
+A function or expression is said to have a side effect if apart from returning a value, it interacts with (reads from or writes to) external mutable state.
+
+### Code Examples
+
+```js
+const differentEveryTime = new Date()
+```
+
+```js
+console.log('IO is a side effect!')
+```
+
+---
+
+## Idempotence
+
+- Category: Purity & Reasoning
+- ID: #idempotence
+- Related concepts: #pure-function
+
+### Definition
+A function is idempotent if reapplying it to its result does not produce a different result.
+
+### Code Examples
+
+```js
+Math.abs(Math.abs(10))
+```
+
+```js
+sort(sort(sort([2, 1])))
+```
+
+---
+
+## Point-Free Style
+
+- Category: Composition & Flow
+- ID: #point-free-style
+- Aliases: tacit programming, tacit, point-free, pointfree
+- Related concepts: #currying, #function-composition, #higher-order-functions-hof, #functional-combinator
+
+### Definition
+Writing functions where the definition does not explicitly identify the arguments used. This style usually requires currying or other Higher-Order functions. A.K.A Tacit programming.
+
+### Code Examples
+
+```js
+// Given
+const map = (fn) => (list) => list.map(fn)
+const add = (a) => (b) => a + b
+
+// Then
+
+// Not point-free - `numbers` is an explicit argument
+const incrementAll = (numbers) => map(add(1))(numbers)
+
+// Point-free - The list is an implicit argument
+const incrementAll2 = map(add(1))
+```
+
+---
+
+## Predicate
+
+- Category: Core Functions
+- ID: #predicate
+- Related concepts: #higher-order-functions-hof
+
+### Definition
+A predicate is a function that returns true or false for a given value. A common use of a predicate is as the callback for array filter.
+
+### Code Examples
+
+```js
+const predicate = (a) => a > 2
+
+;[1, 2, 3, 4].filter(predicate) // [3, 4]
+```
+
+---
+
+## Contracts
+
+- Category: Purity & Reasoning
+- ID: #contracts
+- Related concepts: #type-signatures
+
+### Definition
+A contract specifies the obligations and guarantees of the behavior from a function or expression at runtime. This acts as a set of rules that are expected from the input and output of a function or expression, and errors are generally reported whenever a contract is violated.
+
+### Code Examples
+
+```js
+// Define our contract : int -> boolean
+const contract = (input) => {
+  if (typeof input === 'number') return true
+  throw new Error('Contract violated: expected int -> boolean')
+}
+
+const addOne = (num) => contract(num) && num + 1
+
+addOne(2) // 3
+addOne('some string') // Contract violated: expected int -> boolean
+```
+
+---
+
+## Category
+
+- Category: Category & Morphisms
+- ID: #category
+- Related concepts: #morphism, #function-composition
+
+### Definition
+A category in category theory is a collection of objects and morphisms between them. In programming, typically types act as the objects and functions as morphisms.
+
+### Code Examples
+
+```js
+class Max {
+  constructor (a) {
+    this.a = a
+  }
+
+  id () {
+    return this
+  }
+
+  compose (b) {
+    return this.a > b.a ? this : b
+  }
+
+  toString () {
+    return `Max(${this.a})`
+  }
+}
+
+new Max(2).compose(new Max(3)).compose(new Max(5)).id().id() // => Max(5)
+```
+
+---
+
+## Value
+
+- Category: Purity & Reasoning
+- ID: #value
+- Related concepts: #constant
+
+### Definition
+Anything that can be assigned to a variable.
+
+### Code Examples
+
+```js
+5
+Object.freeze({ name: 'John', age: 30 }) // The `freeze` function enforces immutability.
+;(a) => a
+;[1]
+undefined
+```
+
+---
+
+## Constant
+
+- Category: Purity & Reasoning
+- ID: #constant
+- Related concepts: #referential-transparency, #constant-function, #value
+
+### Definition
+A variable that cannot be reassigned once defined.
+
+### Code Examples
+
+```js
+const five = 5
+const john = Object.freeze({ name: 'John', age: 30 })
+```
+
+```js
+john.age + five === ({ name: 'John', age: 30 }).age + 5
+```
+
+---
+
+## Constant Function
+
+- Category: Purity & Reasoning
+- ID: #constant-function
+- Related concepts: #constant, #constant-functor, #currying
+
+### Definition
+A curried function that ignores its second argument:
+
+### Code Examples
+
+```js
+const constant = a => () => a
+
+;[1, 2].map(constant(0)) // => [0, 0]
+```
+
+---
+
+## Constant Functor
+
+- Category: Algebraic Structures
+- ID: #constant-functor
+- Related concepts: #constant-function, #constant-monad, #functor
+
+### Definition
+Object whose map doesn't transform the contents. See Functor.
+
+### Code Examples
+
+```js
+Constant(1).map(n => n + 1) // => Constant(1)
+```
+
+---
+
+## Constant Monad
+
+- Category: Algebraic Structures
+- ID: #constant-monad
+- Related concepts: #constant-functor, #monad
+
+### Definition
+Object whose chain doesn't transform the contents. See Monad.
+
+### Code Examples
+
+```js
+Constant(1).chain(n => Constant(n + 1)) // => Constant(1)
+```
+
+---
+
+## Functor
+
+- Category: Algebraic Structures
+- ID: #functor
+- Aliases: map, mappable
+- Related concepts: #pointed-functor, #applicative-functor, #lift, #constant-functor, #option, #monad
+
+### Definition
+An object that implements a map function that takes a function which is run on the contents of that object. A functor must adhere to two rules:
+
+### Code Examples
+
+```js
+object.map(x => x)
+```
+
+```js
+object.map(x => g(f(x)))
+```
+
+```js
+object.map(f).map(g)
+```
+
+```js
+Some(1).map(x => x) // = Some(1)
+```
+
+```js
+const f = x => x + 1
+const g = x => x * 2
+
+Some(1).map(x => g(f(x))) // = Some(4)
+Some(1).map(f).map(g) // = Some(4)
+```
+
+---
+
+## Pointed Functor
+
+- Category: Algebraic Structures
+- ID: #pointed-functor
+- Related concepts: #functor, #applicative-functor, #lift, #monad
+
+### Definition
+An object with an of function that puts any single value into it.
+
+### Code Examples
+
+```js
+Array.of(1) // [1]
+```
+
+---
+
+## Lift
+
+- Category: Algebraic Structures
+- ID: #lift
+- Related concepts: #applicative-functor, #functor, #pointed-functor
+
+### Definition
+Lifting is when you take a value and put it into an object like a functor. If you lift a function into an Applicative Functor then you can make it work on values that are also in that functor.
+
+### Code Examples
+
+```js
+const liftA2 = (f) => (a, b) => a.map(f).ap(b) // note it's `ap` and not `map`.
+
+const mult = a => b => a * b
+
+const liftedMult = liftA2(mult) // this function now works on functors like array
+
+liftedMult([1, 2], [3]) // [3, 6]
+liftA2(a => b => a + b)([1, 2], [30, 40]) // [31, 41, 32, 42]
+```
+
+```js
+const increment = (x) => x + 1
+
+lift(increment)([2]) // [3]
+;[2].map(increment) // [3]
+```
+
+```js
+Array.of(1) // => [1]
+```
+
+---
+
+## Referential Transparency
+
+- Category: Purity & Reasoning
+- ID: #referential-transparency
+- Aliases: referential transparent, substitution model
+- Related concepts: #pure-function, #equational-reasoning, #constant, #function
+
+### Definition
+An expression that can be replaced with its value without changing the behavior of the program is said to be referentially transparent.
+
+### Code Examples
+
+```js
+const greet = () => 'Hello World!'
+```
+
+---
+
+## Equational Reasoning
+
+- Category: Purity & Reasoning
+- ID: #equational-reasoning
+- Aliases: algebraic reasoning
+- Related concepts: #pure-function, #referential-transparency
+
+### Definition
+When an application is composed of expressions and devoid of side effects, truths about the system can be derived from the parts. You can also be confident about details of your system without having to go through every function.
+
+### Code Examples
+
+```js
+const grainToDogs = compose(chickenIntoDogs, grainIntoChicken)
+const grainToCats = compose(dogsIntoCats, grainToDogs)
+```
+
+---
+
+## Lambda
+
+- Category: Core Functions
+- ID: #lambda
+- Aliases: anonymous function, arrow function
+- Related concepts: #function, #closure, #lambda-calculus
+
+### Definition
+An anonymous function that can be treated like a value.
+
+### Code Examples
+
+```js
+;(function (a) {
+  return a + 1
+})
+
+;(a) => a + 1
+```
+
+```js
+;[1, 2].map((a) => a + 1) // [2, 3]
+```
+
+```js
+const add1 = (a) => a + 1
+```
+
+---
+
+## Lambda Calculus
+
+- Category: Types & Data Modeling
+- ID: #lambda-calculus
+- Related concepts: #lambda
+
+### Definition
+A branch of mathematics that uses functions to create a universal model of computation.
+
+---
+
+## Functional Combinator
+
+- Category: Composition & Flow
+- ID: #functional-combinator
+- Related concepts: #point-free-style, #higher-order-functions-hof
+
+### Definition
+A higher-order function, usually curried, which returns a new function changed in some way. Functional combinators are often used in Point-Free Style to write especially terse programs.
+
+### Code Examples
+
+```js
+// The "C" combinator takes a curried two-argument function and returns one which calls the original function with the arguments reversed.
+const C = (f) => (a) => (b) => f(b)(a)
+
+const divide = (a) => (b) => a / b
+
+const divideBy = C(divide)
+
+const divBy10 = divideBy(10)
+
+divBy10(30) // => 3
+```
+
+---
+
+## Lazy evaluation
+
+- Category: Composition & Flow
+- ID: #lazy-evaluation
+- Aliases: call-by-need, deferred execution, generators
+- Related concepts: #pure-function
+
+### Definition
+Lazy evaluation is a call-by-need evaluation mechanism that delays the evaluation of an expression until its value is needed. In functional languages, this allows for structures like infinite lists, which would not normally be available in an imperative language where the sequencing of commands is significant.
+
+### Code Examples
+
+```js
+const rand = function * () {
+  while (1 < 2) {
+    yield Math.random()
+  }
+}
+```
+
+```js
+const randIter = rand()
+randIter.next() // Each execution gives a random value, expression is evaluated on need.
+```
+
+---
+
+## Monoid
+
+- Category: Algebraic Structures
+- ID: #monoid
+- Aliases: empty, identity, semigroup with identity
+- Related concepts: #semigroup, #foldable, #homomorphism
+
+### Definition
+An object with a function that "combines" that object with another of the same type (semigroup) which has an "identity" value.
+
+### Code Examples
+
+```js
+1 + 1 // 2
+```
+
+```js
+1 + 0 // 1
+0 + 1 // 1
+1 + 0 === 0 + 1
+```
+
+```js
+1 + (2 + 3) === (1 + 2) + 3 // true
+```
+
+```js
+;[1, 2].concat([3, 4]) // [1, 2, 3, 4]
+```
+
+```js
+;[1, 2].concat([]) // [1, 2]
+```
+
+```js
+0 - 4 === 4 - 0 // false
+```
+
+---
+
+## Monad
+
+- Category: Algebraic Structures
+- ID: #monad
+- Aliases: flatmap, bind, chain, return
+- Related concepts: #applicative-functor, #kleisli-composition, #comonad, #option, #constant-monad, #pointed-functor, #functor
+
+### Definition
+A monad is an object with of and chain functions. chain is like map except it un-nests the resulting nested object.
+
+### Code Examples
+
+```js
+// Implementation
+Array.prototype.chain = function (f) {
+  return this.reduce((acc, it) => acc.concat(f(it)), [])
+}
+
+// Usage
+Array.of('cat,dog', 'fish,bird').chain((a) => a.split(',')) // ['cat', 'dog', 'fish', 'bird']
+
+// Contrast to map
+Array.of('cat,dog', 'fish,bird').map((a) => a.split(',')) // [['cat', 'dog'], ['fish', 'bird']]
+```
+
+---
+
+## Comonad
+
+- Category: Algebraic Structures
+- ID: #comonad
+- Related concepts: #monad
+
+### Definition
+An object that has extract and extend functions.
+
+### Code Examples
+
+```js
+const CoIdentity = (v) => ({
+  val: v,
+  extract () {
+    return this.val
+  },
+  extend (f) {
+    return CoIdentity(f(this))
+  }
+})
+```
+
+```js
+CoIdentity(1).extract() // 1
+```
+
+```js
+CoIdentity(1).extend((co) => co.extract() + 1) // CoIdentity(2)
+```
+
+---
+
+## Kleisli Composition
+
+- Category: Algebraic Structures
+- ID: #kleisli-composition
+- Related concepts: #monad, #option
+
+### Definition
+An operation for composing two monad-returning functions (Kleisli Arrows) where they have compatible types. In Haskell this is the >=> operator.
+
+### Code Examples
+
+```js
+// safeParseNum :: String -> Option Number
+const safeParseNum = (b) => {
+  const n = parseNumber(b)
+  return isNaN(n) ? None() : Some(n)
+}
+
+// validatePositive :: Number -> Option Number
+const validatePositive = (a) => a > 0 ? Some(a) : None()
+
+// kleisliCompose :: Monad M => ((b -> M c), (a -> M b)) -> a -> M c
+const kleisliCompose = (g, f) => (x) => f(x).chain(g)
+
+// parseAndValidate :: String -> Option Number
+const parseAndValidate = kleisliCompose(validatePositive, safeParseNum)
+
+parseAndValidate('1') // => Some(1)
+parseAndValidate('asdf') // => None
+parseAndValidate('999') // => Some(999)
+```
+
+---
+
+## Applicative Functor
+
+- Category: Algebraic Structures
+- ID: #applicative-functor
+- Aliases: applicative, ap
+- Related concepts: #functor, #pointed-functor, #monad, #lift
+
+### Definition
+An applicative functor is an object with an ap function. ap applies a function in the object to a value in another object of the same type.
+
+### Code Examples
+
+```js
+// Implementation
+Array.prototype.ap = function (xs) {
+  return this.reduce((acc, f) => acc.concat(xs.map(f)), [])
+}
+
+// Example usage
+;[(a) => a + 1].ap([1]) // [2]
+```
+
+```js
+// Arrays that you want to combine
+const arg1 = [1, 3]
+const arg2 = [4, 5]
+
+// combining function - must be curried for this to work
+const add = (x) => (y) => x + y
+
+const partiallyAppliedAdds = [add].ap(arg1) // [(y) => 1 + y, (y) => 3 + y]
+```
+
+```js
+partiallyAppliedAdds.ap(arg2) // [5, 6, 7, 8]
+```
+
+---
+
+## Morphism
+
+- Category: Category & Morphisms
+- ID: #morphism
+- Related concepts: #category, #homomorphism, #isomorphism
+
+### Definition
+A relationship between objects within a category. In the context of functional programming all functions are morphisms.
+
+---
+
+## Homomorphism
+
+- Category: Category & Morphisms
+- ID: #homomorphism
+- Related concepts: #morphism, #endomorphism, #isomorphism, #monoid
+
+### Definition
+A function where there is a structural property that is the same in the input as well as the output.
+
+### Code Examples
+
+```js
+// toList :: [number] -> string
+const toList = (a) => a.join(', ')
+```
+
+---
+
+## Endomorphism
+
+- Category: Category & Morphisms
+- ID: #endomorphism
+- Related concepts: #homomorphism
+
+### Definition
+A function where the input type is the same as the output. Since the types are identical, endomorphisms are also homomorphisms.
+
+### Code Examples
+
+```js
+// uppercase :: String -> String
+const uppercase = (str) => str.toUpperCase()
+
+// decrement :: Number -> Number
+const decrement = (x) => x - 1
+```
+
+---
+
+## Isomorphism
+
+- Category: Category & Morphisms
+- ID: #isomorphism
+- Related concepts: #homomorphism, #morphism
+
+### Definition
+A morphism made of a pair of transformations between 2 types of objects that is structural in nature and no data is lost.
+
+### Code Examples
+
+```js
+// Providing functions to convert in both directions makes the 2D coordinate structures isomorphic.
+const pairToCoords = (pair) => ({ x: pair[0], y: pair[1] })
+
+const coordsToPair = (coords) => [coords.x, coords.y]
+
+coordsToPair(pairToCoords([1, 2])) // [1, 2]
+
+pairToCoords(coordsToPair({ x: 1, y: 2 })) // {x: 1, y: 2}
+```
+
+---
+
+## Catamorphism
+
+- Category: Category & Morphisms
+- ID: #catamorphism
+- Aliases: fold, reduce, reduceright
+- Related concepts: #anamorphism, #foldable, #hylomorphism, #paramorphism
+
+### Definition
+A function which deconstructs a structure into a single value. reduceRight is an example of a catamorphism for array structures.
+
+### Code Examples
+
+```js
+// sum is a catamorphism from [Number] -> Number
+const sum = xs => xs.reduceRight((acc, x) => acc + x, 0)
+
+sum([1, 2, 3, 4, 5]) // 15
+```
+
+---
+
+## Anamorphism
+
+- Category: Category & Morphisms
+- ID: #anamorphism
+- Aliases: unfold, generate
+- Related concepts: #catamorphism, #hylomorphism, #apomorphism
+
+### Definition
+A function that builds up a structure by repeatedly applying a function to its argument. unfold is an example which generates an array from a function and a seed value. This is the opposite of a catamorphism. You can think of this as an anamorphism builds up a structure and catamorphism breaks it down.
+
+### Code Examples
+
+```js
+const unfold = (f, seed) => {
+  function go (f, seed, acc) {
+    const res = f(seed)
+    return res ? go(f, res[1], acc.concat([res[0]])) : acc
+  }
+  return go(f, seed, [])
+}
+```
+
+```js
+const countDown = n => unfold((n) => {
+  return n <= 0 ? undefined : [n, n - 1]
+}, n)
+
+countDown(5) // [5, 4, 3, 2, 1]
+```
+
+---
+
+## Hylomorphism
+
+- Category: Category & Morphisms
+- ID: #hylomorphism
+- Aliases: refold, unfold-then-fold
+- Related concepts: #anamorphism, #catamorphism
+
+### Definition
+The function which composes an anamorphism followed by a catamorphism.
+
+### Code Examples
+
+```js
+const sumUpToX = (x) => sum(countDown(x))
+sumUpToX(5) // 15
+```
+
+---
+
+## Paramorphism
+
+- Category: Category & Morphisms
+- ID: #paramorphism
+- Aliases: para, reductive history
+- Related concepts: #catamorphism
+
+### Definition
+A function just like reduceRight. However, there's a difference:
+
+### Code Examples
+
+```js
+// Obviously not safe for lists containing `undefined`,
+// but good enough to make the point.
+const para = (reducer, accumulator, elements) => {
+  if (elements.length === 0) { return accumulator }
+
+  const head = elements[0]
+  const tail = elements.slice(1)
+
+  return reducer(head, tail, para(reducer, accumulator, tail))
+}
+
+const suffixes = list => para(
+  (x, xs, suffxs) => [xs, ...suffxs],
+  [],
+  list
+)
+
+suffixes([1, 2, 3, 4, 5]) // [[2, 3, 4, 5], [3, 4, 5], [4, 5], [5], []]
+```
+
+---
+
+## Apomorphism
+
+- Category: Category & Morphisms
+- ID: #apomorphism
+- Aliases: apo, early return unfold
+- Related concepts: #anamorphism
+
+### Definition
+The opposite of paramorphism, just as anamorphism is the opposite of catamorphism. With paramorphism, you retain access to the accumulator and what has been accumulated, apomorphism lets you unfold with the potential to return early.
+
+---
+
+## Setoid
+
+- Category: Algebraic Structures
+- ID: #setoid
+- Related concepts: #semigroup
+
+### Definition
+An object that has an equals function which can be used to compare other objects of the same type.
+
+### Code Examples
+
+```js
+Array.prototype.equals = function (arr) {
+  const len = this.length
+  if (len !== arr.length) {
+    return false
+  }
+  for (let i = 0; i < len; i++) {
+    if (this[i] !== arr[i]) {
+      return false
+    }
+  }
+  return true
+}
+
+;[1, 2].equals([1, 2]) // true
+;[1, 2].equals([0]) // false
+```
+
+---
+
+## Semigroup
+
+- Category: Algebraic Structures
+- ID: #semigroup
+- Related concepts: #monoid, #setoid
+
+### Definition
+An object that has a concat function that combines it with another object of the same type.
+
+### Code Examples
+
+```js
+;[1].concat([2]) // [1, 2]
+```
+
+---
+
+## Foldable
+
+- Category: Algebraic Structures
+- ID: #foldable
+- Related concepts: #catamorphism, #monoid
+
+### Definition
+An object that has a reduce function that applies a function against an accumulator and each element in the array (from left to right) to reduce it to a single value.
+
+### Code Examples
+
+```js
+const sum = (list) => list.reduce((acc, val) => acc + val, 0)
+sum([1, 2, 3]) // 6
+```
+
+---
+
+## Lens
+
+- Category: Types & Data Modeling
+- ID: #lens
+- Aliases: getter, setter, optics
+- Related concepts: #function-composition, #pure-function
+
+### Definition
+A lens is a structure (often an object or function) that pairs a getter and a non-mutating setter for some other data structure.
+
+### Code Examples
+
+```js
+// Using [Ramda's lens](http://ramdajs.com/docs/#lens)
+const nameLens = R.lens(
+  // getter for name property on an object
+  (obj) => obj.name,
+  // setter for name property
+  (val, obj) => Object.assign({}, obj, { name: val })
+)
+```
+
+```js
+const person = { name: 'Gertrude Blanch' }
+
+// invoke the getter
+R.view(nameLens, person) // 'Gertrude Blanch'
+
+// invoke the setter
+R.set(nameLens, 'Shafi Goldwasser', person) // {name: 'Shafi Goldwasser'}
+
+// run a function on the value in the structure
+R.over(nameLens, uppercase, person) // {name: 'GERTRUDE BLANCH'}
+```
+
+```js
+// This lens focuses on the first item in a non-empty array
+const firstLens = R.lens(
+  // get first item in array
+  xs => xs[0],
+  // non-mutating setter for first item in array
+  (val, [__, ...xs]) => [val, ...xs]
+)
+
+const people = [{ name: 'Gertrude Blanch' }, { name: 'Shafi Goldwasser' }]
+
+// Despite what you may assume, lenses compose left-to-right.
+R.over(compose(firstLens, nameLens), uppercase, people) // [{'name': 'GERTRUDE BLANCH'}, {'name': 'Shafi Goldwasser'}]
+```
+
+---
+
+## Type Signatures
+
+- Category: Types & Data Modeling
+- ID: #type-signatures
+- Related concepts: #contracts
+
+### Definition
+Often functions in JavaScript will include comments that indicate the types of their arguments and return values.
+
+### Code Examples
+
+```js
+// functionName :: firstArgType -> secondArgType -> returnType
+
+// add :: Number -> Number -> Number
+const add = (x) => (y) => x + y
+
+// increment :: Number -> Number
+const increment = (x) => x + 1
+```
+
+```js
+// call :: (a -> b) -> a -> b
+const call = (f) => (x) => f(x)
+```
+
+```js
+// map :: (a -> b) -> [a] -> [b]
+const map = (f) => (list) => list.map(f)
+```
+
+---
+
+## Algebraic data type
+
+- Category: Types & Data Modeling
+- ID: #algebraic-data-type
+- Aliases: adt
+- Related concepts: #sum-type, #product-type
+
+### Definition
+A composite type made from putting other types together. Two common classes of algebraic types are sum and product.
+
+---
+
+## Sum type
+
+- Category: Types & Data Modeling
+- ID: #sum-type
+- Aliases: union type, discriminated union, tagged union, either
+- Related concepts: #algebraic-data-type, #option
+
+### Definition
+A Sum type is the combination of two types together into another one. It is called sum because the number of possible values in the result type is the sum of the input types.
+
+### Code Examples
+
+```js
+// imagine that rather than sets here we have types that can only have these values
+const bools = new Set([true, false])
+const halfTrue = new Set(['half-true'])
+
+// The weakLogic type contains the sum of the values from bools and halfTrue
+const weakLogicValues = new Set([...bools, ...halfTrue])
+```
+
+---
+
+## Product type
+
+- Category: Types & Data Modeling
+- ID: #product-type
+- Aliases: tuple, pair, record, struct
+- Related concepts: #algebraic-data-type
+
+### Definition
+A product type combines types together in a way you're probably more familiar with:
+
+### Code Examples
+
+```js
+// point :: (Number, Number) -> {x: Number, y: Number}
+const point = (x, y) => ({ x, y })
+```
+
+---
+
+## Option
+
+- Category: Types & Data Modeling
+- ID: #option
+- Aliases: maybe, some, none, just, nothing
+- Related concepts: #monad, #dealing-with-partial-functions, #sum-type, #functor, #kleisli-composition
+
+### Definition
+Option is a sum type with two cases often called Some and None.
+
+### Code Examples
+
+```js
+// Naive definition
+
+const Some = (v) => ({
+  val: v,
+  map (f) {
+    return Some(f(this.val))
+  },
+  chain (f) {
+    return f(this.val)
+  }
+})
+
+const None = () => ({
+  map (f) {
+    return this
+  },
+  chain (f) {
+    return this
+  }
+})
+
+// maybeProp :: (String, {a}) -> Option a
+const maybeProp = (key, obj) => typeof obj[key] === 'undefined' ? None() : Some(obj[key])
+```
+
+```js
+// getItem :: Cart -> Option CartItem
+const getItem = (cart) => maybeProp('item', cart)
+
+// getPrice :: Item -> Option Number
+const getPrice = (item) => maybeProp('price', item)
+
+// getNestedPrice :: cart -> Option a
+const getNestedPrice = (cart) => getItem(cart).chain(getPrice)
+
+getNestedPrice({}) // None()
+getNestedPrice({ item: { foo: 1 } }) // None()
+getNestedPrice({ item: { price: 9.99 } }) // Some(9.99)
+```
+
+---
+
+## Function
+
+- Category: Core Functions
+- ID: #function
+- Related concepts: #pure-function, #lambda, #referential-transparency, #side-effects, #partial-function
+
+### Definition
+A function f :: A => B is an expression - often called arrow or lambda expression - with exactly one (immutable) parameter of type A and exactly one return value of type B. That value depends entirely on the argument, making functions context-independent, or referentially transparent. What is implied here is that a function must not produce any hidden side effects - a function is always pure, by definition. These properties make functions pleasant to work with: they are entirely deterministic and therefore predictable. Functions enable working with code as data, abstracting over behaviour:
+
+### Code Examples
+
+```js
+// times2 :: Number -> Number
+const times2 = n => n * 2
+
+;[1, 2, 3].map(times2) // [2, 4, 6]
+```
+
+---
+
+## Partial function
+
+- Category: Core Functions
+- ID: #partial-function
+- Related concepts: #total-function, #dealing-with-partial-functions, #function
+
+### Definition
+A partial function is a function which is not defined for all arguments - it might return an unexpected result or may never terminate. Partial functions add cognitive overhead, they are harder to reason about and can lead to runtime errors. Some examples:
+
+### Code Examples
+
+```js
+// example 1: sum of the list
+// sum :: [Number] -> Number
+const sum = arr => arr.reduce((a, b) => a + b)
+sum([1, 2, 3]) // 6
+sum([]) // TypeError: Reduce of empty array with no initial value
+
+// example 2: get the first item in list
+// first :: [A] -> A
+const first = a => a[0]
+first([42]) // 42
+first([]) // undefined
+// or even worse:
+first([[42]])[0] // 42
+first([])[0] // Uncaught TypeError: Cannot read property '0' of undefined
+
+// example 3: repeat function N times
+// times :: Number -> (Number -> Number) -> Number
+const times = n => fn => n && (fn(n), times(n - 1)(fn))
+times(3)(console.log)
+// 3
+// 2
+// 1
+times(-1)(console.log)
+// RangeError: Maximum call stack size exceeded
+```
+
+---
+
+## Dealing with partial functions
+
+- Category: Core Functions
+- ID: #dealing-with-partial-functions
+- Related concepts: #partial-function, #option
+
+### Definition
+Partial functions are dangerous as they need to be treated with great caution. You might get an unexpected (wrong) result or run into runtime errors. Sometimes a partial function might not return at all. Being aware of and treating all these edge cases accordingly can become very tedious. Fortunately a partial function can be converted to a regular (or total) one. We can provide default values or use guards to deal with inputs for which the (previously) partial function is undefined. Utilizing the Option type, we can yield either Some(value) or None where we would otherwise have behaved unexpectedly:
+
+### Code Examples
+
+```js
+// example 1: sum of the list
+// we can provide default value so it will always return result
+// sum :: [Number] -> Number
+const sum = arr => arr.reduce((a, b) => a + b, 0)
+sum([1, 2, 3]) // 6
+sum([]) // 0
+
+// example 2: get the first item in list
+// change result to Option
+// first :: [A] -> Option A
+const first = a => a.length ? Some(a[0]) : None()
+first([42]).map(a => console.log(a)) // 42
+first([]).map(a => console.log(a)) // console.log won't execute at all
+// our previous worst case
+first([[42]]).map(a => console.log(a[0])) // 42
+first([]).map(a => console.log(a[0])) // won't execute, so we won't have error here
+// more of that, you will know by function return type (Option)
+// that you should use `.map` method to access the data and you will never forget
+// to check your input because such check become built-in into the function
+
+// example 3: repeat function N times
+// we should make function always terminate by changing conditions:
+// times :: Number -> (Number -> Number) -> Number
+const times = n => fn => n > 0 && (fn(n), times(n - 1)(fn))
+times(3)(console.log)
+// 3
+// 2
+// 1
+times(-1)(console.log)
+// won't execute anything
+```
+
+---
+
+## Total Function
+
+- Category: Core Functions
+- ID: #total-function
+- Related concepts: #partial-function
+
+### Definition
+A function which returns a valid result for all inputs defined in its type. This is as opposed to Partial Functions which may throw an error, return an unexpected result, or fail to terminate.
+
+---
+
+## Functional Programming Libraries in JavaScript
+
+- Category: Types & Data Modeling
+- ID: #functional-programming-libraries-in-javascript
+
+### Definition
+A curated catalog of functional programming libraries and toolkits in JavaScript including Ramda, Folktale, Sanctuary, and fp-ts.
+
+---
+

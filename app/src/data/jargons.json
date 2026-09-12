@@ -1,0 +1,2436 @@
+{
+  "meta": {
+    "title": "FP Jargon",
+    "subtitle": "The vocabulary of functional programming mapped into an interactive graph",
+    "totalTerms": 57,
+    "totalRelationships": 73,
+    "sourceRepo": "https://github.com/hemanth/functional-programming-jargon",
+    "originalAuthor": "Hemanth HM"
+  },
+  "categories": {
+    "core-functions": {
+      "id": "core-functions",
+      "name": "Core Functions",
+      "description": "First-class citizens, closures, predicates, and functional building blocks.",
+      "color": "#3b82f6",
+      "accent": "text-blue-500 bg-blue-500/10 border-blue-500/30"
+    },
+    "composition": {
+      "id": "composition",
+      "name": "Composition & Flow",
+      "description": "Chaining, currying, partial application, and execution pipelines.",
+      "color": "#10b981",
+      "accent": "text-emerald-500 bg-emerald-500/10 border-emerald-500/30"
+    },
+    "purity-state": {
+      "id": "purity-state",
+      "name": "Purity & Reasoning",
+      "description": "Referential transparency, determinism, side effects, and equational proofs.",
+      "color": "#f59e0b",
+      "accent": "text-amber-500 bg-amber-500/10 border-amber-500/30"
+    },
+    "category-morphisms": {
+      "id": "category-morphisms",
+      "name": "Category & Morphisms",
+      "description": "Abstract mappings, homomorphisms, isomorphisms, and recursive fold/unfolds.",
+      "color": "#a855f7",
+      "accent": "text-purple-500 bg-purple-500/10 border-purple-500/30"
+    },
+    "algebraic-structures": {
+      "id": "algebraic-structures",
+      "name": "Algebraic Structures",
+      "description": "Functors, Monads, Monoids, Semigroups, and Fantasy Land standards.",
+      "color": "#ec4899",
+      "accent": "text-pink-500 bg-pink-500/10 border-pink-500/30"
+    },
+    "types-data": {
+      "id": "types-data",
+      "name": "Types & Data Modeling",
+      "description": "Algebraic data types, Option/Maybe, Lenses, and Type Signatures.",
+      "color": "#06b6d4",
+      "accent": "text-cyan-500 bg-cyan-500/10 border-cyan-500/30"
+    }
+  },
+  "terms": [
+    {
+      "id": "arity",
+      "title": "Arity",
+      "depth": 2,
+      "category": "core-functions",
+      "aliases": [
+        "unary",
+        "binary",
+        "ternary",
+        "nullary",
+        "variadic"
+      ],
+      "summary": "The number of arguments a function takes. From words like unary, binary, ternary, etc.",
+      "body": "The number of arguments a function takes. From words like unary, binary, ternary, etc.\n\n```js\nconst sum = (a, b) => a + b\n// The arity of sum is 2 (binary)\nconst inc = a => a + 1\n// The arity of inc is 1 (unary)\nconst zero = () => 0\n// The arity of zero is 0 (nullary)\n```\n\n__Further reading__\n\n* [Arity](https://en.wikipedia.org/wiki/Arity) on Wikipedia",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "const sum = (a, b) => a + b\n// The arity of sum is 2 (binary)\nconst inc = a => a + 1\n// The arity of inc is 1 (unary)\nconst zero = () => 0\n// The arity of zero is 0 (nullary)"
+        }
+      ],
+      "furtherReading": [
+        {
+          "title": "Arity",
+          "url": "https://en.wikipedia.org/wiki/Arity"
+        }
+      ],
+      "crossRefs": [],
+      "relatedIds": [
+        "currying"
+      ]
+    },
+    {
+      "id": "higher-order-functions-hof",
+      "title": "Higher-Order Functions (HOF)",
+      "depth": 2,
+      "category": "core-functions",
+      "aliases": [
+        "hof",
+        "higher order function"
+      ],
+      "summary": "A function which takes a function as an argument and/or returns a function.",
+      "body": "A function which takes a function as an argument and/or returns a function.\n\n```js\nconst filter = (predicate, xs) => xs.filter(predicate)\n```\n\n```js\nconst is = (type) => (x) => Object(x) instanceof type\n```\n\n```js\nfilter(is(Number), [0, '1', 2, null]) // [0, 2]\n```",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "const filter = (predicate, xs) => xs.filter(predicate)"
+        },
+        {
+          "lang": "js",
+          "code": "const is = (type) => (x) => Object(x) instanceof type"
+        },
+        {
+          "lang": "js",
+          "code": "filter(is(Number), [0, '1', 2, null]) // [0, 2]"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [],
+      "relatedIds": [
+        "partial-application",
+        "point-free-style",
+        "functional-combinator",
+        "closure",
+        "predicate",
+        "function-composition",
+        "continuation"
+      ]
+    },
+    {
+      "id": "closure",
+      "title": "Closure",
+      "depth": 2,
+      "category": "core-functions",
+      "aliases": [],
+      "summary": "A closure is a scope which captures local variables of a function for access even after the execution has moved out of the block in which it is defined. This allows the values in the closure to be accessed by returned functions.",
+      "body": "A closure is a scope which captures local variables of a function for access even after the execution has moved out of the block in which it is defined.\nThis allows the values in the closure to be accessed by returned functions.\n\n```js\nconst addTo = x => y => x + y\nconst addToFive = addTo(5)\naddToFive(3) // => 8\n```\n\nIn this case the `x` is retained in `addToFive`'s closure with the value `5`. `addToFive` can then be called with the `y`\nto get back the sum.\n\n__Further reading/Sources__\n* [Lambda Vs Closure](http://stackoverflow.com/questions/220658/what-is-the-difference-between-a-closure-and-a-lambda)\n* [JavaScript Closures highly voted discussion](http://stackoverflow.com/questions/111102/how-do-javascript-closures-work)",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "const addTo = x => y => x + y\nconst addToFive = addTo(5)\naddToFive(3) // => 8"
+        }
+      ],
+      "furtherReading": [
+        {
+          "title": "Lambda Vs Closure",
+          "url": "http://stackoverflow.com/questions/220658/what-is-the-difference-between-a-closure-and-a-lambda"
+        },
+        {
+          "title": "JavaScript Closures highly voted discussion",
+          "url": "http://stackoverflow.com/questions/111102/how-do-javascript-closures-work"
+        }
+      ],
+      "crossRefs": [],
+      "relatedIds": [
+        "lambda",
+        "higher-order-functions-hof"
+      ]
+    },
+    {
+      "id": "partial-application",
+      "title": "Partial Application",
+      "depth": 2,
+      "category": "composition",
+      "aliases": [],
+      "summary": "Partially applying a function means creating a new function by pre-filling some of the arguments to the original function.",
+      "body": "Partially applying a function means creating a new function by pre-filling some of the arguments to the original function.\n\n```js\n// Helper to create partially applied functions\n// Takes a function and some arguments\nconst partial = (f, ...args) =>\n  // returns a function that takes the rest of the arguments\n  (...moreArgs) =>\n    // and calls the original function with all of them\n    f(...args, ...moreArgs)\n\n// Something to apply\nconst add3 = (a, b, c) => a + b + c\n\n// Partially applying `2` and `3` to `add3` gives you a one-argument function\nconst fivePlus = partial(add3, 2, 3) // (c) => 2 + 3 + c\n\nfivePlus(4) // 9\n```\n\nYou can also use `Function.prototype.bind` to partially apply a function in JS:\n\n```js\nconst add1More = add3.bind(null, 2, 3) // (c) => 2 + 3 + c\n```\n\nPartial application helps create simpler functions from more complex ones by baking in data when you have it. [Curried](#currying) functions are automatically partially applied.",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "// Helper to create partially applied functions\n// Takes a function and some arguments\nconst partial = (f, ...args) =>\n  // returns a function that takes the rest of the arguments\n  (...moreArgs) =>\n    // and calls the original function with all of them\n    f(...args, ...moreArgs)\n\n// Something to apply\nconst add3 = (a, b, c) => a + b + c\n\n// Partially applying `2` and `3` to `add3` gives you a one-argument function\nconst fivePlus = partial(add3, 2, 3) // (c) => 2 + 3 + c\n\nfivePlus(4) // 9"
+        },
+        {
+          "lang": "js",
+          "code": "const add1More = add3.bind(null, 2, 3) // (c) => 2 + 3 + c"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [
+        "currying"
+      ],
+      "relatedIds": [
+        "currying",
+        "higher-order-functions-hof"
+      ]
+    },
+    {
+      "id": "currying",
+      "title": "Currying",
+      "depth": 2,
+      "category": "composition",
+      "aliases": [
+        "curried"
+      ],
+      "summary": "The process of converting a function that takes multiple arguments into a function that takes them one at a time.",
+      "body": "The process of converting a function that takes multiple arguments into a function that takes them one at a time.\n\nEach time the function is called it only accepts one argument and returns a function that takes one argument until all arguments are passed.\n\n```js\nconst sum = (a, b) => a + b\n\nconst curriedSum = (a) => (b) => a + b\n\ncurriedSum(40)(2) // 42.\n\nconst add2 = curriedSum(2) // (b) => 2 + b\n\nadd2(10) // 12\n```",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "const sum = (a, b) => a + b\n\nconst curriedSum = (a) => (b) => a + b\n\ncurriedSum(40)(2) // 42.\n\nconst add2 = curriedSum(2) // (b) => 2 + b\n\nadd2(10) // 12"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [],
+      "relatedIds": [
+        "partial-application",
+        "arity",
+        "auto-currying",
+        "point-free-style",
+        "constant-function"
+      ]
+    },
+    {
+      "id": "auto-currying",
+      "title": "Auto Currying",
+      "depth": 2,
+      "category": "composition",
+      "aliases": [],
+      "summary": "Transforming a function that takes multiple arguments into one that if given less than its correct number of arguments returns a function that takes the rest. When the function gets the correct number of arguments it is then evaluated.",
+      "body": "Transforming a function that takes multiple arguments into one that if given less than its correct number of arguments returns a function that takes the rest. When the function gets the correct number of arguments it is then evaluated.\n\nLodash & Ramda have a `curry` function that works this way.\n\n```js\nconst add = (x, y) => x + y\n\nconst curriedAdd = _.curry(add)\ncurriedAdd(1, 2) // 3\ncurriedAdd(1) // (y) => 1 + y\ncurriedAdd(1)(2) // 3\n```\n\n__Further reading__\n* [Favoring Curry](http://fr.umio.us/favoring-curry/)\n* [Hey Underscore, You're Doing It Wrong!](https://www.youtube.com/watch?v=m3svKOdZijA)",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "const add = (x, y) => x + y\n\nconst curriedAdd = _.curry(add)\ncurriedAdd(1, 2) // 3\ncurriedAdd(1) // (y) => 1 + y\ncurriedAdd(1)(2) // 3"
+        }
+      ],
+      "furtherReading": [
+        {
+          "title": "Favoring Curry",
+          "url": "http://fr.umio.us/favoring-curry/"
+        },
+        {
+          "title": "Hey Underscore, You're Doing It Wrong!",
+          "url": "https://www.youtube.com/watch?v=m3svKOdZijA"
+        }
+      ],
+      "crossRefs": [],
+      "relatedIds": [
+        "currying"
+      ]
+    },
+    {
+      "id": "function-composition",
+      "title": "Function Composition",
+      "depth": 2,
+      "category": "composition",
+      "aliases": [],
+      "summary": "The act of putting two functions together to form a third function where the output of one function is the input of the other. This is one of the most important ideas of functional programming.",
+      "body": "The act of putting two functions together to form a third function where the output of one function is the input of the other. This is one of the most important ideas of functional programming.\n\n```js\nconst compose = (f, g) => (a) => f(g(a)) // Definition\nconst floorAndToString = compose((val) => val.toString(), Math.floor) // Usage\nfloorAndToString(121.212121) // '121'\n```",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "const compose = (f, g) => (a) => f(g(a)) // Definition\nconst floorAndToString = compose((val) => val.toString(), Math.floor) // Usage\nfloorAndToString(121.212121) // '121'"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [],
+      "relatedIds": [
+        "point-free-style",
+        "category",
+        "higher-order-functions-hof",
+        "lens"
+      ]
+    },
+    {
+      "id": "continuation",
+      "title": "Continuation",
+      "depth": 2,
+      "category": "composition",
+      "aliases": [],
+      "summary": "At any given point in a program, the part of the code that's yet to be executed is known as a continuation.",
+      "body": "At any given point in a program, the part of the code that's yet to be executed is known as a continuation.\n\n```js\nconst printAsString = (num) => console.log(`Given ${num}`)\n\nconst addOneAndContinue = (num, cc) => {\n  const result = num + 1\n  cc(result)\n}\n\naddOneAndContinue(2, printAsString) // 'Given 3'\n```\n\nContinuations are often seen in asynchronous programming when the program needs to wait to receive data before it can continue. The response is often passed off to the rest of the program, which is the continuation, once it's been received.\n\n```js\nconst continueProgramWith = (data) => {\n  // Continues program with data\n}\n\nreadFileAsync('path/to/file', (err, response) => {\n  if (err) {\n    // handle error\n    return\n  }\n  continueProgramWith(response)\n})\n```",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "const printAsString = (num) => console.log(`Given ${num}`)\n\nconst addOneAndContinue = (num, cc) => {\n  const result = num + 1\n  cc(result)\n}\n\naddOneAndContinue(2, printAsString) // 'Given 3'"
+        },
+        {
+          "lang": "js",
+          "code": "const continueProgramWith = (data) => {\n  // Continues program with data\n}\n\nreadFileAsync('path/to/file', (err, response) => {\n  if (err) {\n    // handle error\n    return\n  }\n  continueProgramWith(response)\n})"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [],
+      "relatedIds": [
+        "higher-order-functions-hof"
+      ]
+    },
+    {
+      "id": "pure-function",
+      "title": "Pure Function",
+      "depth": 2,
+      "category": "core-functions",
+      "aliases": [
+        "deterministic function",
+        "purity"
+      ],
+      "summary": "A function is pure if the return value is only determined by its input values, and does not produce side effects. The function must always return the same result when given the same input.",
+      "body": "A function is pure if the return value is only determined by its input values, and does not produce side effects. The function must always return the same result when given the same input.\n\n```js\nconst greet = (name) => `Hi, ${name}`\n\ngreet('Brianne') // 'Hi, Brianne'\n```\n\nAs opposed to each of the following:\n\n```js\nwindow.name = 'Brianne'\n\nconst greet = () => `Hi, ${window.name}`\n\ngreet() // \"Hi, Brianne\"\n```\n\nThe above example's output is based on data stored outside of the function...\n\n```js\nlet greeting\n\nconst greet = (name) => {\n  greeting = `Hi, ${name}`\n}\n\ngreet('Brianne')\ngreeting // \"Hi, Brianne\"\n```\n\n... and this one modifies state outside of the function.",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "const greet = (name) => `Hi, ${name}`\n\ngreet('Brianne') // 'Hi, Brianne'"
+        },
+        {
+          "lang": "js",
+          "code": "window.name = 'Brianne'\n\nconst greet = () => `Hi, ${window.name}`\n\ngreet() // \"Hi, Brianne\""
+        },
+        {
+          "lang": "js",
+          "code": "let greeting\n\nconst greet = (name) => {\n  greeting = `Hi, ${name}`\n}\n\ngreet('Brianne')\ngreeting // \"Hi, Brianne\""
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [],
+      "relatedIds": [
+        "side-effects",
+        "referential-transparency",
+        "idempotence",
+        "equational-reasoning",
+        "function",
+        "lazy-evaluation",
+        "lens"
+      ]
+    },
+    {
+      "id": "side-effects",
+      "title": "Side effects",
+      "depth": 2,
+      "category": "purity-state",
+      "aliases": [],
+      "summary": "A function or expression is said to have a side effect if apart from returning a value, it interacts with (reads from or writes to) external mutable state.",
+      "body": "A function or expression is said to have a side effect if apart from returning a value, it interacts with (reads from or writes to) external mutable state.\n\n```js\nconst differentEveryTime = new Date()\n```\n\n```js\nconsole.log('IO is a side effect!')\n```",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "const differentEveryTime = new Date()"
+        },
+        {
+          "lang": "js",
+          "code": "console.log('IO is a side effect!')"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [],
+      "relatedIds": [
+        "pure-function",
+        "function"
+      ]
+    },
+    {
+      "id": "idempotence",
+      "title": "Idempotence",
+      "depth": 2,
+      "category": "purity-state",
+      "aliases": [],
+      "summary": "A function is idempotent if reapplying it to its result does not produce a different result.",
+      "body": "A function is idempotent if reapplying it to its result does not produce a different result.\n\n```js\nMath.abs(Math.abs(10))\n```\n\n```js\nsort(sort(sort([2, 1])))\n```",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "Math.abs(Math.abs(10))"
+        },
+        {
+          "lang": "js",
+          "code": "sort(sort(sort([2, 1])))"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [],
+      "relatedIds": [
+        "pure-function"
+      ]
+    },
+    {
+      "id": "point-free-style",
+      "title": "Point-Free Style",
+      "depth": 2,
+      "category": "composition",
+      "aliases": [
+        "tacit programming",
+        "tacit",
+        "point-free",
+        "pointfree"
+      ],
+      "summary": "Writing functions where the definition does not explicitly identify the arguments used. This style usually requires currying or other Higher-Order functions. A.K.A Tacit programming.",
+      "body": "Writing functions where the definition does not explicitly identify the arguments used. This style usually requires [currying](#currying) or other [Higher-Order functions](#higher-order-functions-hof). A.K.A Tacit programming.\n\n```js\n// Given\nconst map = (fn) => (list) => list.map(fn)\nconst add = (a) => (b) => a + b\n\n// Then\n\n// Not point-free - `numbers` is an explicit argument\nconst incrementAll = (numbers) => map(add(1))(numbers)\n\n// Point-free - The list is an implicit argument\nconst incrementAll2 = map(add(1))\n```\n\nPoint-free function definitions look just like normal assignments without `function` or `=>`. It's worth mentioning that point-free functions are not necessarily better than their counterparts, as they can be more difficult to understand when complex.",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "// Given\nconst map = (fn) => (list) => list.map(fn)\nconst add = (a) => (b) => a + b\n\n// Then\n\n// Not point-free - `numbers` is an explicit argument\nconst incrementAll = (numbers) => map(add(1))(numbers)\n\n// Point-free - The list is an implicit argument\nconst incrementAll2 = map(add(1))"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [
+        "currying",
+        "higher-order-functions-hof"
+      ],
+      "relatedIds": [
+        "currying",
+        "function-composition",
+        "higher-order-functions-hof",
+        "functional-combinator"
+      ]
+    },
+    {
+      "id": "predicate",
+      "title": "Predicate",
+      "depth": 2,
+      "category": "core-functions",
+      "aliases": [],
+      "summary": "A predicate is a function that returns true or false for a given value. A common use of a predicate is as the callback for array filter.",
+      "body": "A predicate is a function that returns true or false for a given value. A common use of a predicate is as the callback for array filter.\n\n```js\nconst predicate = (a) => a > 2\n\n;[1, 2, 3, 4].filter(predicate) // [3, 4]\n```",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "const predicate = (a) => a > 2\n\n;[1, 2, 3, 4].filter(predicate) // [3, 4]"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [],
+      "relatedIds": [
+        "higher-order-functions-hof"
+      ]
+    },
+    {
+      "id": "contracts",
+      "title": "Contracts",
+      "depth": 2,
+      "category": "purity-state",
+      "aliases": [],
+      "summary": "A contract specifies the obligations and guarantees of the behavior from a function or expression at runtime. This acts as a set of rules that are expected from the input and output of a function or expression, and errors are generally reported whenever a contract is violated.",
+      "body": "A contract specifies the obligations and guarantees of the behavior from a function or expression at runtime. This acts as a set of rules that are expected from the input and output of a function or expression, and errors are generally reported whenever a contract is violated.\n\n```js\n// Define our contract : int -> boolean\nconst contract = (input) => {\n  if (typeof input === 'number') return true\n  throw new Error('Contract violated: expected int -> boolean')\n}\n\nconst addOne = (num) => contract(num) && num + 1\n\naddOne(2) // 3\naddOne('some string') // Contract violated: expected int -> boolean\n```",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "// Define our contract : int -> boolean\nconst contract = (input) => {\n  if (typeof input === 'number') return true\n  throw new Error('Contract violated: expected int -> boolean')\n}\n\nconst addOne = (num) => contract(num) && num + 1\n\naddOne(2) // 3\naddOne('some string') // Contract violated: expected int -> boolean"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [],
+      "relatedIds": [
+        "type-signatures"
+      ]
+    },
+    {
+      "id": "category",
+      "title": "Category",
+      "depth": 2,
+      "category": "category-morphisms",
+      "aliases": [],
+      "summary": "A category in category theory is a collection of objects and morphisms between them. In programming, typically types act as the objects and functions as morphisms.",
+      "body": "A category in category theory is a collection of objects and morphisms between them. In programming, typically types\nact as the objects and functions as morphisms.\n\nTo be a valid category, three rules must be met:\n\n1. There must be an identity morphism that maps an object to itself.\n    Where `a` is an object in some category,\n    there must be a function from `a -> a`.\n2. Morphisms must compose.\n    Where `a`, `b`, and `c` are objects in some category,\n    and `f` is a morphism from `a -> b`, and `g` is a morphism from `b -> c`;\n    `g(f(x))` must be equivalent to `(g • f)(x)`.\n3. Composition must be associative\n    `f • (g • h)` is the same as `(f • g) • h`.\n\nSince these rules govern composition at very abstract level, category theory is great at uncovering new ways of composing things.\n\nAs an example we can define a category Max as a class:\n\n```js\n\nclass Max {\n  constructor (a) {\n    this.a = a\n  }\n\n  id () {\n    return this\n  }\n\n  compose (b) {\n    return this.a > b.a ? this : b\n  }\n\n  toString () {\n    return `Max(${this.a})`\n  }\n}\n\nnew Max(2).compose(new Max(3)).compose(new Max(5)).id().id() // => Max(5)\n```\n\n__Further reading__\n\n* [Category Theory for Programmers](https://bartoszmilewski.com/2014/10/28/category-theory-for-programmers-the-preface/)",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "class Max {\n  constructor (a) {\n    this.a = a\n  }\n\n  id () {\n    return this\n  }\n\n  compose (b) {\n    return this.a > b.a ? this : b\n  }\n\n  toString () {\n    return `Max(${this.a})`\n  }\n}\n\nnew Max(2).compose(new Max(3)).compose(new Max(5)).id().id() // => Max(5)"
+        }
+      ],
+      "furtherReading": [
+        {
+          "title": "Category Theory for Programmers",
+          "url": "https://bartoszmilewski.com/2014/10/28/category-theory-for-programmers-the-preface/"
+        }
+      ],
+      "crossRefs": [],
+      "relatedIds": [
+        "morphism",
+        "function-composition"
+      ]
+    },
+    {
+      "id": "value",
+      "title": "Value",
+      "depth": 2,
+      "category": "purity-state",
+      "aliases": [],
+      "summary": "Anything that can be assigned to a variable.",
+      "body": "Anything that can be assigned to a variable.\n\n```js\n5\nObject.freeze({ name: 'John', age: 30 }) // The `freeze` function enforces immutability.\n;(a) => a\n;[1]\nundefined\n```",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "5\nObject.freeze({ name: 'John', age: 30 }) // The `freeze` function enforces immutability.\n;(a) => a\n;[1]\nundefined"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [],
+      "relatedIds": [
+        "constant"
+      ]
+    },
+    {
+      "id": "constant",
+      "title": "Constant",
+      "depth": 2,
+      "category": "purity-state",
+      "aliases": [],
+      "summary": "A variable that cannot be reassigned once defined.",
+      "body": "A variable that cannot be reassigned once defined.\n\n```js\nconst five = 5\nconst john = Object.freeze({ name: 'John', age: 30 })\n```\n\nConstants are [referentially transparent](#referential-transparency). That is, they can be replaced with the values that they represent without affecting the result.\n\nWith the above two constants the following expression will always return `true`.\n\n```js\njohn.age + five === ({ name: 'John', age: 30 }).age + 5\n```",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "const five = 5\nconst john = Object.freeze({ name: 'John', age: 30 })"
+        },
+        {
+          "lang": "js",
+          "code": "john.age + five === ({ name: 'John', age: 30 }).age + 5"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [
+        "referential-transparency"
+      ],
+      "relatedIds": [
+        "referential-transparency",
+        "constant-function",
+        "value"
+      ]
+    },
+    {
+      "id": "constant-function",
+      "title": "Constant Function",
+      "depth": 3,
+      "category": "purity-state",
+      "aliases": [],
+      "summary": "A curried function that ignores its second argument:",
+      "body": "A [curried](#currying) function that ignores its second argument:\n\n```js\nconst constant = a => () => a\n\n;[1, 2].map(constant(0)) // => [0, 0]\n```",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "const constant = a => () => a\n\n;[1, 2].map(constant(0)) // => [0, 0]"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [
+        "currying"
+      ],
+      "relatedIds": [
+        "constant",
+        "constant-functor",
+        "currying"
+      ]
+    },
+    {
+      "id": "constant-functor",
+      "title": "Constant Functor",
+      "depth": 3,
+      "category": "algebraic-structures",
+      "aliases": [],
+      "summary": "Object whose map doesn't transform the contents. See Functor.",
+      "body": "Object whose `map` doesn't transform the contents. See [Functor](#functor).\n\n```js\nConstant(1).map(n => n + 1) // => Constant(1)\n```",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "Constant(1).map(n => n + 1) // => Constant(1)"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [
+        "functor"
+      ],
+      "relatedIds": [
+        "constant-function",
+        "constant-monad",
+        "functor"
+      ]
+    },
+    {
+      "id": "constant-monad",
+      "title": "Constant Monad",
+      "depth": 3,
+      "category": "algebraic-structures",
+      "aliases": [],
+      "summary": "Object whose chain doesn't transform the contents. See Monad.",
+      "body": "Object whose `chain` doesn't transform the contents. See [Monad](#monad).\n\n```js\nConstant(1).chain(n => Constant(n + 1)) // => Constant(1)\n```",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "Constant(1).chain(n => Constant(n + 1)) // => Constant(1)"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [
+        "monad"
+      ],
+      "relatedIds": [
+        "constant-functor",
+        "monad"
+      ]
+    },
+    {
+      "id": "functor",
+      "title": "Functor",
+      "depth": 2,
+      "category": "algebraic-structures",
+      "aliases": [
+        "map",
+        "mappable"
+      ],
+      "summary": "An object that implements a map function that takes a function which is run on the contents of that object. A functor must adhere to two rules:",
+      "body": "An object that implements a `map` function that takes a function which is run on the contents of that object. A functor must adhere to two rules:\n\n__Preserves identity__\n\n```js\nobject.map(x => x)\n```\n\nis equivalent to just `object`.\n\n__Composable__\n\n```js\nobject.map(x => g(f(x)))\n```\n\nis equivalent to\n\n```js\nobject.map(f).map(g)\n```\n\n(`f`, `g` are arbitrary composable functions)\n\nThe reference implementation of [Option](#option) is a functor as it satisfies the rules:\n\n```js\nSome(1).map(x => x) // = Some(1)\n```\n\nand\n\n```js\nconst f = x => x + 1\nconst g = x => x * 2\n\nSome(1).map(x => g(f(x))) // = Some(4)\nSome(1).map(f).map(g) // = Some(4)\n```",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "object.map(x => x)"
+        },
+        {
+          "lang": "js",
+          "code": "object.map(x => g(f(x)))"
+        },
+        {
+          "lang": "js",
+          "code": "object.map(f).map(g)"
+        },
+        {
+          "lang": "js",
+          "code": "Some(1).map(x => x) // = Some(1)"
+        },
+        {
+          "lang": "js",
+          "code": "const f = x => x + 1\nconst g = x => x * 2\n\nSome(1).map(x => g(f(x))) // = Some(4)\nSome(1).map(f).map(g) // = Some(4)"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [
+        "option"
+      ],
+      "relatedIds": [
+        "pointed-functor",
+        "applicative-functor",
+        "lift",
+        "constant-functor",
+        "option",
+        "monad"
+      ]
+    },
+    {
+      "id": "pointed-functor",
+      "title": "Pointed Functor",
+      "depth": 2,
+      "category": "algebraic-structures",
+      "aliases": [],
+      "summary": "An object with an of function that puts any single value into it.",
+      "body": "An object with an `of` function that puts _any_ single value into it.\n\nES2015 adds `Array.of` making arrays a pointed functor.\n\n```js\nArray.of(1) // [1]\n```",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "Array.of(1) // [1]"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [],
+      "relatedIds": [
+        "functor",
+        "applicative-functor",
+        "lift",
+        "monad"
+      ]
+    },
+    {
+      "id": "lift",
+      "title": "Lift",
+      "depth": 2,
+      "category": "algebraic-structures",
+      "aliases": [],
+      "summary": "Lifting is when you take a value and put it into an object like a functor. If you lift a function into an Applicative Functor then you can make it work on values that are also in that functor.",
+      "body": "Lifting is when you take a value and put it into an object like a [functor](#pointed-functor). If you lift a function into an [Applicative Functor](#applicative-functor) then you can make it work on values that are also in that functor.\n\nSome implementations have a function called `lift`, or `liftA2` to make it easier to run functions on functors.\n\n```js\nconst liftA2 = (f) => (a, b) => a.map(f).ap(b) // note it's `ap` and not `map`.\n\nconst mult = a => b => a * b\n\nconst liftedMult = liftA2(mult) // this function now works on functors like array\n\nliftedMult([1, 2], [3]) // [3, 6]\nliftA2(a => b => a + b)([1, 2], [30, 40]) // [31, 41, 32, 42]\n```\n\nLifting a one-argument function and applying it does the same thing as `map`.\n\n```js\nconst increment = (x) => x + 1\n\nlift(increment)([2]) // [3]\n;[2].map(increment) // [3]\n```\n\nLifting simple values can be simply creating the object.\n\n```js\nArray.of(1) // => [1]\n```",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "const liftA2 = (f) => (a, b) => a.map(f).ap(b) // note it's `ap` and not `map`.\n\nconst mult = a => b => a * b\n\nconst liftedMult = liftA2(mult) // this function now works on functors like array\n\nliftedMult([1, 2], [3]) // [3, 6]\nliftA2(a => b => a + b)([1, 2], [30, 40]) // [31, 41, 32, 42]"
+        },
+        {
+          "lang": "js",
+          "code": "const increment = (x) => x + 1\n\nlift(increment)([2]) // [3]\n;[2].map(increment) // [3]"
+        },
+        {
+          "lang": "js",
+          "code": "Array.of(1) // => [1]"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [
+        "pointed-functor",
+        "applicative-functor"
+      ],
+      "relatedIds": [
+        "applicative-functor",
+        "functor",
+        "pointed-functor"
+      ]
+    },
+    {
+      "id": "referential-transparency",
+      "title": "Referential Transparency",
+      "depth": 2,
+      "category": "purity-state",
+      "aliases": [
+        "referential transparent",
+        "substitution model"
+      ],
+      "summary": "An expression that can be replaced with its value without changing the behavior of the program is said to be referentially transparent.",
+      "body": "An expression that can be replaced with its value without changing the\nbehavior of the program is said to be referentially transparent.\n\nGiven the function greet:\n\n```js\nconst greet = () => 'Hello World!'\n```\n\nAny invocation of `greet()` can be replaced with `Hello World!` hence greet is\nreferentially transparent. This would be broken if greet depended on external\nstate like configuration or a database call. See also [Pure Function](#pure-function) and\n[Equational Reasoning](#equational-reasoning).",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "const greet = () => 'Hello World!'"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [
+        "pure-function",
+        "equational-reasoning"
+      ],
+      "relatedIds": [
+        "pure-function",
+        "equational-reasoning",
+        "constant",
+        "function"
+      ]
+    },
+    {
+      "id": "equational-reasoning",
+      "title": "Equational Reasoning",
+      "depth": 2,
+      "category": "purity-state",
+      "aliases": [
+        "algebraic reasoning"
+      ],
+      "summary": "When an application is composed of expressions and devoid of side effects, truths about the system can be derived from the parts. You can also be confident about details of your system without having to go through every function.",
+      "body": "When an application is composed of expressions and devoid of side effects,\ntruths about the system can be derived from the parts. You can also be confident\nabout details of your system without having to go through every function.\n\n```js\nconst grainToDogs = compose(chickenIntoDogs, grainIntoChicken)\nconst grainToCats = compose(dogsIntoCats, grainToDogs)\n```\n\nIn the example above, if you know that `chickenIntoDogs` and `grainIntoChicken`\nare [pure](#pure-function) then you know that the composition is pure. This can be taken further\nwhen more is known about the functions (associative, commutative, idempotent, etc...).",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "const grainToDogs = compose(chickenIntoDogs, grainIntoChicken)\nconst grainToCats = compose(dogsIntoCats, grainToDogs)"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [
+        "pure-function"
+      ],
+      "relatedIds": [
+        "pure-function",
+        "referential-transparency"
+      ]
+    },
+    {
+      "id": "lambda",
+      "title": "Lambda",
+      "depth": 2,
+      "category": "core-functions",
+      "aliases": [
+        "anonymous function",
+        "arrow function"
+      ],
+      "summary": "An anonymous function that can be treated like a value.",
+      "body": "An anonymous function that can be treated like a value.\n\n```js\n;(function (a) {\n  return a + 1\n})\n\n;(a) => a + 1\n```\n\nLambdas are often passed as arguments to Higher-Order functions:\n\n```js\n;[1, 2].map((a) => a + 1) // [2, 3]\n```\n\nYou can assign a lambda to a variable:\n\n```js\nconst add1 = (a) => a + 1\n```",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": ";(function (a) {\n  return a + 1\n})\n\n;(a) => a + 1"
+        },
+        {
+          "lang": "js",
+          "code": ";[1, 2].map((a) => a + 1) // [2, 3]"
+        },
+        {
+          "lang": "js",
+          "code": "const add1 = (a) => a + 1"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [],
+      "relatedIds": [
+        "function",
+        "closure",
+        "lambda-calculus"
+      ]
+    },
+    {
+      "id": "lambda-calculus",
+      "title": "Lambda Calculus",
+      "depth": 2,
+      "category": "types-data",
+      "aliases": [],
+      "summary": "A branch of mathematics that uses functions to create a universal model of computation.",
+      "body": "A branch of mathematics that uses functions to create a [universal model of computation](https://en.wikipedia.org/wiki/Lambda_calculus).",
+      "codeBlocks": [],
+      "furtherReading": [],
+      "crossRefs": [],
+      "relatedIds": [
+        "lambda"
+      ]
+    },
+    {
+      "id": "functional-combinator",
+      "title": "Functional Combinator",
+      "depth": 2,
+      "category": "composition",
+      "aliases": [],
+      "summary": "A higher-order function, usually curried, which returns a new function changed in some way. Functional combinators are often used in Point-Free Style to write especially terse programs.",
+      "body": "A higher-order function, usually curried, which returns a new function changed in some way. Functional combinators are often used in [Point-Free Style](#point-free-style) to write especially terse programs.\n\n```js\n// The \"C\" combinator takes a curried two-argument function and returns one which calls the original function with the arguments reversed.\nconst C = (f) => (a) => (b) => f(b)(a)\n\nconst divide = (a) => (b) => a / b\n\nconst divideBy = C(divide)\n\nconst divBy10 = divideBy(10)\n\ndivBy10(30) // => 3\n```\n\nSee also [List of Functional Combinators in JavaScript](https://gist.github.com/Avaq/1f0636ec5c8d6aed2e45) which includes links to more references.",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "// The \"C\" combinator takes a curried two-argument function and returns one which calls the original function with the arguments reversed.\nconst C = (f) => (a) => (b) => f(b)(a)\n\nconst divide = (a) => (b) => a / b\n\nconst divideBy = C(divide)\n\nconst divBy10 = divideBy(10)\n\ndivBy10(30) // => 3"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [
+        "point-free-style"
+      ],
+      "relatedIds": [
+        "point-free-style",
+        "higher-order-functions-hof"
+      ]
+    },
+    {
+      "id": "lazy-evaluation",
+      "title": "Lazy evaluation",
+      "depth": 2,
+      "category": "composition",
+      "aliases": [
+        "call-by-need",
+        "deferred execution",
+        "generators"
+      ],
+      "summary": "Lazy evaluation is a call-by-need evaluation mechanism that delays the evaluation of an expression until its value is needed. In functional languages, this allows for structures like infinite lists, which would not normally be available in an imperative language where the sequencing of commands is significant.",
+      "body": "Lazy evaluation is a call-by-need evaluation mechanism that delays the evaluation of an expression until its value is needed. In functional languages, this allows for structures like infinite lists, which would not normally be available in an imperative language where the sequencing of commands is significant.\n\n```js\nconst rand = function * () {\n  while (1 < 2) {\n    yield Math.random()\n  }\n}\n```\n\n```js\nconst randIter = rand()\nrandIter.next() // Each execution gives a random value, expression is evaluated on need.\n```",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "const rand = function * () {\n  while (1 < 2) {\n    yield Math.random()\n  }\n}"
+        },
+        {
+          "lang": "js",
+          "code": "const randIter = rand()\nrandIter.next() // Each execution gives a random value, expression is evaluated on need."
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [],
+      "relatedIds": [
+        "pure-function"
+      ]
+    },
+    {
+      "id": "monoid",
+      "title": "Monoid",
+      "depth": 2,
+      "category": "algebraic-structures",
+      "aliases": [
+        "empty",
+        "identity",
+        "semigroup with identity"
+      ],
+      "summary": "An object with a function that \"combines\" that object with another of the same type (semigroup) which has an \"identity\" value.",
+      "body": "An object with a function that \"combines\" that object with another of the same type (semigroup) which has an \"identity\" value.\n\nOne simple monoid is the addition of numbers:\n\n```js\n1 + 1 // 2\n```\n\nIn this case number is the object and `+` is the function.\n\nWhen any value is combined with the \"identity\" value the result must be the original value. The identity must also be commutative.\n\nThe identity value for addition is `0`.\n\n```js\n1 + 0 // 1\n0 + 1 // 1\n1 + 0 === 0 + 1\n```\n\nIt's also required that the grouping of operations will not affect the result (associativity):\n\n```js\n1 + (2 + 3) === (1 + 2) + 3 // true\n```\n\nArray concatenation also forms a monoid:\n\n```js\n;[1, 2].concat([3, 4]) // [1, 2, 3, 4]\n```\n\nThe identity value is empty array `[]`:\n\n```js\n;[1, 2].concat([]) // [1, 2]\n```\n\nAs a counterexample, subtraction does not form a monoid because there is no commutative identity value:\n\n```js\n0 - 4 === 4 - 0 // false\n```",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "1 + 1 // 2"
+        },
+        {
+          "lang": "js",
+          "code": "1 + 0 // 1\n0 + 1 // 1\n1 + 0 === 0 + 1"
+        },
+        {
+          "lang": "js",
+          "code": "1 + (2 + 3) === (1 + 2) + 3 // true"
+        },
+        {
+          "lang": "js",
+          "code": ";[1, 2].concat([3, 4]) // [1, 2, 3, 4]"
+        },
+        {
+          "lang": "js",
+          "code": ";[1, 2].concat([]) // [1, 2]"
+        },
+        {
+          "lang": "js",
+          "code": "0 - 4 === 4 - 0 // false"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [],
+      "relatedIds": [
+        "semigroup",
+        "foldable",
+        "homomorphism"
+      ]
+    },
+    {
+      "id": "monad",
+      "title": "Monad",
+      "depth": 2,
+      "category": "algebraic-structures",
+      "aliases": [
+        "flatmap",
+        "bind",
+        "chain",
+        "return"
+      ],
+      "summary": "A monad is an object with of and chain functions. chain is like map except it un-nests the resulting nested object.",
+      "body": "A monad is an object with [`of`](#pointed-functor) and `chain` functions. `chain` is like [`map`](#functor) except it un-nests the resulting nested object.\n\n```js\n// Implementation\nArray.prototype.chain = function (f) {\n  return this.reduce((acc, it) => acc.concat(f(it)), [])\n}\n\n// Usage\nArray.of('cat,dog', 'fish,bird').chain((a) => a.split(',')) // ['cat', 'dog', 'fish', 'bird']\n\n// Contrast to map\nArray.of('cat,dog', 'fish,bird').map((a) => a.split(',')) // [['cat', 'dog'], ['fish', 'bird']]\n```\n\n`of` is also known as `return` in other functional languages.\n`chain` is also known as `flatmap` and `bind` in other languages.",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "// Implementation\nArray.prototype.chain = function (f) {\n  return this.reduce((acc, it) => acc.concat(f(it)), [])\n}\n\n// Usage\nArray.of('cat,dog', 'fish,bird').chain((a) => a.split(',')) // ['cat', 'dog', 'fish', 'bird']\n\n// Contrast to map\nArray.of('cat,dog', 'fish,bird').map((a) => a.split(',')) // [['cat', 'dog'], ['fish', 'bird']]"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [
+        "pointed-functor",
+        "functor"
+      ],
+      "relatedIds": [
+        "applicative-functor",
+        "kleisli-composition",
+        "comonad",
+        "option",
+        "constant-monad",
+        "pointed-functor",
+        "functor"
+      ]
+    },
+    {
+      "id": "comonad",
+      "title": "Comonad",
+      "depth": 2,
+      "category": "algebraic-structures",
+      "aliases": [],
+      "summary": "An object that has extract and extend functions.",
+      "body": "An object that has `extract` and `extend` functions.\n\n```js\nconst CoIdentity = (v) => ({\n  val: v,\n  extract () {\n    return this.val\n  },\n  extend (f) {\n    return CoIdentity(f(this))\n  }\n})\n```\n\n`extract` takes a value out of a functor:\n\n```js\nCoIdentity(1).extract() // 1\n```\n\n`extend` runs a function on the comonad. The function should return the same type as the comonad:\n\n```js\nCoIdentity(1).extend((co) => co.extract() + 1) // CoIdentity(2)\n```",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "const CoIdentity = (v) => ({\n  val: v,\n  extract () {\n    return this.val\n  },\n  extend (f) {\n    return CoIdentity(f(this))\n  }\n})"
+        },
+        {
+          "lang": "js",
+          "code": "CoIdentity(1).extract() // 1"
+        },
+        {
+          "lang": "js",
+          "code": "CoIdentity(1).extend((co) => co.extract() + 1) // CoIdentity(2)"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [],
+      "relatedIds": [
+        "monad"
+      ]
+    },
+    {
+      "id": "kleisli-composition",
+      "title": "Kleisli Composition",
+      "depth": 2,
+      "category": "algebraic-structures",
+      "aliases": [],
+      "summary": "An operation for composing two monad-returning functions (Kleisli Arrows) where they have compatible types. In Haskell this is the >=> operator.",
+      "body": "An operation for composing two [monad](#monad)-returning functions (Kleisli Arrows) where they have compatible types. In Haskell this is the `>=>` operator.\n\nUsing [Option](#option):\n\n```js\n// safeParseNum :: String -> Option Number\nconst safeParseNum = (b) => {\n  const n = parseNumber(b)\n  return isNaN(n) ? None() : Some(n)\n}\n\n// validatePositive :: Number -> Option Number\nconst validatePositive = (a) => a > 0 ? Some(a) : None()\n\n// kleisliCompose :: Monad M => ((b -> M c), (a -> M b)) -> a -> M c\nconst kleisliCompose = (g, f) => (x) => f(x).chain(g)\n\n// parseAndValidate :: String -> Option Number\nconst parseAndValidate = kleisliCompose(validatePositive, safeParseNum)\n\nparseAndValidate('1') // => Some(1)\nparseAndValidate('asdf') // => None\nparseAndValidate('999') // => Some(999)\n```\n\nThis works because:\n\n * [option](#option) is a [monad](#monad),\n * both `validatePositive` and `safeParseNum` return the same kind of monad (Option),\n * the type of `validatePositive`'s argument matches `safeParseNum`'s unwrapped return.",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "// safeParseNum :: String -> Option Number\nconst safeParseNum = (b) => {\n  const n = parseNumber(b)\n  return isNaN(n) ? None() : Some(n)\n}\n\n// validatePositive :: Number -> Option Number\nconst validatePositive = (a) => a > 0 ? Some(a) : None()\n\n// kleisliCompose :: Monad M => ((b -> M c), (a -> M b)) -> a -> M c\nconst kleisliCompose = (g, f) => (x) => f(x).chain(g)\n\n// parseAndValidate :: String -> Option Number\nconst parseAndValidate = kleisliCompose(validatePositive, safeParseNum)\n\nparseAndValidate('1') // => Some(1)\nparseAndValidate('asdf') // => None\nparseAndValidate('999') // => Some(999)"
+        }
+      ],
+      "furtherReading": [
+        {
+          "title": "option",
+          "url": "#option"
+        }
+      ],
+      "crossRefs": [
+        "monad",
+        "option"
+      ],
+      "relatedIds": [
+        "monad",
+        "option"
+      ]
+    },
+    {
+      "id": "applicative-functor",
+      "title": "Applicative Functor",
+      "depth": 2,
+      "category": "algebraic-structures",
+      "aliases": [
+        "applicative",
+        "ap"
+      ],
+      "summary": "An applicative functor is an object with an ap function. ap applies a function in the object to a value in another object of the same type.",
+      "body": "An applicative functor is an object with an `ap` function. `ap` applies a function in the object to a value in another object of the same type.\n\n```js\n// Implementation\nArray.prototype.ap = function (xs) {\n  return this.reduce((acc, f) => acc.concat(xs.map(f)), [])\n}\n\n// Example usage\n;[(a) => a + 1].ap([1]) // [2]\n```\n\nThis is useful if you have two objects and you want to apply a binary function to their contents.\n\n```js\n// Arrays that you want to combine\nconst arg1 = [1, 3]\nconst arg2 = [4, 5]\n\n// combining function - must be curried for this to work\nconst add = (x) => (y) => x + y\n\nconst partiallyAppliedAdds = [add].ap(arg1) // [(y) => 1 + y, (y) => 3 + y]\n```\n\nThis gives you an array of functions that you can call `ap` on to get the result:\n\n```js\npartiallyAppliedAdds.ap(arg2) // [5, 6, 7, 8]\n```",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "// Implementation\nArray.prototype.ap = function (xs) {\n  return this.reduce((acc, f) => acc.concat(xs.map(f)), [])\n}\n\n// Example usage\n;[(a) => a + 1].ap([1]) // [2]"
+        },
+        {
+          "lang": "js",
+          "code": "// Arrays that you want to combine\nconst arg1 = [1, 3]\nconst arg2 = [4, 5]\n\n// combining function - must be curried for this to work\nconst add = (x) => (y) => x + y\n\nconst partiallyAppliedAdds = [add].ap(arg1) // [(y) => 1 + y, (y) => 3 + y]"
+        },
+        {
+          "lang": "js",
+          "code": "partiallyAppliedAdds.ap(arg2) // [5, 6, 7, 8]"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [],
+      "relatedIds": [
+        "functor",
+        "pointed-functor",
+        "monad",
+        "lift"
+      ]
+    },
+    {
+      "id": "morphism",
+      "title": "Morphism",
+      "depth": 2,
+      "category": "category-morphisms",
+      "aliases": [],
+      "summary": "A relationship between objects within a category. In the context of functional programming all functions are morphisms.",
+      "body": "A relationship between objects within a [category](#category). In the context of functional programming all functions are morphisms.",
+      "codeBlocks": [],
+      "furtherReading": [],
+      "crossRefs": [
+        "category"
+      ],
+      "relatedIds": [
+        "category",
+        "homomorphism",
+        "isomorphism"
+      ]
+    },
+    {
+      "id": "homomorphism",
+      "title": "Homomorphism",
+      "depth": 3,
+      "category": "category-morphisms",
+      "aliases": [],
+      "summary": "A function where there is a structural property that is the same in the input as well as the output.",
+      "body": "A function where there is a structural property that is the same in the input as well as the output.\n\nFor example, in a [Monoid](#monoid) homomorphism both the input and the output are monoids even if their types are different.\n\n```js\n// toList :: [number] -> string\nconst toList = (a) => a.join(', ')\n```\n\n`toList` is a homomorphism because:\n* array is a monoid - has a `concat` operation and an identity value (`[]`),\n* string is a monoid - has a `concat` operation and an identity value (`''`).\n\nIn this way, a homomorphism relates to whatever property you care about in the input and output of a transformation.\n\n[Endomorphisms](#endomorphism) and [Isomorphisms](#isomorphism) are examples of homomorphisms.\n\n__Further Reading__\n* [Homomorphism | Learning Functional Programming in Go](https://subscription.packtpub.com/book/application-development/9781787281394/11/ch11lvl1sec90/homomorphism#:~:text=A%20homomorphism%20is%20a%20correspondence,pointing%20to%20it%20from%20A.)",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "// toList :: [number] -> string\nconst toList = (a) => a.join(', ')"
+        }
+      ],
+      "furtherReading": [
+        {
+          "title": "Homomorphism | Learning Functional Programming in Go",
+          "url": "https://subscription.packtpub.com/book/application-development/9781787281394/11/ch11lvl1sec90/homomorphism#:~:text=A%20homomorphism%20is%20a%20correspondence,pointing%20to%20it%20from%20A."
+        }
+      ],
+      "crossRefs": [
+        "monoid",
+        "endomorphism",
+        "isomorphism"
+      ],
+      "relatedIds": [
+        "morphism",
+        "endomorphism",
+        "isomorphism",
+        "monoid"
+      ]
+    },
+    {
+      "id": "endomorphism",
+      "title": "Endomorphism",
+      "depth": 3,
+      "category": "category-morphisms",
+      "aliases": [],
+      "summary": "A function where the input type is the same as the output. Since the types are identical, endomorphisms are also homomorphisms.",
+      "body": "A function where the input type is the same as the output. Since the types are identical, endomorphisms are also [homomorphisms](#homomorphism).\n\n```js\n// uppercase :: String -> String\nconst uppercase = (str) => str.toUpperCase()\n\n// decrement :: Number -> Number\nconst decrement = (x) => x - 1\n```",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "// uppercase :: String -> String\nconst uppercase = (str) => str.toUpperCase()\n\n// decrement :: Number -> Number\nconst decrement = (x) => x - 1"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [
+        "homomorphism"
+      ],
+      "relatedIds": [
+        "homomorphism"
+      ]
+    },
+    {
+      "id": "isomorphism",
+      "title": "Isomorphism",
+      "depth": 3,
+      "category": "category-morphisms",
+      "aliases": [],
+      "summary": "A morphism made of a pair of transformations between 2 types of objects that is structural in nature and no data is lost.",
+      "body": "A morphism made of a pair of transformations between 2 types of objects that is structural in nature and no data is lost.\n\nFor example, 2D coordinates could be stored as an array `[2,3]` or object `{x: 2, y: 3}`.\n\n```js\n// Providing functions to convert in both directions makes the 2D coordinate structures isomorphic.\nconst pairToCoords = (pair) => ({ x: pair[0], y: pair[1] })\n\nconst coordsToPair = (coords) => [coords.x, coords.y]\n\ncoordsToPair(pairToCoords([1, 2])) // [1, 2]\n\npairToCoords(coordsToPair({ x: 1, y: 2 })) // {x: 1, y: 2}\n```\n\nIsomorphisms are an interesting example of [morphism](#morphism) because more than single function is necessary for it to be satisfied. Isomorphisms are also [homomorphisms](#homomorphism) since both input and output types share the property of being reversible.",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "// Providing functions to convert in both directions makes the 2D coordinate structures isomorphic.\nconst pairToCoords = (pair) => ({ x: pair[0], y: pair[1] })\n\nconst coordsToPair = (coords) => [coords.x, coords.y]\n\ncoordsToPair(pairToCoords([1, 2])) // [1, 2]\n\npairToCoords(coordsToPair({ x: 1, y: 2 })) // {x: 1, y: 2}"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [
+        "morphism",
+        "homomorphism"
+      ],
+      "relatedIds": [
+        "homomorphism",
+        "morphism"
+      ]
+    },
+    {
+      "id": "catamorphism",
+      "title": "Catamorphism",
+      "depth": 3,
+      "category": "category-morphisms",
+      "aliases": [
+        "fold",
+        "reduce",
+        "reduceright"
+      ],
+      "summary": "A function which deconstructs a structure into a single value. reduceRight is an example of a catamorphism for array structures.",
+      "body": "A function which deconstructs a structure into a single value. `reduceRight` is an example of a catamorphism for array structures.\n\n```js\n// sum is a catamorphism from [Number] -> Number\nconst sum = xs => xs.reduceRight((acc, x) => acc + x, 0)\n\nsum([1, 2, 3, 4, 5]) // 15\n```",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "// sum is a catamorphism from [Number] -> Number\nconst sum = xs => xs.reduceRight((acc, x) => acc + x, 0)\n\nsum([1, 2, 3, 4, 5]) // 15"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [],
+      "relatedIds": [
+        "anamorphism",
+        "foldable",
+        "hylomorphism",
+        "paramorphism"
+      ]
+    },
+    {
+      "id": "anamorphism",
+      "title": "Anamorphism",
+      "depth": 3,
+      "category": "category-morphisms",
+      "aliases": [
+        "unfold",
+        "generate"
+      ],
+      "summary": "A function that builds up a structure by repeatedly applying a function to its argument. unfold is an example which generates an array from a function and a seed value. This is the opposite of a catamorphism. You can think of this as an anamorphism builds up a structure and catamorphism breaks it down.",
+      "body": "A function that builds up a structure by repeatedly applying a function to its argument. `unfold` is an example which generates an array from a function and a seed value. This is the opposite of a [catamorphism](#catamorphism). You can think of this as an anamorphism builds up a structure and catamorphism breaks it down.\n\n```js\nconst unfold = (f, seed) => {\n  function go (f, seed, acc) {\n    const res = f(seed)\n    return res ? go(f, res[1], acc.concat([res[0]])) : acc\n  }\n  return go(f, seed, [])\n}\n```\n\n```js\nconst countDown = n => unfold((n) => {\n  return n <= 0 ? undefined : [n, n - 1]\n}, n)\n\ncountDown(5) // [5, 4, 3, 2, 1]\n```",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "const unfold = (f, seed) => {\n  function go (f, seed, acc) {\n    const res = f(seed)\n    return res ? go(f, res[1], acc.concat([res[0]])) : acc\n  }\n  return go(f, seed, [])\n}"
+        },
+        {
+          "lang": "js",
+          "code": "const countDown = n => unfold((n) => {\n  return n <= 0 ? undefined : [n, n - 1]\n}, n)\n\ncountDown(5) // [5, 4, 3, 2, 1]"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [
+        "catamorphism"
+      ],
+      "relatedIds": [
+        "catamorphism",
+        "hylomorphism",
+        "apomorphism"
+      ]
+    },
+    {
+      "id": "hylomorphism",
+      "title": "Hylomorphism",
+      "depth": 3,
+      "category": "category-morphisms",
+      "aliases": [
+        "refold",
+        "unfold-then-fold"
+      ],
+      "summary": "The function which composes an anamorphism followed by a catamorphism.",
+      "body": "The function which composes an [anamorphism](#anamorphism) followed by a [catamorphism](#catamorphism).\n\n```js\nconst sumUpToX = (x) => sum(countDown(x))\nsumUpToX(5) // 15\n```",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "const sumUpToX = (x) => sum(countDown(x))\nsumUpToX(5) // 15"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [
+        "anamorphism",
+        "catamorphism"
+      ],
+      "relatedIds": [
+        "anamorphism",
+        "catamorphism"
+      ]
+    },
+    {
+      "id": "paramorphism",
+      "title": "Paramorphism",
+      "depth": 3,
+      "category": "category-morphisms",
+      "aliases": [
+        "para",
+        "reductive history"
+      ],
+      "summary": "A function just like reduceRight. However, there's a difference:",
+      "body": "A function just like `reduceRight`. However, there's a difference:\n\nIn paramorphism, your reducer's arguments are the current value, the reduction of all previous values, and the list of values that formed that reduction.\n\n```js\n// Obviously not safe for lists containing `undefined`,\n// but good enough to make the point.\nconst para = (reducer, accumulator, elements) => {\n  if (elements.length === 0) { return accumulator }\n\n  const head = elements[0]\n  const tail = elements.slice(1)\n\n  return reducer(head, tail, para(reducer, accumulator, tail))\n}\n\nconst suffixes = list => para(\n  (x, xs, suffxs) => [xs, ...suffxs],\n  [],\n  list\n)\n\nsuffixes([1, 2, 3, 4, 5]) // [[2, 3, 4, 5], [3, 4, 5], [4, 5], [5], []]\n```\n\nThe third parameter in the reducer (in the above example, `[x, ... xs]`) is kind of like having a history of what got you to your current acc value.",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "// Obviously not safe for lists containing `undefined`,\n// but good enough to make the point.\nconst para = (reducer, accumulator, elements) => {\n  if (elements.length === 0) { return accumulator }\n\n  const head = elements[0]\n  const tail = elements.slice(1)\n\n  return reducer(head, tail, para(reducer, accumulator, tail))\n}\n\nconst suffixes = list => para(\n  (x, xs, suffxs) => [xs, ...suffxs],\n  [],\n  list\n)\n\nsuffixes([1, 2, 3, 4, 5]) // [[2, 3, 4, 5], [3, 4, 5], [4, 5], [5], []]"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [],
+      "relatedIds": [
+        "catamorphism"
+      ]
+    },
+    {
+      "id": "apomorphism",
+      "title": "Apomorphism",
+      "depth": 3,
+      "category": "category-morphisms",
+      "aliases": [
+        "apo",
+        "early return unfold"
+      ],
+      "summary": "The opposite of paramorphism, just as anamorphism is the opposite of catamorphism. With paramorphism, you retain access to the accumulator and what has been accumulated, apomorphism lets you unfold with the potential to return early.",
+      "body": "The opposite of paramorphism, just as anamorphism is the opposite of catamorphism. With paramorphism, you retain access to the accumulator and what has been accumulated, apomorphism lets you `unfold` with the potential to return early.",
+      "codeBlocks": [],
+      "furtherReading": [],
+      "crossRefs": [],
+      "relatedIds": [
+        "anamorphism"
+      ]
+    },
+    {
+      "id": "setoid",
+      "title": "Setoid",
+      "depth": 2,
+      "category": "algebraic-structures",
+      "aliases": [],
+      "summary": "An object that has an equals function which can be used to compare other objects of the same type.",
+      "body": "An object that has an `equals` function which can be used to compare other objects of the same type.\n\nMake array a setoid:\n\n```js\nArray.prototype.equals = function (arr) {\n  const len = this.length\n  if (len !== arr.length) {\n    return false\n  }\n  for (let i = 0; i < len; i++) {\n    if (this[i] !== arr[i]) {\n      return false\n    }\n  }\n  return true\n}\n\n;[1, 2].equals([1, 2]) // true\n;[1, 2].equals([0]) // false\n```",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "Array.prototype.equals = function (arr) {\n  const len = this.length\n  if (len !== arr.length) {\n    return false\n  }\n  for (let i = 0; i < len; i++) {\n    if (this[i] !== arr[i]) {\n      return false\n    }\n  }\n  return true\n}\n\n;[1, 2].equals([1, 2]) // true\n;[1, 2].equals([0]) // false"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [],
+      "relatedIds": [
+        "semigroup"
+      ]
+    },
+    {
+      "id": "semigroup",
+      "title": "Semigroup",
+      "depth": 2,
+      "category": "algebraic-structures",
+      "aliases": [],
+      "summary": "An object that has a concat function that combines it with another object of the same type.",
+      "body": "An object that has a `concat` function that combines it with another object of the same type.\n\n```js\n;[1].concat([2]) // [1, 2]\n```",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": ";[1].concat([2]) // [1, 2]"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [],
+      "relatedIds": [
+        "monoid",
+        "setoid"
+      ]
+    },
+    {
+      "id": "foldable",
+      "title": "Foldable",
+      "depth": 2,
+      "category": "algebraic-structures",
+      "aliases": [],
+      "summary": "An object that has a reduce function that applies a function against an accumulator and each element in the array (from left to right) to reduce it to a single value.",
+      "body": "An object that has a `reduce` function that applies a function against an accumulator and each element in the array (from left to right) to reduce it to a single value.\n\n```js\nconst sum = (list) => list.reduce((acc, val) => acc + val, 0)\nsum([1, 2, 3]) // 6\n```",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "const sum = (list) => list.reduce((acc, val) => acc + val, 0)\nsum([1, 2, 3]) // 6"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [],
+      "relatedIds": [
+        "catamorphism",
+        "monoid"
+      ]
+    },
+    {
+      "id": "lens",
+      "title": "Lens",
+      "depth": 2,
+      "category": "types-data",
+      "aliases": [
+        "getter",
+        "setter",
+        "optics"
+      ],
+      "summary": "A lens is a structure (often an object or function) that pairs a getter and a non-mutating setter for some other data structure.",
+      "body": "A lens is a structure (often an object or function) that pairs a getter and a non-mutating setter for some other data\nstructure.\n\n```js\n// Using [Ramda's lens](http://ramdajs.com/docs/#lens)\nconst nameLens = R.lens(\n  // getter for name property on an object\n  (obj) => obj.name,\n  // setter for name property\n  (val, obj) => Object.assign({}, obj, { name: val })\n)\n```\n\nHaving the pair of get and set for a given data structure enables a few key features.\n\n```js\nconst person = { name: 'Gertrude Blanch' }\n\n// invoke the getter\nR.view(nameLens, person) // 'Gertrude Blanch'\n\n// invoke the setter\nR.set(nameLens, 'Shafi Goldwasser', person) // {name: 'Shafi Goldwasser'}\n\n// run a function on the value in the structure\nR.over(nameLens, uppercase, person) // {name: 'GERTRUDE BLANCH'}\n```\n\nLenses are also composable. This allows easy immutable updates to deeply nested data.\n\n```js\n// This lens focuses on the first item in a non-empty array\nconst firstLens = R.lens(\n  // get first item in array\n  xs => xs[0],\n  // non-mutating setter for first item in array\n  (val, [__, ...xs]) => [val, ...xs]\n)\n\nconst people = [{ name: 'Gertrude Blanch' }, { name: 'Shafi Goldwasser' }]\n\n// Despite what you may assume, lenses compose left-to-right.\nR.over(compose(firstLens, nameLens), uppercase, people) // [{'name': 'GERTRUDE BLANCH'}, {'name': 'Shafi Goldwasser'}]\n```\n\nOther implementations:\n* [partial.lenses](https://github.com/calmm-js/partial.lenses) - Tasty syntax sugar and a lot of powerful features\n* [nanoscope](http://www.kovach.me/nanoscope/) - Fluent-interface",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "// Using [Ramda's lens](http://ramdajs.com/docs/#lens)\nconst nameLens = R.lens(\n  // getter for name property on an object\n  (obj) => obj.name,\n  // setter for name property\n  (val, obj) => Object.assign({}, obj, { name: val })\n)"
+        },
+        {
+          "lang": "js",
+          "code": "const person = { name: 'Gertrude Blanch' }\n\n// invoke the getter\nR.view(nameLens, person) // 'Gertrude Blanch'\n\n// invoke the setter\nR.set(nameLens, 'Shafi Goldwasser', person) // {name: 'Shafi Goldwasser'}\n\n// run a function on the value in the structure\nR.over(nameLens, uppercase, person) // {name: 'GERTRUDE BLANCH'}"
+        },
+        {
+          "lang": "js",
+          "code": "// This lens focuses on the first item in a non-empty array\nconst firstLens = R.lens(\n  // get first item in array\n  xs => xs[0],\n  // non-mutating setter for first item in array\n  (val, [__, ...xs]) => [val, ...xs]\n)\n\nconst people = [{ name: 'Gertrude Blanch' }, { name: 'Shafi Goldwasser' }]\n\n// Despite what you may assume, lenses compose left-to-right.\nR.over(compose(firstLens, nameLens), uppercase, people) // [{'name': 'GERTRUDE BLANCH'}, {'name': 'Shafi Goldwasser'}]"
+        }
+      ],
+      "furtherReading": [
+        {
+          "title": "partial.lenses",
+          "url": "https://github.com/calmm-js/partial.lenses"
+        },
+        {
+          "title": "nanoscope",
+          "url": "http://www.kovach.me/nanoscope/"
+        }
+      ],
+      "crossRefs": [],
+      "relatedIds": [
+        "function-composition",
+        "pure-function"
+      ]
+    },
+    {
+      "id": "type-signatures",
+      "title": "Type Signatures",
+      "depth": 2,
+      "category": "types-data",
+      "aliases": [],
+      "summary": "Often functions in JavaScript will include comments that indicate the types of their arguments and return values.",
+      "body": "Often functions in JavaScript will include comments that indicate the types of their arguments and return values.\n\nThere's quite a bit of variance across the community, but they often follow the following patterns:\n\n```js\n// functionName :: firstArgType -> secondArgType -> returnType\n\n// add :: Number -> Number -> Number\nconst add = (x) => (y) => x + y\n\n// increment :: Number -> Number\nconst increment = (x) => x + 1\n```\n\nIf a function accepts another function as an argument it is wrapped in parentheses.\n\n```js\n// call :: (a -> b) -> a -> b\nconst call = (f) => (x) => f(x)\n```\n\nThe letters `a`, `b`, `c`, `d` are used to signify that the argument can be of any type. The following version of `map` takes a function that transforms a value of some type `a` into another type `b`, an array of values of type `a`, and returns an array of values of type `b`.\n\n```js\n// map :: (a -> b) -> [a] -> [b]\nconst map = (f) => (list) => list.map(f)\n```\n\n__Further reading__\n* [Ramda's type signatures](https://github.com/ramda/ramda/wiki/Type-Signatures)\n* [Mostly Adequate Guide](https://web.archive.org/web/20170602130913/https://drboolean.gitbooks.io/mostly-adequate-guide/content/ch7.html#whats-your-type)\n* [What is Hindley-Milner?](http://stackoverflow.com/a/399392/22425) on Stack Overflow",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "// functionName :: firstArgType -> secondArgType -> returnType\n\n// add :: Number -> Number -> Number\nconst add = (x) => (y) => x + y\n\n// increment :: Number -> Number\nconst increment = (x) => x + 1"
+        },
+        {
+          "lang": "js",
+          "code": "// call :: (a -> b) -> a -> b\nconst call = (f) => (x) => f(x)"
+        },
+        {
+          "lang": "js",
+          "code": "// map :: (a -> b) -> [a] -> [b]\nconst map = (f) => (list) => list.map(f)"
+        }
+      ],
+      "furtherReading": [
+        {
+          "title": "Ramda's type signatures",
+          "url": "https://github.com/ramda/ramda/wiki/Type-Signatures"
+        },
+        {
+          "title": "Mostly Adequate Guide",
+          "url": "https://web.archive.org/web/20170602130913/https://drboolean.gitbooks.io/mostly-adequate-guide/content/ch7.html#whats-your-type"
+        },
+        {
+          "title": "What is Hindley-Milner?",
+          "url": "http://stackoverflow.com/a/399392/22425"
+        }
+      ],
+      "crossRefs": [],
+      "relatedIds": [
+        "contracts"
+      ]
+    },
+    {
+      "id": "algebraic-data-type",
+      "title": "Algebraic data type",
+      "depth": 2,
+      "category": "types-data",
+      "aliases": [
+        "adt"
+      ],
+      "summary": "A composite type made from putting other types together. Two common classes of algebraic types are sum and product.",
+      "body": "A composite type made from putting other types together. Two common classes of algebraic types are [sum](#sum-type) and [product](#product-type).",
+      "codeBlocks": [],
+      "furtherReading": [],
+      "crossRefs": [
+        "sum-type",
+        "product-type"
+      ],
+      "relatedIds": [
+        "sum-type",
+        "product-type"
+      ]
+    },
+    {
+      "id": "sum-type",
+      "title": "Sum type",
+      "depth": 3,
+      "category": "types-data",
+      "aliases": [
+        "union type",
+        "discriminated union",
+        "tagged union",
+        "either"
+      ],
+      "summary": "A Sum type is the combination of two types together into another one. It is called sum because the number of possible values in the result type is the sum of the input types.",
+      "body": "A Sum type is the combination of two types together into another one. It is called sum because the number of possible values in the result type is the sum of the input types.\n\nJavaScript doesn't have types like this, but we can use `Set`s to pretend:\n\n```js\n// imagine that rather than sets here we have types that can only have these values\nconst bools = new Set([true, false])\nconst halfTrue = new Set(['half-true'])\n\n// The weakLogic type contains the sum of the values from bools and halfTrue\nconst weakLogicValues = new Set([...bools, ...halfTrue])\n```\n\nSum types are sometimes called union types, discriminated unions, or tagged unions.\n\nThere's a [couple](https://github.com/paldepind/union-type) [libraries](https://github.com/puffnfresh/daggy) in JS which help with defining and using union types.\n\nFlow includes [union types](https://flow.org/en/docs/types/unions/) and TypeScript has [Enums](https://www.typescriptlang.org/docs/handbook/enums.html) to serve the same role.",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "// imagine that rather than sets here we have types that can only have these values\nconst bools = new Set([true, false])\nconst halfTrue = new Set(['half-true'])\n\n// The weakLogic type contains the sum of the values from bools and halfTrue\nconst weakLogicValues = new Set([...bools, ...halfTrue])"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [],
+      "relatedIds": [
+        "algebraic-data-type",
+        "option"
+      ]
+    },
+    {
+      "id": "product-type",
+      "title": "Product type",
+      "depth": 3,
+      "category": "types-data",
+      "aliases": [
+        "tuple",
+        "pair",
+        "record",
+        "struct"
+      ],
+      "summary": "A product type combines types together in a way you're probably more familiar with:",
+      "body": "A **product** type combines types together in a way you're probably more familiar with:\n\n```js\n// point :: (Number, Number) -> {x: Number, y: Number}\nconst point = (x, y) => ({ x, y })\n```\nIt's called a product because the total possible values of the data structure is the product of the different values. Many languages have a tuple type which is the simplest formulation of a product type.\n\n__Further reading__\n* [Set theory](https://en.wikipedia.org/wiki/Set_theory) on Wikipedia",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "// point :: (Number, Number) -> {x: Number, y: Number}\nconst point = (x, y) => ({ x, y })"
+        }
+      ],
+      "furtherReading": [
+        {
+          "title": "Set theory",
+          "url": "https://en.wikipedia.org/wiki/Set_theory"
+        }
+      ],
+      "crossRefs": [],
+      "relatedIds": [
+        "algebraic-data-type"
+      ]
+    },
+    {
+      "id": "option",
+      "title": "Option",
+      "depth": 2,
+      "category": "types-data",
+      "aliases": [
+        "maybe",
+        "some",
+        "none",
+        "just",
+        "nothing"
+      ],
+      "summary": "Option is a sum type with two cases often called Some and None.",
+      "body": "Option is a [sum type](#sum-type) with two cases often called `Some` and `None`.\n\nOption is useful for composing functions that might not return a value.\n\n```js\n// Naive definition\n\nconst Some = (v) => ({\n  val: v,\n  map (f) {\n    return Some(f(this.val))\n  },\n  chain (f) {\n    return f(this.val)\n  }\n})\n\nconst None = () => ({\n  map (f) {\n    return this\n  },\n  chain (f) {\n    return this\n  }\n})\n\n// maybeProp :: (String, {a}) -> Option a\nconst maybeProp = (key, obj) => typeof obj[key] === 'undefined' ? None() : Some(obj[key])\n```\n\nUse `chain` to sequence functions that return `Option`s:\n\n```js\n\n// getItem :: Cart -> Option CartItem\nconst getItem = (cart) => maybeProp('item', cart)\n\n// getPrice :: Item -> Option Number\nconst getPrice = (item) => maybeProp('price', item)\n\n// getNestedPrice :: cart -> Option a\nconst getNestedPrice = (cart) => getItem(cart).chain(getPrice)\n\ngetNestedPrice({}) // None()\ngetNestedPrice({ item: { foo: 1 } }) // None()\ngetNestedPrice({ item: { price: 9.99 } }) // Some(9.99)\n```\n\n`Option` is also known as `Maybe`. `Some` is sometimes called `Just`. `None` is sometimes called `Nothing`.",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "// Naive definition\n\nconst Some = (v) => ({\n  val: v,\n  map (f) {\n    return Some(f(this.val))\n  },\n  chain (f) {\n    return f(this.val)\n  }\n})\n\nconst None = () => ({\n  map (f) {\n    return this\n  },\n  chain (f) {\n    return this\n  }\n})\n\n// maybeProp :: (String, {a}) -> Option a\nconst maybeProp = (key, obj) => typeof obj[key] === 'undefined' ? None() : Some(obj[key])"
+        },
+        {
+          "lang": "js",
+          "code": "// getItem :: Cart -> Option CartItem\nconst getItem = (cart) => maybeProp('item', cart)\n\n// getPrice :: Item -> Option Number\nconst getPrice = (item) => maybeProp('price', item)\n\n// getNestedPrice :: cart -> Option a\nconst getNestedPrice = (cart) => getItem(cart).chain(getPrice)\n\ngetNestedPrice({}) // None()\ngetNestedPrice({ item: { foo: 1 } }) // None()\ngetNestedPrice({ item: { price: 9.99 } }) // Some(9.99)"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [
+        "sum-type"
+      ],
+      "relatedIds": [
+        "monad",
+        "dealing-with-partial-functions",
+        "sum-type",
+        "functor",
+        "kleisli-composition"
+      ]
+    },
+    {
+      "id": "function",
+      "title": "Function",
+      "depth": 2,
+      "category": "core-functions",
+      "aliases": [],
+      "summary": "A function f :: A => B is an expression - often called arrow or lambda expression - with exactly one (immutable) parameter of type A and exactly one return value of type B. That value depends entirely on the argument, making functions context-independent, or referentially transparent. What is implied here is that a function must not produce any hidden side effects - a function is always pure, by definition. These properties make functions pleasant to work with: they are entirely deterministic and therefore predictable. Functions enable working with code as data, abstracting over behaviour:",
+      "body": "A **function** `f :: A => B` is an expression - often called arrow or lambda expression - with **exactly one (immutable)** parameter of type `A` and **exactly one** return value of type `B`. That value depends entirely on the argument, making functions context-independent, or [referentially transparent](#referential-transparency). What is implied here is that a function must not produce any hidden [side effects](#side-effects) - a function is always [pure](#pure-function), by definition. These properties make functions pleasant to work with: they are entirely deterministic and therefore predictable. Functions enable working with code as data, abstracting over behaviour:\n\n```js\n// times2 :: Number -> Number\nconst times2 = n => n * 2\n\n;[1, 2, 3].map(times2) // [2, 4, 6]\n```",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "// times2 :: Number -> Number\nconst times2 = n => n * 2\n\n;[1, 2, 3].map(times2) // [2, 4, 6]"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [
+        "referential-transparency",
+        "side-effects",
+        "pure-function"
+      ],
+      "relatedIds": [
+        "pure-function",
+        "lambda",
+        "referential-transparency",
+        "side-effects",
+        "partial-function"
+      ]
+    },
+    {
+      "id": "partial-function",
+      "title": "Partial function",
+      "depth": 2,
+      "category": "core-functions",
+      "aliases": [],
+      "summary": "A partial function is a function which is not defined for all arguments - it might return an unexpected result or may never terminate. Partial functions add cognitive overhead, they are harder to reason about and can lead to runtime errors. Some examples:",
+      "body": "A partial function is a [function](#function) which is not defined for all arguments - it might return an unexpected result or may never terminate. Partial functions add cognitive overhead, they are harder to reason about and can lead to runtime errors. Some examples:\n\n```js\n// example 1: sum of the list\n// sum :: [Number] -> Number\nconst sum = arr => arr.reduce((a, b) => a + b)\nsum([1, 2, 3]) // 6\nsum([]) // TypeError: Reduce of empty array with no initial value\n\n// example 2: get the first item in list\n// first :: [A] -> A\nconst first = a => a[0]\nfirst([42]) // 42\nfirst([]) // undefined\n// or even worse:\nfirst([[42]])[0] // 42\nfirst([])[0] // Uncaught TypeError: Cannot read property '0' of undefined\n\n// example 3: repeat function N times\n// times :: Number -> (Number -> Number) -> Number\nconst times = n => fn => n && (fn(n), times(n - 1)(fn))\ntimes(3)(console.log)\n// 3\n// 2\n// 1\ntimes(-1)(console.log)\n// RangeError: Maximum call stack size exceeded\n```",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "// example 1: sum of the list\n// sum :: [Number] -> Number\nconst sum = arr => arr.reduce((a, b) => a + b)\nsum([1, 2, 3]) // 6\nsum([]) // TypeError: Reduce of empty array with no initial value\n\n// example 2: get the first item in list\n// first :: [A] -> A\nconst first = a => a[0]\nfirst([42]) // 42\nfirst([]) // undefined\n// or even worse:\nfirst([[42]])[0] // 42\nfirst([])[0] // Uncaught TypeError: Cannot read property '0' of undefined\n\n// example 3: repeat function N times\n// times :: Number -> (Number -> Number) -> Number\nconst times = n => fn => n && (fn(n), times(n - 1)(fn))\ntimes(3)(console.log)\n// 3\n// 2\n// 1\ntimes(-1)(console.log)\n// RangeError: Maximum call stack size exceeded"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [
+        "function"
+      ],
+      "relatedIds": [
+        "total-function",
+        "dealing-with-partial-functions",
+        "function"
+      ]
+    },
+    {
+      "id": "dealing-with-partial-functions",
+      "title": "Dealing with partial functions",
+      "depth": 3,
+      "category": "core-functions",
+      "aliases": [],
+      "summary": "Partial functions are dangerous as they need to be treated with great caution. You might get an unexpected (wrong) result or run into runtime errors. Sometimes a partial function might not return at all. Being aware of and treating all these edge cases accordingly can become very tedious. Fortunately a partial function can be converted to a regular (or total) one. We can provide default values or use guards to deal with inputs for which the (previously) partial function is undefined. Utilizing the Option type, we can yield either Some(value) or None where we would otherwise have behaved unexpectedly:",
+      "body": "Partial functions are dangerous as they need to be treated with great caution. You might get an unexpected (wrong) result or run into runtime errors. Sometimes a partial function might not return at all. Being aware of and treating all these edge cases accordingly can become very tedious.\nFortunately a partial function can be converted to a regular (or total) one. We can provide default values or use guards to deal with inputs for which the (previously) partial function is undefined. Utilizing the [`Option`](#Option) type, we can yield either `Some(value)` or `None` where we would otherwise have behaved unexpectedly:\n\n```js\n// example 1: sum of the list\n// we can provide default value so it will always return result\n// sum :: [Number] -> Number\nconst sum = arr => arr.reduce((a, b) => a + b, 0)\nsum([1, 2, 3]) // 6\nsum([]) // 0\n\n// example 2: get the first item in list\n// change result to Option\n// first :: [A] -> Option A\nconst first = a => a.length ? Some(a[0]) : None()\nfirst([42]).map(a => console.log(a)) // 42\nfirst([]).map(a => console.log(a)) // console.log won't execute at all\n// our previous worst case\nfirst([[42]]).map(a => console.log(a[0])) // 42\nfirst([]).map(a => console.log(a[0])) // won't execute, so we won't have error here\n// more of that, you will know by function return type (Option)\n// that you should use `.map` method to access the data and you will never forget\n// to check your input because such check become built-in into the function\n\n// example 3: repeat function N times\n// we should make function always terminate by changing conditions:\n// times :: Number -> (Number -> Number) -> Number\nconst times = n => fn => n > 0 && (fn(n), times(n - 1)(fn))\ntimes(3)(console.log)\n// 3\n// 2\n// 1\ntimes(-1)(console.log)\n// won't execute anything\n```\n\nMaking your partial functions total ones, these kinds of runtime errors can be prevented. Always returning a value will also make for code that is both easier to maintain and to reason about.",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "// example 1: sum of the list\n// we can provide default value so it will always return result\n// sum :: [Number] -> Number\nconst sum = arr => arr.reduce((a, b) => a + b, 0)\nsum([1, 2, 3]) // 6\nsum([]) // 0\n\n// example 2: get the first item in list\n// change result to Option\n// first :: [A] -> Option A\nconst first = a => a.length ? Some(a[0]) : None()\nfirst([42]).map(a => console.log(a)) // 42\nfirst([]).map(a => console.log(a)) // console.log won't execute at all\n// our previous worst case\nfirst([[42]]).map(a => console.log(a[0])) // 42\nfirst([]).map(a => console.log(a[0])) // won't execute, so we won't have error here\n// more of that, you will know by function return type (Option)\n// that you should use `.map` method to access the data and you will never forget\n// to check your input because such check become built-in into the function\n\n// example 3: repeat function N times\n// we should make function always terminate by changing conditions:\n// times :: Number -> (Number -> Number) -> Number\nconst times = n => fn => n > 0 && (fn(n), times(n - 1)(fn))\ntimes(3)(console.log)\n// 3\n// 2\n// 1\ntimes(-1)(console.log)\n// won't execute anything"
+        }
+      ],
+      "furtherReading": [],
+      "crossRefs": [
+        "option"
+      ],
+      "relatedIds": [
+        "partial-function",
+        "option"
+      ]
+    },
+    {
+      "id": "total-function",
+      "title": "Total Function",
+      "depth": 2,
+      "category": "core-functions",
+      "aliases": [],
+      "summary": "A function which returns a valid result for all inputs defined in its type. This is as opposed to Partial Functions which may throw an error, return an unexpected result, or fail to terminate.",
+      "body": "A function which returns a valid result for all inputs defined in its type. This is as opposed to [Partial Functions](#partial-function) which may throw an error, return an unexpected result, or fail to terminate.",
+      "codeBlocks": [],
+      "furtherReading": [],
+      "crossRefs": [
+        "partial-function"
+      ],
+      "relatedIds": [
+        "partial-function"
+      ]
+    },
+    {
+      "id": "functional-programming-libraries-in-javascript",
+      "title": "Functional Programming Libraries in JavaScript",
+      "depth": 2,
+      "category": "types-data",
+      "aliases": [],
+      "summary": "A curated catalog of functional programming libraries and toolkits in JavaScript including Ramda, Folktale, Sanctuary, and fp-ts.",
+      "body": "* [mori](https://github.com/swannodette/mori)\n* [Immutable](https://github.com/facebook/immutable-js/)\n* [Immer](https://github.com/mweststrate/immer)\n* [Ramda](https://github.com/ramda/ramda)\n* [ramda-adjunct](https://github.com/char0n/ramda-adjunct)\n* [ramda-extension](https://github.com/tommmyy/ramda-extension)\n* [Folktale](http://folktale.origamitower.com/)\n* [monet.js](https://cwmyers.github.io/monet.js/)\n* [lodash](https://github.com/lodash/lodash)\n* [Underscore.js](https://github.com/jashkenas/underscore)\n* [Lazy.js](https://github.com/dtao/lazy.js)\n* [maryamyriameliamurphies.js](https://github.com/sjsyrek/maryamyriameliamurphies.js)\n* [Haskell in ES6](https://github.com/casualjavascript/haskell-in-es6)\n* [Sanctuary](https://github.com/sanctuary-js/sanctuary)\n* [Crocks](https://github.com/evilsoft/crocks)\n* [Fluture](https://github.com/fluture-js/Fluture)\n* [fp-ts](https://github.com/gcanti/fp-ts)\n\n---\n\n__P.S:__ This repo is successful due to the wonderful [contributions](https://github.com/hemanth/functional-programming-jargon/graphs/contributors)!",
+      "codeBlocks": [],
+      "furtherReading": [
+        {
+          "title": "mori",
+          "url": "https://github.com/swannodette/mori"
+        },
+        {
+          "title": "Immutable",
+          "url": "https://github.com/facebook/immutable-js/"
+        },
+        {
+          "title": "Immer",
+          "url": "https://github.com/mweststrate/immer"
+        },
+        {
+          "title": "Ramda",
+          "url": "https://github.com/ramda/ramda"
+        },
+        {
+          "title": "ramda-adjunct",
+          "url": "https://github.com/char0n/ramda-adjunct"
+        },
+        {
+          "title": "ramda-extension",
+          "url": "https://github.com/tommmyy/ramda-extension"
+        },
+        {
+          "title": "Folktale",
+          "url": "http://folktale.origamitower.com/"
+        },
+        {
+          "title": "monet.js",
+          "url": "https://cwmyers.github.io/monet.js/"
+        },
+        {
+          "title": "lodash",
+          "url": "https://github.com/lodash/lodash"
+        },
+        {
+          "title": "Underscore.js",
+          "url": "https://github.com/jashkenas/underscore"
+        },
+        {
+          "title": "Lazy.js",
+          "url": "https://github.com/dtao/lazy.js"
+        },
+        {
+          "title": "maryamyriameliamurphies.js",
+          "url": "https://github.com/sjsyrek/maryamyriameliamurphies.js"
+        },
+        {
+          "title": "Haskell in ES6",
+          "url": "https://github.com/casualjavascript/haskell-in-es6"
+        },
+        {
+          "title": "Sanctuary",
+          "url": "https://github.com/sanctuary-js/sanctuary"
+        },
+        {
+          "title": "Crocks",
+          "url": "https://github.com/evilsoft/crocks"
+        },
+        {
+          "title": "Fluture",
+          "url": "https://github.com/fluture-js/Fluture"
+        },
+        {
+          "title": "fp-ts",
+          "url": "https://github.com/gcanti/fp-ts"
+        }
+      ],
+      "crossRefs": [],
+      "relatedIds": []
+    }
+  ],
+  "graph": {
+    "nodes": [
+      {
+        "id": "arity",
+        "name": "Arity",
+        "category": "core-functions",
+        "val": 5,
+        "summary": "The number of arguments a function takes. From words like unary, binary, ternary, etc."
+      },
+      {
+        "id": "higher-order-functions-hof",
+        "name": "Higher-Order Functions (HOF)",
+        "category": "core-functions",
+        "val": 11,
+        "summary": "A function which takes a function as an argument and/or returns a function."
+      },
+      {
+        "id": "closure",
+        "name": "Closure",
+        "category": "core-functions",
+        "val": 6,
+        "summary": "A closure is a scope which captures local variables of a function for access even after the execution has moved out of the block in which it is defined. This allows the values in the closure to be accessed by returned functions."
+      },
+      {
+        "id": "partial-application",
+        "name": "Partial Application",
+        "category": "composition",
+        "val": 6,
+        "summary": "Partially applying a function means creating a new function by pre-filling some of the arguments to the original function."
+      },
+      {
+        "id": "currying",
+        "name": "Currying",
+        "category": "composition",
+        "val": 9,
+        "summary": "The process of converting a function that takes multiple arguments into a function that takes them one at a time."
+      },
+      {
+        "id": "auto-currying",
+        "name": "Auto Currying",
+        "category": "composition",
+        "val": 5,
+        "summary": "Transforming a function that takes multiple arguments into one that if given less than its correct number of arguments returns a function that takes the rest. When the function gets the correct number of arguments it is then evaluated."
+      },
+      {
+        "id": "function-composition",
+        "name": "Function Composition",
+        "category": "composition",
+        "val": 8,
+        "summary": "The act of putting two functions together to form a third function where the output of one function is the input of the other. This is one of the most important ideas of functional programming."
+      },
+      {
+        "id": "continuation",
+        "name": "Continuation",
+        "category": "composition",
+        "val": 5,
+        "summary": "At any given point in a program, the part of the code that's yet to be executed is known as a continuation."
+      },
+      {
+        "id": "pure-function",
+        "name": "Pure Function",
+        "category": "core-functions",
+        "val": 11,
+        "summary": "A function is pure if the return value is only determined by its input values, and does not produce side effects. The function must always return the same result when given the same input."
+      },
+      {
+        "id": "side-effects",
+        "name": "Side effects",
+        "category": "purity-state",
+        "val": 6,
+        "summary": "A function or expression is said to have a side effect if apart from returning a value, it interacts with (reads from or writes to) external mutable state."
+      },
+      {
+        "id": "idempotence",
+        "name": "Idempotence",
+        "category": "purity-state",
+        "val": 5,
+        "summary": "A function is idempotent if reapplying it to its result does not produce a different result."
+      },
+      {
+        "id": "point-free-style",
+        "name": "Point-Free Style",
+        "category": "composition",
+        "val": 8,
+        "summary": "Writing functions where the definition does not explicitly identify the arguments used. This style usually requires currying or other Higher-Order functions. A.K.A Tacit programming."
+      },
+      {
+        "id": "predicate",
+        "name": "Predicate",
+        "category": "core-functions",
+        "val": 5,
+        "summary": "A predicate is a function that returns true or false for a given value. A common use of a predicate is as the callback for array filter."
+      },
+      {
+        "id": "contracts",
+        "name": "Contracts",
+        "category": "purity-state",
+        "val": 5,
+        "summary": "A contract specifies the obligations and guarantees of the behavior from a function or expression at runtime. This acts as a set of rules that are expected from the input and output of a function or expression, and errors are generally reported whenever a contract is violated."
+      },
+      {
+        "id": "category",
+        "name": "Category",
+        "category": "category-morphisms",
+        "val": 6,
+        "summary": "A category in category theory is a collection of objects and morphisms between them. In programming, typically types act as the objects and functions as morphisms."
+      },
+      {
+        "id": "value",
+        "name": "Value",
+        "category": "purity-state",
+        "val": 5,
+        "summary": "Anything that can be assigned to a variable."
+      },
+      {
+        "id": "constant",
+        "name": "Constant",
+        "category": "purity-state",
+        "val": 7,
+        "summary": "A variable that cannot be reassigned once defined."
+      },
+      {
+        "id": "constant-function",
+        "name": "Constant Function",
+        "category": "purity-state",
+        "val": 5,
+        "summary": "A curried function that ignores its second argument:"
+      },
+      {
+        "id": "constant-functor",
+        "name": "Constant Functor",
+        "category": "algebraic-structures",
+        "val": 5,
+        "summary": "Object whose map doesn't transform the contents. See Functor."
+      },
+      {
+        "id": "constant-monad",
+        "name": "Constant Monad",
+        "category": "algebraic-structures",
+        "val": 4,
+        "summary": "Object whose chain doesn't transform the contents. See Monad."
+      },
+      {
+        "id": "functor",
+        "name": "Functor",
+        "category": "algebraic-structures",
+        "val": 10,
+        "summary": "An object that implements a map function that takes a function which is run on the contents of that object. A functor must adhere to two rules:"
+      },
+      {
+        "id": "pointed-functor",
+        "name": "Pointed Functor",
+        "category": "algebraic-structures",
+        "val": 8,
+        "summary": "An object with an of function that puts any single value into it."
+      },
+      {
+        "id": "lift",
+        "name": "Lift",
+        "category": "algebraic-structures",
+        "val": 7,
+        "summary": "Lifting is when you take a value and put it into an object like a functor. If you lift a function into an Applicative Functor then you can make it work on values that are also in that functor."
+      },
+      {
+        "id": "referential-transparency",
+        "name": "Referential Transparency",
+        "category": "purity-state",
+        "val": 8,
+        "summary": "An expression that can be replaced with its value without changing the behavior of the program is said to be referentially transparent."
+      },
+      {
+        "id": "equational-reasoning",
+        "name": "Equational Reasoning",
+        "category": "purity-state",
+        "val": 6,
+        "summary": "When an application is composed of expressions and devoid of side effects, truths about the system can be derived from the parts. You can also be confident about details of your system without having to go through every function."
+      },
+      {
+        "id": "lambda",
+        "name": "Lambda",
+        "category": "core-functions",
+        "val": 7,
+        "summary": "An anonymous function that can be treated like a value."
+      },
+      {
+        "id": "lambda-calculus",
+        "name": "Lambda Calculus",
+        "category": "types-data",
+        "val": 5,
+        "summary": "A branch of mathematics that uses functions to create a universal model of computation."
+      },
+      {
+        "id": "functional-combinator",
+        "name": "Functional Combinator",
+        "category": "composition",
+        "val": 6,
+        "summary": "A higher-order function, usually curried, which returns a new function changed in some way. Functional combinators are often used in Point-Free Style to write especially terse programs."
+      },
+      {
+        "id": "lazy-evaluation",
+        "name": "Lazy evaluation",
+        "category": "composition",
+        "val": 5,
+        "summary": "Lazy evaluation is a call-by-need evaluation mechanism that delays the evaluation of an expression until its value is needed. In functional languages, this allows for structures like infinite lists, which would not normally be available in an imperative language where the sequencing of commands is significant."
+      },
+      {
+        "id": "monoid",
+        "name": "Monoid",
+        "category": "algebraic-structures",
+        "val": 7,
+        "summary": "An object with a function that \"combines\" that object with another of the same type (semigroup) which has an \"identity\" value."
+      },
+      {
+        "id": "monad",
+        "name": "Monad",
+        "category": "algebraic-structures",
+        "val": 11,
+        "summary": "A monad is an object with of and chain functions. chain is like map except it un-nests the resulting nested object."
+      },
+      {
+        "id": "comonad",
+        "name": "Comonad",
+        "category": "algebraic-structures",
+        "val": 5,
+        "summary": "An object that has extract and extend functions."
+      },
+      {
+        "id": "kleisli-composition",
+        "name": "Kleisli Composition",
+        "category": "algebraic-structures",
+        "val": 6,
+        "summary": "An operation for composing two monad-returning functions (Kleisli Arrows) where they have compatible types. In Haskell this is the >=> operator."
+      },
+      {
+        "id": "applicative-functor",
+        "name": "Applicative Functor",
+        "category": "algebraic-structures",
+        "val": 8,
+        "summary": "An applicative functor is an object with an ap function. ap applies a function in the object to a value in another object of the same type."
+      },
+      {
+        "id": "morphism",
+        "name": "Morphism",
+        "category": "category-morphisms",
+        "val": 7,
+        "summary": "A relationship between objects within a category. In the context of functional programming all functions are morphisms."
+      },
+      {
+        "id": "homomorphism",
+        "name": "Homomorphism",
+        "category": "category-morphisms",
+        "val": 6,
+        "summary": "A function where there is a structural property that is the same in the input as well as the output."
+      },
+      {
+        "id": "endomorphism",
+        "name": "Endomorphism",
+        "category": "category-morphisms",
+        "val": 3,
+        "summary": "A function where the input type is the same as the output. Since the types are identical, endomorphisms are also homomorphisms."
+      },
+      {
+        "id": "isomorphism",
+        "name": "Isomorphism",
+        "category": "category-morphisms",
+        "val": 4,
+        "summary": "A morphism made of a pair of transformations between 2 types of objects that is structural in nature and no data is lost."
+      },
+      {
+        "id": "catamorphism",
+        "name": "Catamorphism",
+        "category": "category-morphisms",
+        "val": 6,
+        "summary": "A function which deconstructs a structure into a single value. reduceRight is an example of a catamorphism for array structures."
+      },
+      {
+        "id": "anamorphism",
+        "name": "Anamorphism",
+        "category": "category-morphisms",
+        "val": 5,
+        "summary": "A function that builds up a structure by repeatedly applying a function to its argument. unfold is an example which generates an array from a function and a seed value. This is the opposite of a catamorphism. You can think of this as an anamorphism builds up a structure and catamorphism breaks it down."
+      },
+      {
+        "id": "hylomorphism",
+        "name": "Hylomorphism",
+        "category": "category-morphisms",
+        "val": 4,
+        "summary": "The function which composes an anamorphism followed by a catamorphism."
+      },
+      {
+        "id": "paramorphism",
+        "name": "Paramorphism",
+        "category": "category-morphisms",
+        "val": 3,
+        "summary": "A function just like reduceRight. However, there's a difference:"
+      },
+      {
+        "id": "apomorphism",
+        "name": "Apomorphism",
+        "category": "category-morphisms",
+        "val": 3,
+        "summary": "The opposite of paramorphism, just as anamorphism is the opposite of catamorphism. With paramorphism, you retain access to the accumulator and what has been accumulated, apomorphism lets you unfold with the potential to return early."
+      },
+      {
+        "id": "setoid",
+        "name": "Setoid",
+        "category": "algebraic-structures",
+        "val": 5,
+        "summary": "An object that has an equals function which can be used to compare other objects of the same type."
+      },
+      {
+        "id": "semigroup",
+        "name": "Semigroup",
+        "category": "algebraic-structures",
+        "val": 6,
+        "summary": "An object that has a concat function that combines it with another object of the same type."
+      },
+      {
+        "id": "foldable",
+        "name": "Foldable",
+        "category": "algebraic-structures",
+        "val": 6,
+        "summary": "An object that has a reduce function that applies a function against an accumulator and each element in the array (from left to right) to reduce it to a single value."
+      },
+      {
+        "id": "lens",
+        "name": "Lens",
+        "category": "types-data",
+        "val": 6,
+        "summary": "A lens is a structure (often an object or function) that pairs a getter and a non-mutating setter for some other data structure."
+      },
+      {
+        "id": "type-signatures",
+        "name": "Type Signatures",
+        "category": "types-data",
+        "val": 5,
+        "summary": "Often functions in JavaScript will include comments that indicate the types of their arguments and return values."
+      },
+      {
+        "id": "algebraic-data-type",
+        "name": "Algebraic data type",
+        "category": "types-data",
+        "val": 6,
+        "summary": "A composite type made from putting other types together. Two common classes of algebraic types are sum and product."
+      },
+      {
+        "id": "sum-type",
+        "name": "Sum type",
+        "category": "types-data",
+        "val": 4,
+        "summary": "A Sum type is the combination of two types together into another one. It is called sum because the number of possible values in the result type is the sum of the input types."
+      },
+      {
+        "id": "product-type",
+        "name": "Product type",
+        "category": "types-data",
+        "val": 3,
+        "summary": "A product type combines types together in a way you're probably more familiar with:"
+      },
+      {
+        "id": "option",
+        "name": "Option",
+        "category": "types-data",
+        "val": 9,
+        "summary": "Option is a sum type with two cases often called Some and None."
+      },
+      {
+        "id": "function",
+        "name": "Function",
+        "category": "core-functions",
+        "val": 9,
+        "summary": "A function f :: A => B is an expression - often called arrow or lambda expression - with exactly one (immutable) parameter of type A and exactly one return value of type B. That value depends entirely on the argument, making functions context-independent, or referentially transparent. What is implied here is that a function must not produce any hidden side effects - a function is always pure, by definition. These properties make functions pleasant to work with: they are entirely deterministic and therefore predictable. Functions enable working with code as data, abstracting over behaviour:"
+      },
+      {
+        "id": "partial-function",
+        "name": "Partial function",
+        "category": "core-functions",
+        "val": 7,
+        "summary": "A partial function is a function which is not defined for all arguments - it might return an unexpected result or may never terminate. Partial functions add cognitive overhead, they are harder to reason about and can lead to runtime errors. Some examples:"
+      },
+      {
+        "id": "dealing-with-partial-functions",
+        "name": "Dealing with partial functions",
+        "category": "core-functions",
+        "val": 4,
+        "summary": "Partial functions are dangerous as they need to be treated with great caution. You might get an unexpected (wrong) result or run into runtime errors. Sometimes a partial function might not return at all. Being aware of and treating all these edge cases accordingly can become very tedious. Fortunately a partial function can be converted to a regular (or total) one. We can provide default values or use guards to deal with inputs for which the (previously) partial function is undefined. Utilizing the Option type, we can yield either Some(value) or None where we would otherwise have behaved unexpectedly:"
+      },
+      {
+        "id": "total-function",
+        "name": "Total Function",
+        "category": "core-functions",
+        "val": 5,
+        "summary": "A function which returns a valid result for all inputs defined in its type. This is as opposed to Partial Functions which may throw an error, return an unexpected result, or fail to terminate."
+      },
+      {
+        "id": "functional-programming-libraries-in-javascript",
+        "name": "Functional Programming Libraries in JavaScript",
+        "category": "types-data",
+        "val": 4,
+        "summary": "A curated catalog of functional programming libraries and toolkits in JavaScript including Ramda, Folktale, Sanctuary, and fp-ts."
+      }
+    ],
+    "links": [
+      {
+        "source": "currying",
+        "target": "partial-application",
+        "type": "core"
+      },
+      {
+        "source": "currying",
+        "target": "arity",
+        "type": "core"
+      },
+      {
+        "source": "auto-currying",
+        "target": "currying",
+        "type": "core"
+      },
+      {
+        "source": "partial-application",
+        "target": "higher-order-functions-hof",
+        "type": "core"
+      },
+      {
+        "source": "point-free-style",
+        "target": "currying",
+        "type": "core"
+      },
+      {
+        "source": "point-free-style",
+        "target": "function-composition",
+        "type": "core"
+      },
+      {
+        "source": "point-free-style",
+        "target": "higher-order-functions-hof",
+        "type": "core"
+      },
+      {
+        "source": "functional-combinator",
+        "target": "point-free-style",
+        "type": "core"
+      },
+      {
+        "source": "functional-combinator",
+        "target": "higher-order-functions-hof",
+        "type": "core"
+      },
+      {
+        "source": "pure-function",
+        "target": "side-effects",
+        "type": "core"
+      },
+      {
+        "source": "pure-function",
+        "target": "referential-transparency",
+        "type": "core"
+      },
+      {
+        "source": "pure-function",
+        "target": "idempotence",
+        "type": "core"
+      },
+      {
+        "source": "pure-function",
+        "target": "equational-reasoning",
+        "type": "core"
+      },
+      {
+        "source": "referential-transparency",
+        "target": "equational-reasoning",
+        "type": "core"
+      },
+      {
+        "source": "referential-transparency",
+        "target": "constant",
+        "type": "core"
+      },
+      {
+        "source": "constant",
+        "target": "constant-function",
+        "type": "core"
+      },
+      {
+        "source": "constant-function",
+        "target": "constant-functor",
+        "type": "core"
+      },
+      {
+        "source": "constant-functor",
+        "target": "constant-monad",
+        "type": "core"
+      },
+      {
+        "source": "value",
+        "target": "constant",
+        "type": "core"
+      },
+      {
+        "source": "category",
+        "target": "morphism",
+        "type": "core"
+      },
+      {
+        "source": "category",
+        "target": "function-composition",
+        "type": "core"
+      },
+      {
+        "source": "morphism",
+        "target": "homomorphism",
+        "type": "core"
+      },
+      {
+        "source": "homomorphism",
+        "target": "endomorphism",
+        "type": "core"
+      },
+      {
+        "source": "homomorphism",
+        "target": "isomorphism",
+        "type": "core"
+      },
+      {
+        "source": "catamorphism",
+        "target": "anamorphism",
+        "type": "core"
+      },
+      {
+        "source": "catamorphism",
+        "target": "foldable",
+        "type": "core"
+      },
+      {
+        "source": "anamorphism",
+        "target": "hylomorphism",
+        "type": "core"
+      },
+      {
+        "source": "catamorphism",
+        "target": "hylomorphism",
+        "type": "core"
+      },
+      {
+        "source": "paramorphism",
+        "target": "catamorphism",
+        "type": "core"
+      },
+      {
+        "source": "apomorphism",
+        "target": "anamorphism",
+        "type": "core"
+      },
+      {
+        "source": "semigroup",
+        "target": "monoid",
+        "type": "core"
+      },
+      {
+        "source": "monoid",
+        "target": "foldable",
+        "type": "core"
+      },
+      {
+        "source": "functor",
+        "target": "pointed-functor",
+        "type": "core"
+      },
+      {
+        "source": "functor",
+        "target": "applicative-functor",
+        "type": "core"
+      },
+      {
+        "source": "pointed-functor",
+        "target": "applicative-functor",
+        "type": "core"
+      },
+      {
+        "source": "applicative-functor",
+        "target": "monad",
+        "type": "core"
+      },
+      {
+        "source": "monad",
+        "target": "kleisli-composition",
+        "type": "core"
+      },
+      {
+        "source": "monad",
+        "target": "comonad",
+        "type": "core"
+      },
+      {
+        "source": "monad",
+        "target": "option",
+        "type": "core"
+      },
+      {
+        "source": "lift",
+        "target": "applicative-functor",
+        "type": "core"
+      },
+      {
+        "source": "lift",
+        "target": "functor",
+        "type": "core"
+      },
+      {
+        "source": "setoid",
+        "target": "semigroup",
+        "type": "core"
+      },
+      {
+        "source": "function",
+        "target": "pure-function",
+        "type": "core"
+      },
+      {
+        "source": "function",
+        "target": "lambda",
+        "type": "core"
+      },
+      {
+        "source": "lambda",
+        "target": "closure",
+        "type": "core"
+      },
+      {
+        "source": "lambda",
+        "target": "lambda-calculus",
+        "type": "core"
+      },
+      {
+        "source": "higher-order-functions-hof",
+        "target": "closure",
+        "type": "core"
+      },
+      {
+        "source": "higher-order-functions-hof",
+        "target": "predicate",
+        "type": "core"
+      },
+      {
+        "source": "higher-order-functions-hof",
+        "target": "function-composition",
+        "type": "core"
+      },
+      {
+        "source": "continuation",
+        "target": "higher-order-functions-hof",
+        "type": "core"
+      },
+      {
+        "source": "lazy-evaluation",
+        "target": "pure-function",
+        "type": "core"
+      },
+      {
+        "source": "partial-function",
+        "target": "total-function",
+        "type": "core"
+      },
+      {
+        "source": "partial-function",
+        "target": "dealing-with-partial-functions",
+        "type": "core"
+      },
+      {
+        "source": "dealing-with-partial-functions",
+        "target": "option",
+        "type": "core"
+      },
+      {
+        "source": "algebraic-data-type",
+        "target": "sum-type",
+        "type": "core"
+      },
+      {
+        "source": "algebraic-data-type",
+        "target": "product-type",
+        "type": "core"
+      },
+      {
+        "source": "option",
+        "target": "sum-type",
+        "type": "core"
+      },
+      {
+        "source": "lens",
+        "target": "function-composition",
+        "type": "core"
+      },
+      {
+        "source": "lens",
+        "target": "pure-function",
+        "type": "core"
+      },
+      {
+        "source": "contracts",
+        "target": "type-signatures",
+        "type": "core"
+      },
+      {
+        "source": "constant-function",
+        "target": "currying",
+        "type": "reference"
+      },
+      {
+        "source": "constant-functor",
+        "target": "functor",
+        "type": "reference"
+      },
+      {
+        "source": "constant-monad",
+        "target": "monad",
+        "type": "reference"
+      },
+      {
+        "source": "functor",
+        "target": "option",
+        "type": "reference"
+      },
+      {
+        "source": "lift",
+        "target": "pointed-functor",
+        "type": "reference"
+      },
+      {
+        "source": "monad",
+        "target": "pointed-functor",
+        "type": "reference"
+      },
+      {
+        "source": "monad",
+        "target": "functor",
+        "type": "reference"
+      },
+      {
+        "source": "kleisli-composition",
+        "target": "option",
+        "type": "reference"
+      },
+      {
+        "source": "homomorphism",
+        "target": "monoid",
+        "type": "reference"
+      },
+      {
+        "source": "isomorphism",
+        "target": "morphism",
+        "type": "reference"
+      },
+      {
+        "source": "function",
+        "target": "referential-transparency",
+        "type": "reference"
+      },
+      {
+        "source": "function",
+        "target": "side-effects",
+        "type": "reference"
+      },
+      {
+        "source": "partial-function",
+        "target": "function",
+        "type": "reference"
+      }
+    ]
+  }
+}

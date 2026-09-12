@@ -1,1 +1,7 @@
 node_modules
+**/node_modules
+dist
+**/dist
+/site-preview.png
+.DS_Store
+

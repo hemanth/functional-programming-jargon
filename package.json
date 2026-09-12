@@ -4,6 +4,9 @@
   "description": "Jargon from the functional programming world in simple terms!",
   "main": "index.js",
   "scripts": {
+    "dev": "npm --prefix app run dev",
+    "build": "npm --prefix app run build",
+    "preview": "npm --prefix app run preview",
     "test": "eslint readme.md",
     "toc": "roadmarks"
   },

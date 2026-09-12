@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Agent & LLM Discoverability
+# LLMs: https://hemanth.github.io/functional-programming-jargon/llms.txt
+# Full text: https://hemanth.github.io/functional-programming-jargon/llms-full.txt
+# Data API: https://hemanth.github.io/functional-programming-jargon/data/jargons.json

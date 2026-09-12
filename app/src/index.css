@@ -1,0 +1,320 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Dark Mode Tokens (Obsidian Architectural Blueprint) */
+    --color-paper: #121212;
+    --color-ink: #f0f0ee;
+    --surface: #1a1a19;
+    --surface-2: #242422;
+    --line: rgba(240, 240, 238, 0.12);
+    --line-strong: rgba(240, 240, 238, 0.28);
+    --color-contrast: #f0f0ee;
+    
+    --bg-primary: var(--color-paper);
+    --bg-surface: var(--surface);
+    --border-subtle: var(--line);
+    --border-focus: var(--line-strong);
+    --text-primary: var(--color-ink);
+    --text-muted: rgba(240, 240, 238, 0.6);
+
+    /* Animation easings */
+    --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+    --ease-gleasing: cubic-bezier(0.4, 0, 0, 1);
+    --duration-fast: 0.18s;
+  }
+
+  html.light {
+    /* Light Mode Tokens (The AI Coding Dictionary Warm Architectural Paper) */
+    --color-paper: #eaeae8;
+    --color-ink: #1a1a19;
+    --surface: #e2e2df;
+    --surface-2: #d8d8d5;
+    --line: rgba(26, 26, 25, 0.12);
+    --line-strong: rgba(26, 26, 25, 0.28);
+    --color-contrast: #1a1a19;
+
+    --bg-primary: var(--color-paper);
+    --bg-surface: var(--surface);
+    --border-subtle: var(--line);
+    --border-focus: var(--line-strong);
+    --text-primary: var(--color-ink);
+    --text-muted: rgba(26, 26, 25, 0.62);
+  }
+
+  body {
+    font-family: 'JetBrains Mono', 'Space Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    transition: background-color 0.25s var(--ease-out-expo), color 0.25s var(--ease-out-expo);
+    user-select: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: var(--color-ink);
+    color: var(--color-paper);
+  }
+
+  code, pre, .font-mono {
+    font-family: 'JetBrains Mono', 'Space Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 0px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--line-strong);
+}
+
+/* Blueprint canvas background patterns matching aicodingdictionary */
+.bg-grid-dark {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(240, 240, 238, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(240, 240, 238, 0.04) 1px, transparent 1px);
+}
+
+.bg-grid-light {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(26, 26, 25, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(26, 26, 25, 0.05) 1px, transparent 1px);
+}
+
+.bg-dots-dark {
+  background-size: 24px 24px;
+  background-image: radial-gradient(circle, rgba(240, 240, 238, 0.12) 1px, transparent 1px);
+}
+
+.bg-dots-light {
+  background-size: 24px 24px;
+  background-image: radial-gradient(circle, rgba(26, 26, 25, 0.12) 1px, transparent 1px);
+}
+
+/* Glass panel */
+.glass-panel {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Text selections in prose */
+.prose-selectable {
+  user-select: text;
+}
+
+/* Prism Syntax Highlighting - Dark Theme */
+.dark pre code .token.comment,
+.dark pre code .token.prolog,
+.dark pre code .token.doctype,
+.dark pre code .token.cdata {
+  color: #64748b;
+  font-style: italic;
+}
+
+.dark pre code .token.punctuation {
+  color: #94a3b8;
+}
+
+.dark pre code .token.property,
+.dark pre code .token.tag,
+.dark pre code .token.boolean,
+.dark pre code .token.number,
+.dark pre code .token.constant,
+.dark pre code .token.symbol {
+  color: #fb923c;
+}
+
+.dark pre code .token.selector,
+.dark pre code .token.attr-name,
+.dark pre code .token.string,
+.dark pre code .token.char,
+.dark pre code .token.builtin {
+  color: #34d399;
+}
+
+.dark pre code .token.operator,
+.dark pre code .token.entity,
+.dark pre code .token.url,
+.dark pre code .language-css .token.string,
+.dark pre code .style .token.string {
+  color: #f472b6;
+}
+
+.dark pre code .token.atrule,
+.dark pre code .token.attr-value,
+.dark pre code .token.keyword {
+  color: #f43f5e;
+  font-weight: 600;
+}
+
+.dark pre code .token.function,
+.dark pre code .token.function-variable,
+.dark pre code .token.class-name {
+  color: #60a5fa;
+  font-weight: 600;
+}
+
+.dark pre code .token.regex,
+.dark pre code .token.important,
+.dark pre code .token.variable {
+  color: #c084fc;
+}
+
+.dark pre code .token.parameter {
+  color: #f1f5f9;
+}
+
+/* Prism Syntax Highlighting - Light Theme */
+.light pre code .token.comment,
+.light pre code .token.prolog,
+.light pre code .token.doctype,
+.light pre code .token.cdata {
+  color: #64748b;
+  font-style: italic;
+}
+
+.light pre code .token.punctuation {
+  color: #475569;
+}
+
+.light pre code .token.property,
+.light pre code .token.tag,
+.light pre code .token.boolean,
+.light pre code .token.number,
+.light pre code .token.constant,
+.light pre code .token.symbol {
+  color: #d97706;
+}
+
+.light pre code .token.selector,
+.light pre code .token.attr-name,
+.light pre code .token.string,
+.light pre code .token.char,
+.light pre code .token.builtin {
+  color: #059669;
+}
+
+.light pre code .token.operator,
+.light pre code .token.entity,
+.light pre code .token.url {
+  color: #e11d48;
+}
+
+.light pre code .token.atrule,
+.light pre code .token.attr-value,
+.light pre code .token.keyword {
+  color: #be185d;
+  font-weight: 600;
+}
+
+.light pre code .token.function,
+.light pre code .token.function-variable,
+.light pre code .token.class-name {
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.light pre code .token.regex,
+.light pre code .token.important,
+.light pre code .token.variable {
+  color: #7c3aed;
+}
+
+.light pre code .token.parameter {
+  color: #0f172a;
+}
+
+/* Monospace Architectural Prose Styling for Markdown */
+.prose-fp {
+  font-family: 'JetBrains Mono', 'Space Mono', ui-monospace, monospace;
+}
+.prose-fp p {
+  margin-bottom: 0.85rem;
+  line-height: 1.65;
+}
+.prose-fp p:last-child {
+  margin-bottom: 0;
+}
+.prose-fp strong {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.prose-fp em {
+  font-style: italic;
+  opacity: 0.9;
+}
+.prose-fp ul {
+  list-style-type: disc;
+  padding-left: 1.25rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.85rem;
+}
+.prose-fp ol {
+  list-style-type: decimal;
+  padding-left: 1.25rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.85rem;
+}
+.prose-fp li {
+  margin-top: 0.35rem;
+  margin-bottom: 0.35rem;
+  line-height: 1.55;
+}
+.prose-fp li::marker {
+  color: var(--text-muted);
+}
+.prose-fp code {
+  font-family: inherit;
+  font-size: 0.85em;
+  padding: 0.15em 0.35em;
+  border-radius: 2px;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+.prose-fp blockquote {
+  border-left: 2px solid var(--border-focus);
+  padding-left: 0.75rem;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+  opacity: 0.85;
+  font-style: italic;
+}
+.prose-fp a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 500;
+  color: var(--text-primary);
+  opacity: 0.9;
+  transition: opacity 0.15s ease;
+}
+.prose-fp a:hover {
+  opacity: 1;
+}
+.prose-fp h1, .prose-fp h2, .prose-fp h3, .prose-fp h4, .prose-fp h5, .prose-fp h6 {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+.prose-fp hr {
+  border-color: var(--border-subtle);
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
