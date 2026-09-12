@@ -1,6 +1,6 @@
 # FP Jargon - Full Reference
 
-> Complete catalog of 63 functional programming concepts, morphisms, algebraic structures, and category theory terms with JavaScript ES2015 examples.
+> Complete catalog of 69 functional programming concepts, morphisms, algebraic structures, and category theory terms with JavaScript ES2015 examples.
 > Source: https://github.com/hemanth/functional-programming-jargon
 > Live app: https://hemanth.github.io/functional-programming-jargon/
 
@@ -217,7 +217,7 @@ readFileAsync('path/to/file', (err, response) => {
 - Category: Composition & Flow
 - ID: #io
 - Aliases: task, effect container, side effect recipe
-- Related concepts: #side-effects, #monad, #lazy-evaluation, #value
+- Related concepts: #side-effects, #monad, #lazy-evaluation, #thunk, #value
 
 ### Definition
 A pure data structure that encapsulates a side effect. Instead of performing the effect immediately, IO wraps the action in a nullary function (thunk), allowing effectful operations to be transformed, chained, and composed as pure values without actually executing them until explicitly triggered.
@@ -246,7 +246,7 @@ formatted.run()
 - Category: Core Functions
 - ID: #trampoline
 - Aliases: thunk loop, tail recursion optimization
-- Related concepts: #higher-order-functions-hof, #continuation
+- Related concepts: #higher-order-functions-hof, #continuation, #thunk
 
 ### Definition
 A mechanism that enables deep or mutually recursive functions to run without exceeding the maximum call stack limit.
@@ -274,12 +274,37 @@ safeSum(1000000) // 500000500000
 
 ---
 
+## Thunk
+
+- Category: Core Functions
+- ID: #thunk
+- Aliases: deferred computation, nullary function, lazy thunk
+- Related concepts: #lazy-evaluation, #trampoline, #io
+
+### Definition
+A nullary function (a function taking zero arguments) that wraps an expression to delay its evaluation until called. Thunks are the fundamental mechanism for implementing lazy evaluation, trampolines, and deferred side effects.
+
+### Code Examples
+
+```js
+// An eager calculation executes immediately:
+// const data = expensiveCalculation()
+
+// A thunk wraps the expression in a function, deferring execution:
+const thunk = () => 42 * 2
+
+// The expression is only evaluated when explicitly called:
+thunk() // 84
+```
+
+---
+
 ## Pure Function
 
 - Category: Core Functions
 - ID: #pure-function
 - Aliases: deterministic function, purity
-- Related concepts: #side-effects, #referential-transparency, #idempotence, #equational-reasoning, #function, #lazy-evaluation, #lens, #either
+- Related concepts: #side-effects, #referential-transparency, #idempotence, #equational-reasoning, #function, #lazy-evaluation, #lens, #memoization, #either
 
 ### Definition
 A function is pure if the return value is only determined by its input values, and does not produce side effects. The function must always return the same result when given the same input.
@@ -317,7 +342,7 @@ greeting // "Hi, Brianne"
 
 - Category: Purity & Reasoning
 - ID: #side-effects
-- Related concepts: #pure-function, #io, #function
+- Related concepts: #pure-function, #io, #memoization, #function
 
 ### Definition
 A function or expression is said to have a side effect if apart from returning a value, it interacts with (reads from or writes to) external mutable state.
@@ -338,7 +363,7 @@ console.log('IO is a side effect!')
 
 - Category: Purity & Reasoning
 - ID: #idempotence
-- Related concepts: #pure-function
+- Related concepts: #pure-function, #memoization
 
 ### Definition
 A function is idempotent if reapplying it to its result does not produce a different result.
@@ -387,7 +412,7 @@ const incrementAll2 = map(add(1))
 
 - Category: Core Functions
 - ID: #predicate
-- Related concepts: #higher-order-functions-hof
+- Related concepts: #higher-order-functions-hof, #contravariant-functor
 
 ### Definition
 A predicate is a function that returns true or false for a given value. A common use of a predicate is as the callback for array filter.
@@ -432,7 +457,7 @@ addOne('some string') // Contract violated: expected int -> boolean
 
 - Category: Category & Morphisms
 - ID: #category
-- Related concepts: #morphism, #function-composition
+- Related concepts: #morphism, #function-composition, #natural-transformation
 
 ### Definition
 A category in category theory is a collection of objects and morphisms between them. In programming, typically types act as the objects and functions as morphisms.
@@ -564,7 +589,7 @@ Constant(1).chain(n => Constant(n + 1)) // => Constant(1)
 - Category: Algebraic Structures
 - ID: #functor
 - Aliases: map, mappable
-- Related concepts: #pointed-functor, #applicative-functor, #lift, #traversable, #bifunctor, #constant-functor, #option, #monad
+- Related concepts: #pointed-functor, #applicative-functor, #lift, #traversable, #bifunctor, #contravariant-functor, #natural-transformation, #constant-functor, #option, #monad
 
 ### Definition
 An object that implements a map function that takes a function which is run on the contents of that object. A functor must adhere to two rules:
@@ -654,7 +679,7 @@ Array.of(1) // => [1]
 - Category: Purity & Reasoning
 - ID: #referential-transparency
 - Aliases: referential transparent, substitution model
-- Related concepts: #pure-function, #equational-reasoning, #constant, #function
+- Related concepts: #pure-function, #equational-reasoning, #constant, #memoization, #function
 
 ### Definition
 An expression that can be replaced with its value without changing the behavior of the program is said to be referentially transparent.
@@ -682,6 +707,36 @@ When an application is composed of expressions and devoid of side effects, truth
 ```js
 const grainToDogs = compose(chickenIntoDogs, grainIntoChicken)
 const grainToCats = compose(dogsIntoCats, grainToDogs)
+```
+
+---
+
+## Memoization
+
+- Category: Purity & Reasoning
+- ID: #memoization
+- Aliases: memoize, memoized, caching
+- Related concepts: #pure-function, #referential-transparency, #idempotence, #side-effects
+
+### Definition
+An optimization technique that caches the return value of a function based on its input parameters. Memoization is only valid and safe for pure functions possessing referential transparency, because calling the function with identical arguments must always yield identical results without producing observable side effects.
+
+### Code Examples
+
+```js
+const memoize = (fn) => {
+  const cache = new Map()
+  return (arg) => {
+    if (!cache.has(arg)) {
+      cache.set(arg, fn(arg))
+    }
+    return cache.get(arg)
+  }
+}
+
+const factorial = memoize((n) => (n <= 1 ? 1 : n * factorial(n - 1)))
+factorial(5) // Calculated: 120
+factorial(5) // Retrieved from cache: 120
 ```
 
 ---
@@ -758,7 +813,7 @@ divBy10(30) // => 3
 - Category: Composition & Flow
 - ID: #lazy-evaluation
 - Aliases: call-by-need, deferred execution, generators
-- Related concepts: #pure-function, #io
+- Related concepts: #pure-function, #io, #thunk
 
 ### Definition
 Lazy evaluation is a call-by-need evaluation mechanism that delays the evaluation of an expression until its value is needed. In functional languages, this allows for structures like infinite lists, which would not normally be available in an imperative language where the sequencing of commands is significant.
@@ -785,7 +840,7 @@ randIter.next() // Each execution gives a random value, expression is evaluated 
 - Category: Algebraic Structures
 - ID: #monoid
 - Aliases: empty, identity, semigroup with identity
-- Related concepts: #semigroup, #foldable, #homomorphism
+- Related concepts: #semigroup, #foldable, #alternative, #homomorphism
 
 ### Definition
 An object with a function that "combines" that object with another of the same type (semigroup) which has an "identity" value.
@@ -919,7 +974,7 @@ parseAndValidate('999') // => Some(999)
 - Category: Algebraic Structures
 - ID: #applicative-functor
 - Aliases: applicative, ap
-- Related concepts: #functor, #pointed-functor, #monad, #lift, #traversable
+- Related concepts: #functor, #pointed-functor, #monad, #lift, #traversable, #alternative
 
 ### Definition
 An applicative functor is an object with an ap function. ap applies a function in the object to a value in another object of the same type.
@@ -981,11 +1036,78 @@ score.bimap((name) => name.toUpperCase(), (points) => points * 2)
 
 ---
 
+## Contravariant Functor
+
+- Category: Algebraic Structures
+- ID: #contravariant-functor
+- Aliases: contravariant, cmap, contramap
+- Related concepts: #functor, #predicate
+
+### Definition
+A structure similar to a functor, but whose transformation flows in the opposite direction. While a covariant functor transforms a producer F<A> into F<B> via (a -> b), a contravariant functor transforms a consumer F<A> into F<B> via (b -> a) using cmap (or contramap).
+
+### Code Examples
+
+```js
+// Predicate wraps a test function (x) -> Boolean
+const Predicate = (test) => ({
+  test,
+  // cmap :: (b -> a) -> Predicate a -> Predicate b
+  cmap: (f) => Predicate((x) => test(f(x)))
+})
+
+// An existing predicate checking if a string is long
+const isLongString = Predicate((s) => s.length > 5)
+
+// Contramap pre-processes a User object into a string (user.bio)
+const hasLongBio = isLongString.cmap((user) => user.bio)
+
+hasLongBio.test({ bio: 'Hello World' }) // true
+hasLongBio.test({ bio: 'Hi' }) // false
+```
+
+---
+
+## Alternative
+
+- Category: Algebraic Structures
+- ID: #alternative
+- Aliases: alt, choice operator, fallback
+- Related concepts: #applicative-functor, #monoid, #option
+
+### Definition
+An applicative functor that also forms a monoid, providing a binary choice operator alt (often written <|>) and an identity element for failure recovery and fallback logic.
+
+### Code Examples
+
+```js
+const AltOption = {
+  Some: (x) => ({
+    alt: (_other) => AltOption.Some(x),
+    value: x
+  }),
+  None: () => ({
+    alt: (other) => other,
+    value: null
+  })
+}
+
+// Fallback configuration chain: first valid value wins
+const primaryConfig = AltOption.None()
+const secondaryConfig = AltOption.Some({ port: 8080 })
+const defaultConfig = AltOption.Some({ port: 3000 })
+
+const finalConfig = primaryConfig.alt(secondaryConfig).alt(defaultConfig)
+finalConfig.value // { port: 8080 }
+```
+
+---
+
 ## Morphism
 
 - Category: Category & Morphisms
 - ID: #morphism
-- Related concepts: #category, #homomorphism, #isomorphism
+- Related concepts: #category, #homomorphism, #natural-transformation, #isomorphism
 
 ### Definition
 A relationship between objects within a category. In the context of functional programming all functions are morphisms.
@@ -1035,7 +1157,7 @@ const decrement = (x) => x - 1
 
 - Category: Category & Morphisms
 - ID: #isomorphism
-- Related concepts: #homomorphism, #morphism
+- Related concepts: #homomorphism, #iso, #morphism
 
 ### Definition
 A morphism made of a pair of transformations between 2 types of objects that is structural in nature and no data is lost.
@@ -1174,6 +1296,33 @@ The opposite of paramorphism, just as anamorphism is the opposite of catamorphis
 
 ---
 
+## Natural Transformation
+
+- Category: Category & Morphisms
+- ID: #natural-transformation
+- Aliases: nat, functor transformation
+- Related concepts: #functor, #morphism, #category
+
+### Definition
+A structure-preserving mapping between two functors, transforming F<A> into G<A> without altering or inspecting the underlying value A.
+
+### Code Examples
+
+```js
+// nat :: F a -> G a
+// e.g. Array to Option (taking the head element)
+const listToOption = (arr) => (arr.length > 0 ? { value: arr[0], isSome: true } : { value: null, isSome: false })
+
+const double = (x) => x * 2
+
+// Naturality law: transforming after map equals mapping after transform
+const arrayTransformed = listToOption([1, 2, 3].map(double)) // { value: 2, isSome: true }
+const mappedOption = { value: double(listToOption([1, 2, 3]).value), isSome: true } // { value: 2, isSome: true }
+arrayTransformed.value === mappedOption.value // true
+```
+
+---
+
 ## Setoid
 
 - Category: Algebraic Structures
@@ -1275,7 +1424,7 @@ promiseSequence([
 - Category: Types & Data Modeling
 - ID: #lens
 - Aliases: getter, setter, optics
-- Related concepts: #function-composition, #pure-function, #prism
+- Related concepts: #function-composition, #pure-function, #prism, #iso
 
 ### Definition
 A lens is a structure (often an object or function) that pairs a getter and a non-mutating setter for some other data structure.
@@ -1327,7 +1476,7 @@ R.over(compose(firstLens, nameLens), uppercase, people) // [{'name': 'GERTRUDE B
 - Category: Types & Data Modeling
 - ID: #prism
 - Aliases: affine traversal, sum optics
-- Related concepts: #lens, #sum-type, #option
+- Related concepts: #lens, #sum-type, #option, #iso
 
 ### Definition
 An optic that focuses on a sub-case or variant of a sum type. Unlike a Lens, which always assumes the target field exists on a product structure, a Prism may fail to match because the target variant might not be present.
@@ -1349,6 +1498,36 @@ const integerPrism = Prism(
 integerPrism.preview('42') // 42
 integerPrism.preview('hello') // null
 integerPrism.review(42) // '42'
+```
+
+---
+
+## Iso
+
+- Category: Types & Data Modeling
+- ID: #iso
+- Aliases: isomorphism optic, lossless conversion, reversible mapping
+- Related concepts: #lens, #prism, #isomorphism
+
+### Definition
+An optic that defines a lossless, reversible two-way mapping between two representations of the same information (s and a). An Iso consists of a to function (s -> a) and a from function (a -> s) such that from(to(x)) === x and to(from(y)) === y.
+
+### Code Examples
+
+```js
+const Iso = (to, from) => ({
+  to,
+  from
+})
+
+// Conversion between Celsius and Fahrenheit
+const tempIso = Iso(
+  (c) => (c * 9) / 5 + 32, // to Fahrenheit
+  (f) => ((f - 32) * 5) / 9 // from Fahrenheit
+)
+
+tempIso.to(100) // 212
+tempIso.from(212) // 100
 ```
 
 ---
@@ -1445,7 +1624,7 @@ const point = (x, y) => ({ x, y })
 - Category: Types & Data Modeling
 - ID: #option
 - Aliases: maybe, some, none, just, nothing
-- Related concepts: #monad, #dealing-with-partial-functions, #sum-type, #either, #prism, #functor, #kleisli-composition
+- Related concepts: #monad, #dealing-with-partial-functions, #sum-type, #either, #prism, #alternative, #functor, #kleisli-composition
 
 ### Definition
 Option is a sum type with two cases often called Some and None.

@@ -2,8 +2,8 @@
   "meta": {
     "title": "FP Jargon",
     "subtitle": "The vocabulary of functional programming mapped into an interactive graph",
-    "totalTerms": 63,
-    "totalRelationships": 92,
+    "totalTerms": 69,
+    "totalRelationships": 110,
     "sourceRepo": "https://github.com/hemanth/functional-programming-jargon",
     "originalAuthor": "Hemanth HM"
   },
@@ -292,7 +292,7 @@
         "side effect recipe"
       ],
       "summary": "A pure data structure that encapsulates a side effect. Instead of performing the effect immediately, IO wraps the action in a nullary function (thunk), allowing effectful operations to be transformed, chained, and composed as pure values without actually executing them until explicitly triggered.",
-      "body": "A pure data structure that encapsulates a side effect. Instead of performing the effect immediately, `IO` wraps the action in a nullary function ([thunk](#lazy-evaluation)), allowing effectful operations to be transformed, chained, and composed as pure [values](#value) without actually executing them until explicitly triggered.\n\n```js\nconst IO = (run) => ({\n  run,\n  map: (f) => IO(() => f(run())),\n  chain: (f) => IO(() => f(run()).run())\n})\n\n// Pure description - nothing executes yet\nconst readTimestamp = IO(() => Date.now())\nconst formatted = readTimestamp.map((ts) => new Date(ts).toISOString())\n\n// Side effect executes only when calling .run()\nformatted.run()\n```\n\n__Further reading__\n* [IO container](https://drboolean.gitbooks.io/mostly-adequate-guide/content/ch8.html#pure-functional-magic) in Mostly Adequate Guide",
+      "body": "A pure data structure that encapsulates a side effect. Instead of performing the effect immediately, `IO` wraps the action in a nullary function ([thunk](#thunk)), allowing effectful operations to be transformed, chained, and composed as pure [values](#value) without actually executing them until explicitly triggered.\n\n```js\nconst IO = (run) => ({\n  run,\n  map: (f) => IO(() => f(run())),\n  chain: (f) => IO(() => f(run()).run())\n})\n\n// Pure description - nothing executes yet\nconst readTimestamp = IO(() => Date.now())\nconst formatted = readTimestamp.map((ts) => new Date(ts).toISOString())\n\n// Side effect executes only when calling .run()\nformatted.run()\n```\n\n__Further reading__\n* [IO container](https://drboolean.gitbooks.io/mostly-adequate-guide/content/ch8.html#pure-functional-magic) in Mostly Adequate Guide",
       "codeBlocks": [
         {
           "lang": "js",
@@ -306,13 +306,14 @@
         }
       ],
       "crossRefs": [
-        "lazy-evaluation",
+        "thunk",
         "value"
       ],
       "relatedIds": [
         "side-effects",
         "monad",
         "lazy-evaluation",
+        "thunk",
         "value"
       ]
     },
@@ -342,7 +343,42 @@
       "crossRefs": [],
       "relatedIds": [
         "higher-order-functions-hof",
-        "continuation"
+        "continuation",
+        "thunk"
+      ]
+    },
+    {
+      "id": "thunk",
+      "title": "Thunk",
+      "depth": 2,
+      "category": "core-functions",
+      "aliases": [
+        "deferred computation",
+        "nullary function",
+        "lazy thunk"
+      ],
+      "summary": "A nullary function (a function taking zero arguments) that wraps an expression to delay its evaluation until called. Thunks are the fundamental mechanism for implementing lazy evaluation, trampolines, and deferred side effects.",
+      "body": "A nullary function (a function taking zero arguments) that wraps an expression to delay its evaluation until called. Thunks are the fundamental mechanism for implementing [lazy evaluation](#lazy-evaluation), [trampolines](#trampoline), and deferred side effects.\n\n```js\n// An eager calculation executes immediately:\n// const data = expensiveCalculation()\n\n// A thunk wraps the expression in a function, deferring execution:\nconst thunk = () => 42 * 2\n\n// The expression is only evaluated when explicitly called:\nthunk() // 84\n```\n\n__Further reading__\n* [Thunk](https://en.wikipedia.org/wiki/Thunk) on Wikipedia",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "// An eager calculation executes immediately:\n// const data = expensiveCalculation()\n\n// A thunk wraps the expression in a function, deferring execution:\nconst thunk = () => 42 * 2\n\n// The expression is only evaluated when explicitly called:\nthunk() // 84"
+        }
+      ],
+      "furtherReading": [
+        {
+          "title": "Thunk",
+          "url": "https://en.wikipedia.org/wiki/Thunk"
+        }
+      ],
+      "crossRefs": [
+        "lazy-evaluation",
+        "trampoline"
+      ],
+      "relatedIds": [
+        "lazy-evaluation",
+        "trampoline",
+        "io"
       ]
     },
     {
@@ -380,6 +416,7 @@
         "function",
         "lazy-evaluation",
         "lens",
+        "memoization",
         "either"
       ]
     },
@@ -406,6 +443,7 @@
       "relatedIds": [
         "pure-function",
         "io",
+        "memoization",
         "function"
       ]
     },
@@ -430,7 +468,8 @@
       "furtherReading": [],
       "crossRefs": [],
       "relatedIds": [
-        "pure-function"
+        "pure-function",
+        "memoization"
       ]
     },
     {
@@ -481,7 +520,8 @@
       "furtherReading": [],
       "crossRefs": [],
       "relatedIds": [
-        "higher-order-functions-hof"
+        "higher-order-functions-hof",
+        "contravariant-functor"
       ]
     },
     {
@@ -527,7 +567,8 @@
       "crossRefs": [],
       "relatedIds": [
         "morphism",
-        "function-composition"
+        "function-composition",
+        "natural-transformation"
       ]
     },
     {
@@ -693,6 +734,8 @@
         "lift",
         "traversable",
         "bifunctor",
+        "contravariant-functor",
+        "natural-transformation",
         "constant-functor",
         "option",
         "monad"
@@ -780,6 +823,7 @@
         "pure-function",
         "equational-reasoning",
         "constant",
+        "memoization",
         "function"
       ]
     },
@@ -806,6 +850,42 @@
       "relatedIds": [
         "pure-function",
         "referential-transparency"
+      ]
+    },
+    {
+      "id": "memoization",
+      "title": "Memoization",
+      "depth": 2,
+      "category": "purity-state",
+      "aliases": [
+        "memoize",
+        "memoized",
+        "caching"
+      ],
+      "summary": "An optimization technique that caches the return value of a function based on its input parameters. Memoization is only valid and safe for pure functions possessing referential transparency, because calling the function with identical arguments must always yield identical results without producing observable side effects.",
+      "body": "An optimization technique that caches the return value of a function based on its input parameters. Memoization is only valid and safe for [pure functions](#pure-function) possessing [referential transparency](#referential-transparency), because calling the function with identical arguments must always yield identical results without producing observable [side effects](#side-effects).\n\n```js\nconst memoize = (fn) => {\n  const cache = new Map()\n  return (arg) => {\n    if (!cache.has(arg)) {\n      cache.set(arg, fn(arg))\n    }\n    return cache.get(arg)\n  }\n}\n\nconst factorial = memoize((n) => (n <= 1 ? 1 : n * factorial(n - 1)))\nfactorial(5) // Calculated: 120\nfactorial(5) // Retrieved from cache: 120\n```\n\n__Further reading__\n* [Memoization](https://en.wikipedia.org/wiki/Memoization) on Wikipedia",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "const memoize = (fn) => {\n  const cache = new Map()\n  return (arg) => {\n    if (!cache.has(arg)) {\n      cache.set(arg, fn(arg))\n    }\n    return cache.get(arg)\n  }\n}\n\nconst factorial = memoize((n) => (n <= 1 ? 1 : n * factorial(n - 1)))\nfactorial(5) // Calculated: 120\nfactorial(5) // Retrieved from cache: 120"
+        }
+      ],
+      "furtherReading": [
+        {
+          "title": "Memoization",
+          "url": "https://en.wikipedia.org/wiki/Memoization"
+        }
+      ],
+      "crossRefs": [
+        "pure-function",
+        "referential-transparency",
+        "side-effects"
+      ],
+      "relatedIds": [
+        "pure-function",
+        "referential-transparency",
+        "idempotence",
+        "side-effects"
       ]
     },
     {
@@ -905,7 +985,8 @@
       "crossRefs": [],
       "relatedIds": [
         "pure-function",
-        "io"
+        "io",
+        "thunk"
       ]
     },
     {
@@ -951,6 +1032,7 @@
       "relatedIds": [
         "semigroup",
         "foldable",
+        "alternative",
         "homomorphism"
       ]
     },
@@ -1079,7 +1161,8 @@
         "pointed-functor",
         "monad",
         "lift",
-        "traversable"
+        "traversable",
+        "alternative"
       ]
     },
     {
@@ -1113,6 +1196,76 @@
       ]
     },
     {
+      "id": "contravariant-functor",
+      "title": "Contravariant Functor",
+      "depth": 2,
+      "category": "algebraic-structures",
+      "aliases": [
+        "contravariant",
+        "cmap",
+        "contramap"
+      ],
+      "summary": "A structure similar to a functor, but whose transformation flows in the opposite direction. While a covariant functor transforms a producer F<A> into F<B> via (a -> b), a contravariant functor transforms a consumer F<A> into F<B> via (b -> a) using cmap (or contramap).",
+      "body": "A structure similar to a [functor](#functor), but whose transformation flows in the opposite direction. While a covariant functor transforms a producer `F<A>` into `F<B>` via `(a -> b)`, a contravariant functor transforms a consumer `F<A>` into `F<B>` via `(b -> a)` using `cmap` (or `contramap`).\n\nContravariant functors are commonly used to model predicates, validators, encoders, and sorting comparators by preprocessing inputs before feeding them to the consumer.\n\n```js\n// Predicate wraps a test function (x) -> Boolean\nconst Predicate = (test) => ({\n  test,\n  // cmap :: (b -> a) -> Predicate a -> Predicate b\n  cmap: (f) => Predicate((x) => test(f(x)))\n})\n\n// An existing predicate checking if a string is long\nconst isLongString = Predicate((s) => s.length > 5)\n\n// Contramap pre-processes a User object into a string (user.bio)\nconst hasLongBio = isLongString.cmap((user) => user.bio)\n\nhasLongBio.test({ bio: 'Hello World' }) // true\nhasLongBio.test({ bio: 'Hi' }) // false\n```\n\n__Further reading__\n* [Contravariant Functor](https://github.com/fantasyland/fantasy-land#contravariant) in Fantasy Land",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "// Predicate wraps a test function (x) -> Boolean\nconst Predicate = (test) => ({\n  test,\n  // cmap :: (b -> a) -> Predicate a -> Predicate b\n  cmap: (f) => Predicate((x) => test(f(x)))\n})\n\n// An existing predicate checking if a string is long\nconst isLongString = Predicate((s) => s.length > 5)\n\n// Contramap pre-processes a User object into a string (user.bio)\nconst hasLongBio = isLongString.cmap((user) => user.bio)\n\nhasLongBio.test({ bio: 'Hello World' }) // true\nhasLongBio.test({ bio: 'Hi' }) // false"
+        }
+      ],
+      "furtherReading": [
+        {
+          "title": "Contravariant Functor",
+          "url": "https://github.com/fantasyland/fantasy-land#contravariant"
+        }
+      ],
+      "crossRefs": [
+        "functor"
+      ],
+      "relatedIds": [
+        "functor",
+        "predicate"
+      ]
+    },
+    {
+      "id": "alternative",
+      "title": "Alternative",
+      "depth": 2,
+      "category": "algebraic-structures",
+      "aliases": [
+        "alt",
+        "choice operator",
+        "fallback"
+      ],
+      "summary": "An applicative functor that also forms a monoid, providing a binary choice operator alt (often written <|>) and an identity element for failure recovery and fallback logic.",
+      "body": "An [applicative functor](#applicative-functor) that also forms a [monoid](#monoid), providing a binary choice operator `alt` (often written `<|>`) and an identity element for failure recovery and fallback logic.\n\nWhen combining computations with `alt`, the structure typically represents \"first success wins,\" falling back to subsequent alternatives if the previous computation failed or returned empty.\n\n```js\nconst AltOption = {\n  Some: (x) => ({\n    alt: (_other) => AltOption.Some(x),\n    value: x\n  }),\n  None: () => ({\n    alt: (other) => other,\n    value: null\n  })\n}\n\n// Fallback configuration chain: first valid value wins\nconst primaryConfig = AltOption.None()\nconst secondaryConfig = AltOption.Some({ port: 8080 })\nconst defaultConfig = AltOption.Some({ port: 3000 })\n\nconst finalConfig = primaryConfig.alt(secondaryConfig).alt(defaultConfig)\nfinalConfig.value // { port: 8080 }\n```\n\n__Further reading__\n* [Alt](https://github.com/fantasyland/fantasy-land#alt) in Fantasy Land\n* [Alternative](https://github.com/fantasyland/fantasy-land#alternative) in Fantasy Land",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "const AltOption = {\n  Some: (x) => ({\n    alt: (_other) => AltOption.Some(x),\n    value: x\n  }),\n  None: () => ({\n    alt: (other) => other,\n    value: null\n  })\n}\n\n// Fallback configuration chain: first valid value wins\nconst primaryConfig = AltOption.None()\nconst secondaryConfig = AltOption.Some({ port: 8080 })\nconst defaultConfig = AltOption.Some({ port: 3000 })\n\nconst finalConfig = primaryConfig.alt(secondaryConfig).alt(defaultConfig)\nfinalConfig.value // { port: 8080 }"
+        }
+      ],
+      "furtherReading": [
+        {
+          "title": "Alt",
+          "url": "https://github.com/fantasyland/fantasy-land#alt"
+        },
+        {
+          "title": "Alternative",
+          "url": "https://github.com/fantasyland/fantasy-land#alternative"
+        }
+      ],
+      "crossRefs": [
+        "applicative-functor",
+        "monoid"
+      ],
+      "relatedIds": [
+        "applicative-functor",
+        "monoid",
+        "option"
+      ]
+    },
+    {
       "id": "morphism",
       "title": "Morphism",
       "depth": 2,
@@ -1128,6 +1281,7 @@
       "relatedIds": [
         "category",
         "homomorphism",
+        "natural-transformation",
         "isomorphism"
       ]
     },
@@ -1206,6 +1360,7 @@
       ],
       "relatedIds": [
         "homomorphism",
+        "iso",
         "morphism"
       ]
     },
@@ -1333,6 +1488,38 @@
       "crossRefs": [],
       "relatedIds": [
         "anamorphism"
+      ]
+    },
+    {
+      "id": "natural-transformation",
+      "title": "Natural Transformation",
+      "depth": 2,
+      "category": "category-morphisms",
+      "aliases": [
+        "nat",
+        "functor transformation"
+      ],
+      "summary": "A structure-preserving mapping between two functors, transforming F<A> into G<A> without altering or inspecting the underlying value A.",
+      "body": "A structure-preserving mapping between two [functors](#functor), transforming `F<A>` into `G<A>` without altering or inspecting the underlying value `A`.\n\nIn functional programming, a natural transformation is a function that changes the container type while preserving the contents and obeying the naturality law: `nat(fa.map(f)) === nat(fa).map(f)`.\n\n```js\n// nat :: F a -> G a\n// e.g. Array to Option (taking the head element)\nconst listToOption = (arr) => (arr.length > 0 ? { value: arr[0], isSome: true } : { value: null, isSome: false })\n\nconst double = (x) => x * 2\n\n// Naturality law: transforming after map equals mapping after transform\nconst arrayTransformed = listToOption([1, 2, 3].map(double)) // { value: 2, isSome: true }\nconst mappedOption = { value: double(listToOption([1, 2, 3]).value), isSome: true } // { value: 2, isSome: true }\narrayTransformed.value === mappedOption.value // true\n```\n\n__Further reading__\n* [Natural transformation](https://en.wikipedia.org/wiki/Natural_transformation) on Wikipedia",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "// nat :: F a -> G a\n// e.g. Array to Option (taking the head element)\nconst listToOption = (arr) => (arr.length > 0 ? { value: arr[0], isSome: true } : { value: null, isSome: false })\n\nconst double = (x) => x * 2\n\n// Naturality law: transforming after map equals mapping after transform\nconst arrayTransformed = listToOption([1, 2, 3].map(double)) // { value: 2, isSome: true }\nconst mappedOption = { value: double(listToOption([1, 2, 3]).value), isSome: true } // { value: 2, isSome: true }\narrayTransformed.value === mappedOption.value // true"
+        }
+      ],
+      "furtherReading": [
+        {
+          "title": "Natural transformation",
+          "url": "https://en.wikipedia.org/wiki/Natural_transformation"
+        }
+      ],
+      "crossRefs": [
+        "functor"
+      ],
+      "relatedIds": [
+        "functor",
+        "morphism",
+        "category"
       ]
     },
     {
@@ -1471,7 +1658,8 @@
       "relatedIds": [
         "function-composition",
         "pure-function",
-        "prism"
+        "prism",
+        "iso"
       ]
     },
     {
@@ -1505,7 +1693,43 @@
       "relatedIds": [
         "lens",
         "sum-type",
-        "option"
+        "option",
+        "iso"
+      ]
+    },
+    {
+      "id": "iso",
+      "title": "Iso",
+      "depth": 2,
+      "category": "types-data",
+      "aliases": [
+        "isomorphism optic",
+        "lossless conversion",
+        "reversible mapping"
+      ],
+      "summary": "An optic that defines a lossless, reversible two-way mapping between two representations of the same information (s and a). An Iso consists of a to function (s -> a) and a from function (a -> s) such that from(to(x)) === x and to(from(y)) === y.",
+      "body": "An optic that defines a lossless, reversible two-way mapping between two representations of the same information (`s` and `a`). An Iso consists of a `to` function (`s -> a`) and a `from` function (`a -> s`) such that `from(to(x)) === x` and `to(from(y)) === y`.\n\nIsos form the foundation of reversible transformations like temperature conversions, coordinate systems, or encoding/decoding data structures.\n\n```js\nconst Iso = (to, from) => ({\n  to,\n  from\n})\n\n// Conversion between Celsius and Fahrenheit\nconst tempIso = Iso(\n  (c) => (c * 9) / 5 + 32, // to Fahrenheit\n  (f) => ((f - 32) * 5) / 9 // from Fahrenheit\n)\n\ntempIso.to(100) // 212\ntempIso.from(212) // 100\n```\n\n__Further reading__\n* [Isomorphism](https://en.wikipedia.org/wiki/Isomorphism) on Wikipedia\n* [Optics / Iso](https://github.com/flunc/optics) on GitHub",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "const Iso = (to, from) => ({\n  to,\n  from\n})\n\n// Conversion between Celsius and Fahrenheit\nconst tempIso = Iso(\n  (c) => (c * 9) / 5 + 32, // to Fahrenheit\n  (f) => ((f - 32) * 5) / 9 // from Fahrenheit\n)\n\ntempIso.to(100) // 212\ntempIso.from(212) // 100"
+        }
+      ],
+      "furtherReading": [
+        {
+          "title": "Isomorphism",
+          "url": "https://en.wikipedia.org/wiki/Isomorphism"
+        },
+        {
+          "title": "Optics / Iso",
+          "url": "https://github.com/flunc/optics"
+        }
+      ],
+      "crossRefs": [],
+      "relatedIds": [
+        "lens",
+        "prism",
+        "isomorphism"
       ]
     },
     {
@@ -1662,6 +1886,7 @@
         "sum-type",
         "either",
         "prism",
+        "alternative",
         "functor",
         "kleisli-composition"
       ]
@@ -1943,35 +2168,42 @@
         "id": "io",
         "name": "IO",
         "category": "composition",
-        "val": 8,
+        "val": 9,
         "summary": "A pure data structure that encapsulates a side effect. Instead of performing the effect immediately, IO wraps the action in a nullary function (thunk), allowing effectful operations to be transformed, chained, and composed as pure values without actually executing them until explicitly triggered."
       },
       {
         "id": "trampoline",
         "name": "Trampoline",
         "category": "core-functions",
-        "val": 6,
+        "val": 7,
         "summary": "A mechanism that enables deep or mutually recursive functions to run without exceeding the maximum call stack limit."
+      },
+      {
+        "id": "thunk",
+        "name": "Thunk",
+        "category": "core-functions",
+        "val": 7,
+        "summary": "A nullary function (a function taking zero arguments) that wraps an expression to delay its evaluation until called. Thunks are the fundamental mechanism for implementing lazy evaluation, trampolines, and deferred side effects."
       },
       {
         "id": "pure-function",
         "name": "Pure Function",
         "category": "core-functions",
-        "val": 12,
+        "val": 13,
         "summary": "A function is pure if the return value is only determined by its input values, and does not produce side effects. The function must always return the same result when given the same input."
       },
       {
         "id": "side-effects",
         "name": "Side effects",
         "category": "purity-state",
-        "val": 7,
+        "val": 8,
         "summary": "A function or expression is said to have a side effect if apart from returning a value, it interacts with (reads from or writes to) external mutable state."
       },
       {
         "id": "idempotence",
         "name": "Idempotence",
         "category": "purity-state",
-        "val": 5,
+        "val": 6,
         "summary": "A function is idempotent if reapplying it to its result does not produce a different result."
       },
       {
@@ -1985,7 +2217,7 @@
         "id": "predicate",
         "name": "Predicate",
         "category": "core-functions",
-        "val": 5,
+        "val": 6,
         "summary": "A predicate is a function that returns true or false for a given value. A common use of a predicate is as the callback for array filter."
       },
       {
@@ -1999,7 +2231,7 @@
         "id": "category",
         "name": "Category",
         "category": "category-morphisms",
-        "val": 6,
+        "val": 7,
         "summary": "A category in category theory is a collection of objects and morphisms between them. In programming, typically types act as the objects and functions as morphisms."
       },
       {
@@ -2041,7 +2273,7 @@
         "id": "functor",
         "name": "Functor",
         "category": "algebraic-structures",
-        "val": 12,
+        "val": 14,
         "summary": "An object that implements a map function that takes a function which is run on the contents of that object. A functor must adhere to two rules:"
       },
       {
@@ -2062,7 +2294,7 @@
         "id": "referential-transparency",
         "name": "Referential Transparency",
         "category": "purity-state",
-        "val": 8,
+        "val": 9,
         "summary": "An expression that can be replaced with its value without changing the behavior of the program is said to be referentially transparent."
       },
       {
@@ -2071,6 +2303,13 @@
         "category": "purity-state",
         "val": 6,
         "summary": "When an application is composed of expressions and devoid of side effects, truths about the system can be derived from the parts. You can also be confident about details of your system without having to go through every function."
+      },
+      {
+        "id": "memoization",
+        "name": "Memoization",
+        "category": "purity-state",
+        "val": 8,
+        "summary": "An optimization technique that caches the return value of a function based on its input parameters. Memoization is only valid and safe for pure functions possessing referential transparency, because calling the function with identical arguments must always yield identical results without producing observable side effects."
       },
       {
         "id": "lambda",
@@ -2097,14 +2336,14 @@
         "id": "lazy-evaluation",
         "name": "Lazy evaluation",
         "category": "composition",
-        "val": 6,
+        "val": 7,
         "summary": "Lazy evaluation is a call-by-need evaluation mechanism that delays the evaluation of an expression until its value is needed. In functional languages, this allows for structures like infinite lists, which would not normally be available in an imperative language where the sequencing of commands is significant."
       },
       {
         "id": "monoid",
         "name": "Monoid",
         "category": "algebraic-structures",
-        "val": 7,
+        "val": 8,
         "summary": "An object with a function that \"combines\" that object with another of the same type (semigroup) which has an \"identity\" value."
       },
       {
@@ -2132,7 +2371,7 @@
         "id": "applicative-functor",
         "name": "Applicative Functor",
         "category": "algebraic-structures",
-        "val": 9,
+        "val": 10,
         "summary": "An applicative functor is an object with an ap function. ap applies a function in the object to a value in another object of the same type."
       },
       {
@@ -2143,10 +2382,24 @@
         "summary": "A structure with two independent type parameters that can map over both of them simultaneously. A Bifunctor provides bimap, which takes two functions and maps the first over the first type parameter and the second over the second type parameter."
       },
       {
+        "id": "contravariant-functor",
+        "name": "Contravariant Functor",
+        "category": "algebraic-structures",
+        "val": 6,
+        "summary": "A structure similar to a functor, but whose transformation flows in the opposite direction. While a covariant functor transforms a producer F<A> into F<B> via (a -> b), a contravariant functor transforms a consumer F<A> into F<B> via (b -> a) using cmap (or contramap)."
+      },
+      {
+        "id": "alternative",
+        "name": "Alternative",
+        "category": "algebraic-structures",
+        "val": 7,
+        "summary": "An applicative functor that also forms a monoid, providing a binary choice operator alt (often written <|>) and an identity element for failure recovery and fallback logic."
+      },
+      {
         "id": "morphism",
         "name": "Morphism",
         "category": "category-morphisms",
-        "val": 7,
+        "val": 8,
         "summary": "A relationship between objects within a category. In the context of functional programming all functions are morphisms."
       },
       {
@@ -2167,7 +2420,7 @@
         "id": "isomorphism",
         "name": "Isomorphism",
         "category": "category-morphisms",
-        "val": 4,
+        "val": 5,
         "summary": "A morphism made of a pair of transformations between 2 types of objects that is structural in nature and no data is lost."
       },
       {
@@ -2206,6 +2459,13 @@
         "summary": "The opposite of paramorphism, just as anamorphism is the opposite of catamorphism. With paramorphism, you retain access to the accumulator and what has been accumulated, apomorphism lets you unfold with the potential to return early."
       },
       {
+        "id": "natural-transformation",
+        "name": "Natural Transformation",
+        "category": "category-morphisms",
+        "val": 7,
+        "summary": "A structure-preserving mapping between two functors, transforming F<A> into G<A> without altering or inspecting the underlying value A."
+      },
+      {
         "id": "setoid",
         "name": "Setoid",
         "category": "algebraic-structures",
@@ -2237,15 +2497,22 @@
         "id": "lens",
         "name": "Lens",
         "category": "types-data",
-        "val": 7,
+        "val": 8,
         "summary": "A lens is a structure (often an object or function) that pairs a getter and a non-mutating setter for some other data structure."
       },
       {
         "id": "prism",
         "name": "Prism",
         "category": "types-data",
-        "val": 7,
+        "val": 8,
         "summary": "An optic that focuses on a sub-case or variant of a sum type. Unlike a Lens, which always assumes the target field exists on a product structure, a Prism may fail to match because the target variant might not be present."
+      },
+      {
+        "id": "iso",
+        "name": "Iso",
+        "category": "types-data",
+        "val": 7,
+        "summary": "An optic that defines a lossless, reversible two-way mapping between two representations of the same information (s and a). An Iso consists of a to function (s -> a) and a from function (a -> s) such that from(to(x)) === x and to(from(y)) === y."
       },
       {
         "id": "type-signatures",
@@ -2279,7 +2546,7 @@
         "id": "option",
         "name": "Option",
         "category": "types-data",
-        "val": 11,
+        "val": 12,
         "summary": "Option is a sum type with two cases often called Some and None."
       },
       {
@@ -2707,6 +2974,91 @@
         "type": "core"
       },
       {
+        "source": "thunk",
+        "target": "lazy-evaluation",
+        "type": "core"
+      },
+      {
+        "source": "thunk",
+        "target": "trampoline",
+        "type": "core"
+      },
+      {
+        "source": "thunk",
+        "target": "io",
+        "type": "core"
+      },
+      {
+        "source": "memoization",
+        "target": "pure-function",
+        "type": "core"
+      },
+      {
+        "source": "memoization",
+        "target": "referential-transparency",
+        "type": "core"
+      },
+      {
+        "source": "memoization",
+        "target": "idempotence",
+        "type": "core"
+      },
+      {
+        "source": "contravariant-functor",
+        "target": "functor",
+        "type": "core"
+      },
+      {
+        "source": "contravariant-functor",
+        "target": "predicate",
+        "type": "core"
+      },
+      {
+        "source": "alternative",
+        "target": "applicative-functor",
+        "type": "core"
+      },
+      {
+        "source": "alternative",
+        "target": "monoid",
+        "type": "core"
+      },
+      {
+        "source": "alternative",
+        "target": "option",
+        "type": "core"
+      },
+      {
+        "source": "natural-transformation",
+        "target": "functor",
+        "type": "core"
+      },
+      {
+        "source": "natural-transformation",
+        "target": "morphism",
+        "type": "core"
+      },
+      {
+        "source": "natural-transformation",
+        "target": "category",
+        "type": "core"
+      },
+      {
+        "source": "iso",
+        "target": "lens",
+        "type": "core"
+      },
+      {
+        "source": "iso",
+        "target": "prism",
+        "type": "core"
+      },
+      {
+        "source": "iso",
+        "target": "isomorphism",
+        "type": "core"
+      },
+      {
         "source": "contracts",
         "target": "type-signatures",
         "type": "core"
@@ -2739,6 +3091,11 @@
       {
         "source": "lift",
         "target": "pointed-functor",
+        "type": "reference"
+      },
+      {
+        "source": "memoization",
+        "target": "side-effects",
         "type": "reference"
       },
       {

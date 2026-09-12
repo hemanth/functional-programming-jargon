@@ -20,6 +20,7 @@ const CATEGORY_MAP = {
   'partial-function': 'core-functions',
   'dealing-with-partial-functions': 'core-functions',
   'trampoline': 'core-functions',
+  'thunk': 'core-functions',
 
   // Composition & Execution
   'function-composition': 'composition',
@@ -41,6 +42,7 @@ const CATEGORY_MAP = {
   'constant': 'purity-state',
   'constant-function': 'purity-state',
   'contracts': 'purity-state',
+  'memoization': 'purity-state',
 
   // Category Theory & Morphisms
   'category': 'category-morphisms',
@@ -53,6 +55,7 @@ const CATEGORY_MAP = {
   'hylomorphism': 'category-morphisms',
   'paramorphism': 'category-morphisms',
   'apomorphism': 'category-morphisms',
+  'natural-transformation': 'category-morphisms',
 
   // Algebraic Structures
   'functor': 'algebraic-structures',
@@ -70,6 +73,8 @@ const CATEGORY_MAP = {
   'lift': 'algebraic-structures',
   'bifunctor': 'algebraic-structures',
   'traversable': 'algebraic-structures',
+  'contravariant-functor': 'algebraic-structures',
+  'alternative': 'algebraic-structures',
 
   // Types & Modeling
   'type-signatures': 'types-data',
@@ -80,6 +85,7 @@ const CATEGORY_MAP = {
   'either': 'types-data',
   'lens': 'types-data',
   'prism': 'types-data',
+  'iso': 'types-data',
   'lambda-calculus': 'types-data',
   'functional-programming-libraries-in-javascript': 'types-data'
 };
@@ -158,7 +164,13 @@ const ALIASES_MAP = {
   'prism': ['affine traversal', 'sum optics'],
   'lazy-evaluation': ['call-by-need', 'deferred execution', 'generators'],
   'io': ['task', 'effect container', 'side effect recipe'],
-  'trampoline': ['thunk loop', 'tail recursion optimization']
+  'trampoline': ['thunk loop', 'tail recursion optimization'],
+  'thunk': ['deferred computation', 'nullary function', 'lazy thunk'],
+  'memoization': ['memoize', 'memoized', 'caching'],
+  'contravariant-functor': ['contravariant', 'cmap', 'contramap'],
+  'alternative': ['alt', 'choice operator', 'fallback'],
+  'natural-transformation': ['nat', 'functor transformation'],
+  'iso': ['isomorphism optic', 'lossless conversion', 'reversible mapping']
 };
 
 // Explicit semantic connections between concepts in FP
@@ -249,6 +261,23 @@ const EXPLICIT_RELATIONSHIPS = [
   ['io', 'lazy-evaluation'],
   ['trampoline', 'higher-order-functions-hof'],
   ['trampoline', 'continuation'],
+  ['thunk', 'lazy-evaluation'],
+  ['thunk', 'trampoline'],
+  ['thunk', 'io'],
+  ['memoization', 'pure-function'],
+  ['memoization', 'referential-transparency'],
+  ['memoization', 'idempotence'],
+  ['contravariant-functor', 'functor'],
+  ['contravariant-functor', 'predicate'],
+  ['alternative', 'applicative-functor'],
+  ['alternative', 'monoid'],
+  ['alternative', 'option'],
+  ['natural-transformation', 'functor'],
+  ['natural-transformation', 'morphism'],
+  ['natural-transformation', 'category'],
+  ['iso', 'lens'],
+  ['iso', 'prism'],
+  ['iso', 'isomorphism'],
   ['contracts', 'type-signatures']
 ];
 
