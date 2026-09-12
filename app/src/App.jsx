@@ -31,14 +31,14 @@ export default function App() {
   const [useCategoryColors] = useState(true);
   const [soundEnabled, setSoundEnabled] = useState(true);
 
-  // Initialize theme from localStorage or system preference
+  // Initialize theme: check explicit preference or default to light mode
   const [isDark, setIsDark] = useState(() => {
     if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('fp_theme');
-      if (saved) return saved === 'dark';
-      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const explicit = localStorage.getItem('fp_theme_explicit');
+      if (explicit) return explicit === 'dark';
+      return false; // Default to light mode
     }
-    return true;
+    return false;
   });
 
   // Map of terms by id for instant lookup
@@ -96,16 +96,19 @@ export default function App() {
     }
   };
 
-  // Sync dark class on document root and persist
+  // Sync dark class on document root and update meta theme-color
   useEffect(() => {
+    const root = document.documentElement;
     if (isDark) {
-      document.documentElement.classList.add('dark');
-      document.documentElement.classList.remove('light');
-      localStorage.setItem('fp_theme', 'dark');
+      root.classList.add('dark');
+      root.classList.remove('light');
     } else {
-      document.documentElement.classList.remove('dark');
-      document.documentElement.classList.add('light');
-      localStorage.setItem('fp_theme', 'light');
+      root.classList.remove('dark');
+      root.classList.add('light');
+    }
+    const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+    if (themeColorMeta) {
+      themeColorMeta.setAttribute('content', isDark ? '#121212' : '#eaeae8');
     }
   }, [isDark]);
 
@@ -219,7 +222,11 @@ export default function App() {
           {/* Prominent Light & Dark Toggle */}
           <button
             onClick={() => {
-              setIsDark(prev => !prev);
+              setIsDark(prev => {
+                const next = !prev;
+                localStorage.setItem('fp_theme_explicit', next ? 'dark' : 'light');
+                return next;
+              });
               soundEffects.toggle(soundEnabled);
             }}
             title={isDark ? "Switch to light mode" : "Switch to dark mode"}
