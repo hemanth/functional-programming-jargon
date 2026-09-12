@@ -2,8 +2,8 @@
   "meta": {
     "title": "FP Jargon",
     "subtitle": "The vocabulary of functional programming mapped into an interactive graph",
-    "totalTerms": 57,
-    "totalRelationships": 73,
+    "totalTerms": 63,
+    "totalRelationships": 92,
     "sourceRepo": "https://github.com/hemanth/functional-programming-jargon",
     "originalAuthor": "Hemanth HM"
   },
@@ -117,7 +117,8 @@
         "closure",
         "predicate",
         "function-composition",
-        "continuation"
+        "continuation",
+        "trampoline"
       ]
     },
     {
@@ -276,7 +277,72 @@
       "furtherReading": [],
       "crossRefs": [],
       "relatedIds": [
-        "higher-order-functions-hof"
+        "higher-order-functions-hof",
+        "trampoline"
+      ]
+    },
+    {
+      "id": "io",
+      "title": "IO",
+      "depth": 2,
+      "category": "composition",
+      "aliases": [
+        "task",
+        "effect container",
+        "side effect recipe"
+      ],
+      "summary": "A pure data structure that encapsulates a side effect. Instead of performing the effect immediately, IO wraps the action in a nullary function (thunk), allowing effectful operations to be transformed, chained, and composed as pure values without actually executing them until explicitly triggered.",
+      "body": "A pure data structure that encapsulates a side effect. Instead of performing the effect immediately, `IO` wraps the action in a nullary function ([thunk](#lazy-evaluation)), allowing effectful operations to be transformed, chained, and composed as pure [values](#value) without actually executing them until explicitly triggered.\n\n```js\nconst IO = (run) => ({\n  run,\n  map: (f) => IO(() => f(run())),\n  chain: (f) => IO(() => f(run()).run())\n})\n\n// Pure description - nothing executes yet\nconst readTimestamp = IO(() => Date.now())\nconst formatted = readTimestamp.map((ts) => new Date(ts).toISOString())\n\n// Side effect executes only when calling .run()\nformatted.run()\n```\n\n__Further reading__\n* [IO container](https://drboolean.gitbooks.io/mostly-adequate-guide/content/ch8.html#pure-functional-magic) in Mostly Adequate Guide",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "const IO = (run) => ({\n  run,\n  map: (f) => IO(() => f(run())),\n  chain: (f) => IO(() => f(run()).run())\n})\n\n// Pure description - nothing executes yet\nconst readTimestamp = IO(() => Date.now())\nconst formatted = readTimestamp.map((ts) => new Date(ts).toISOString())\n\n// Side effect executes only when calling .run()\nformatted.run()"
+        }
+      ],
+      "furtherReading": [
+        {
+          "title": "IO container",
+          "url": "https://drboolean.gitbooks.io/mostly-adequate-guide/content/ch8.html#pure-functional-magic"
+        }
+      ],
+      "crossRefs": [
+        "lazy-evaluation",
+        "value"
+      ],
+      "relatedIds": [
+        "side-effects",
+        "monad",
+        "lazy-evaluation",
+        "value"
+      ]
+    },
+    {
+      "id": "trampoline",
+      "title": "Trampoline",
+      "depth": 2,
+      "category": "core-functions",
+      "aliases": [
+        "thunk loop",
+        "tail recursion optimization"
+      ],
+      "summary": "A mechanism that enables deep or mutually recursive functions to run without exceeding the maximum call stack limit.",
+      "body": "A mechanism that enables deep or mutually recursive functions to run without exceeding the maximum call stack limit.\n\nIn environments without Tail Call Optimization (TCO), recursive calls return a function (a thunk) instead of invoking themselves directly. The trampoline runs a while-loop that unwinds each thunk until a final value is reached.\n\n```js\nconst trampoline = (fn) => (...args) => {\n  let result = fn(...args)\n  while (typeof result === 'function') {\n    result = result()\n  }\n  return result\n}\n\n// Without trampoline: sumBelow(1000000) throws \"Maximum call stack size exceeded\"\nconst sumBelow = (n, acc = 0) =>\n  n === 0\n    ? acc\n    : () => sumBelow(n - 1, acc + n) // returns a thunk instead of recursing directly\n\nconst safeSum = trampoline(sumBelow)\nsafeSum(1000000) // 500000500000\n```\n\n__Further reading__\n* [Trampolining in JavaScript](https://raganwald.com/2013/03/28/trampolines-in-javascript.html)",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "const trampoline = (fn) => (...args) => {\n  let result = fn(...args)\n  while (typeof result === 'function') {\n    result = result()\n  }\n  return result\n}\n\n// Without trampoline: sumBelow(1000000) throws \"Maximum call stack size exceeded\"\nconst sumBelow = (n, acc = 0) =>\n  n === 0\n    ? acc\n    : () => sumBelow(n - 1, acc + n) // returns a thunk instead of recursing directly\n\nconst safeSum = trampoline(sumBelow)\nsafeSum(1000000) // 500000500000"
+        }
+      ],
+      "furtherReading": [
+        {
+          "title": "Trampolining in JavaScript",
+          "url": "https://raganwald.com/2013/03/28/trampolines-in-javascript.html"
+        }
+      ],
+      "crossRefs": [],
+      "relatedIds": [
+        "higher-order-functions-hof",
+        "continuation"
       ]
     },
     {
@@ -313,7 +379,8 @@
         "equational-reasoning",
         "function",
         "lazy-evaluation",
-        "lens"
+        "lens",
+        "either"
       ]
     },
     {
@@ -338,6 +405,7 @@
       "crossRefs": [],
       "relatedIds": [
         "pure-function",
+        "io",
         "function"
       ]
     },
@@ -479,7 +547,8 @@
       "furtherReading": [],
       "crossRefs": [],
       "relatedIds": [
-        "constant"
+        "constant",
+        "io"
       ]
     },
     {
@@ -622,6 +691,8 @@
         "pointed-functor",
         "applicative-functor",
         "lift",
+        "traversable",
+        "bifunctor",
         "constant-functor",
         "option",
         "monad"
@@ -833,7 +904,8 @@
       "furtherReading": [],
       "crossRefs": [],
       "relatedIds": [
-        "pure-function"
+        "pure-function",
+        "io"
       ]
     },
     {
@@ -911,6 +983,8 @@
         "kleisli-composition",
         "comonad",
         "option",
+        "either",
+        "io",
         "constant-monad",
         "pointed-functor",
         "functor"
@@ -1004,7 +1078,38 @@
         "functor",
         "pointed-functor",
         "monad",
-        "lift"
+        "lift",
+        "traversable"
+      ]
+    },
+    {
+      "id": "bifunctor",
+      "title": "Bifunctor",
+      "depth": 2,
+      "category": "algebraic-structures",
+      "aliases": [
+        "bimap",
+        "pair map"
+      ],
+      "summary": "A structure with two independent type parameters that can map over both of them simultaneously. A Bifunctor provides bimap, which takes two functions and maps the first over the first type parameter and the second over the second type parameter.",
+      "body": "A structure with two independent type parameters that can map over both of them simultaneously. A Bifunctor provides `bimap`, which takes two functions and maps the first over the first type parameter and the second over the second type parameter.\n\n```js\nconst Pair = (first, second) => ({\n  first,\n  second,\n  bimap: (f, g) => Pair(f(first), g(second)),\n  firstMap: (f) => Pair(f(first), second),\n  secondMap: (g) => Pair(first, g(second))\n})\n\nconst score = Pair('alice', 10)\nscore.bimap((name) => name.toUpperCase(), (points) => points * 2)\n// Pair('ALICE', 20)\n```\n\n__Further reading__\n* [Bifunctor](https://github.com/fantasyland/fantasy-land#bifunctor) in Fantasy Land",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "const Pair = (first, second) => ({\n  first,\n  second,\n  bimap: (f, g) => Pair(f(first), g(second)),\n  firstMap: (f) => Pair(f(first), second),\n  secondMap: (g) => Pair(first, g(second))\n})\n\nconst score = Pair('alice', 10)\nscore.bimap((name) => name.toUpperCase(), (points) => points * 2)\n// Pair('ALICE', 20)"
+        }
+      ],
+      "furtherReading": [
+        {
+          "title": "Bifunctor",
+          "url": "https://github.com/fantasyland/fantasy-land#bifunctor"
+        }
+      ],
+      "crossRefs": [],
+      "relatedIds": [
+        "either",
+        "functor",
+        "product-type"
       ]
     },
     {
@@ -1289,7 +1394,41 @@
       "crossRefs": [],
       "relatedIds": [
         "catamorphism",
-        "monoid"
+        "monoid",
+        "traversable"
+      ]
+    },
+    {
+      "id": "traversable",
+      "title": "Traversable",
+      "depth": 2,
+      "category": "algebraic-structures",
+      "aliases": [
+        "sequence",
+        "traverse"
+      ],
+      "summary": "A Foldable and Functor that can turn a collection of wrapped values inside-out via sequence or traverse, transforming F<G<A>> into G<F<A>>.",
+      "body": "A [Foldable](#foldable) and [Functor](#functor) that can turn a collection of wrapped values inside-out via `sequence` or `traverse`, transforming `F<G<A>>` into `G<F<A>>`.\n\nThis is commonly used to take a list of asynchronous operations or nullable values and pull the wrapper effect to the outside.\n\n```js\n// sequence transforms a list of Promises into a Promise of a list\n// [Promise<1>, Promise<2>] -> Promise<[1, 2]>\nconst promiseSequence = (promises) =>\n  promises.reduce(\n    (acc, p) => acc.then((arr) => p.then((val) => [...arr, val])),\n    Promise.resolve([])\n  )\n\npromiseSequence([\n  Promise.resolve(1),\n  Promise.resolve(2),\n  Promise.resolve(3)\n]).then(console.log) // [1, 2, 3]\n```\n\n__Further reading__\n* [Traversable](https://github.com/fantasyland/fantasy-land#traversable) in Fantasy Land",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "// sequence transforms a list of Promises into a Promise of a list\n// [Promise<1>, Promise<2>] -> Promise<[1, 2]>\nconst promiseSequence = (promises) =>\n  promises.reduce(\n    (acc, p) => acc.then((arr) => p.then((val) => [...arr, val])),\n    Promise.resolve([])\n  )\n\npromiseSequence([\n  Promise.resolve(1),\n  Promise.resolve(2),\n  Promise.resolve(3)\n]).then(console.log) // [1, 2, 3]"
+        }
+      ],
+      "furtherReading": [
+        {
+          "title": "Traversable",
+          "url": "https://github.com/fantasyland/fantasy-land#traversable"
+        }
+      ],
+      "crossRefs": [
+        "foldable",
+        "functor"
+      ],
+      "relatedIds": [
+        "foldable",
+        "functor",
+        "applicative-functor"
       ]
     },
     {
@@ -1331,7 +1470,42 @@
       "crossRefs": [],
       "relatedIds": [
         "function-composition",
-        "pure-function"
+        "pure-function",
+        "prism"
+      ]
+    },
+    {
+      "id": "prism",
+      "title": "Prism",
+      "depth": 2,
+      "category": "types-data",
+      "aliases": [
+        "affine traversal",
+        "sum optics"
+      ],
+      "summary": "An optic that focuses on a sub-case or variant of a sum type. Unlike a Lens, which always assumes the target field exists on a product structure, a Prism may fail to match because the target variant might not be present.",
+      "body": "An optic that focuses on a sub-case or variant of a [sum type](#sum-type). Unlike a [Lens](#lens), which always assumes the target field exists on a product structure, a Prism may fail to match because the target variant might not be present.\n\nA Prism consists of a `preview` function (which returns an [Option](#option) or null) and a `review` function (which reconstructs the whole data structure from the focused part).\n\n```js\nconst Prism = (preview, review) => ({\n  preview,\n  review\n})\n\n// A prism focusing on numeric string values\nconst integerPrism = Prism(\n  (str) => (/^-?\\d+$/.test(str) ? Number(str) : null),\n  (num) => String(num)\n)\n\nintegerPrism.preview('42') // 42\nintegerPrism.preview('hello') // null\nintegerPrism.review(42) // '42'\n```\n\n__Further reading__\n* [Optics / Prism](https://github.com/flunc/optics) on GitHub",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "const Prism = (preview, review) => ({\n  preview,\n  review\n})\n\n// A prism focusing on numeric string values\nconst integerPrism = Prism(\n  (str) => (/^-?\\d+$/.test(str) ? Number(str) : null),\n  (num) => String(num)\n)\n\nintegerPrism.preview('42') // 42\nintegerPrism.preview('hello') // null\nintegerPrism.review(42) // '42'"
+        }
+      ],
+      "furtherReading": [
+        {
+          "title": "Optics / Prism",
+          "url": "https://github.com/flunc/optics"
+        }
+      ],
+      "crossRefs": [
+        "sum-type",
+        "lens",
+        "option"
+      ],
+      "relatedIds": [
+        "lens",
+        "sum-type",
+        "option"
       ]
     },
     {
@@ -1404,8 +1578,7 @@
       "aliases": [
         "union type",
         "discriminated union",
-        "tagged union",
-        "either"
+        "tagged union"
       ],
       "summary": "A Sum type is the combination of two types together into another one. It is called sum because the number of possible values in the result type is the sum of the input types.",
       "body": "A Sum type is the combination of two types together into another one. It is called sum because the number of possible values in the result type is the sum of the input types.\n\nJavaScript doesn't have types like this, but we can use `Set`s to pretend:\n\n```js\n// imagine that rather than sets here we have types that can only have these values\nconst bools = new Set([true, false])\nconst halfTrue = new Set(['half-true'])\n\n// The weakLogic type contains the sum of the values from bools and halfTrue\nconst weakLogicValues = new Set([...bools, ...halfTrue])\n```\n\nSum types are sometimes called union types, discriminated unions, or tagged unions.\n\nThere's a [couple](https://github.com/paldepind/union-type) [libraries](https://github.com/puffnfresh/daggy) in JS which help with defining and using union types.\n\nFlow includes [union types](https://flow.org/en/docs/types/unions/) and TypeScript has [Enums](https://www.typescriptlang.org/docs/handbook/enums.html) to serve the same role.",
@@ -1419,7 +1592,9 @@
       "crossRefs": [],
       "relatedIds": [
         "algebraic-data-type",
-        "option"
+        "option",
+        "either",
+        "prism"
       ]
     },
     {
@@ -1449,7 +1624,8 @@
       ],
       "crossRefs": [],
       "relatedIds": [
-        "algebraic-data-type"
+        "algebraic-data-type",
+        "bifunctor"
       ]
     },
     {
@@ -1484,8 +1660,50 @@
         "monad",
         "dealing-with-partial-functions",
         "sum-type",
+        "either",
+        "prism",
         "functor",
         "kleisli-composition"
+      ]
+    },
+    {
+      "id": "either",
+      "title": "Either",
+      "depth": 2,
+      "category": "types-data",
+      "aliases": [
+        "result",
+        "left and right",
+        "right is right"
+      ],
+      "summary": "A sum type with two cases, Left and Right. By convention, Right represents a successful computation and Left contains an error or failure reason (\"right is right\").",
+      "body": "A [sum type](#sum-type) with two cases, `Left` and `Right`. By convention, `Right` represents a successful computation and `Left` contains an error or failure reason (\"right is right\").\n\n`Either` is useful for error handling without exceptions, allowing computations to fail gracefully while remaining [pure](#pure-function) and composable.\n\n```js\nconst Left = (x) => ({\n  value: x,\n  map: (_f) => Left(x),\n  chain: (_f) => Left(x),\n  fold: (f, _g) => f(x),\n  isLeft: true\n})\n\nconst Right = (x) => ({\n  value: x,\n  map: (f) => Right(f(x)),\n  chain: (f) => f(x),\n  fold: (_f, g) => g(x),\n  isRight: true\n})\n\n// parseJson :: String -> Either String Object\nconst parseJson = (str) => {\n  try {\n    return Right(JSON.parse(str))\n  } catch (err) {\n    return Left(err.message)\n  }\n}\n\nparseJson('{\"user\": \"hemanth\"}').map((obj) => obj.user) // Right('hemanth')\nparseJson('invalid json').map((obj) => obj.user) // Left('Unexpected token...')\n```\n\n__Further reading__\n* [Either](https://github.com/fantasyland/fantasy-land#either) in Fantasy Land\n* [Folktale Result](https://folktale.origamitower.com/api/v2.3.0/en/folktale.result.html)",
+      "codeBlocks": [
+        {
+          "lang": "js",
+          "code": "const Left = (x) => ({\n  value: x,\n  map: (_f) => Left(x),\n  chain: (_f) => Left(x),\n  fold: (f, _g) => f(x),\n  isLeft: true\n})\n\nconst Right = (x) => ({\n  value: x,\n  map: (f) => Right(f(x)),\n  chain: (f) => f(x),\n  fold: (_f, g) => g(x),\n  isRight: true\n})\n\n// parseJson :: String -> Either String Object\nconst parseJson = (str) => {\n  try {\n    return Right(JSON.parse(str))\n  } catch (err) {\n    return Left(err.message)\n  }\n}\n\nparseJson('{\"user\": \"hemanth\"}').map((obj) => obj.user) // Right('hemanth')\nparseJson('invalid json').map((obj) => obj.user) // Left('Unexpected token...')"
+        }
+      ],
+      "furtherReading": [
+        {
+          "title": "Either",
+          "url": "https://github.com/fantasyland/fantasy-land#either"
+        },
+        {
+          "title": "Folktale Result",
+          "url": "https://folktale.origamitower.com/api/v2.3.0/en/folktale.result.html"
+        }
+      ],
+      "crossRefs": [
+        "sum-type",
+        "pure-function"
+      ],
+      "relatedIds": [
+        "option",
+        "sum-type",
+        "monad",
+        "bifunctor",
+        "pure-function"
       ]
     },
     {
@@ -1676,7 +1894,7 @@
         "id": "higher-order-functions-hof",
         "name": "Higher-Order Functions (HOF)",
         "category": "core-functions",
-        "val": 11,
+        "val": 12,
         "summary": "A function which takes a function as an argument and/or returns a function."
       },
       {
@@ -1718,21 +1936,35 @@
         "id": "continuation",
         "name": "Continuation",
         "category": "composition",
-        "val": 5,
+        "val": 6,
         "summary": "At any given point in a program, the part of the code that's yet to be executed is known as a continuation."
+      },
+      {
+        "id": "io",
+        "name": "IO",
+        "category": "composition",
+        "val": 8,
+        "summary": "A pure data structure that encapsulates a side effect. Instead of performing the effect immediately, IO wraps the action in a nullary function (thunk), allowing effectful operations to be transformed, chained, and composed as pure values without actually executing them until explicitly triggered."
+      },
+      {
+        "id": "trampoline",
+        "name": "Trampoline",
+        "category": "core-functions",
+        "val": 6,
+        "summary": "A mechanism that enables deep or mutually recursive functions to run without exceeding the maximum call stack limit."
       },
       {
         "id": "pure-function",
         "name": "Pure Function",
         "category": "core-functions",
-        "val": 11,
+        "val": 12,
         "summary": "A function is pure if the return value is only determined by its input values, and does not produce side effects. The function must always return the same result when given the same input."
       },
       {
         "id": "side-effects",
         "name": "Side effects",
         "category": "purity-state",
-        "val": 6,
+        "val": 7,
         "summary": "A function or expression is said to have a side effect if apart from returning a value, it interacts with (reads from or writes to) external mutable state."
       },
       {
@@ -1774,7 +2006,7 @@
         "id": "value",
         "name": "Value",
         "category": "purity-state",
-        "val": 5,
+        "val": 6,
         "summary": "Anything that can be assigned to a variable."
       },
       {
@@ -1809,7 +2041,7 @@
         "id": "functor",
         "name": "Functor",
         "category": "algebraic-structures",
-        "val": 10,
+        "val": 12,
         "summary": "An object that implements a map function that takes a function which is run on the contents of that object. A functor must adhere to two rules:"
       },
       {
@@ -1865,7 +2097,7 @@
         "id": "lazy-evaluation",
         "name": "Lazy evaluation",
         "category": "composition",
-        "val": 5,
+        "val": 6,
         "summary": "Lazy evaluation is a call-by-need evaluation mechanism that delays the evaluation of an expression until its value is needed. In functional languages, this allows for structures like infinite lists, which would not normally be available in an imperative language where the sequencing of commands is significant."
       },
       {
@@ -1879,7 +2111,7 @@
         "id": "monad",
         "name": "Monad",
         "category": "algebraic-structures",
-        "val": 11,
+        "val": 13,
         "summary": "A monad is an object with of and chain functions. chain is like map except it un-nests the resulting nested object."
       },
       {
@@ -1900,8 +2132,15 @@
         "id": "applicative-functor",
         "name": "Applicative Functor",
         "category": "algebraic-structures",
-        "val": 8,
+        "val": 9,
         "summary": "An applicative functor is an object with an ap function. ap applies a function in the object to a value in another object of the same type."
+      },
+      {
+        "id": "bifunctor",
+        "name": "Bifunctor",
+        "category": "algebraic-structures",
+        "val": 7,
+        "summary": "A structure with two independent type parameters that can map over both of them simultaneously. A Bifunctor provides bimap, which takes two functions and maps the first over the first type parameter and the second over the second type parameter."
       },
       {
         "id": "morphism",
@@ -1984,15 +2223,29 @@
         "id": "foldable",
         "name": "Foldable",
         "category": "algebraic-structures",
-        "val": 6,
+        "val": 7,
         "summary": "An object that has a reduce function that applies a function against an accumulator and each element in the array (from left to right) to reduce it to a single value."
+      },
+      {
+        "id": "traversable",
+        "name": "Traversable",
+        "category": "algebraic-structures",
+        "val": 7,
+        "summary": "A Foldable and Functor that can turn a collection of wrapped values inside-out via sequence or traverse, transforming F<G<A>> into G<F<A>>."
       },
       {
         "id": "lens",
         "name": "Lens",
         "category": "types-data",
-        "val": 6,
+        "val": 7,
         "summary": "A lens is a structure (often an object or function) that pairs a getter and a non-mutating setter for some other data structure."
+      },
+      {
+        "id": "prism",
+        "name": "Prism",
+        "category": "types-data",
+        "val": 7,
+        "summary": "An optic that focuses on a sub-case or variant of a sum type. Unlike a Lens, which always assumes the target field exists on a product structure, a Prism may fail to match because the target variant might not be present."
       },
       {
         "id": "type-signatures",
@@ -2012,22 +2265,29 @@
         "id": "sum-type",
         "name": "Sum type",
         "category": "types-data",
-        "val": 4,
+        "val": 6,
         "summary": "A Sum type is the combination of two types together into another one. It is called sum because the number of possible values in the result type is the sum of the input types."
       },
       {
         "id": "product-type",
         "name": "Product type",
         "category": "types-data",
-        "val": 3,
+        "val": 4,
         "summary": "A product type combines types together in a way you're probably more familiar with:"
       },
       {
         "id": "option",
         "name": "Option",
         "category": "types-data",
-        "val": 9,
+        "val": 11,
         "summary": "Option is a sum type with two cases often called Some and None."
+      },
+      {
+        "id": "either",
+        "name": "Either",
+        "category": "types-data",
+        "val": 9,
+        "summary": "A sum type with two cases, Left and Right. By convention, Right represents a successful computation and Left contains an error or failure reason (\"right is right\")."
       },
       {
         "id": "function",
@@ -2352,6 +2612,51 @@
         "type": "core"
       },
       {
+        "source": "either",
+        "target": "option",
+        "type": "core"
+      },
+      {
+        "source": "either",
+        "target": "sum-type",
+        "type": "core"
+      },
+      {
+        "source": "either",
+        "target": "monad",
+        "type": "core"
+      },
+      {
+        "source": "either",
+        "target": "bifunctor",
+        "type": "core"
+      },
+      {
+        "source": "traversable",
+        "target": "foldable",
+        "type": "core"
+      },
+      {
+        "source": "traversable",
+        "target": "functor",
+        "type": "core"
+      },
+      {
+        "source": "traversable",
+        "target": "applicative-functor",
+        "type": "core"
+      },
+      {
+        "source": "bifunctor",
+        "target": "functor",
+        "type": "core"
+      },
+      {
+        "source": "bifunctor",
+        "target": "product-type",
+        "type": "core"
+      },
+      {
         "source": "lens",
         "target": "function-composition",
         "type": "core"
@@ -2362,9 +2667,54 @@
         "type": "core"
       },
       {
+        "source": "prism",
+        "target": "lens",
+        "type": "core"
+      },
+      {
+        "source": "prism",
+        "target": "sum-type",
+        "type": "core"
+      },
+      {
+        "source": "prism",
+        "target": "option",
+        "type": "core"
+      },
+      {
+        "source": "io",
+        "target": "side-effects",
+        "type": "core"
+      },
+      {
+        "source": "io",
+        "target": "monad",
+        "type": "core"
+      },
+      {
+        "source": "io",
+        "target": "lazy-evaluation",
+        "type": "core"
+      },
+      {
+        "source": "trampoline",
+        "target": "higher-order-functions-hof",
+        "type": "core"
+      },
+      {
+        "source": "trampoline",
+        "target": "continuation",
+        "type": "core"
+      },
+      {
         "source": "contracts",
         "target": "type-signatures",
         "type": "core"
+      },
+      {
+        "source": "io",
+        "target": "value",
+        "type": "reference"
       },
       {
         "source": "constant-function",
@@ -2414,6 +2764,11 @@
       {
         "source": "isomorphism",
         "target": "morphism",
+        "type": "reference"
+      },
+      {
+        "source": "either",
+        "target": "pure-function",
         "type": "reference"
       },
       {

@@ -159,7 +159,7 @@ export default function App() {
                   ? 'bg-[#1a1a19] text-[#f0f0ee]/70 border-[rgba(240,240,238,0.15)]'
                   : 'bg-[#eaeae8] text-[#1a1a19]/70 border-[rgba(26,26,25,0.15)]'
               }`}>
-                57 Terms
+                {meta.totalTerms} Terms
               </span>
             </div>
             <p className="hidden sm:block text-[10px] opacity-60">

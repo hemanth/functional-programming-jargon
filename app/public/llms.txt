@@ -1,6 +1,6 @@
 # FP Jargon
 
-> Interactive functional programming knowledge graph and specification exploring 57 concepts, category theory morphisms, and algebraic structures with JavaScript ES2015 examples.
+> Interactive functional programming knowledge graph and specification exploring 63 concepts, category theory morphisms, and algebraic structures with JavaScript ES2015 examples.
 
 FP Jargon maps out the entire vocabulary of functional programming into an interconnected graph with deterministic explanations, formal properties, and executable JavaScript examples.
 
@@ -15,73 +15,79 @@ FP Jargon maps out the entire vocabulary of functional programming into an inter
 ## Categories & Concepts
 
 ### Core Functions
-- [Function](https://hemanth.github.io/functional-programming-jargon/#function): Pure expression with one immutable parameter and deterministic return value.
-- [Pure Function](https://hemanth.github.io/functional-programming-jargon/#pure-function): Deterministic function without side effects or hidden dependencies.
-- [Higher-Order Functions (HOF)](https://hemanth.github.io/functional-programming-jargon/#higher-order-functions-hof): Functions that take or return other functions.
-- [Closure](https://hemanth.github.io/functional-programming-jargon/#closure): Scope capturing local variables for retained access.
-- [Lambda](https://hemanth.github.io/functional-programming-jargon/#lambda): Anonymous arrow function treated as a first-class value.
-- [Arity](https://hemanth.github.io/functional-programming-jargon/#arity): Number of arguments a function takes (unary, binary, ternary, variadic).
-- [Predicate](https://hemanth.github.io/functional-programming-jargon/#predicate): Function returning a boolean truth value.
-- [Total Function](https://hemanth.github.io/functional-programming-jargon/#total-function): Function defined and valid for all possible inputs in its domain.
-- [Partial Function](https://hemanth.github.io/functional-programming-jargon/#partial-function): Function not defined for all arguments.
-- [Dealing with Partial Functions](https://hemanth.github.io/functional-programming-jargon/#dealing-with-partial-functions): Converting partial functions to total functions using guards, defaults, or Option types.
+- [Arity](https://hemanth.github.io/functional-programming-jargon/#arity): The number of arguments a function takes. From words like unary, binary, ternary, etc.
+- [Higher-Order Functions (HOF)](https://hemanth.github.io/functional-programming-jargon/#higher-order-functions-hof): A function which takes a function as an argument and/or returns a function.
+- [Closure](https://hemanth.github.io/functional-programming-jargon/#closure): A closure is a scope which captures local variables of a function for access even after the execution has moved out of t
+- [Trampoline](https://hemanth.github.io/functional-programming-jargon/#trampoline): A mechanism that enables deep or mutually recursive functions to run without exceeding the maximum call stack limit.
+- [Pure Function](https://hemanth.github.io/functional-programming-jargon/#pure-function): A function is pure if the return value is only determined by its input values, and does not produce side effects. The fu
+- [Predicate](https://hemanth.github.io/functional-programming-jargon/#predicate): A predicate is a function that returns true or false for a given value. A common use of a predicate is as the callback f
+- [Lambda](https://hemanth.github.io/functional-programming-jargon/#lambda): An anonymous function that can be treated like a value.
+- [Function](https://hemanth.github.io/functional-programming-jargon/#function): A function f :: A => B is an expression - often called arrow or lambda expression - with exactly one (immutable) paramet
+- [Partial function](https://hemanth.github.io/functional-programming-jargon/#partial-function): A partial function is a function which is not defined for all arguments - it might return an unexpected result or may ne
+- [Dealing with partial functions](https://hemanth.github.io/functional-programming-jargon/#dealing-with-partial-functions): Partial functions are dangerous as they need to be treated with great caution. You might get an unexpected (wrong) resul
+- [Total Function](https://hemanth.github.io/functional-programming-jargon/#total-function): A function which returns a valid result for all inputs defined in its type. This is as opposed to Partial Functions whic
 
 ### Composition & Flow
-- [Function Composition](https://hemanth.github.io/functional-programming-jargon/#function-composition): Putting two functions together where output of one is input of the other.
-- [Currying](https://hemanth.github.io/functional-programming-jargon/#currying): Translating a function of multiple arguments into a chain of unary functions.
-- [Auto-Currying](https://hemanth.github.io/functional-programming-jargon/#auto-currying): Currying that evaluates as soon as the expected argument count is supplied.
-- [Partial Application](https://hemanth.github.io/functional-programming-jargon/#partial-application): Pre-filling some arguments of a function to produce a new function of smaller arity.
-- [Point-Free Style](https://hemanth.github.io/functional-programming-jargon/#point-free-style): Tacit programming where function definitions omit explicit argument names.
-- [Functional Combinator](https://hemanth.github.io/functional-programming-jargon/#functional-combinator): Higher-order function that combines existing functions purely through combinatory logic.
-- [Continuation](https://hemanth.github.io/functional-programming-jargon/#continuation): Suspended computation representing the rest of a program execution.
-- [Lazy Evaluation](https://hemanth.github.io/functional-programming-jargon/#lazy-evaluation): Call-by-need mechanism delaying evaluation until a value is strictly required.
+- [Partial Application](https://hemanth.github.io/functional-programming-jargon/#partial-application): Partially applying a function means creating a new function by pre-filling some of the arguments to the original functio
+- [Currying](https://hemanth.github.io/functional-programming-jargon/#currying): The process of converting a function that takes multiple arguments into a function that takes them one at a time.
+- [Auto Currying](https://hemanth.github.io/functional-programming-jargon/#auto-currying): Transforming a function that takes multiple arguments into one that if given less than its correct number of arguments r
+- [Function Composition](https://hemanth.github.io/functional-programming-jargon/#function-composition): The act of putting two functions together to form a third function where the output of one function is the input of the 
+- [Continuation](https://hemanth.github.io/functional-programming-jargon/#continuation): At any given point in a program, the part of the code that's yet to be executed is known as a continuation.
+- [IO](https://hemanth.github.io/functional-programming-jargon/#io): A pure data structure that encapsulates a side effect. Instead of performing the effect immediately, IO wraps the action
+- [Point-Free Style](https://hemanth.github.io/functional-programming-jargon/#point-free-style): Writing functions where the definition does not explicitly identify the arguments used. This style usually requires curr
+- [Functional Combinator](https://hemanth.github.io/functional-programming-jargon/#functional-combinator): A higher-order function, usually curried, which returns a new function changed in some way. Functional combinators are o
+- [Lazy evaluation](https://hemanth.github.io/functional-programming-jargon/#lazy-evaluation): Lazy evaluation is a call-by-need evaluation mechanism that delays the evaluation of an expression until its value is ne
 
 ### Purity & Reasoning
-- [Side Effects](https://hemanth.github.io/functional-programming-jargon/#side-effects): Any state modification or external interaction outside the returned value.
-- [Referential Transparency](https://hemanth.github.io/functional-programming-jargon/#referential-transparency): Property where an expression can always be substituted by its evaluated value.
-- [Equational Reasoning](https://hemanth.github.io/functional-programming-jargon/#equational-reasoning): Ability to prove code correctness through algebraic substitution.
-- [Idempotence](https://hemanth.github.io/functional-programming-jargon/#idempotence): Operation that produces identical results regardless of repeated executions.
-- [Value](https://hemanth.github.io/functional-programming-jargon/#value): Immutable piece of data assigned to a variable or evaluated from an expression.
-- [Constant](https://hemanth.github.io/functional-programming-jargon/#constant): Variable that cannot be re-assigned or mutated after declaration.
-- [Constant Function](https://hemanth.github.io/functional-programming-jargon/#constant-function): Function that always returns the same value regardless of inputs.
-- [Contracts](https://hemanth.github.io/functional-programming-jargon/#contracts): Runtime assertions verifying obligations, preconditions, and postconditions.
+- [Side effects](https://hemanth.github.io/functional-programming-jargon/#side-effects): A function or expression is said to have a side effect if apart from returning a value, it interacts with (reads from or
+- [Idempotence](https://hemanth.github.io/functional-programming-jargon/#idempotence): A function is idempotent if reapplying it to its result does not produce a different result.
+- [Contracts](https://hemanth.github.io/functional-programming-jargon/#contracts): A contract specifies the obligations and guarantees of the behavior from a function or expression at runtime. This acts 
+- [Value](https://hemanth.github.io/functional-programming-jargon/#value): Anything that can be assigned to a variable.
+- [Constant](https://hemanth.github.io/functional-programming-jargon/#constant): A variable that cannot be reassigned once defined.
+- [Constant Function](https://hemanth.github.io/functional-programming-jargon/#constant-function): A curried function that ignores its second argument:
+- [Referential Transparency](https://hemanth.github.io/functional-programming-jargon/#referential-transparency): An expression that can be replaced with its value without changing the behavior of the program is said to be referential
+- [Equational Reasoning](https://hemanth.github.io/functional-programming-jargon/#equational-reasoning): When an application is composed of expressions and devoid of side effects, truths about the system can be derived from t
 
-### Category Theory & Morphisms
-- [Category](https://hemanth.github.io/functional-programming-jargon/#category): Collection of objects and composable morphisms satisfying identity and associativity laws.
-- [Morphism](https://hemanth.github.io/functional-programming-jargon/#morphism): Structure-preserving map or transformation between objects.
-- [Homomorphism](https://hemanth.github.io/functional-programming-jargon/#homomorphism): Transformation preserving designated algebraic structure between source and target.
-- [Endomorphism](https://hemanth.github.io/functional-programming-jargon/#endomorphism): Morphism where the source type equals the destination type.
-- [Isomorphism](https://hemanth.github.io/functional-programming-jargon/#isomorphism): Bijective morphism with a two-way invertible mapping.
-- [Catamorphism](https://hemanth.github.io/functional-programming-jargon/#catamorphism): Morphism that deconstructs a recursive structure into a single summary value (reduce, fold).
-- [Anamorphism](https://hemanth.github.io/functional-programming-jargon/#anamorphism): Morphism that builds up a recursive structure from a seed value (unfold).
-- [Hylomorphism](https://hemanth.github.io/functional-programming-jargon/#hylomorphism): Composition of an anamorphism followed by a catamorphism (unfold-then-fold).
-- [Paramorphism](https://hemanth.github.io/functional-programming-jargon/#paramorphism): Fold with access to intermediate sub-computations and structural history.
-- [Apomorphism](https://hemanth.github.io/functional-programming-jargon/#apomorphism): Unfold with early termination capabilities.
+### Category & Morphisms
+- [Category](https://hemanth.github.io/functional-programming-jargon/#category): A category in category theory is a collection of objects and morphisms between them. In programming, typically types act
+- [Morphism](https://hemanth.github.io/functional-programming-jargon/#morphism): A relationship between objects within a category. In the context of functional programming all functions are morphisms.
+- [Homomorphism](https://hemanth.github.io/functional-programming-jargon/#homomorphism): A function where there is a structural property that is the same in the input as well as the output.
+- [Endomorphism](https://hemanth.github.io/functional-programming-jargon/#endomorphism): A function where the input type is the same as the output. Since the types are identical, endomorphisms are also homomor
+- [Isomorphism](https://hemanth.github.io/functional-programming-jargon/#isomorphism): A morphism made of a pair of transformations between 2 types of objects that is structural in nature and no data is lost
+- [Catamorphism](https://hemanth.github.io/functional-programming-jargon/#catamorphism): A function which deconstructs a structure into a single value. reduceRight is an example of a catamorphism for array str
+- [Anamorphism](https://hemanth.github.io/functional-programming-jargon/#anamorphism): A function that builds up a structure by repeatedly applying a function to its argument. unfold is an example which gene
+- [Hylomorphism](https://hemanth.github.io/functional-programming-jargon/#hylomorphism): The function which composes an anamorphism followed by a catamorphism.
+- [Paramorphism](https://hemanth.github.io/functional-programming-jargon/#paramorphism): A function just like reduceRight. However, there's a difference:
+- [Apomorphism](https://hemanth.github.io/functional-programming-jargon/#apomorphism): The opposite of paramorphism, just as anamorphism is the opposite of catamorphism. With paramorphism, you retain access 
 
 ### Algebraic Structures
-- [Setoid](https://hemanth.github.io/functional-programming-jargon/#setoid): Object implementing an equivalence relation with an equals method.
-- [Semigroup](https://hemanth.github.io/functional-programming-jargon/#semigroup): Structure with an associative binary concat operation.
-- [Monoid](https://hemanth.github.io/functional-programming-jargon/#monoid): Semigroup equipped with an identity element (empty).
-- [Functor](https://hemanth.github.io/functional-programming-jargon/#functor): Object implementing map preserving identity and composition.
-- [Pointed Functor](https://hemanth.github.io/functional-programming-jargon/#pointed-functor): Functor with an of constructor to lift arbitrary values.
-- [Applicative Functor](https://hemanth.github.io/functional-programming-jargon/#applicative-functor): Functor with an ap function to apply wrapped functions to wrapped values.
-- [Monad](https://hemanth.github.io/functional-programming-jargon/#monad): Pointed applicative functor with chain / flatMap / bind to flatten nested contexts.
-- [Comonad](https://hemanth.github.io/functional-programming-jargon/#comonad): Dual of a monad with extract and extend.
-- [Foldable](https://hemanth.github.io/functional-programming-jargon/#foldable): Structure that can be reduced into a summary value using reduce.
-- [Kleisli Composition](https://hemanth.github.io/functional-programming-jargon/#kleisli-composition): Composition operator chaining monad-returning functions.
-- [Lift](https://hemanth.github.io/functional-programming-jargon/#lift): Promoting a function or value into an applicative context.
-- [Constant Functor](https://hemanth.github.io/functional-programming-jargon/#constant-functor): Functor that ignores mapping operations, preserving fixed initial state.
-- [Constant Monad](https://hemanth.github.io/functional-programming-jargon/#constant-monad): Monad that discards chaining computations.
+- [Constant Functor](https://hemanth.github.io/functional-programming-jargon/#constant-functor): Object whose map doesn't transform the contents. See Functor.
+- [Constant Monad](https://hemanth.github.io/functional-programming-jargon/#constant-monad): Object whose chain doesn't transform the contents. See Monad.
+- [Functor](https://hemanth.github.io/functional-programming-jargon/#functor): An object that implements a map function that takes a function which is run on the contents of that object. A functor mu
+- [Pointed Functor](https://hemanth.github.io/functional-programming-jargon/#pointed-functor): An object with an of function that puts any single value into it.
+- [Lift](https://hemanth.github.io/functional-programming-jargon/#lift): Lifting is when you take a value and put it into an object like a functor. If you lift a function into an Applicative Fu
+- [Monoid](https://hemanth.github.io/functional-programming-jargon/#monoid): An object with a function that "combines" that object with another of the same type (semigroup) which has an "identity" 
+- [Monad](https://hemanth.github.io/functional-programming-jargon/#monad): A monad is an object with of and chain functions. chain is like map except it un-nests the resulting nested object.
+- [Comonad](https://hemanth.github.io/functional-programming-jargon/#comonad): An object that has extract and extend functions.
+- [Kleisli Composition](https://hemanth.github.io/functional-programming-jargon/#kleisli-composition): An operation for composing two monad-returning functions (Kleisli Arrows) where they have compatible types. In Haskell t
+- [Applicative Functor](https://hemanth.github.io/functional-programming-jargon/#applicative-functor): An applicative functor is an object with an ap function. ap applies a function in the object to a value in another objec
+- [Bifunctor](https://hemanth.github.io/functional-programming-jargon/#bifunctor): A structure with two independent type parameters that can map over both of them simultaneously. A Bifunctor provides bim
+- [Setoid](https://hemanth.github.io/functional-programming-jargon/#setoid): An object that has an equals function which can be used to compare other objects of the same type.
+- [Semigroup](https://hemanth.github.io/functional-programming-jargon/#semigroup): An object that has a concat function that combines it with another object of the same type.
+- [Foldable](https://hemanth.github.io/functional-programming-jargon/#foldable): An object that has a reduce function that applies a function against an accumulator and each element in the array (from 
+- [Traversable](https://hemanth.github.io/functional-programming-jargon/#traversable): A Foldable and Functor that can turn a collection of wrapped values inside-out via sequence or traverse, transforming F<
 
-### Types & Modeling
-- [Type Signatures](https://hemanth.github.io/functional-programming-jargon/#type-signatures): Formal notation documenting argument and return types.
-- [Algebraic Data Type (ADT)](https://hemanth.github.io/functional-programming-jargon/#algebraic-data-type): Composite type formed by combining other types via sums and products.
-- [Sum Type](https://hemanth.github.io/functional-programming-jargon/#sum-type): Disjoint union representation containing exactly one of multiple tagged variants.
-- [Product Type](https://hemanth.github.io/functional-programming-jargon/#product-type): Compound structure combining fields where total space is the product of field spaces.
-- [Option](https://hemanth.github.io/functional-programming-jargon/#option): Sum type representing presence (Some) or absence (None) of a value.
-- [Lens](https://hemanth.github.io/functional-programming-jargon/#lens): Composable functional optic pairing a getter and immutable setter for nested data.
-- [Lambda Calculus](https://hemanth.github.io/functional-programming-jargon/#lambda-calculus): Formal mathematical foundation of computation based on function abstraction and application.
-- [Functional Programming Libraries in JavaScript](https://hemanth.github.io/functional-programming-jargon/#functional-programming-libraries-in-javascript): Curated ecosystem catalog (Ramda, Folktale, Sanctuary, fp-ts, Crocks, Immer).
+### Types & Data Modeling
+- [Lambda Calculus](https://hemanth.github.io/functional-programming-jargon/#lambda-calculus): A branch of mathematics that uses functions to create a universal model of computation.
+- [Lens](https://hemanth.github.io/functional-programming-jargon/#lens): A lens is a structure (often an object or function) that pairs a getter and a non-mutating setter for some other data st
+- [Prism](https://hemanth.github.io/functional-programming-jargon/#prism): An optic that focuses on a sub-case or variant of a sum type. Unlike a Lens, which always assumes the target field exist
+- [Type Signatures](https://hemanth.github.io/functional-programming-jargon/#type-signatures): Often functions in JavaScript will include comments that indicate the types of their arguments and return values.
+- [Algebraic data type](https://hemanth.github.io/functional-programming-jargon/#algebraic-data-type): A composite type made from putting other types together. Two common classes of algebraic types are sum and product.
+- [Sum type](https://hemanth.github.io/functional-programming-jargon/#sum-type): A Sum type is the combination of two types together into another one. It is called sum because the number of possible va
+- [Product type](https://hemanth.github.io/functional-programming-jargon/#product-type): A product type combines types together in a way you're probably more familiar with:
+- [Option](https://hemanth.github.io/functional-programming-jargon/#option): Option is a sum type with two cases often called Some and None.
+- [Either](https://hemanth.github.io/functional-programming-jargon/#either): A sum type with two cases, Left and Right. By convention, Right represents a successful computation and Left contains an
+- [Functional Programming Libraries in JavaScript](https://hemanth.github.io/functional-programming-jargon/#functional-programming-libraries-in-javascript): A curated catalog of functional programming libraries and toolkits in JavaScript including Ramda, Folktale, Sanctuary, a
 
 ## Agent & LLM Usage
 

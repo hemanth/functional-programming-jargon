@@ -1,6 +1,6 @@
 # FP Jargon - Full Reference
 
-> Complete catalog of 57 functional programming concepts, morphisms, algebraic structures, and category theory terms with JavaScript ES2015 examples.
+> Complete catalog of 63 functional programming concepts, morphisms, algebraic structures, and category theory terms with JavaScript ES2015 examples.
 > Source: https://github.com/hemanth/functional-programming-jargon
 > Live app: https://hemanth.github.io/functional-programming-jargon/
 
@@ -32,7 +32,7 @@ const zero = () => 0
 - Category: Core Functions
 - ID: #higher-order-functions-hof
 - Aliases: hof, higher order function
-- Related concepts: #partial-application, #point-free-style, #functional-combinator, #closure, #predicate, #function-composition, #continuation
+- Related concepts: #partial-application, #point-free-style, #functional-combinator, #closure, #predicate, #function-composition, #continuation, #trampoline
 
 ### Definition
 A function which takes a function as an argument and/or returns a function.
@@ -178,7 +178,7 @@ floorAndToString(121.212121) // '121'
 
 - Category: Composition & Flow
 - ID: #continuation
-- Related concepts: #higher-order-functions-hof
+- Related concepts: #higher-order-functions-hof, #trampoline
 
 ### Definition
 At any given point in a program, the part of the code that's yet to be executed is known as a continuation.
@@ -212,12 +212,74 @@ readFileAsync('path/to/file', (err, response) => {
 
 ---
 
+## IO
+
+- Category: Composition & Flow
+- ID: #io
+- Aliases: task, effect container, side effect recipe
+- Related concepts: #side-effects, #monad, #lazy-evaluation, #value
+
+### Definition
+A pure data structure that encapsulates a side effect. Instead of performing the effect immediately, IO wraps the action in a nullary function (thunk), allowing effectful operations to be transformed, chained, and composed as pure values without actually executing them until explicitly triggered.
+
+### Code Examples
+
+```js
+const IO = (run) => ({
+  run,
+  map: (f) => IO(() => f(run())),
+  chain: (f) => IO(() => f(run()).run())
+})
+
+// Pure description - nothing executes yet
+const readTimestamp = IO(() => Date.now())
+const formatted = readTimestamp.map((ts) => new Date(ts).toISOString())
+
+// Side effect executes only when calling .run()
+formatted.run()
+```
+
+---
+
+## Trampoline
+
+- Category: Core Functions
+- ID: #trampoline
+- Aliases: thunk loop, tail recursion optimization
+- Related concepts: #higher-order-functions-hof, #continuation
+
+### Definition
+A mechanism that enables deep or mutually recursive functions to run without exceeding the maximum call stack limit.
+
+### Code Examples
+
+```js
+const trampoline = (fn) => (...args) => {
+  let result = fn(...args)
+  while (typeof result === 'function') {
+    result = result()
+  }
+  return result
+}
+
+// Without trampoline: sumBelow(1000000) throws "Maximum call stack size exceeded"
+const sumBelow = (n, acc = 0) =>
+  n === 0
+    ? acc
+    : () => sumBelow(n - 1, acc + n) // returns a thunk instead of recursing directly
+
+const safeSum = trampoline(sumBelow)
+safeSum(1000000) // 500000500000
+```
+
+---
+
 ## Pure Function
 
 - Category: Core Functions
 - ID: #pure-function
 - Aliases: deterministic function, purity
-- Related concepts: #side-effects, #referential-transparency, #idempotence, #equational-reasoning, #function, #lazy-evaluation, #lens
+- Related concepts: #side-effects, #referential-transparency, #idempotence, #equational-reasoning, #function, #lazy-evaluation, #lens, #either
 
 ### Definition
 A function is pure if the return value is only determined by its input values, and does not produce side effects. The function must always return the same result when given the same input.
@@ -255,7 +317,7 @@ greeting // "Hi, Brianne"
 
 - Category: Purity & Reasoning
 - ID: #side-effects
-- Related concepts: #pure-function, #function
+- Related concepts: #pure-function, #io, #function
 
 ### Definition
 A function or expression is said to have a side effect if apart from returning a value, it interacts with (reads from or writes to) external mutable state.
@@ -405,7 +467,7 @@ new Max(2).compose(new Max(3)).compose(new Max(5)).id().id() // => Max(5)
 
 - Category: Purity & Reasoning
 - ID: #value
-- Related concepts: #constant
+- Related concepts: #constant, #io
 
 ### Definition
 Anything that can be assigned to a variable.
@@ -502,7 +564,7 @@ Constant(1).chain(n => Constant(n + 1)) // => Constant(1)
 - Category: Algebraic Structures
 - ID: #functor
 - Aliases: map, mappable
-- Related concepts: #pointed-functor, #applicative-functor, #lift, #constant-functor, #option, #monad
+- Related concepts: #pointed-functor, #applicative-functor, #lift, #traversable, #bifunctor, #constant-functor, #option, #monad
 
 ### Definition
 An object that implements a map function that takes a function which is run on the contents of that object. A functor must adhere to two rules:
@@ -696,7 +758,7 @@ divBy10(30) // => 3
 - Category: Composition & Flow
 - ID: #lazy-evaluation
 - Aliases: call-by-need, deferred execution, generators
-- Related concepts: #pure-function
+- Related concepts: #pure-function, #io
 
 ### Definition
 Lazy evaluation is a call-by-need evaluation mechanism that delays the evaluation of an expression until its value is needed. In functional languages, this allows for structures like infinite lists, which would not normally be available in an imperative language where the sequencing of commands is significant.
@@ -763,7 +825,7 @@ An object with a function that "combines" that object with another of the same t
 - Category: Algebraic Structures
 - ID: #monad
 - Aliases: flatmap, bind, chain, return
-- Related concepts: #applicative-functor, #kleisli-composition, #comonad, #option, #constant-monad, #pointed-functor, #functor
+- Related concepts: #applicative-functor, #kleisli-composition, #comonad, #option, #either, #io, #constant-monad, #pointed-functor, #functor
 
 ### Definition
 A monad is an object with of and chain functions. chain is like map except it un-nests the resulting nested object.
@@ -857,7 +919,7 @@ parseAndValidate('999') // => Some(999)
 - Category: Algebraic Structures
 - ID: #applicative-functor
 - Aliases: applicative, ap
-- Related concepts: #functor, #pointed-functor, #monad, #lift
+- Related concepts: #functor, #pointed-functor, #monad, #lift, #traversable
 
 ### Definition
 An applicative functor is an object with an ap function. ap applies a function in the object to a value in another object of the same type.
@@ -887,6 +949,34 @@ const partiallyAppliedAdds = [add].ap(arg1) // [(y) => 1 + y, (y) => 3 + y]
 
 ```js
 partiallyAppliedAdds.ap(arg2) // [5, 6, 7, 8]
+```
+
+---
+
+## Bifunctor
+
+- Category: Algebraic Structures
+- ID: #bifunctor
+- Aliases: bimap, pair map
+- Related concepts: #either, #functor, #product-type
+
+### Definition
+A structure with two independent type parameters that can map over both of them simultaneously. A Bifunctor provides bimap, which takes two functions and maps the first over the first type parameter and the second over the second type parameter.
+
+### Code Examples
+
+```js
+const Pair = (first, second) => ({
+  first,
+  second,
+  bimap: (f, g) => Pair(f(first), g(second)),
+  firstMap: (f) => Pair(f(first), second),
+  secondMap: (g) => Pair(first, g(second))
+})
+
+const score = Pair('alice', 10)
+score.bimap((name) => name.toUpperCase(), (points) => points * 2)
+// Pair('ALICE', 20)
 ```
 
 ---
@@ -1136,7 +1226,7 @@ An object that has a concat function that combines it with another object of the
 
 - Category: Algebraic Structures
 - ID: #foldable
-- Related concepts: #catamorphism, #monoid
+- Related concepts: #catamorphism, #monoid, #traversable
 
 ### Definition
 An object that has a reduce function that applies a function against an accumulator and each element in the array (from left to right) to reduce it to a single value.
@@ -1150,12 +1240,42 @@ sum([1, 2, 3]) // 6
 
 ---
 
+## Traversable
+
+- Category: Algebraic Structures
+- ID: #traversable
+- Aliases: sequence, traverse
+- Related concepts: #foldable, #functor, #applicative-functor
+
+### Definition
+A Foldable and Functor that can turn a collection of wrapped values inside-out via sequence or traverse, transforming F<G<A>> into G<F<A>>.
+
+### Code Examples
+
+```js
+// sequence transforms a list of Promises into a Promise of a list
+// [Promise<1>, Promise<2>] -> Promise<[1, 2]>
+const promiseSequence = (promises) =>
+  promises.reduce(
+    (acc, p) => acc.then((arr) => p.then((val) => [...arr, val])),
+    Promise.resolve([])
+  )
+
+promiseSequence([
+  Promise.resolve(1),
+  Promise.resolve(2),
+  Promise.resolve(3)
+]).then(console.log) // [1, 2, 3]
+```
+
+---
+
 ## Lens
 
 - Category: Types & Data Modeling
 - ID: #lens
 - Aliases: getter, setter, optics
-- Related concepts: #function-composition, #pure-function
+- Related concepts: #function-composition, #pure-function, #prism
 
 ### Definition
 A lens is a structure (often an object or function) that pairs a getter and a non-mutating setter for some other data structure.
@@ -1198,6 +1318,37 @@ const people = [{ name: 'Gertrude Blanch' }, { name: 'Shafi Goldwasser' }]
 
 // Despite what you may assume, lenses compose left-to-right.
 R.over(compose(firstLens, nameLens), uppercase, people) // [{'name': 'GERTRUDE BLANCH'}, {'name': 'Shafi Goldwasser'}]
+```
+
+---
+
+## Prism
+
+- Category: Types & Data Modeling
+- ID: #prism
+- Aliases: affine traversal, sum optics
+- Related concepts: #lens, #sum-type, #option
+
+### Definition
+An optic that focuses on a sub-case or variant of a sum type. Unlike a Lens, which always assumes the target field exists on a product structure, a Prism may fail to match because the target variant might not be present.
+
+### Code Examples
+
+```js
+const Prism = (preview, review) => ({
+  preview,
+  review
+})
+
+// A prism focusing on numeric string values
+const integerPrism = Prism(
+  (str) => (/^-?\d+$/.test(str) ? Number(str) : null),
+  (num) => String(num)
+)
+
+integerPrism.preview('42') // 42
+integerPrism.preview('hello') // null
+integerPrism.review(42) // '42'
 ```
 
 ---
@@ -1251,8 +1402,8 @@ A composite type made from putting other types together. Two common classes of a
 
 - Category: Types & Data Modeling
 - ID: #sum-type
-- Aliases: union type, discriminated union, tagged union, either
-- Related concepts: #algebraic-data-type, #option
+- Aliases: union type, discriminated union, tagged union
+- Related concepts: #algebraic-data-type, #option, #either, #prism
 
 ### Definition
 A Sum type is the combination of two types together into another one. It is called sum because the number of possible values in the result type is the sum of the input types.
@@ -1275,7 +1426,7 @@ const weakLogicValues = new Set([...bools, ...halfTrue])
 - Category: Types & Data Modeling
 - ID: #product-type
 - Aliases: tuple, pair, record, struct
-- Related concepts: #algebraic-data-type
+- Related concepts: #algebraic-data-type, #bifunctor
 
 ### Definition
 A product type combines types together in a way you're probably more familiar with:
@@ -1294,7 +1445,7 @@ const point = (x, y) => ({ x, y })
 - Category: Types & Data Modeling
 - ID: #option
 - Aliases: maybe, some, none, just, nothing
-- Related concepts: #monad, #dealing-with-partial-functions, #sum-type, #functor, #kleisli-composition
+- Related concepts: #monad, #dealing-with-partial-functions, #sum-type, #either, #prism, #functor, #kleisli-composition
 
 ### Definition
 Option is a sum type with two cases often called Some and None.
@@ -1340,6 +1491,50 @@ const getNestedPrice = (cart) => getItem(cart).chain(getPrice)
 getNestedPrice({}) // None()
 getNestedPrice({ item: { foo: 1 } }) // None()
 getNestedPrice({ item: { price: 9.99 } }) // Some(9.99)
+```
+
+---
+
+## Either
+
+- Category: Types & Data Modeling
+- ID: #either
+- Aliases: result, left and right, right is right
+- Related concepts: #option, #sum-type, #monad, #bifunctor, #pure-function
+
+### Definition
+A sum type with two cases, Left and Right. By convention, Right represents a successful computation and Left contains an error or failure reason ("right is right").
+
+### Code Examples
+
+```js
+const Left = (x) => ({
+  value: x,
+  map: (_f) => Left(x),
+  chain: (_f) => Left(x),
+  fold: (f, _g) => f(x),
+  isLeft: true
+})
+
+const Right = (x) => ({
+  value: x,
+  map: (f) => Right(f(x)),
+  chain: (f) => f(x),
+  fold: (_f, g) => g(x),
+  isRight: true
+})
+
+// parseJson :: String -> Either String Object
+const parseJson = (str) => {
+  try {
+    return Right(JSON.parse(str))
+  } catch (err) {
+    return Left(err.message)
+  }
+}
+
+parseJson('{"user": "hemanth"}').map((obj) => obj.user) // Right('hemanth')
+parseJson('invalid json').map((obj) => obj.user) // Left('Unexpected token...')
 ```
 
 ---

@@ -35,6 +35,8 @@ __Table of Contents__
 * [Auto Currying](#auto-currying)
 * [Function Composition](#function-composition)
 * [Continuation](#continuation)
+* [IO](#io)
+* [Trampoline](#trampoline)
 * [Pure Function](#pure-function)
 * [Side effects](#side-effects)
 * [Idempotence](#idempotence)
@@ -61,6 +63,7 @@ __Table of Contents__
 * [Comonad](#comonad)
 * [Kleisli Composition](#kleisli-composition)
 * [Applicative Functor](#applicative-functor)
+* [Bifunctor](#bifunctor)
 * [Morphism](#morphism)
   * [Homomorphism](#homomorphism)
   * [Endomorphism](#endomorphism)
@@ -73,12 +76,15 @@ __Table of Contents__
 * [Setoid](#setoid)
 * [Semigroup](#semigroup)
 * [Foldable](#foldable)
+* [Traversable](#traversable)
 * [Lens](#lens)
+* [Prism](#prism)
 * [Type Signatures](#type-signatures)
 * [Algebraic data type](#algebraic-data-type)
   * [Sum type](#sum-type)
   * [Product type](#product-type)
 * [Option](#option)
+* [Either](#either)
 * [Function](#function)
 * [Partial function](#partial-function)
   * [Dealing with partial functions](#dealing-with-partial-functions)
@@ -246,6 +252,56 @@ readFileAsync('path/to/file', (err, response) => {
   continueProgramWith(response)
 })
 ```
+
+## IO
+
+A pure data structure that encapsulates a side effect. Instead of performing the effect immediately, `IO` wraps the action in a nullary function ([thunk](#lazy-evaluation)), allowing effectful operations to be transformed, chained, and composed as pure [values](#value) without actually executing them until explicitly triggered.
+
+```js
+const IO = (run) => ({
+  run,
+  map: (f) => IO(() => f(run())),
+  chain: (f) => IO(() => f(run()).run())
+})
+
+// Pure description - nothing executes yet
+const readTimestamp = IO(() => Date.now())
+const formatted = readTimestamp.map((ts) => new Date(ts).toISOString())
+
+// Side effect executes only when calling .run()
+formatted.run()
+```
+
+__Further reading__
+* [IO container](https://drboolean.gitbooks.io/mostly-adequate-guide/content/ch8.html#pure-functional-magic) in Mostly Adequate Guide
+
+## Trampoline
+
+A mechanism that enables deep or mutually recursive functions to run without exceeding the maximum call stack limit.
+
+In environments without Tail Call Optimization (TCO), recursive calls return a function (a thunk) instead of invoking themselves directly. The trampoline runs a while-loop that unwinds each thunk until a final value is reached.
+
+```js
+const trampoline = (fn) => (...args) => {
+  let result = fn(...args)
+  while (typeof result === 'function') {
+    result = result()
+  }
+  return result
+}
+
+// Without trampoline: sumBelow(1000000) throws "Maximum call stack size exceeded"
+const sumBelow = (n, acc = 0) =>
+  n === 0
+    ? acc
+    : () => sumBelow(n - 1, acc + n) // returns a thunk instead of recursing directly
+
+const safeSum = trampoline(sumBelow)
+safeSum(1000000) // 500000500000
+```
+
+__Further reading__
+* [Trampolining in JavaScript](https://raganwald.com/2013/03/28/trampolines-in-javascript.html)
 
 ## Pure Function
 
@@ -795,6 +851,27 @@ This gives you an array of functions that you can call `ap` on to get the result
 partiallyAppliedAdds.ap(arg2) // [5, 6, 7, 8]
 ```
 
+## Bifunctor
+
+A structure with two independent type parameters that can map over both of them simultaneously. A Bifunctor provides `bimap`, which takes two functions and maps the first over the first type parameter and the second over the second type parameter.
+
+```js
+const Pair = (first, second) => ({
+  first,
+  second,
+  bimap: (f, g) => Pair(f(first), g(second)),
+  firstMap: (f) => Pair(f(first), second),
+  secondMap: (g) => Pair(first, g(second))
+})
+
+const score = Pair('alice', 10)
+score.bimap((name) => name.toUpperCase(), (points) => points * 2)
+// Pair('ALICE', 20)
+```
+
+__Further reading__
+* [Bifunctor](https://github.com/fantasyland/fantasy-land#bifunctor) in Fantasy Land
+
 ## Morphism
 
 A relationship between objects within a [category](#category). In the context of functional programming all functions are morphisms.
@@ -968,6 +1045,31 @@ const sum = (list) => list.reduce((acc, val) => acc + val, 0)
 sum([1, 2, 3]) // 6
 ```
 
+## Traversable
+
+A [Foldable](#foldable) and [Functor](#functor) that can turn a collection of wrapped values inside-out via `sequence` or `traverse`, transforming `F<G<A>>` into `G<F<A>>`.
+
+This is commonly used to take a list of asynchronous operations or nullable values and pull the wrapper effect to the outside.
+
+```js
+// sequence transforms a list of Promises into a Promise of a list
+// [Promise<1>, Promise<2>] -> Promise<[1, 2]>
+const promiseSequence = (promises) =>
+  promises.reduce(
+    (acc, p) => acc.then((arr) => p.then((val) => [...arr, val])),
+    Promise.resolve([])
+  )
+
+promiseSequence([
+  Promise.resolve(1),
+  Promise.resolve(2),
+  Promise.resolve(3)
+]).then(console.log) // [1, 2, 3]
+```
+
+__Further reading__
+* [Traversable](https://github.com/fantasyland/fantasy-land#traversable) in Fantasy Land
+
 ## Lens
 
 A lens is a structure (often an object or function) that pairs a getter and a non-mutating setter for some other data
@@ -1018,6 +1120,32 @@ R.over(compose(firstLens, nameLens), uppercase, people) // [{'name': 'GERTRUDE B
 Other implementations:
 * [partial.lenses](https://github.com/calmm-js/partial.lenses) - Tasty syntax sugar and a lot of powerful features
 * [nanoscope](http://www.kovach.me/nanoscope/) - Fluent-interface
+
+## Prism
+
+An optic that focuses on a sub-case or variant of a [sum type](#sum-type). Unlike a [Lens](#lens), which always assumes the target field exists on a product structure, a Prism may fail to match because the target variant might not be present.
+
+A Prism consists of a `preview` function (which returns an [Option](#option) or null) and a `review` function (which reconstructs the whole data structure from the focused part).
+
+```js
+const Prism = (preview, review) => ({
+  preview,
+  review
+})
+
+// A prism focusing on numeric string values
+const integerPrism = Prism(
+  (str) => (/^-?\d+$/.test(str) ? Number(str) : null),
+  (num) => String(num)
+)
+
+integerPrism.preview('42') // 42
+integerPrism.preview('hello') // null
+integerPrism.review(42) // '42'
+```
+
+__Further reading__
+* [Optics / Prism](https://github.com/flunc/optics) on GitHub
 
 ## Type Signatures
 
@@ -1143,6 +1271,46 @@ getNestedPrice({ item: { price: 9.99 } }) // Some(9.99)
 ```
 
 `Option` is also known as `Maybe`. `Some` is sometimes called `Just`. `None` is sometimes called `Nothing`.
+
+## Either
+
+A [sum type](#sum-type) with two cases, `Left` and `Right`. By convention, `Right` represents a successful computation and `Left` contains an error or failure reason ("right is right").
+
+`Either` is useful for error handling without exceptions, allowing computations to fail gracefully while remaining [pure](#pure-function) and composable.
+
+```js
+const Left = (x) => ({
+  value: x,
+  map: (_f) => Left(x),
+  chain: (_f) => Left(x),
+  fold: (f, _g) => f(x),
+  isLeft: true
+})
+
+const Right = (x) => ({
+  value: x,
+  map: (f) => Right(f(x)),
+  chain: (f) => f(x),
+  fold: (_f, g) => g(x),
+  isRight: true
+})
+
+// parseJson :: String -> Either String Object
+const parseJson = (str) => {
+  try {
+    return Right(JSON.parse(str))
+  } catch (err) {
+    return Left(err.message)
+  }
+}
+
+parseJson('{"user": "hemanth"}').map((obj) => obj.user) // Right('hemanth')
+parseJson('invalid json').map((obj) => obj.user) // Left('Unexpected token...')
+```
+
+__Further reading__
+* [Either](https://github.com/fantasyland/fantasy-land#either) in Fantasy Land
+* [Folktale Result](https://folktale.origamitower.com/api/v2.3.0/en/folktale.result.html)
 
 ## Function
 

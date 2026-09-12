@@ -19,6 +19,7 @@ const CATEGORY_MAP = {
   'total-function': 'core-functions',
   'partial-function': 'core-functions',
   'dealing-with-partial-functions': 'core-functions',
+  'trampoline': 'core-functions',
 
   // Composition & Execution
   'function-composition': 'composition',
@@ -29,6 +30,7 @@ const CATEGORY_MAP = {
   'functional-combinator': 'composition',
   'continuation': 'composition',
   'lazy-evaluation': 'composition',
+  'io': 'composition',
 
   // Purity & State
   'side-effects': 'purity-state',
@@ -66,6 +68,8 @@ const CATEGORY_MAP = {
   'constant-functor': 'algebraic-structures',
   'constant-monad': 'algebraic-structures',
   'lift': 'algebraic-structures',
+  'bifunctor': 'algebraic-structures',
+  'traversable': 'algebraic-structures',
 
   // Types & Modeling
   'type-signatures': 'types-data',
@@ -73,7 +77,9 @@ const CATEGORY_MAP = {
   'sum-type': 'types-data',
   'product-type': 'types-data',
   'option': 'types-data',
+  'either': 'types-data',
   'lens': 'types-data',
+  'prism': 'types-data',
   'lambda-calculus': 'types-data',
   'functional-programming-libraries-in-javascript': 'types-data'
 };
@@ -125,9 +131,10 @@ const CATEGORIES = {
 
 const ALIASES_MAP = {
   'option': ['maybe', 'some', 'none', 'just', 'nothing'],
+  'either': ['result', 'left and right', 'right is right'],
   'point-free-style': ['tacit programming', 'tacit', 'point-free', 'pointfree'],
   'monad': ['flatmap', 'bind', 'chain', 'return'],
-  'sum-type': ['union type', 'discriminated union', 'tagged union', 'either'],
+  'sum-type': ['union type', 'discriminated union', 'tagged union'],
   'product-type': ['tuple', 'pair', 'record', 'struct'],
   'arity': ['unary', 'binary', 'ternary', 'nullary', 'variadic'],
   'higher-order-functions-hof': ['hof', 'higher order function'],
@@ -144,9 +151,14 @@ const ALIASES_MAP = {
   'lambda': ['anonymous function', 'arrow function'],
   'functor': ['map', 'mappable'],
   'applicative-functor': ['applicative', 'ap'],
+  'bifunctor': ['bimap', 'pair map'],
+  'traversable': ['sequence', 'traverse'],
   'monoid': ['empty', 'identity', 'semigroup with identity'],
   'lens': ['getter', 'setter', 'optics'],
-  'lazy-evaluation': ['call-by-need', 'deferred execution', 'generators']
+  'prism': ['affine traversal', 'sum optics'],
+  'lazy-evaluation': ['call-by-need', 'deferred execution', 'generators'],
+  'io': ['task', 'effect container', 'side effect recipe'],
+  'trampoline': ['thunk loop', 'tail recursion optimization']
 };
 
 // Explicit semantic connections between concepts in FP
@@ -218,8 +230,25 @@ const EXPLICIT_RELATIONSHIPS = [
   ['algebraic-data-type', 'product-type'],
   ['option', 'sum-type'],
   ['option', 'monad'],
+  ['either', 'option'],
+  ['either', 'sum-type'],
+  ['either', 'monad'],
+  ['either', 'bifunctor'],
+  ['traversable', 'foldable'],
+  ['traversable', 'functor'],
+  ['traversable', 'applicative-functor'],
+  ['bifunctor', 'functor'],
+  ['bifunctor', 'product-type'],
   ['lens', 'function-composition'],
   ['lens', 'pure-function'],
+  ['prism', 'lens'],
+  ['prism', 'sum-type'],
+  ['prism', 'option'],
+  ['io', 'side-effects'],
+  ['io', 'monad'],
+  ['io', 'lazy-evaluation'],
+  ['trampoline', 'higher-order-functions-hof'],
+  ['trampoline', 'continuation'],
   ['contracts', 'type-signatures']
 ];
 
@@ -392,7 +421,7 @@ fs.writeFileSync(path.join(publicDataDir, 'jargons.json'), JSON.stringify(output
 // Generate agent-readable full text reference (llms-full.txt)
 let llmsFull = `# FP Jargon - Full Reference
 
-> Complete catalog of 57 functional programming concepts, morphisms, algebraic structures, and category theory terms with JavaScript ES2015 examples.
+> Complete catalog of ${entries.length} functional programming concepts, morphisms, algebraic structures, and category theory terms with JavaScript ES2015 examples.
 > Source: https://github.com/hemanth/functional-programming-jargon
 > Live app: https://hemanth.github.io/functional-programming-jargon/
 
@@ -423,5 +452,48 @@ entries.forEach(e => {
 const llmsFullPath = path.join(__dirname, '../public/llms-full.txt');
 fs.writeFileSync(llmsFullPath, llmsFull, 'utf8');
 
-console.log(`Successfully parsed ${entries.length} terms and ${links.length} graph connections into ${outputPath} and public/data/jargons.json`);
+// Also generate llms.txt index per llmstxt.org specification
+let llmsTxt = `# FP Jargon
+
+> Interactive functional programming knowledge graph and specification exploring ${entries.length} concepts, category theory morphisms, and algebraic structures with JavaScript ES2015 examples.
+
+FP Jargon maps out the entire vocabulary of functional programming into an interconnected graph with deterministic explanations, formal properties, and executable JavaScript examples.
+
+## Links
+
+- [Interactive Knowledge Graph](https://hemanth.github.io/functional-programming-jargon/): The live interactive application
+- [Full Text Specification (llms-full.txt)](https://hemanth.github.io/functional-programming-jargon/llms-full.txt): Complete catalog with all definitions and code blocks
+- [Raw JSON Dataset](https://hemanth.github.io/functional-programming-jargon/data/jargons.json): Structured JSON dataset of terms, categories, and graph edges
+- [GitHub Repository](https://github.com/hemanth/functional-programming-jargon): Source code and collaborative community specification
+- [Author](https://h3manth.com): Hemanth HM
+
+## Categories & Concepts
+
+`;
+
+Object.keys(CATEGORIES).forEach(catKey => {
+  const cat = CATEGORIES[catKey];
+  const catEntries = entries.filter(e => e.category === catKey);
+  if (catEntries.length > 0) {
+    llmsTxt += `### ${cat.name}\n`;
+    catEntries.forEach(e => {
+      const summaryClean = (e.summary || '').replace(/\n+/g, ' ').slice(0, 120);
+      llmsTxt += `- [${e.title}](https://hemanth.github.io/functional-programming-jargon/#${e.id}): ${summaryClean}\n`;
+    });
+    llmsTxt += `\n`;
+  }
+});
+
+llmsTxt += `## Agent & LLM Usage
+
+AI agents can directly query or ingest this dataset via:
+- LLMS Full Text: \`https://hemanth.github.io/functional-programming-jargon/llms-full.txt\`
+- Raw JSON Graph API: \`https://hemanth.github.io/functional-programming-jargon/data/jargons.json\`
+`;
+
+const llmsTxtPath = path.join(__dirname, '../public/llms.txt');
+fs.writeFileSync(llmsTxtPath, llmsTxt, 'utf8');
+
+console.log(`Successfully parsed ${entries.length} terms and ${links.length} graph connections into ${outputPath}, public/data/jargons.json, llms.txt, and llms-full.txt`);
+
 
