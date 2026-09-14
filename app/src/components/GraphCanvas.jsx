@@ -104,24 +104,48 @@ export default function GraphCanvas({
         stateRef.current.camera.y = -selNode.y;
         stateRef.current.camera.targetX = -selNode.x;
         stateRef.current.camera.targetY = -selNode.y;
-        stateRef.current.camera.scale = 1.35;
-        stateRef.current.camera.targetScale = 1.35;
+        stateRef.current.camera.scale = 0.95;
+        stateRef.current.camera.targetScale = 0.95;
       }
     }
   }, [graphData]);
 
   // Center on selected node when selection changes or panel opens/closes
-  // When sidebar opens, offset the camera so the node remains centered in the visible left viewport
+  // Calculates optimal zoom scale so the selected node AND all its connected neighbor nodes fit comfortably in the visible viewport
   useEffect(() => {
     if (!selectedNodeId) return;
     const node = stateRef.current.nodeMap?.get(selectedNodeId);
     if (node) {
-      const targetScale = 1.35;
-      
+      const links = stateRef.current.links || [];
+      const neighborNodes = [];
+      links.forEach(l => {
+        if (l.source.id === node.id && l.target) neighborNodes.push(l.target);
+        if (l.target.id === node.id && l.source) neighborNodes.push(l.source);
+      });
+
+      let maxDist = 0;
+      neighborNodes.forEach(n => {
+        const d = Math.hypot(n.x - node.x, n.y - node.y);
+        if (d > maxDist) maxDist = d;
+      });
+
+      const winW = typeof window !== 'undefined' ? window.innerWidth : 1280;
+      const winH = typeof window !== 'undefined' ? window.innerHeight : 800;
+      const sidebarWidth = (isPanelOpen && winW >= 640) ? (winW >= 1024 ? 560 : 500) : 0;
+      const visibleWidth = winW - sidebarWidth;
+      const visibleHeight = winH;
+
+      // Ensure all neighbors fit with breathing room for node badges and labels
+      const safeRadius = Math.max(160, maxDist + 80);
+      const idealScaleX = (visibleWidth * 0.82) / (safeRadius * 2);
+      const idealScaleY = (visibleHeight * 0.82) / (safeRadius * 2);
+      const idealScale = Math.min(idealScaleX, idealScaleY);
+
+      // Clamp between 0.65 and 0.95 (never over-zoom, never excessively shrink)
+      const targetScale = Math.max(0.65, Math.min(0.95, idealScale));
+
       let offsetX = 0;
-      if (isPanelOpen && typeof window !== 'undefined' && window.innerWidth >= 640) {
-        const sidebarWidth = window.innerWidth >= 1024 ? 560 : 500;
-        // Shift camera so the node is centered in (window.innerWidth - sidebarWidth)
+      if (sidebarWidth > 0) {
         offsetX = (sidebarWidth / 2) / targetScale;
       }
 
