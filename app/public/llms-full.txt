@@ -1,6 +1,6 @@
 # FP Jargon - Full Reference
 
-> Complete catalog of 69 functional programming concepts, morphisms, algebraic structures, and category theory terms with JavaScript ES2015 examples.
+> Complete catalog of 75 functional programming concepts, morphisms, algebraic structures, and category theory terms with JavaScript ES2015 examples.
 > Source: https://github.com/hemanth/functional-programming-jargon
 > Live app: https://hemanth.github.io/functional-programming-jargon/
 
@@ -159,7 +159,7 @@ curriedAdd(1)(2) // 3
 
 - Category: Composition & Flow
 - ID: #function-composition
-- Related concepts: #point-free-style, #category, #higher-order-functions-hof, #lens
+- Related concepts: #point-free-style, #category, #higher-order-functions-hof, #lens, #semigroupoid
 
 ### Definition
 The act of putting two functions together to form a third function where the output of one function is the input of the other. This is one of the most important ideas of functional programming.
@@ -178,7 +178,7 @@ floorAndToString(121.212121) // '121'
 
 - Category: Composition & Flow
 - ID: #continuation
-- Related concepts: #higher-order-functions-hof, #trampoline
+- Related concepts: #higher-order-functions-hof, #trampoline, #algebraic-effects
 
 ### Definition
 At any given point in a program, the part of the code that's yet to be executed is known as a continuation.
@@ -217,7 +217,7 @@ readFileAsync('path/to/file', (err, response) => {
 - Category: Composition & Flow
 - ID: #io
 - Aliases: task, effect container, side effect recipe
-- Related concepts: #side-effects, #monad, #lazy-evaluation, #thunk, #value
+- Related concepts: #side-effects, #monad, #lazy-evaluation, #thunk, #free-monad, #value
 
 ### Definition
 A pure data structure that encapsulates a side effect. Instead of performing the effect immediately, IO wraps the action in a nullary function (thunk), allowing effectful operations to be transformed, chained, and composed as pure values without actually executing them until explicitly triggered.
@@ -299,6 +299,60 @@ thunk() // 84
 
 ---
 
+## Algebraic Effects
+
+- Category: Composition & Flow
+- ID: #algebraic-effects
+- Related concepts: #continuation, #side-effects, #free-monad
+
+### Definition
+A computational effect system that separates the invocation of an effect from its handling. Rather than coupling a function directly to its runtime environment, the function "performs" an effect operation (such as reading state, requesting configuration, or logging). An enclosing "handler" intercepts the performed effect and supplies the result, with the ability to resume or abort the computation—generalizing exceptions, async/await, and generators without requiring complex monad transformer stacks.
+
+### Code Examples
+
+```js
+// Generators model delimited continuations / algebraic effects:
+const perform = (effect) => ({ [Symbol.for('effect')]: true, effect })
+
+// Program performs effects without knowing who handles them:
+function * fetchUserProfile (userId) {
+  const config = yield perform({ type: 'ask_config' })
+  yield perform({ type: 'log', message: `Fetching user ${userId} from ${config.apiUrl}` })
+  return { id: userId, name: 'Alice' }
+}
+
+// Effect handler interprets effects and resumes the computation:
+const handle = (generator, handlers) => {
+  const iter = generator()
+  const step = (value) => {
+    const { done, value: yielded } = iter.next(value)
+    if (done) return yielded
+    if (yielded && yielded[Symbol.for('effect')]) {
+      const { type } = yielded.effect
+      if (handlers[type]) {
+        return handlers[type](yielded.effect, (resumeVal) => step(resumeVal))
+      }
+    }
+    return step(yielded)
+  }
+  return step()
+}
+
+// Running with an interpreter / handler:
+handle(
+  () => fetchUserProfile(42),
+  {
+    ask_config: (effect, resume) => resume({ apiUrl: 'https://api.test.local' }),
+    log: (effect, resume) => {
+      console.log(effect.message)
+      return resume()
+    }
+  }
+)
+```
+
+---
+
 ## Pure Function
 
 - Category: Core Functions
@@ -342,7 +396,7 @@ greeting // "Hi, Brianne"
 
 - Category: Purity & Reasoning
 - ID: #side-effects
-- Related concepts: #pure-function, #io, #memoization, #function
+- Related concepts: #pure-function, #io, #algebraic-effects, #memoization, #function
 
 ### Definition
 A function or expression is said to have a side effect if apart from returning a value, it interacts with (reads from or writes to) external mutable state.
@@ -457,7 +511,7 @@ addOne('some string') // Contract violated: expected int -> boolean
 
 - Category: Category & Morphisms
 - ID: #category
-- Related concepts: #morphism, #function-composition, #natural-transformation
+- Related concepts: #morphism, #function-composition, #natural-transformation, #semigroupoid
 
 ### Definition
 A category in category theory is a collection of objects and morphisms between them. In programming, typically types act as the objects and functions as morphisms.
@@ -484,6 +538,32 @@ class Max {
 }
 
 new Max(2).compose(new Max(3)).compose(new Max(5)).id().id() // => Max(5)
+```
+
+---
+
+## Semigroupoid
+
+- Category: Category & Morphisms
+- ID: #semigroupoid
+- Related concepts: #category, #function-composition, #semigroup
+
+### Definition
+An algebraic structure with objects and morphisms that can be associatively composed, but does not guarantee the existence of an identity morphism for each object.
+
+### Code Examples
+
+```js
+const Semigroupoid = (fn) => ({
+  run: fn,
+  compose: (other) => Semigroupoid((x) => fn(other.run(x)))
+})
+
+const toUpper = Semigroupoid((s) => s.toUpperCase())
+const exclaim = Semigroupoid((s) => `${s}!`)
+
+const loudGreeting = exclaim.compose(toUpper)
+loudGreeting.run('hello') // 'HELLO!'
 ```
 
 ---
@@ -589,7 +669,7 @@ Constant(1).chain(n => Constant(n + 1)) // => Constant(1)
 - Category: Algebraic Structures
 - ID: #functor
 - Aliases: map, mappable
-- Related concepts: #pointed-functor, #applicative-functor, #lift, #traversable, #bifunctor, #contravariant-functor, #natural-transformation, #constant-functor, #option, #monad
+- Related concepts: #pointed-functor, #applicative-functor, #lift, #traversable, #bifunctor, #contravariant-functor, #natural-transformation, #free-monad, #constant-functor, #option, #monad, #monad-transformer
 
 ### Definition
 An object that implements a map function that takes a function which is run on the contents of that object. A functor must adhere to two rules:
@@ -880,7 +960,7 @@ An object with a function that "combines" that object with another of the same t
 - Category: Algebraic Structures
 - ID: #monad
 - Aliases: flatmap, bind, chain, return
-- Related concepts: #applicative-functor, #kleisli-composition, #comonad, #option, #either, #io, #constant-monad, #pointed-functor, #functor
+- Related concepts: #applicative-functor, #kleisli-composition, #comonad, #option, #either, #io, #free-monad, #monad-transformer, #constant-monad, #pointed-functor, #functor
 
 ### Definition
 A monad is an object with of and chain functions. chain is like map except it un-nests the resulting nested object.
@@ -939,7 +1019,7 @@ CoIdentity(1).extend((co) => co.extract() + 1) // CoIdentity(2)
 
 - Category: Algebraic Structures
 - ID: #kleisli-composition
-- Related concepts: #monad, #option
+- Related concepts: #monad, #monad-transformer, #option
 
 ### Definition
 An operation for composing two monad-returning functions (Kleisli Arrows) where they have compatible types. In Haskell this is the >=> operator.
@@ -969,12 +1049,126 @@ parseAndValidate('999') // => Some(999)
 
 ---
 
+## Free Monad
+
+- Category: Algebraic Structures
+- ID: #free-monad
+- Related concepts: #monad, #functor, #io, #algebraic-effects
+
+### Definition
+A Free Monad is a construction that builds a monad out of any functor without adding any domain-specific behavior. It cleanly separates the description of a program (an Abstract Syntax Tree of commands) from its execution (an interpreter that evaluates the AST).
+
+### Code Examples
+
+```js
+// Free monad constructors:
+const Pure = (x) => ({
+  isPure: true,
+  value: x,
+  map: (f) => Pure(f(x)),
+  chain: (f) => f(x)
+})
+
+const Free = (fn) => ({
+  isPure: false,
+  functor: fn,
+  map: (f) => Free(fn.map((next) => next.map(f))),
+  chain: (f) => Free(fn.map((next) => next.chain(f)))
+})
+
+// Lift an instruction functor into a Free monad:
+const liftF = (cmd) => Free(cmd.map(Pure))
+
+// Functor representing logging instructions:
+const Log = (msg, next) => ({
+  type: 'log',
+  msg,
+  next,
+  map: (f) => Log(msg, f(next))
+})
+
+// Program: purely describes actions without executing them:
+const logMsg = (msg) => liftF(Log(msg, null))
+const program = logMsg('Starting').chain(() => logMsg('Done')).chain(() => Pure(42))
+
+// Interpreter: executes the instruction tree:
+const interpret = (freeMonad) => {
+  if (freeMonad.isPure) return freeMonad.value
+  const { type, msg, next } = freeMonad.functor
+  if (type === 'log') {
+    console.log(msg)
+    return interpret(next)
+  }
+}
+
+interpret(program) // Logs 'Starting', 'Done', returns 42
+```
+
+---
+
+## Monad Transformer
+
+- Category: Algebraic Structures
+- ID: #monad-transformer
+- Related concepts: #monad, #kleisli-composition, #either, #functor, #applicative-functor
+
+### Definition
+While functors and applicative functors compose naturally, monads do not compose generally without knowing their specific types. A Monad Transformer is a type constructor that takes an existing monad and produces a new monad with combined capabilities (such as combining error handling, asynchronous tasks, and state).
+
+### Code Examples
+
+```js
+// MaybeT wraps any outer monad M to add optionality:
+const MaybeT = (M) => {
+  const of = (value) => MaybeTInstance(M.of({ isSome: true, value }))
+  const none = () => MaybeTInstance(M.of({ isSome: false }))
+
+  const MaybeTInstance = (run) => ({
+    run,
+    chain: (f) =>
+      MaybeTInstance(
+        run.chain((opt) => (opt.isSome ? f(opt.value).run : M.of(opt)))
+      ),
+    map: (f) =>
+      MaybeTInstance(
+        run.map((opt) => (opt.isSome ? { isSome: true, value: f(opt.value) } : opt))
+      )
+  })
+
+  return { of, none, from: MaybeTInstance }
+}
+
+// Identity monad:
+const Id = (x) => ({
+  value: x,
+  map: (f) => Id(f(x)),
+  chain: (f) => f(x)
+})
+Id.of = Id
+
+// Combine Id monad with Maybe effect:
+const MaybeId = MaybeT(Id)
+
+const findUser = (id) =>
+  id === 1 ? MaybeId.of({ name: 'Alice', age: 30 }) : MaybeId.none()
+
+const getAge = (id) =>
+  findUser(id)
+    .chain((user) => MaybeId.of(user.age))
+    .run
+
+getAge(1).value // { isSome: true, value: 30 }
+getAge(2).value // { isSome: false }
+```
+
+---
+
 ## Applicative Functor
 
 - Category: Algebraic Structures
 - ID: #applicative-functor
 - Aliases: applicative, ap
-- Related concepts: #functor, #pointed-functor, #monad, #lift, #traversable, #alternative
+- Related concepts: #functor, #pointed-functor, #monad, #lift, #traversable, #alternative, #monad-transformer
 
 ### Definition
 An applicative functor is an object with an ap function. ap applies a function in the object to a value in another object of the same type.
@@ -1013,7 +1207,7 @@ partiallyAppliedAdds.ap(arg2) // [5, 6, 7, 8]
 - Category: Algebraic Structures
 - ID: #bifunctor
 - Aliases: bimap, pair map
-- Related concepts: #either, #functor, #product-type
+- Related concepts: #either, #functor, #product-type, #profunctor
 
 ### Definition
 A structure with two independent type parameters that can map over both of them simultaneously. A Bifunctor provides bimap, which takes two functions and maps the first over the first type parameter and the second over the second type parameter.
@@ -1041,7 +1235,7 @@ score.bimap((name) => name.toUpperCase(), (points) => points * 2)
 - Category: Algebraic Structures
 - ID: #contravariant-functor
 - Aliases: contravariant, cmap, contramap
-- Related concepts: #functor, #predicate
+- Related concepts: #functor, #predicate, #profunctor
 
 ### Definition
 A structure similar to a functor, but whose transformation flows in the opposite direction. While a covariant functor transforms a producer F<A> into F<B> via (a -> b), a contravariant functor transforms a consumer F<A> into F<B> via (b -> a) using cmap (or contramap).
@@ -1064,6 +1258,40 @@ const hasLongBio = isLongString.cmap((user) => user.bio)
 
 hasLongBio.test({ bio: 'Hello World' }) // true
 hasLongBio.test({ bio: 'Hi' }) // false
+```
+
+---
+
+## Profunctor
+
+- Category: Algebraic Structures
+- ID: #profunctor
+- Related concepts: #bifunctor, #contravariant-functor, #lens
+
+### Definition
+A Profunctor is a bifunctor that is contravariant in its first argument and covariant in its second argument.
+
+### Code Examples
+
+```js
+// Functions are natural profunctors:
+const Profunctor = (fn) => ({
+  run: fn,
+  // promap :: (a' -> a) -> (b -> b') -> P a b -> P a' b'
+  promap: (f, g) => Profunctor((x) => g(fn(f(x))))
+})
+
+// An existing function: String -> Number
+const stringLength = Profunctor((str) => str.length)
+
+// Pre-process input (trim whitespace) and post-process output (check if even):
+const isTrimmedLengthEven = stringLength.promap(
+  (raw) => raw.trim(), // contravariant: pre-process input
+  (len) => len % 2 === 0 // covariant: post-process output
+)
+
+isTrimmedLengthEven.run('   code   ') // 4 is even -> true
+isTrimmedLengthEven.run(' hello ') // 5 is odd -> false
 ```
 
 ---
@@ -1358,7 +1586,7 @@ Array.prototype.equals = function (arr) {
 
 - Category: Algebraic Structures
 - ID: #semigroup
-- Related concepts: #monoid, #setoid
+- Related concepts: #monoid, #setoid, #semigroupoid
 
 ### Definition
 An object that has a concat function that combines it with another object of the same type.
@@ -1394,7 +1622,7 @@ sum([1, 2, 3]) // 6
 - Category: Algebraic Structures
 - ID: #traversable
 - Aliases: sequence, traverse
-- Related concepts: #foldable, #functor, #applicative-functor
+- Related concepts: #foldable, #functor, #applicative-functor, #traversal
 
 ### Definition
 A Foldable and Functor that can turn a collection of wrapped values inside-out via sequence or traverse, transforming F<G<A>> into G<F<A>>.
@@ -1424,7 +1652,7 @@ promiseSequence([
 - Category: Types & Data Modeling
 - ID: #lens
 - Aliases: getter, setter, optics
-- Related concepts: #function-composition, #pure-function, #prism, #iso
+- Related concepts: #function-composition, #pure-function, #prism, #iso, #profunctor, #traversal
 
 ### Definition
 A lens is a structure (often an object or function) that pairs a getter and a non-mutating setter for some other data structure.
@@ -1476,7 +1704,7 @@ R.over(compose(firstLens, nameLens), uppercase, people) // [{'name': 'GERTRUDE B
 - Category: Types & Data Modeling
 - ID: #prism
 - Aliases: affine traversal, sum optics
-- Related concepts: #lens, #sum-type, #option, #iso
+- Related concepts: #lens, #sum-type, #option, #iso, #traversal
 
 ### Definition
 An optic that focuses on a sub-case or variant of a sum type. Unlike a Lens, which always assumes the target field exists on a product structure, a Prism may fail to match because the target variant might not be present.
@@ -1528,6 +1756,37 @@ const tempIso = Iso(
 
 tempIso.to(100) // 212
 tempIso.from(212) // 100
+```
+
+---
+
+## Traversal
+
+- Category: Types & Data Modeling
+- ID: #traversal
+- Related concepts: #lens, #prism, #traversable
+
+### Definition
+An optic that focuses on zero, one, or multiple values (0..*) inside a data structure simultaneously.
+
+### Code Examples
+
+```js
+const Traversal = (getAll, modify) => ({
+  getAll,
+  modify
+})
+
+// Traversal focusing only on even numbers in an array:
+const evenTraversal = Traversal(
+  (arr) => arr.filter((n) => n % 2 === 0),
+  (f, arr) => arr.map((n) => (n % 2 === 0 ? f(n) : n))
+)
+
+const numbers = [1, 2, 3, 4, 5, 6]
+
+evenTraversal.getAll(numbers) // [2, 4, 6]
+evenTraversal.modify((n) => n * 10, numbers) // [1, 20, 3, 40, 5, 60]
 ```
 
 ---
@@ -1679,7 +1938,7 @@ getNestedPrice({ item: { price: 9.99 } }) // Some(9.99)
 - Category: Types & Data Modeling
 - ID: #either
 - Aliases: result, left and right, right is right
-- Related concepts: #option, #sum-type, #monad, #bifunctor, #pure-function
+- Related concepts: #option, #sum-type, #monad, #bifunctor, #monad-transformer, #pure-function
 
 ### Definition
 A sum type with two cases, Left and Right. By convention, Right represents a successful computation and Left contains an error or failure reason ("right is right").

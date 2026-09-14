@@ -85,6 +85,31 @@ server.listen(PORT, async () => {
     if (isRootPanelOpen) throw new Error('Aside panel should be closed on root / visit');
     console.log('✓ Test 3 passed: Root URL loads cleanly with sidebar closed.');
 
+    console.log('Running test 4: Batch 3 direct hash navigation (#free-monad, #profunctor, #algebraic-effects)...');
+    for (const term of ['free-monad', 'profunctor', 'algebraic-effects', 'semigroupoid', 'monad-transformer', 'traversal']) {
+      await page.goto(`http://localhost:${PORT}/#${term}`, { waitUntil: 'networkidle' });
+      await page.waitForTimeout(400);
+      const isTermOpen = await page.locator('aside').isVisible();
+      if (!isTermOpen) throw new Error(`Aside panel failed to open for #${term}`);
+      const termTitle = await page.locator('aside h2').textContent();
+      console.log(`  ✓ #${term} loaded successfully: "${termTitle.trim()}"`);
+    }
+
+    console.log('Running test 5: Search for profunctor...');
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(200);
+    await page.keyboard.press('/');
+    await page.waitForTimeout(200);
+    await page.locator('input[type="search"]').fill('profunctor');
+    await page.waitForTimeout(200);
+    await page.keyboard.press('Enter');
+    await page.waitForTimeout(500);
+    const profunctorOpen = await page.locator('aside').isVisible();
+    if (!profunctorOpen) throw new Error('Profunctor panel failed to open from search');
+    const profunctorTitle = await page.locator('aside h2').textContent();
+    if (!profunctorTitle.toLowerCase().includes('profunctor')) throw new Error(`Expected Profunctor, got: ${profunctorTitle}`);
+    console.log('✓ Test 5 passed: Profunctor ranked #1 in search and opened cleanly.');
+
   } catch (err) {
     console.error('Test failed:', err);
     exitCode = 1;

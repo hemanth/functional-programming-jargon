@@ -32,6 +32,7 @@ const CATEGORY_MAP = {
   'continuation': 'composition',
   'lazy-evaluation': 'composition',
   'io': 'composition',
+  'algebraic-effects': 'composition',
 
   // Purity & State
   'side-effects': 'purity-state',
@@ -46,6 +47,7 @@ const CATEGORY_MAP = {
 
   // Category Theory & Morphisms
   'category': 'category-morphisms',
+  'semigroupoid': 'category-morphisms',
   'morphism': 'category-morphisms',
   'homomorphism': 'category-morphisms',
   'endomorphism': 'category-morphisms',
@@ -62,6 +64,8 @@ const CATEGORY_MAP = {
   'pointed-functor': 'algebraic-structures',
   'applicative-functor': 'algebraic-structures',
   'monad': 'algebraic-structures',
+  'free-monad': 'algebraic-structures',
+  'monad-transformer': 'algebraic-structures',
   'comonad': 'algebraic-structures',
   'monoid': 'algebraic-structures',
   'semigroup': 'algebraic-structures',
@@ -72,6 +76,7 @@ const CATEGORY_MAP = {
   'constant-monad': 'algebraic-structures',
   'lift': 'algebraic-structures',
   'bifunctor': 'algebraic-structures',
+  'profunctor': 'algebraic-structures',
   'traversable': 'algebraic-structures',
   'contravariant-functor': 'algebraic-structures',
   'alternative': 'algebraic-structures',
@@ -86,6 +91,7 @@ const CATEGORY_MAP = {
   'lens': 'types-data',
   'prism': 'types-data',
   'iso': 'types-data',
+  'traversal': 'types-data',
   'lambda-calculus': 'types-data',
   'functional-programming-libraries-in-javascript': 'types-data'
 };
@@ -278,7 +284,25 @@ const EXPLICIT_RELATIONSHIPS = [
   ['iso', 'lens'],
   ['iso', 'prism'],
   ['iso', 'isomorphism'],
-  ['contracts', 'type-signatures']
+  ['contracts', 'type-signatures'],
+  ['free-monad', 'monad'],
+  ['free-monad', 'functor'],
+  ['free-monad', 'io'],
+  ['monad-transformer', 'monad'],
+  ['monad-transformer', 'kleisli-composition'],
+  ['monad-transformer', 'either'],
+  ['profunctor', 'bifunctor'],
+  ['profunctor', 'contravariant-functor'],
+  ['profunctor', 'lens'],
+  ['semigroupoid', 'category'],
+  ['semigroupoid', 'function-composition'],
+  ['semigroupoid', 'semigroup'],
+  ['traversal', 'lens'],
+  ['traversal', 'prism'],
+  ['traversal', 'traversable'],
+  ['algebraic-effects', 'continuation'],
+  ['algebraic-effects', 'side-effects'],
+  ['algebraic-effects', 'free-monad']
 ];
 
 function slugify(text) {

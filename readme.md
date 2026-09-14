@@ -38,6 +38,7 @@ __Table of Contents__
 * [IO](#io)
 * [Trampoline](#trampoline)
 * [Thunk](#thunk)
+* [Algebraic Effects](#algebraic-effects)
 * [Pure Function](#pure-function)
 * [Side effects](#side-effects)
 * [Idempotence](#idempotence)
@@ -45,6 +46,7 @@ __Table of Contents__
 * [Predicate](#predicate)
 * [Contracts](#contracts)
 * [Category](#category)
+* [Semigroupoid](#semigroupoid)
 * [Value](#value)
 * [Constant](#constant)
   * [Constant Function](#constant-function)
@@ -64,9 +66,12 @@ __Table of Contents__
 * [Monad](#monad)
 * [Comonad](#comonad)
 * [Kleisli Composition](#kleisli-composition)
+* [Free Monad](#free-monad)
+* [Monad Transformer](#monad-transformer)
 * [Applicative Functor](#applicative-functor)
 * [Bifunctor](#bifunctor)
 * [Contravariant Functor](#contravariant-functor)
+* [Profunctor](#profunctor)
 * [Alternative](#alternative)
 * [Morphism](#morphism)
   * [Homomorphism](#homomorphism)
@@ -85,6 +90,7 @@ __Table of Contents__
 * [Lens](#lens)
 * [Prism](#prism)
 * [Iso](#iso)
+* [Traversal](#traversal)
 * [Type Signatures](#type-signatures)
 * [Algebraic data type](#algebraic-data-type)
   * [Sum type](#sum-type)
@@ -327,6 +333,55 @@ thunk() // 84
 __Further reading__
 * [Thunk](https://en.wikipedia.org/wiki/Thunk) on Wikipedia
 
+## Algebraic Effects
+
+A computational effect system that separates the invocation of an effect from its handling. Rather than coupling a function directly to its runtime environment, the function "performs" an effect operation (such as reading state, requesting configuration, or logging). An enclosing "handler" intercepts the performed effect and supplies the result, with the ability to resume or abort the computation—generalizing exceptions, async/await, and generators without requiring complex monad transformer stacks.
+
+```js
+// Generators model delimited continuations / algebraic effects:
+const perform = (effect) => ({ [Symbol.for('effect')]: true, effect })
+
+// Program performs effects without knowing who handles them:
+function * fetchUserProfile (userId) {
+  const config = yield perform({ type: 'ask_config' })
+  yield perform({ type: 'log', message: `Fetching user ${userId} from ${config.apiUrl}` })
+  return { id: userId, name: 'Alice' }
+}
+
+// Effect handler interprets effects and resumes the computation:
+const handle = (generator, handlers) => {
+  const iter = generator()
+  const step = (value) => {
+    const { done, value: yielded } = iter.next(value)
+    if (done) return yielded
+    if (yielded && yielded[Symbol.for('effect')]) {
+      const { type } = yielded.effect
+      if (handlers[type]) {
+        return handlers[type](yielded.effect, (resumeVal) => step(resumeVal))
+      }
+    }
+    return step(yielded)
+  }
+  return step()
+}
+
+// Running with an interpreter / handler:
+handle(
+  () => fetchUserProfile(42),
+  {
+    ask_config: (effect, resume) => resume({ apiUrl: 'https://api.test.local' }),
+    log: (effect, resume) => {
+      console.log(effect.message)
+      return resume()
+    }
+  }
+)
+```
+
+__Further reading__
+* [Algebraic Effects for the Rest of Us](https://overreacted.io/algebraic-effects-for-the-rest-of-us/)
+* [What is Algebraic Effects?](https://koka-lang.github.io/koka/doc/book.html#why-effects)
+
 ## Pure Function
 
 A function is pure if the return value is only determined by its input values, and does not produce side effects. The function must always return the same result when given the same input.
@@ -480,6 +535,31 @@ new Max(2).compose(new Max(3)).compose(new Max(5)).id().id() // => Max(5)
 __Further reading__
 
 * [Category Theory for Programmers](https://bartoszmilewski.com/2014/10/28/category-theory-for-programmers-the-preface/)
+
+## Semigroupoid
+
+An algebraic structure with objects and morphisms that can be associatively composed, but does not guarantee the existence of an identity morphism for each object.
+
+A semigroupoid satisfies the associativity property for [composition](#function-composition):
+`f.compose(g).compose(h) === f.compose(g.compose(h))`
+
+Every [category](#category) is a semigroupoid, but a semigroupoid does not require an identity (`id`) morphism. Functions under composition form a natural semigroupoid:
+
+```js
+const Semigroupoid = (fn) => ({
+  run: fn,
+  compose: (other) => Semigroupoid((x) => fn(other.run(x)))
+})
+
+const toUpper = Semigroupoid((s) => s.toUpperCase())
+const exclaim = Semigroupoid((s) => `${s}!`)
+
+const loudGreeting = exclaim.compose(toUpper)
+loudGreeting.run('hello') // 'HELLO!'
+```
+
+__Further reading__
+* [Semigroupoid](https://github.com/fantasyland/fantasy-land#semigroupoid) in Fantasy Land
 
 ## Value
 
@@ -865,6 +945,114 @@ This works because:
  * both `validatePositive` and `safeParseNum` return the same kind of monad (Option),
  * the type of `validatePositive`'s argument matches `safeParseNum`'s unwrapped return.
 
+## Free Monad
+
+A Free Monad is a construction that builds a [monad](#monad) out of any [functor](#functor) without adding any domain-specific behavior. It cleanly separates the description of a program (an Abstract Syntax Tree of commands) from its execution (an interpreter that evaluates the AST).
+
+A Free Monad has two cases:
+* `Pure`: wraps a final value and terminates computation.
+* `Free`: wraps a functor containing the next step of the computation.
+
+```js
+// Free monad constructors:
+const Pure = (x) => ({
+  isPure: true,
+  value: x,
+  map: (f) => Pure(f(x)),
+  chain: (f) => f(x)
+})
+
+const Free = (fn) => ({
+  isPure: false,
+  functor: fn,
+  map: (f) => Free(fn.map((next) => next.map(f))),
+  chain: (f) => Free(fn.map((next) => next.chain(f)))
+})
+
+// Lift an instruction functor into a Free monad:
+const liftF = (cmd) => Free(cmd.map(Pure))
+
+// Functor representing logging instructions:
+const Log = (msg, next) => ({
+  type: 'log',
+  msg,
+  next,
+  map: (f) => Log(msg, f(next))
+})
+
+// Program: purely describes actions without executing them:
+const logMsg = (msg) => liftF(Log(msg, null))
+const program = logMsg('Starting').chain(() => logMsg('Done')).chain(() => Pure(42))
+
+// Interpreter: executes the instruction tree:
+const interpret = (freeMonad) => {
+  if (freeMonad.isPure) return freeMonad.value
+  const { type, msg, next } = freeMonad.functor
+  if (type === 'log') {
+    console.log(msg)
+    return interpret(next)
+  }
+}
+
+interpret(program) // Logs 'Starting', 'Done', returns 42
+```
+
+__Further reading__
+* [Free Monads in JavaScript](https://medium.com/@gcanti/free-monads-in-javascript-f5df234d3d2a)
+
+## Monad Transformer
+
+While [functors](#functor) and [applicative functors](#applicative-functor) compose naturally, [monads](#monad) do not compose generally without knowing their specific types. A Monad Transformer is a type constructor that takes an existing monad and produces a new monad with combined capabilities (such as combining error handling, asynchronous tasks, and state).
+
+Monad transformers typically end in `T` (e.g. `MaybeT`, `ReaderT`, `StateT`).
+
+```js
+// MaybeT wraps any outer monad M to add optionality:
+const MaybeT = (M) => {
+  const of = (value) => MaybeTInstance(M.of({ isSome: true, value }))
+  const none = () => MaybeTInstance(M.of({ isSome: false }))
+
+  const MaybeTInstance = (run) => ({
+    run,
+    chain: (f) =>
+      MaybeTInstance(
+        run.chain((opt) => (opt.isSome ? f(opt.value).run : M.of(opt)))
+      ),
+    map: (f) =>
+      MaybeTInstance(
+        run.map((opt) => (opt.isSome ? { isSome: true, value: f(opt.value) } : opt))
+      )
+  })
+
+  return { of, none, from: MaybeTInstance }
+}
+
+// Identity monad:
+const Id = (x) => ({
+  value: x,
+  map: (f) => Id(f(x)),
+  chain: (f) => f(x)
+})
+Id.of = Id
+
+// Combine Id monad with Maybe effect:
+const MaybeId = MaybeT(Id)
+
+const findUser = (id) =>
+  id === 1 ? MaybeId.of({ name: 'Alice', age: 30 }) : MaybeId.none()
+
+const getAge = (id) =>
+  findUser(id)
+    .chain((user) => MaybeId.of(user.age))
+    .run
+
+getAge(1).value // { isSome: true, value: 30 }
+getAge(2).value // { isSome: false }
+```
+
+__Further reading__
+* [Monad Transformers Step by Step](https://page.mi.fu-berlin.de/scravy/realworldhaskell/materialien/monad-transformers-step-by-step.pdf)
+
 ## Applicative Functor
 
 An applicative functor is an object with an `ap` function. `ap` applies a function in the object to a value in another object of the same type.
@@ -945,6 +1133,38 @@ hasLongBio.test({ bio: 'Hi' }) // false
 
 __Further reading__
 * [Contravariant Functor](https://github.com/fantasyland/fantasy-land#contravariant) in Fantasy Land
+
+## Profunctor
+
+A Profunctor is a [bifunctor](#bifunctor) that is **contravariant** in its first argument and **covariant** in its second argument.
+
+Given a structure `P<A, B>` representing a computation that consumes `A` and produces `B`, `promap` takes two functions `(a' -> a)` and `(b -> b')` to yield `P<A', B'>`.
+
+Functions `(a -> b)` are canonical profunctors: you can pre-process the input `(a' -> a)` and post-process the output `(b -> b')`. Profunctors form the mathematical foundation of profunctor optics.
+
+```js
+// Functions are natural profunctors:
+const Profunctor = (fn) => ({
+  run: fn,
+  // promap :: (a' -> a) -> (b -> b') -> P a b -> P a' b'
+  promap: (f, g) => Profunctor((x) => g(fn(f(x))))
+})
+
+// An existing function: String -> Number
+const stringLength = Profunctor((str) => str.length)
+
+// Pre-process input (trim whitespace) and post-process output (check if even):
+const isTrimmedLengthEven = stringLength.promap(
+  (raw) => raw.trim(), // contravariant: pre-process input
+  (len) => len % 2 === 0 // covariant: post-process output
+)
+
+isTrimmedLengthEven.run('   code   ') // 4 is even -> true
+isTrimmedLengthEven.run(' hello ') // 5 is odd -> false
+```
+
+__Further reading__
+* [Profunctor](https://github.com/fantasyland/fantasy-land#profunctor) in Fantasy Land
 
 ## Alternative
 
@@ -1299,6 +1519,37 @@ tempIso.from(212) // 100
 __Further reading__
 * [Isomorphism](https://en.wikipedia.org/wiki/Isomorphism) on Wikipedia
 * [Optics / Iso](https://github.com/flunc/optics) on GitHub
+
+## Traversal
+
+An optic that focuses on zero, one, or multiple values (`0..*`) inside a data structure simultaneously.
+
+While a [Lens](#lens) focuses on exactly 1 value and a [Prism](#prism) focuses on 0 or 1 value, a Traversal generalizes optics to collections, trees, or filtered subsets.
+
+A traversal provides:
+* `getAll`: extracts all focused values into an array.
+* `modify`: immutably transforms every focused value using a mapping function.
+
+```js
+const Traversal = (getAll, modify) => ({
+  getAll,
+  modify
+})
+
+// Traversal focusing only on even numbers in an array:
+const evenTraversal = Traversal(
+  (arr) => arr.filter((n) => n % 2 === 0),
+  (f, arr) => arr.map((n) => (n % 2 === 0 ? f(n) : n))
+)
+
+const numbers = [1, 2, 3, 4, 5, 6]
+
+evenTraversal.getAll(numbers) // [2, 4, 6]
+evenTraversal.modify((n) => n * 10, numbers) // [1, 20, 3, 40, 5, 60]
+```
+
+__Further reading__
+* [Optics - Traversals](https://github.com/calmm-js/partial.lenses#traversal)
 
 ## Type Signatures
 

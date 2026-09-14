@@ -1,6 +1,6 @@
 # FP Jargon
 
-> Interactive functional programming knowledge graph and specification exploring 69 concepts, category theory morphisms, and algebraic structures with JavaScript ES2015 examples.
+> Interactive functional programming knowledge graph and specification exploring 75 concepts, category theory morphisms, and algebraic structures with JavaScript ES2015 examples.
 
 FP Jargon maps out the entire vocabulary of functional programming into an interconnected graph with deterministic explanations, formal properties, and executable JavaScript examples.
 
@@ -35,6 +35,7 @@ FP Jargon maps out the entire vocabulary of functional programming into an inter
 - [Function Composition](https://hemanth.github.io/functional-programming-jargon/#function-composition): The act of putting two functions together to form a third function where the output of one function is the input of the 
 - [Continuation](https://hemanth.github.io/functional-programming-jargon/#continuation): At any given point in a program, the part of the code that's yet to be executed is known as a continuation.
 - [IO](https://hemanth.github.io/functional-programming-jargon/#io): A pure data structure that encapsulates a side effect. Instead of performing the effect immediately, IO wraps the action
+- [Algebraic Effects](https://hemanth.github.io/functional-programming-jargon/#algebraic-effects): A computational effect system that separates the invocation of an effect from its handling. Rather than coupling a funct
 - [Point-Free Style](https://hemanth.github.io/functional-programming-jargon/#point-free-style): Writing functions where the definition does not explicitly identify the arguments used. This style usually requires curr
 - [Functional Combinator](https://hemanth.github.io/functional-programming-jargon/#functional-combinator): A higher-order function, usually curried, which returns a new function changed in some way. Functional combinators are o
 - [Lazy evaluation](https://hemanth.github.io/functional-programming-jargon/#lazy-evaluation): Lazy evaluation is a call-by-need evaluation mechanism that delays the evaluation of an expression until its value is ne
@@ -52,6 +53,7 @@ FP Jargon maps out the entire vocabulary of functional programming into an inter
 
 ### Category & Morphisms
 - [Category](https://hemanth.github.io/functional-programming-jargon/#category): A category in category theory is a collection of objects and morphisms between them. In programming, typically types act
+- [Semigroupoid](https://hemanth.github.io/functional-programming-jargon/#semigroupoid): An algebraic structure with objects and morphisms that can be associatively composed, but does not guarantee the existen
 - [Morphism](https://hemanth.github.io/functional-programming-jargon/#morphism): A relationship between objects within a category. In the context of functional programming all functions are morphisms.
 - [Homomorphism](https://hemanth.github.io/functional-programming-jargon/#homomorphism): A function where there is a structural property that is the same in the input as well as the output.
 - [Endomorphism](https://hemanth.github.io/functional-programming-jargon/#endomorphism): A function where the input type is the same as the output. Since the types are identical, endomorphisms are also homomor
@@ -73,9 +75,12 @@ FP Jargon maps out the entire vocabulary of functional programming into an inter
 - [Monad](https://hemanth.github.io/functional-programming-jargon/#monad): A monad is an object with of and chain functions. chain is like map except it un-nests the resulting nested object.
 - [Comonad](https://hemanth.github.io/functional-programming-jargon/#comonad): An object that has extract and extend functions.
 - [Kleisli Composition](https://hemanth.github.io/functional-programming-jargon/#kleisli-composition): An operation for composing two monad-returning functions (Kleisli Arrows) where they have compatible types. In Haskell t
+- [Free Monad](https://hemanth.github.io/functional-programming-jargon/#free-monad): A Free Monad is a construction that builds a monad out of any functor without adding any domain-specific behavior. It cl
+- [Monad Transformer](https://hemanth.github.io/functional-programming-jargon/#monad-transformer): While functors and applicative functors compose naturally, monads do not compose generally without knowing their specifi
 - [Applicative Functor](https://hemanth.github.io/functional-programming-jargon/#applicative-functor): An applicative functor is an object with an ap function. ap applies a function in the object to a value in another objec
 - [Bifunctor](https://hemanth.github.io/functional-programming-jargon/#bifunctor): A structure with two independent type parameters that can map over both of them simultaneously. A Bifunctor provides bim
 - [Contravariant Functor](https://hemanth.github.io/functional-programming-jargon/#contravariant-functor): A structure similar to a functor, but whose transformation flows in the opposite direction. While a covariant functor tr
+- [Profunctor](https://hemanth.github.io/functional-programming-jargon/#profunctor): A Profunctor is a bifunctor that is contravariant in its first argument and covariant in its second argument.
 - [Alternative](https://hemanth.github.io/functional-programming-jargon/#alternative): An applicative functor that also forms a monoid, providing a binary choice operator alt (often written <|>) and an ident
 - [Setoid](https://hemanth.github.io/functional-programming-jargon/#setoid): An object that has an equals function which can be used to compare other objects of the same type.
 - [Semigroup](https://hemanth.github.io/functional-programming-jargon/#semigroup): An object that has a concat function that combines it with another object of the same type.
@@ -87,6 +92,7 @@ FP Jargon maps out the entire vocabulary of functional programming into an inter
 - [Lens](https://hemanth.github.io/functional-programming-jargon/#lens): A lens is a structure (often an object or function) that pairs a getter and a non-mutating setter for some other data st
 - [Prism](https://hemanth.github.io/functional-programming-jargon/#prism): An optic that focuses on a sub-case or variant of a sum type. Unlike a Lens, which always assumes the target field exist
 - [Iso](https://hemanth.github.io/functional-programming-jargon/#iso): An optic that defines a lossless, reversible two-way mapping between two representations of the same information (s and 
+- [Traversal](https://hemanth.github.io/functional-programming-jargon/#traversal): An optic that focuses on zero, one, or multiple values (0..*) inside a data structure simultaneously.
 - [Type Signatures](https://hemanth.github.io/functional-programming-jargon/#type-signatures): Often functions in JavaScript will include comments that indicate the types of their arguments and return values.
 - [Algebraic data type](https://hemanth.github.io/functional-programming-jargon/#algebraic-data-type): A composite type made from putting other types together. Two common classes of algebraic types are sum and product.
 - [Sum type](https://hemanth.github.io/functional-programming-jargon/#sum-type): A Sum type is the combination of two types together into another one. It is called sum because the number of possible va
