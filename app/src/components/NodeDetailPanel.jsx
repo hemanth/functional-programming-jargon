@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from 'react';
-import { X, ExternalLink, Link2, BookOpen, GitFork, Check } from 'lucide-react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { X, ExternalLink, Link2, BookOpen, GitFork, Check, ChevronUp, ChevronDown } from 'lucide-react';
 import { marked } from 'marked';
 import { soundEffects } from '../utils/audio';
 import CodeBlock from './CodeBlock';
@@ -31,6 +31,12 @@ export default function NodeDetailPanel({
   isDark
 }) {
   const [copiedLink, setCopiedLink] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  // Reset to peek mode whenever term changes
+  useEffect(() => {
+    setIsExpanded(false);
+  }, [term?.id]);
 
   if (!term) return null;
 
@@ -104,17 +110,31 @@ export default function NodeDetailPanel({
 
   return (
     <aside
-      className={`fixed inset-y-0 right-0 w-full sm:w-[500px] lg:w-[560px] backdrop-blur-md border-l z-50 flex flex-col font-mono shadow-2xl transition-transform duration-300 ease-[var(--ease-out-expo)] ${
+      className={`fixed inset-x-0 bottom-0 sm:inset-y-0 sm:right-0 sm:left-auto sm:top-0 w-full sm:w-[500px] lg:w-[560px] ${
+        isExpanded ? 'h-[85vh]' : 'h-[46vh]'
+      } sm:h-full rounded-t-2xl sm:rounded-none backdrop-blur-md border-t sm:border-t-0 sm:border-l z-50 flex flex-col font-mono shadow-2xl transition-all duration-300 ease-[var(--ease-out-expo)] ${
         isDark
           ? 'bg-[#121212]/95 border-[rgba(240,240,238,0.15)] text-[#f0f0ee]'
           : 'bg-[#eaeae8]/98 border-[rgba(26,26,25,0.15)] text-[#1a1a19]'
       }`}
     >
+      {/* Mobile Swipe / Tap Grab Handle */}
+      <div
+        className="sm:hidden flex flex-col items-center justify-center pt-2.5 pb-1 cursor-pointer select-none"
+        onClick={() => {
+          setIsExpanded(prev => !prev);
+          soundEffects.toggle(soundEnabled);
+        }}
+        title={isExpanded ? 'Tap to collapse' : 'Tap to expand'}
+      >
+        <div className={`w-10 h-1 rounded-full ${isDark ? 'bg-[#f0f0ee]/25' : 'bg-[#1a1a19]/25'}`} />
+      </div>
+
       {/* Header Bar */}
-      <div className={`p-5 border-b flex items-start justify-between gap-4 ${
+      <div className={`px-4 sm:px-5 py-3 sm:py-5 border-b flex items-start justify-between gap-3 ${
         isDark ? 'border-[rgba(240,240,238,0.1)] bg-[#1a1a19]/60' : 'border-[rgba(26,26,25,0.1)] bg-[#dededb]/60'
       }`}>
-        <div className="space-y-1.5 flex-1 min-w-0">
+        <div className="space-y-1 flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap text-[11px]">
             <span
               className="px-2 py-0.5 border flex items-center gap-1.5 font-medium"
@@ -132,12 +152,28 @@ export default function NodeDetailPanel({
             </span>
           </div>
 
-          <h2 className="text-xl font-bold tracking-tight">
+          <h2 className="text-lg sm:text-xl font-bold tracking-tight">
             {term.title}
           </h2>
         </div>
 
         <div className="flex items-center gap-1.5 shrink-0">
+          {/* Mobile Expand / Collapse Button */}
+          <button
+            onClick={() => {
+              setIsExpanded(prev => !prev);
+              soundEffects.toggle(soundEnabled);
+            }}
+            title={isExpanded ? 'Collapse sheet' : 'Expand sheet'}
+            className={`sm:hidden px-2 py-1 text-xs border transition flex items-center gap-1 ${
+              isDark
+                ? 'text-[#f0f0ee]/70 hover:text-[#f0f0ee] hover:bg-[#242422] border-[rgba(240,240,238,0.15)]'
+                : 'text-[#1a1a19]/70 hover:text-[#1a1a19] hover:bg-[#dcdcd9] border-[rgba(26,26,25,0.15)]'
+            }`}
+          >
+            {isExpanded ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronUp className="w-3.5 h-3.5" />}
+          </button>
+
           {/* Copy Link Button */}
           <button
             onClick={handleCopyLink}
@@ -149,7 +185,7 @@ export default function NodeDetailPanel({
             }`}
           >
             {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Link2 className="w-3.5 h-3.5" />}
-            <span className="text-[10px]">{copiedLink ? 'Copied' : 'Share'}</span>
+            <span className="hidden xs:inline text-[10px]">{copiedLink ? 'Copied' : 'Share'}</span>
           </button>
 
           {/* Close Drawer Button */}
@@ -158,14 +194,14 @@ export default function NodeDetailPanel({
               onClose();
               soundEffects.toggle(soundEnabled);
             }}
-            title="Close [Esc]"
+            title="Close"
             className={`px-2 py-1 text-xs border transition flex items-center gap-1 ${
               isDark
                 ? 'text-[#f0f0ee]/70 hover:text-[#f0f0ee] hover:bg-[#242422] border-[rgba(240,240,238,0.15)]'
                 : 'text-[#1a1a19]/70 hover:text-[#1a1a19] hover:bg-[#dcdcd9] border-[rgba(26,26,25,0.15)]'
             }`}
           >
-            <span className="text-[10px]">[ Esc ]</span>
+            <span className="hidden sm:inline text-[10px]">[ Esc ]</span>
             <X className="w-3.5 h-3.5" />
           </button>
         </div>

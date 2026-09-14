@@ -110,6 +110,26 @@ server.listen(PORT, async () => {
     if (!profunctorTitle.toLowerCase().includes('profunctor')) throw new Error(`Expected Profunctor, got: ${profunctorTitle}`);
     console.log('✓ Test 5 passed: Profunctor ranked #1 in search and opened cleanly.');
 
+    console.log('Running test 6: Mobile bottom sheet peek & expand...');
+    const mobilePage = await browser.newPage({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+    await mobilePage.goto(`http://localhost:${PORT}/#thunk`, { waitUntil: 'networkidle' });
+    await mobilePage.waitForTimeout(600);
+    const mobileAside = mobilePage.locator('aside');
+    if (!(await mobileAside.isVisible())) throw new Error('Mobile bottom sheet should be visible');
+    const peekBox = await mobileAside.boundingBox();
+    if (!peekBox || peekBox.y < 350) throw new Error('Mobile sheet should start in bottom peek mode');
+    console.log('  ✓ Mobile sheet starts in bottom peek mode');
+
+    // Click expand button
+    const expandBtn = mobilePage.locator('aside button[title*="Expand"]');
+    await expandBtn.click();
+    await mobilePage.waitForTimeout(400);
+    const expBox = await mobileAside.boundingBox();
+    if (!expBox || expBox.y > 200) throw new Error('Mobile sheet should expand upwards');
+    console.log('  ✓ Mobile sheet expands to full view');
+    await mobilePage.close();
+    console.log('✓ Test 6 passed: Mobile bottom sheet behavior verified.');
+
   } catch (err) {
     console.error('Test failed:', err);
     exitCode = 1;
