@@ -6,8 +6,7 @@ Examples are presented in JavaScript (ES2015). [Why JavaScript?](https://github.
 
 Where applicable, this document uses terms defined in the [Fantasy Land spec](https://github.com/fantasyland/fantasy-land).
 
-> 🌐 **Interactive Graph**: [hemanth.github.io/functional-programming-jargon](https://hemanth.github.io/functional-programming-jargon)
-> 🤖 **Agent / LLM Spec**: [hemanth.github.io/functional-programming-jargon/llms.txt](https://hemanth.github.io/functional-programming-jargon/llms.txt)
+**Interactive Graph**: [hemanth.github.io/functional-programming-jargon](https://hemanth.github.io/functional-programming-jargon)
 
 __Translations__
 * [Portuguese](https://github.com/alexmoreno/jargoes-programacao-funcional)
